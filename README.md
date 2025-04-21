@@ -20,3 +20,6 @@ Just a personal app for tracking my current training goals.
 - CustomTkinter
 - SQLite
 - Potentially api-driven graph generation
+- Streak tracker
+- Today's summary panel
+- Quick add (exercises done on the fly, usually one offs.)

@@ -1,8 +1,5 @@
 import sqlite3
 import argon2
-import os
-from cryptography.fernet import Fernet
-from base64 import urlsafe_b64encode
 
 class AuthManager:
     def __init__(self):
@@ -10,12 +7,12 @@ class AuthManager:
         self.ph = argon2.PasswordHasher()
         self.auth_connection = sqlite3.connect(self.auth_db)
         self.auth_cursor = self.auth_connection.cursor()
+        self.create_auth_database()
 
     def create_auth_database(self):
         self.auth_cursor.execute("CREATE TABLE IF NOT EXISTS authentication (desc TEXT, hash TEXT)")
 
     def create_password(self, password):
-        self.create_auth_database()
         hashed_password = self.ph.hash(password)
         self.auth_cursor.execute("INSERT INTO authentication (desc, hash) values ('password', ?)", (hashed_password,))
         self.auth_connection.commit()
