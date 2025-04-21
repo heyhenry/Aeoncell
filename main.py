@@ -139,15 +139,40 @@ class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         self.controller = controller
         ctk.CTkFrame.__init__(self, parent)
+        self.steps_taken_var = ctk.StringVar(value="0")
+        self.steps_add_var = ctk.StringVar()
         self.create_widgets()
 
     def create_widgets(self):
+        # frames + title
         page_title = ctk.CTkLabel(self, text="Fitness Dashboard", font=("",32))
         steps_section = ctk.CTkFrame(self, width=350, height=150)
         stats_section = ctk.CTkFrame(self, width=350, height=150)
         summary_section = ctk.CTkFrame(self, width=720, height=100)
         log_section = ctk.CTkFrame(self, width=720, height=250)
 
+        # steps_section
+        steps_title = ctk.CTkLabel(steps_section, text="Step Tracker", font=("", 24))
+        steps_count = ctk.CTkLabel(steps_section, textvariable=self.steps_taken_var, font=("", 24))
+        steps_add = ctk.CTkEntry(steps_section, textvariable=self.steps_add_var, font=("", 24))
+        steps_update = ctk.CTkButton(steps_section, text="Add Steps", font=("", 24))
+
+        steps_section.grid_columnconfigure(0, weight=1)
+        steps_section.grid_columnconfigure(1, weight=0)
+        steps_section.grid_columnconfigure(2, weight=0)
+        steps_section.grid_columnconfigure(3, weight=1)
+
+        steps_section.grid_rowconfigure(0, weight=1)
+        steps_section.grid_rowconfigure(4, weight=1)
+
+        steps_section.grid_propagate(False)
+
+        steps_title.grid(row=1, column=0, columnspan=4, pady=10)
+        steps_count.grid(row=2, column=1, columnspan=2)
+        steps_add.grid(row=3, column=1, pady=10, padx=(0, 5))
+        steps_update.grid(row=3, column=2, pady=10, padx=(5, 0))
+
+        # page layout
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=0)
         self.grid_columnconfigure(2, weight=0)
