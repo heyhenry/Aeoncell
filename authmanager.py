@@ -12,7 +12,7 @@ class AuthManager:
         self.auth_cursor = self.auth_connection.cursor()
 
     def create_auth_database(self):
-        self.auth_cursor.execute("CREATE TABLE authentication (desc TEXT, hash TEXT)")
+        self.auth_cursor.execute("CREATE TABLE IF NOT EXISTS authentication (desc TEXT, hash TEXT)")
 
     def create_password(self, password):
         self.create_auth_database()
@@ -30,3 +30,8 @@ class AuthManager:
             return True
         except argon2.exceptions.VerifyMismatchError:
             return False
+        
+    def check_password_exists(self):
+        self.auth_cursor.execute("SELECT hash FROM authentication WHERE rowid = 1")
+        if self.auth_cursor.fetchone():
+            return True

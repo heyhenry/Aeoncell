@@ -23,7 +23,10 @@ class Windows(ctk.CTk):
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
 
-        self.show_page(RegisterPage)
+        if self.auth.check_password_exists():
+            self.show_page(LoginPage)
+        else:
+            self.show_page(RegisterPage)
 
     def show_page(self, selected_page):
         self.pages[selected_page].tkraise()
@@ -76,13 +79,46 @@ class RegisterPage(ctk.CTkFrame):
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
-        self.controller = controller
         ctk.CTkFrame.__init__(self, parent)
-        lbl = ctk.CTkLabel(self, text="Login Page")
-        btn = ctk.CTkButton(self, text="Go to Dashboard", command=lambda: self.controller.show_page(DashboardPage))
+        self.controller = controller
+        self.password_var = ctk.StringVar()
+        self.create_widgets()
 
-        lbl.pack()
-        btn.pack()
+    def create_widgets(self):
+        page_title = ctk.CTkLabel(self, text="Login to Aeoncell")
+        password = ctk.CTkLabel(self, text="Enter Password:")
+        self.password_entry = ctk.CTkEntry(self, textvariable=self.password_var)
+        self.error_message = ctk.CTkLabel(self, text="", text_color="red")
+        submit = ctk.CTkButton(self, text="Login", command=self.process_password)
+
+        # horizontal centering
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0)
+        self.grid_columnconfigure(2, weight=1)
+
+        # vertical centering
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(6, weight=1)
+
+        # place widgets in the center column (col=1), and rows 1–5
+        page_title.grid(row=1, column=1, pady=10)
+        password.grid(row=2, column=1)
+        self.password_entry.grid(row=3, column=1)
+        self.error_message.grid(row=4, column=1)
+        submit.grid(row=5, column=1)
+
+    def process_password(self):
+        # validate password
+        password = self.password_var.get()
+        if self.controller.auth.verify_password(password):
+            self.controller.show_page(DashboardPage)
+        else:
+            self.display_error("Incorrect Password.")
+
+    def display_error(self, error_msg):
+        self.error_message.configure(text=error_msg)
+        self.error_message.after(1000, lambda: self.error_message.configure(text=""))
+        self.error_message.after(1000, lambda: self.password_var.set(""))
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
