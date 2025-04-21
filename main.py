@@ -155,22 +155,7 @@ class DashboardPage(ctk.CTkFrame):
         steps_title = ctk.CTkLabel(steps_section, text="Step Tracker", font=("", 24))
         steps_count = ctk.CTkLabel(steps_section, textvariable=self.steps_taken_var, font=("", 24))
         steps_add = ctk.CTkEntry(steps_section, textvariable=self.steps_add_var, font=("", 24))
-        steps_update = ctk.CTkButton(steps_section, text="Add Steps", font=("", 24))
-
-        steps_section.grid_columnconfigure(0, weight=1)
-        steps_section.grid_columnconfigure(1, weight=0)
-        steps_section.grid_columnconfigure(2, weight=0)
-        steps_section.grid_columnconfigure(3, weight=1)
-
-        steps_section.grid_rowconfigure(0, weight=1)
-        steps_section.grid_rowconfigure(4, weight=1)
-
-        steps_section.grid_propagate(False)
-
-        steps_title.grid(row=1, column=0, columnspan=4, pady=10)
-        steps_count.grid(row=2, column=1, columnspan=2)
-        steps_add.grid(row=3, column=1, pady=10, padx=(0, 5))
-        steps_update.grid(row=3, column=2, pady=10, padx=(5, 0))
+        steps_update = ctk.CTkButton(steps_section, text="Add Steps", font=("", 24), command=self.update_steps)
 
         # page layout
         self.grid_columnconfigure(0, weight=1)
@@ -186,6 +171,28 @@ class DashboardPage(ctk.CTkFrame):
         stats_section.grid(row=2, column=2, padx=10)
         summary_section.grid(row=3, column=0, columnspan=4, pady=10)
         log_section.grid(row=4, column=0, columnspan=4, pady=(0, 20))
+
+        # steps_section layout
+        steps_section.grid_columnconfigure(0, weight=1)
+        steps_section.grid_columnconfigure(1, weight=0)
+        steps_section.grid_columnconfigure(2, weight=0)
+        steps_section.grid_columnconfigure(3, weight=1)
+
+        steps_section.grid_rowconfigure(0, weight=1)
+        steps_section.grid_rowconfigure(4, weight=1)
+
+        steps_section.grid_propagate(False)
+
+        steps_title.grid(row=1, column=0, columnspan=4, pady=10)
+        steps_count.grid(row=2, column=1, columnspan=2)
+        steps_add.grid(row=3, column=1, pady=10, padx=(0, 5))
+        steps_update.grid(row=3, column=2, pady=10, padx=(5, 0))
+
+    def update_steps(self):
+        steps_taken = int(self.steps_taken_var.get())
+        add_steps = int(self.steps_add_var.get())
+        self.steps_taken_var.set(str(steps_taken + add_steps))
+        self.steps_add_var.set("")
 
 class StatsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
