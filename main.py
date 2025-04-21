@@ -124,11 +124,28 @@ class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         self.controller = controller
         ctk.CTkFrame.__init__(self, parent)
-        lbl = ctk.CTkLabel(self, text="Dashboard Page")
-        btn = ctk.CTkButton(self, text="Go to Stats", command=lambda: self.controller.show_page(StatsPage))
+        self.create_widgets()
 
-        lbl.pack()
-        btn.pack()
+    def create_widgets(self):
+        page_title = ctk.CTkLabel(self, text="Fitness Dashboard")
+        steps_section = ctk.CTkFrame(self, width=350, height=150)
+        stats_section = ctk.CTkFrame(self, width=350, height=150)
+        summary_section = ctk.CTkFrame(self, width=720, height=100)
+        log_section = ctk.CTkFrame(self, width=720, height=250)
+
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0)
+        self.grid_columnconfigure(2, weight=0)
+        self.grid_columnconfigure(3, weight=1)
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(5, weight=1)
+
+        page_title.grid(row=1, column=0, columnspan=4, pady=(10, 20))
+        steps_section.grid(row=2, column=1, padx=10)
+        stats_section.grid(row=2, column=2, padx=10)
+        summary_section.grid(row=3, column=0, columnspan=4, pady=10)
+        log_section.grid(row=4, column=0, columnspan=4, pady=(0, 20))
 
 class StatsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
