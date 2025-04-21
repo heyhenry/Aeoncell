@@ -32,7 +32,13 @@ class Windows(ctk.CTk):
             self.show_page(RegisterPage)
 
     def show_page(self, selected_page):
-        self.pages[selected_page].tkraise()
+        page = self.pages[selected_page]
+        # check if the page has the stated attribute, 
+        # if it does then execute the following
+        if hasattr(page, "set_initial_focus"):
+            page.set_initial_focus()
+
+        page.tkraise()
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -64,7 +70,9 @@ class RegisterPage(ctk.CTkFrame):
         self.error_message.grid(row=4, column=1)
         submit.grid(row=5, column=1)
 
-    def process_password(self):
+        self.password_entry.bind("<Return>", self.process_password)
+
+    def process_password(self, event=None):
         # validate password
         password = self.password_var.get()
         if len(password) < 8:
@@ -79,6 +87,9 @@ class RegisterPage(ctk.CTkFrame):
         self.error_message.configure(text=error_msg)
         self.error_message.after(1000, lambda: self.error_message.configure(text=""))
         self.error_message.after(1000, lambda: self.password_var.set(""))
+
+    def set_initial_focus(self):
+        self.after(100, self.password_entry.focus)
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
