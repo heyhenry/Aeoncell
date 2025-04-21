@@ -1,6 +1,9 @@
 import customtkinter as ctk
 from authmanager import AuthManager
 
+ctk.set_appearance_mode("Light") # other options: "Dark", "System" (Default)
+ctk.set_default_color_theme("green") # other options: "blue" (Default), "dark-blue"
+
 class Windows(ctk.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -85,11 +88,11 @@ class LoginPage(ctk.CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
-        page_title = ctk.CTkLabel(self, text="Login to Aeoncell")
-        password = ctk.CTkLabel(self, text="Enter Password:")
-        self.password_entry = ctk.CTkEntry(self, textvariable=self.password_var)
-        self.error_message = ctk.CTkLabel(self, text="", text_color="red")
-        submit = ctk.CTkButton(self, text="Login", command=self.process_password)
+        page_title = ctk.CTkLabel(self, text="Login to Aeoncell", font=("", 48))
+        password = ctk.CTkLabel(self, text="Enter Password:", font=("", 24))
+        self.password_entry = ctk.CTkEntry(self, textvariable=self.password_var, width=240, font=("", 24))
+        self.error_message = ctk.CTkLabel(self, text="", text_color="red", font=("", 18))
+        submit = ctk.CTkButton(self, text="Login", command=self.process_password, font=("", 24))
 
         # horizontal centering
         self.grid_columnconfigure(0, weight=1)
@@ -127,7 +130,7 @@ class DashboardPage(ctk.CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
-        page_title = ctk.CTkLabel(self, text="Fitness Dashboard")
+        page_title = ctk.CTkLabel(self, text="Fitness Dashboard", font=("",32))
         steps_section = ctk.CTkFrame(self, width=350, height=150)
         stats_section = ctk.CTkFrame(self, width=350, height=150)
         summary_section = ctk.CTkFrame(self, width=720, height=100)
@@ -141,7 +144,7 @@ class DashboardPage(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(5, weight=1)
 
-        page_title.grid(row=1, column=0, columnspan=4, pady=(10, 20))
+        page_title.grid(row=1, column=0, columnspan=4, pady=(10, 10))
         steps_section.grid(row=2, column=1, padx=10)
         stats_section.grid(row=2, column=2, padx=10)
         summary_section.grid(row=3, column=0, columnspan=4, pady=10)
