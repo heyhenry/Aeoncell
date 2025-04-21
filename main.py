@@ -42,11 +42,11 @@ class RegisterPage(ctk.CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
-        page_title = ctk.CTkLabel(self, text="Register")
-        password = ctk.CTkLabel(self, text="Create Password:")
-        self.password_entry = ctk.CTkEntry(self, textvariable=self.password_var)
-        self.error_message = ctk.CTkLabel(self, text="", text_color="red")
-        submit = ctk.CTkButton(self, text="Register", command=self.process_password)
+        page_title = ctk.CTkLabel(self, text="Register for Aeoncell", font=("", 48))
+        password = ctk.CTkLabel(self, text="Create Password:", font=("", 24))
+        self.password_entry = ctk.CTkEntry(self, textvariable=self.password_var, width=240, font=("", 24))
+        self.error_message = ctk.CTkLabel(self, text="", text_color="red", font=("", 18))
+        submit = ctk.CTkButton(self, text="Register", command=self.process_password, font=("", 24))
 
         # horizontal centering
         self.grid_columnconfigure(0, weight=1)
