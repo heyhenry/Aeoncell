@@ -139,8 +139,9 @@ class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         self.controller = controller
         ctk.CTkFrame.__init__(self, parent)
-        self.steps_taken_var = ctk.StringVar(value="0")
+        self.steps_taken_var = ctk.IntVar()
         self.steps_add_var = ctk.StringVar()
+        self.steps_total_display = ctk.StringVar(value="0")
         self.create_widgets()
 
     def create_widgets(self):
@@ -153,7 +154,7 @@ class DashboardPage(ctk.CTkFrame):
 
         # steps_section
         steps_title = ctk.CTkLabel(steps_section, text="Step Tracker", font=("", 24))
-        steps_count = ctk.CTkLabel(steps_section, textvariable=self.steps_taken_var, font=("", 24))
+        steps_count = ctk.CTkLabel(steps_section, textvariable=self.steps_total_display, font=("", 24))
         steps_add = ctk.CTkEntry(steps_section, textvariable=self.steps_add_var, font=("", 24))
         steps_update = ctk.CTkButton(steps_section, text="Add Steps", font=("", 24), command=self.update_steps)
 
@@ -189,9 +190,12 @@ class DashboardPage(ctk.CTkFrame):
         steps_update.grid(row=3, column=2, pady=10, padx=(5, 0))
 
     def update_steps(self):
-        steps_taken = int(self.steps_taken_var.get())
-        add_steps = int(self.steps_add_var.get())
-        self.steps_taken_var.set(str(steps_taken + add_steps))
+        steps_taken = self.steps_taken_var.get()
+        steps_add = int(self.steps_add_var.get())
+        result = steps_taken + steps_add
+        self.steps_taken_var.set(result)
+        result = f"{result:,}"
+        self.steps_total_display.set(str(result))
         self.steps_add_var.set("")
 
 class StatsPage(ctk.CTkFrame):
