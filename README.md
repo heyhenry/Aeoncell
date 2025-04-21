@@ -11,7 +11,6 @@ Just a personal app for tracking my current training goals.
 
 # Features
 - Password protected
-- Encrypted database
 - Visual graphical representation of activity based on selected exercise
 - CRUD for exercise entries
 - Step counter

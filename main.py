@@ -1,8 +1,12 @@
 import customtkinter as ctk
+from authmanager import AuthManager
 
 class Windows(ctk.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.auth = AuthManager()
+
         self.title("Aeoncell")
         self.geometry("800x600")
         self.grid_rowconfigure(0, weight=1)
@@ -35,7 +39,7 @@ class RegisterPage(ctk.CTkFrame):
         page_title = ctk.CTkLabel(self, text="Register")
         password = ctk.CTkLabel(self, text="Create Password:")
         self.password_entry = ctk.CTkEntry(self, textvariable=self.password_var)
-        self.error_message = ctk.CTkLabel(self, text="")
+        self.error_message = ctk.CTkLabel(self, text="", text_color="red")
         submit = ctk.CTkButton(self, text="Register", command=self.process_password)
 
         # horizontal centering
@@ -60,13 +64,15 @@ class RegisterPage(ctk.CTkFrame):
         if len(password) < 8:
             self.display_error("Password too short. 8 characters minium.")
         elif password.isspace():
-            self.display_error("Whitespaces aren't allowed!")
+            self.display_error("Whitespaces aren't allowed.")
+        else:
+            self.controller.auth.create_password(password)
+            self.controller.show_page(LoginPage)
 
     def display_error(self, error_msg):
-        self.error_message.config(text=error_msg)
-        self.error_message.after(1000, lambda: self.error_message.config(text=""))
-        self.error_message.after(1000, self.password_var.set(""))
-
+        self.error_message.configure(text=error_msg)
+        self.error_message.after(1000, lambda: self.error_message.configure(text=""))
+        self.error_message.after(1000, lambda: self.password_var.set(""))
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
