@@ -170,13 +170,13 @@ class DashboardPage(ctk.CTkFrame):
         summary_section.grid(row=3, column=0, columnspan=4, pady=10)
         log_section.grid(row=4, column=0, columnspan=4, pady=(0, 20))
 
-        # steps_section
+        # steps section
         steps_title = ctk.CTkLabel(steps_section, text="Step Tracker", font=("", 24, "bold"))
         steps_count = ctk.CTkLabel(steps_section, textvariable=self.steps_total_display, font=("", 24))
         steps_add = ctk.CTkEntry(steps_section, textvariable=self.steps_add_var, font=("", 24))
         steps_update = ctk.CTkButton(steps_section, text="Add Steps", font=("", 24), command=self.update_steps)
 
-        # steps_section layout
+        # steps section layout
         steps_section.grid_columnconfigure(0, weight=1)
         steps_section.grid_columnconfigure(1, weight=0)
         steps_section.grid_columnconfigure(2, weight=0)
@@ -192,11 +192,11 @@ class DashboardPage(ctk.CTkFrame):
         steps_add.grid(row=3, column=1, pady=10, padx=(0, 5))
         steps_update.grid(row=3, column=2, pady=10, padx=(5, 0))
 
-        # stats_section
+        # stats section
         stats_title = ctk.CTkLabel(stats_section, text="Stats Overview", font=("", 24, "bold"))
         stats_button = ctk.CTkButton(stats_section, text="View Stats", font=("", 24), command=lambda: self.controller.show_page(StatsPage))
 
-        # stats_section layout
+        # stats section layout
         stats_section.grid_columnconfigure(0, weight=1)
         stats_section.grid_columnconfigure(1, weight=0)
         stats_section.grid_columnconfigure(2, weight=1)
@@ -229,6 +229,30 @@ class DashboardPage(ctk.CTkFrame):
         exercise_count.grid(row=2, column=1, sticky="w", pady=(10, 20))
         total_volume.grid(row=2, column=2, pady=(10, 20))
 
+        # log section
+        log_title = ctk.CTkLabel(log_section, text="Recent Logs", font=("", 24, "bold"))
+        log_button = ctk.CTkButton(log_section, text="- 2024-04-21 - Chest Day", font=("", 24))
+        log_info = ctk.CTkLabel(log_section, text="- Bench Press: 3x8 @ 80kg\n- Incline DB Press: 3x10 @ 25kg\n- Flyes: 3x12 @ 12kg", font=("", 24))
+        add_session = ctk.CTkButton(log_section, text="Add Session", font=("", 24))
+        add_single_exercise = ctk.CTkButton(log_section, text="Add Single Exercise", font=("", 24))
+
+        # log section layout
+        log_section.grid_columnconfigure(0, weight=1)
+        log_section.grid_columnconfigure(1, weight=0)
+        log_section.grid_columnconfigure(2, weight=1)
+        log_section.grid_columnconfigure(3, weight=1)
+
+        log_section.grid_rowconfigure(0, weight=1)
+        log_section.grid_rowconfigure(5, weight=1)
+        
+        log_section.grid_propagate(False)
+
+        log_title.grid(row=1, column=1, stick="w", pady=10)
+        log_button.grid(row=2, column=1, columnspan=2, sticky="w", pady=(0, 10))
+        log_info.grid(row=3, column=1, columnspan=2, sticky="w")
+        add_session.grid(row=4, column=1)
+        add_single_exercise.grid(row=4, column=2, pady=10)
+
     def update_steps(self):
         steps_taken = self.steps_taken_var.get()
         steps_add = int(self.steps_add_var.get())
@@ -237,8 +261,6 @@ class DashboardPage(ctk.CTkFrame):
         result = f"{result:,}"
         self.steps_total_display.set(str(result))
         self.steps_add_var.set("")
-
-    
 
 class StatsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
