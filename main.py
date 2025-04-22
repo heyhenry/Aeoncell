@@ -143,6 +143,8 @@ class DashboardPage(ctk.CTkFrame):
         self.steps_taken_var = ctk.IntVar()
         self.steps_add_var = ctk.StringVar()
         self.steps_total_display = ctk.StringVar(value="0")
+        self.exercise_count_var = ctk.StringVar()
+        self.total_volume_var= ctk.StringVar()
         self.create_widgets()
 
     def create_widgets(self):
@@ -169,7 +171,7 @@ class DashboardPage(ctk.CTkFrame):
         log_section.grid(row=4, column=0, columnspan=4, pady=(0, 20))
 
         # steps_section
-        steps_title = ctk.CTkLabel(steps_section, text="Step Tracker", font=("", 24))
+        steps_title = ctk.CTkLabel(steps_section, text="Step Tracker", font=("", 24, "bold"))
         steps_count = ctk.CTkLabel(steps_section, textvariable=self.steps_total_display, font=("", 24))
         steps_add = ctk.CTkEntry(steps_section, textvariable=self.steps_add_var, font=("", 24))
         steps_update = ctk.CTkButton(steps_section, text="Add Steps", font=("", 24), command=self.update_steps)
@@ -191,7 +193,7 @@ class DashboardPage(ctk.CTkFrame):
         steps_update.grid(row=3, column=2, pady=10, padx=(5, 0))
 
         # stats_section
-        stats_title = ctk.CTkLabel(stats_section, text="Stats Overview", font=("", 24))
+        stats_title = ctk.CTkLabel(stats_section, text="Stats Overview", font=("", 24, "bold"))
         stats_button = ctk.CTkButton(stats_section, text="View Stats", font=("", 24), command=lambda: self.controller.show_page(StatsPage))
 
         # stats_section layout
@@ -207,6 +209,26 @@ class DashboardPage(ctk.CTkFrame):
         stats_title.grid(row=1, column=1, pady=10)
         stats_button.grid(row=2, column=1, pady=10)
 
+        # summary section 
+        summary_title = ctk.CTkLabel(summary_section, text="Today's Summary", font=("", 24, "bold"))
+        exercise_count = ctk.CTkLabel(summary_section, text="Exercises: 6", font=("", 24))
+        total_volume = ctk.CTkLabel(summary_section, text="Total Volume: 8.250kg", font=("", 24))        
+
+        # summary section layout
+        summary_section.grid_columnconfigure(0, weight=1)
+        summary_section.grid_columnconfigure(1, weight=0)
+        summary_section.grid_columnconfigure(2, weight=0)
+        summary_section.grid_columnconfigure(3, weight=1)
+
+        summary_section.grid_rowconfigure(0, weight=1)
+        summary_section.grid_rowconfigure(3, weight=1)
+
+        summary_section.grid_propagate(False)
+
+        summary_title.grid(row=1, column=1, sticky="w", pady=10)
+        exercise_count.grid(row=2, column=1, sticky="w", pady=(10, 20))
+        total_volume.grid(row=2, column=2, pady=(10, 20))
+
     def update_steps(self):
         steps_taken = self.steps_taken_var.get()
         steps_add = int(self.steps_add_var.get())
@@ -215,6 +237,8 @@ class DashboardPage(ctk.CTkFrame):
         result = f"{result:,}"
         self.steps_total_display.set(str(result))
         self.steps_add_var.set("")
+
+    
 
 class StatsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
