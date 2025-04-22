@@ -9,6 +9,7 @@ class Windows(ctk.CTk):
         super().__init__(*args, **kwargs)
 
         self.auth = AuthManager()
+        self.frame_bg_colour = "#f8fbfd"
 
         self.title("Aeoncell")
         self.geometry("800x600")
@@ -146,17 +147,11 @@ class DashboardPage(ctk.CTkFrame):
 
     def create_widgets(self):
         # frames + title
-        page_title = ctk.CTkLabel(self, text="Fitness Dashboard", font=("",32))
-        steps_section = ctk.CTkFrame(self, width=350, height=150)
-        stats_section = ctk.CTkFrame(self, width=350, height=150)
-        summary_section = ctk.CTkFrame(self, width=720, height=100)
-        log_section = ctk.CTkFrame(self, width=720, height=250)
-
-        # steps_section
-        steps_title = ctk.CTkLabel(steps_section, text="Step Tracker", font=("", 24))
-        steps_count = ctk.CTkLabel(steps_section, textvariable=self.steps_total_display, font=("", 24))
-        steps_add = ctk.CTkEntry(steps_section, textvariable=self.steps_add_var, font=("", 24))
-        steps_update = ctk.CTkButton(steps_section, text="Add Steps", font=("", 24), command=self.update_steps)
+        page_title = ctk.CTkLabel(self, text="Fitness Dashboard", font=("", 32, "bold"))
+        steps_section = ctk.CTkFrame(self, width=350, height=150, fg_color=self.controller.frame_bg_colour, corner_radius=10)
+        stats_section = ctk.CTkFrame(self, width=350, height=150, fg_color=self.controller.frame_bg_colour, corner_radius=10)
+        summary_section = ctk.CTkFrame(self, width=720, height=100, fg_color=self.controller.frame_bg_colour, corner_radius=10)
+        log_section = ctk.CTkFrame(self, width=720, height=250, fg_color=self.controller.frame_bg_colour, corner_radius=10)
 
         # page layout
         self.grid_columnconfigure(0, weight=1)
@@ -168,10 +163,16 @@ class DashboardPage(ctk.CTkFrame):
         self.grid_rowconfigure(5, weight=1)
 
         page_title.grid(row=1, column=0, columnspan=4, pady=(10, 10))
-        steps_section.grid(row=2, column=1, padx=10)
-        stats_section.grid(row=2, column=2, padx=10)
+        steps_section.grid(row=2, column=1, padx=(10, 5))
+        stats_section.grid(row=2, column=2, padx=(5, 10))
         summary_section.grid(row=3, column=0, columnspan=4, pady=10)
         log_section.grid(row=4, column=0, columnspan=4, pady=(0, 20))
+
+        # steps_section
+        steps_title = ctk.CTkLabel(steps_section, text="Step Tracker", font=("", 24))
+        steps_count = ctk.CTkLabel(steps_section, textvariable=self.steps_total_display, font=("", 24))
+        steps_add = ctk.CTkEntry(steps_section, textvariable=self.steps_add_var, font=("", 24))
+        steps_update = ctk.CTkButton(steps_section, text="Add Steps", font=("", 24), command=self.update_steps)
 
         # steps_section layout
         steps_section.grid_columnconfigure(0, weight=1)
@@ -188,6 +189,23 @@ class DashboardPage(ctk.CTkFrame):
         steps_count.grid(row=2, column=1, columnspan=2)
         steps_add.grid(row=3, column=1, pady=10, padx=(0, 5))
         steps_update.grid(row=3, column=2, pady=10, padx=(5, 0))
+
+        # stats_section
+        stats_title = ctk.CTkLabel(stats_section, text="Stats Overview", font=("", 24))
+        stats_button = ctk.CTkButton(stats_section, text="View Stats", font=("", 24), command=lambda: self.controller.show_page(StatsPage))
+
+        # stats_section layout
+        stats_section.grid_columnconfigure(0, weight=1)
+        stats_section.grid_columnconfigure(1, weight=0)
+        stats_section.grid_columnconfigure(2, weight=1)
+
+        stats_section.grid_rowconfigure(0, weight=1)
+        stats_section.grid_rowconfigure(3, weight=1)
+
+        stats_section.grid_propagate(False)
+
+        stats_title.grid(row=1, column=1, pady=10)
+        stats_button.grid(row=2, column=1, pady=10)
 
     def update_steps(self):
         steps_taken = self.steps_taken_var.get()
