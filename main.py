@@ -37,6 +37,7 @@ class Windows(ctk.CTk):
             self.show_page(RegisterPage)
         
         self.auto_create_daily_step_entry()
+        self.protocol("WM_DELETE_WINDOW", self.auto_del_daily_step_entry)
 
     def show_page(self, selected_page):
         page = self.pages[selected_page]
@@ -49,13 +50,25 @@ class Windows(ctk.CTk):
     def set_initial_focus(self, widget_name):
         self.after(100, widget_name.focus)
 
+    # checks to see if an entry for steps has been created today
     def auto_create_daily_step_entry(self):
         today = date.today()
         today = today.strftime("%d-%m-%Y")
-        self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?) AS row_exists", (today,))
+        self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (today,))
         if not 1 in self.db_cursor.fetchone():
             self.db_cursor.execute("INSERT INTO steps_tracker (date) VALUES (?)", (today,))
             self.db_connection.commit()
+
+    # only delete a step tracking entry if NULL (determines user made an accident, until total_steps gets a value)
+    # and on app close
+    def auto_del_daily_step_entry(self):
+        today = date.today()
+        today = today.strftime("%d-%m-%Y")
+        self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ? AND total_steps IS NULL)", (today,))
+        if 1 in self.db_cursor.fetchone():
+            self.db_cursor.execute("DELETE FROM steps_tracker WHERE date = ?", (today,))
+            self.db_connection.commit()
+        self.destroy()
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
