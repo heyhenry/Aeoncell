@@ -1,5 +1,7 @@
 import customtkinter as ctk
 from authmanager import AuthManager
+import sqlite3
+from datetime import date
 
 ctk.set_appearance_mode("Light") # other options: "Dark", "System" (Default)
 ctk.set_default_color_theme("green") # other options: "blue" (Default), "dark-blue"
@@ -9,6 +11,8 @@ class Windows(ctk.CTk):
         super().__init__(*args, **kwargs)
 
         self.auth = AuthManager()
+        self.db_connection = sqlite3.connect("aeoncell_database.db")
+        self.db_cursor = self.db_connection.cursor()
         self.frame_bg_colour = "#f8fbfd"
 
         self.title("Aeoncell")
@@ -31,6 +35,8 @@ class Windows(ctk.CTk):
             self.show_page(LoginPage)
         else:
             self.show_page(RegisterPage)
+        
+        self.auto_create_daily_step_entry()
 
     def show_page(self, selected_page):
         page = self.pages[selected_page]
@@ -42,6 +48,14 @@ class Windows(ctk.CTk):
 
     def set_initial_focus(self, widget_name):
         self.after(100, widget_name.focus)
+
+    def auto_create_daily_step_entry(self):
+        today = date.today()
+        today = today.strftime("%d-%m-%Y")
+        self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?) AS row_exists", (today,))
+        if not 1 in self.db_cursor.fetchone():
+            self.db_cursor.execute("INSERT INTO steps_tracker (date) VALUES (?)", (today,))
+            self.db_connection.commit()
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -261,6 +275,7 @@ class DashboardPage(ctk.CTkFrame):
         result = f"{result:,}"
         self.steps_total_display.set(str(result))
         self.steps_add_var.set("")
+        # self.controller.db_cursor.execute("UPDATE ")
 
 class StatsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
