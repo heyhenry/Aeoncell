@@ -15,6 +15,9 @@ class Windows(ctk.CTk):
         self.db_cursor = self.db_connection.cursor()
         self.frame_bg_colour = "#f8fbfd"
 
+        self.today = date.today()
+        self.today = self.today.strftime("%d-%m-%Y")
+
         self.title("Aeoncell")
         self.geometry("800x600")
         self.grid_rowconfigure(0, weight=1)
@@ -41,32 +44,27 @@ class Windows(ctk.CTk):
 
     def show_page(self, selected_page):
         page = self.pages[selected_page]
+        page.tkraise()
 
         if selected_page in (RegisterPage, LoginPage):
             self.set_initial_focus(page.password_entry)
-        
-        page.tkraise()
 
     def set_initial_focus(self, widget_name):
-        self.after(100, widget_name.focus)
+        self.after(200, widget_name.focus_set)
 
     # checks to see if an entry for steps has been created today
     def auto_create_daily_step_entry(self):
-        today = date.today()
-        today = today.strftime("%d-%m-%Y")
-        self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (today,))
+        self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
         if not 1 in self.db_cursor.fetchone():
-            self.db_cursor.execute("INSERT INTO steps_tracker (date) VALUES (?)", (today,))
+            self.db_cursor.execute("INSERT INTO steps_tracker (date) VALUES (?)", (self.today,))
             self.db_connection.commit()
 
     # only delete a step tracking entry if NULL (determines user made an accident, until total_steps gets a value)
     # and on app close
     def auto_del_daily_step_entry(self):
-        today = date.today()
-        today = today.strftime("%d-%m-%Y")
-        self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ? AND total_steps IS NULL)", (today,))
+        self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ? AND total_steps IS NULL)", (self.today,))
         if 1 in self.db_cursor.fetchone():
-            self.db_cursor.execute("DELETE FROM steps_tracker WHERE date = ?", (today,))
+            self.db_cursor.execute("DELETE FROM steps_tracker WHERE date = ?", (self.today,))
             self.db_connection.commit()
         self.destroy()
 
@@ -165,13 +163,20 @@ class LoginPage(ctk.CTkFrame):
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
-        self.controller = controller
         ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller            
         self.steps_taken_var = ctk.IntVar()
         self.steps_add_var = ctk.StringVar()
         self.steps_total_display = ctk.StringVar(value="0")
         self.exercise_count_var = ctk.StringVar()
         self.total_volume_var= ctk.StringVar()
+        self.controller.db_cursor.execute("SELECT total_steps FROM steps_tracker WHERE date = ?", (self.controller.today,))
+        total_steps = self.controller.db_cursor.fetchone()
+        if total_steps:
+            total_steps = int(total_steps[0])
+            self.steps_taken_var.set(total_steps)
+            total_steps = f"{total_steps:,}"
+            self.steps_total_display.set(str(total_steps))
         self.create_widgets()
 
     def create_widgets(self):
@@ -285,10 +290,13 @@ class DashboardPage(ctk.CTkFrame):
         steps_add = int(self.steps_add_var.get())
         result = steps_taken + steps_add
         self.steps_taken_var.set(result)
+        # no need to check if the entry already exists, as its been handled upon startup
+        self.controller.db_cursor.execute("UPDATE steps_tracker SET total_steps = ?", (result,))
+        self.controller.db_connection.commit()
         result = f"{result:,}"
         self.steps_total_display.set(str(result))
         self.steps_add_var.set("")
-        # self.controller.db_cursor.execute("UPDATE ")
+        
 
 class StatsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
