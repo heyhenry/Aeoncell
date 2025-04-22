@@ -50,7 +50,7 @@ class Windows(ctk.CTk):
             self.set_initial_focus(page.password_entry)
 
     def set_initial_focus(self, widget_name):
-        self.after(200, widget_name.focus_set)
+        self.after(300, widget_name.focus_set)
 
     # checks to see if an entry for steps has been created today
     def auto_create_daily_step_entry(self):
@@ -291,7 +291,7 @@ class DashboardPage(ctk.CTkFrame):
         result = steps_taken + steps_add
         self.steps_taken_var.set(result)
         # no need to check if the entry already exists, as its been handled upon startup
-        self.controller.db_cursor.execute("UPDATE steps_tracker SET total_steps = ?", (result,))
+        self.controller.db_cursor.execute("UPDATE steps_tracker SET total_steps = ? WHERE Date = ?", (result, self.controller.today))
         self.controller.db_connection.commit()
         result = f"{result:,}"
         self.steps_total_display.set(str(result))
