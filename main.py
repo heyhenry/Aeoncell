@@ -164,7 +164,8 @@ class LoginPage(ctk.CTkFrame):
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
-        self.controller = controller            
+        self.controller = controller
+        exercise_entries = []            
         self.steps_taken_var = ctk.IntVar()
         self.steps_add_var = ctk.StringVar()
         self.steps_total_display = ctk.StringVar(value="0")
@@ -262,11 +263,20 @@ class DashboardPage(ctk.CTkFrame):
         total_volume.grid(row=2, column=2, pady=(10, 20))
 
         # log section
+        # log_title = ctk.CTkLabel(log_section, text="Recent Logs", font=("", 24, "bold"))
+        # expand_log = ctk.CTkCheckBox(log_section, text="- 2024-04-21 - Chest Day", font=("", 24))
+        # log_info = ctk.CTkLabel(log_section, text="- Bench Press: 3x8 @ 80kg\n- Incline DB Press: 3x10 @ 25kg\n- Flyes: 3x12 @ 12kg", font=("", 24))
+        # add_session = ctk.CTkButton(log_section, text="Add Session", font=("", 24))
+        # add_single_exercise = ctk.CTkButton(log_section, text="Add Single Exercise", font=("", 24))
         log_title = ctk.CTkLabel(log_section, text="Recent Logs", font=("", 24, "bold"))
-        log_button = ctk.CTkButton(log_section, text="- 2024-04-21 - Chest Day", font=("", 24))
-        log_info = ctk.CTkLabel(log_section, text="- Bench Press: 3x8 @ 80kg\n- Incline DB Press: 3x10 @ 25kg\n- Flyes: 3x12 @ 12kg", font=("", 24))
+        expand_log = ctk.CTkCheckBox(log_section, text="Expand Logs", font=("", 24))
+        entry_logs = ctk.CTkScrollableFrame(log_section, width=600, fg_color="#ECECEC", scrollbar_fg_color="#DADADA", scrollbar_button_color="#A6A6A6", scrollbar_button_hover_color="#8C8C8C")
+        latest_entry = ctk.CTkLabel(log_section, fg_color="#DADADA", anchor="w", width=600, corner_radius=6, height=40)
+        self.controller.db_cursor.execute("SELECT exercise_name, date, type FROM exercise_entries ORDER BY id DESC LIMIT 1")
+        entry = self.controller.db_cursor.fetchone()
+        latest_entry.configure(entry_logs, text=f"{entry[0]} | {entry[1]} | {entry[2]}", font=("", 24))
         add_session = ctk.CTkButton(log_section, text="Add Session", font=("", 24))
-        add_single_exercise = ctk.CTkButton(log_section, text="Add Single Exercise", font=("", 24))
+        add_single = ctk.CTkButton(log_section, text="Add Single Exercise", font=("", 24))
 
         # log section layout
         log_section.grid_columnconfigure(0, weight=1)
@@ -279,12 +289,15 @@ class DashboardPage(ctk.CTkFrame):
         
         log_section.grid_propagate(False)
 
-        log_title.grid(row=1, column=1, stick="w", pady=10)
-        log_button.grid(row=2, column=1, columnspan=2, sticky="w", pady=(0, 10))
-        log_info.grid(row=3, column=1, columnspan=2, sticky="w")
-        add_session.grid(row=4, column=1)
-        add_single_exercise.grid(row=4, column=2, pady=10)
+        log_title.grid(row=1, column=1, stick="w", pady=(0, 20))
+        expand_log.grid(row=2, column=1, columnspan=2, sticky="w", pady=(0, 10))
+        latest_entry.grid(row=3, column=1, sticky="ew", columnspan=2)
+        entry_logs.grid(row=3, column=1, columnspan=2, sticky="w")
+        entry_logs.grid_forget()
+        add_session.grid(row=4, column=1, pady=(40, 0))
+        add_single.grid(row=4, column=2, pady=(40, 0))
 
+    # updating the daily steps taken based on user input
     def update_steps(self):
         steps_taken = self.steps_taken_var.get()
         steps_add = int(self.steps_add_var.get())
@@ -296,8 +309,10 @@ class DashboardPage(ctk.CTkFrame):
         result = f"{result:,}"
         self.steps_total_display.set(str(result))
         self.steps_add_var.set("")
-        
 
+    def toggle_logs(self):
+        pass
+        
 class StatsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         self.controller = controller
