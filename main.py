@@ -30,7 +30,7 @@ class Windows(ctk.CTk):
         container.grid_columnconfigure(0, weight=1)
 
         self.pages = {}
-        for P in (RegisterPage, LoginPage, DashboardPage, StatsPage, EntryPage, UpdateEntryPage):
+        for P in (RegisterPage, LoginPage, DashboardPage, StatsPage, SingleEntryPage, UpdateEntryPage):
             page = P(container, self)
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
@@ -279,7 +279,7 @@ class DashboardPage(ctk.CTkFrame):
         self.entries.column("exercise_type", width=200, minwidth=200, stretch=False)
 
         add_session = ctk.CTkButton(self.log_section, text="Add Session", font=("", 24))
-        add_single = ctk.CTkButton(self.log_section, text="Add Single Exercise", font=("", 24))
+        add_single = ctk.CTkButton(self.log_section, text="Add Single Exercise", font=("", 24), command=lambda: self.controller.show_page(SingleEntryPage))
 
         # log section layout
         self.log_section.grid_columnconfigure(0, weight=1)
@@ -358,20 +358,78 @@ class StatsPage(ctk.CTkFrame):
         self.controller = controller
         ctk.CTkFrame.__init__(self, parent)
         lbl = ctk.CTkLabel(self, text="Stats Page")
-        btn = ctk.CTkButton(self, text="Go to Entry", command=lambda: self.controller.show_page(EntryPage))
+        btn = ctk.CTkButton(self, text="Go to Entry", command=lambda: self.controller.show_page(SingleEntryPage))
 
         lbl.pack()
         btn.pack()
 
-class EntryPage(ctk.CTkFrame):
+class SingleEntryPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
-        self.controller = controller
         ctk.CTkFrame.__init__(self, parent)
-        lbl = ctk.CTkLabel(self, text="Entry Page")
-        btn = ctk.CTkButton(self, text="Go to UpdateEntry", command=lambda: self.controller.show_page(UpdateEntryPage))
+        self.controller = controller
+        self.create_widgets()
 
-        lbl.pack()
-        btn.pack()
+    def create_widgets(self):
+        form_window = ctk.CTkFrame(self, width=700, height=500, fg_color=self.controller.frame_bg_colour, corner_radius=10)
+        
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0)
+        self.grid_columnconfigure(2, weight=1)
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+
+        form_window.grid(row=1, column=1)
+
+        page_title = ctk.CTkLabel(form_window, text="Create a New Entry [Single]", font=("", 24, "bold"))
+        
+        type_title = ctk.CTkLabel(form_window, text="Type:", font=("", 18))
+        type_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
+        exercise_name_title = ctk.CTkLabel(form_window, text="Exercise Name:", font=("", 18))
+        exercise_name_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
+        date_title = ctk.CTkLabel(form_window, text="Date:", font=("", 18))
+        date_field = ctk.CTkEntry(form_window, font=("", 18))
+        time_title = ctk.CTkLabel(form_window, text="Time:", font=("", 18))
+        time_field = ctk.CTkEntry(form_window, font=("", 18))
+        label_title = ctk.CTkLabel(form_window, text="Label:", font=("", 18))
+        label_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
+        sets_title = ctk.CTkLabel(form_window, text="Sets:", font=("", 18))
+        sets_field = ctk.CTkEntry(form_window, font=("", 18))
+        reps_title = ctk.CTkLabel(form_window, text="Reps:", font=("", 18))
+        reps_field = ctk.CTkEntry(form_window, font=("", 18))
+        weight_title = ctk.CTkLabel(form_window, text="Weight:", font=("", 18))
+        weight_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
+        add_exercise = ctk.CTkButton(form_window, text="Add Exercise", font=("", 18), height=48)
+
+        form_window.grid_columnconfigure(0, weight=1)
+        form_window.grid_columnconfigure(1, weight=0)
+        form_window.grid_columnconfigure(2, weight=0)
+        form_window.grid_columnconfigure(3, weight=1)
+
+        form_window.grid_rowconfigure(0, weight=1)
+        form_window.grid_rowconfigure(15, weight=1)
+
+        form_window.grid_propagate(False)
+
+        page_title.grid(row=1, column=1, columnspan=2, pady=5)
+
+        type_title.grid(row=2, column=1, columnspan=2, sticky="w")
+        type_field.grid(row=3, column=1, columnspan=2, sticky="w")
+        exercise_name_title.grid(row=4, column=1, columnspan=2, sticky="w")
+        exercise_name_field.grid(row=5, column=1, columnspan=2, sticky="w")
+        date_title.grid(row=6, column=1, sticky="w")
+        date_field.grid(row=7, column=1, sticky="w")
+        time_title.grid(row=6, column=2, sticky="w")
+        time_field.grid(row=7, column=2, sticky="w")
+        label_title.grid(row=8, column=1, columnspan=2, sticky="w")
+        label_field.grid(row=9, column=1, columnspan=2, sticky="w")
+        sets_title.grid(row=10, column=1, sticky="w")
+        sets_field.grid(row=11, column=1, sticky="w")
+        reps_title.grid(row=10, column=2, sticky="w")
+        reps_field.grid(row=11, column=2, sticky="w")
+        weight_title.grid(row=12, column=1, columnspan=2, sticky="w")
+        weight_field.grid(row=13, column=1, columnspan=2, sticky="w")
+        add_exercise.grid(row=14, column=1, columnspan=2, pady=20)
 
 class UpdateEntryPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
