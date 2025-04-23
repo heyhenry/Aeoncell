@@ -50,18 +50,47 @@ def custom_date_entry_validation(event, widget):
 
     return "break"
 
+def custom_setrep_entry_validation(event, widget):
+    if event.keysym == "BackSpace":
+        return
+    
+    i = widget.index("insert")
+    char = event.char
 
+    if not char.isdigit():
+        return "break"
+    
+    current = widget.get()
+    digits_only = [c for c in current if c.isdigit()]
+
+    if len(digits_only) >= 3:
+        return "break"
+
+    digits_only.insert(i, char)
+    
+    formatted_output = "".join(digits_only)
+
+    widget.delete(0, ctk.END)
+    widget.insert(0, formatted_output)
+
+    widget.icursor(min(i + 1, len(formatted_output)))
+
+    return "break"
 
 def print_details():
     exercise_name_var.set(exercise_entry.get())
     date_var.set(date_entry.get())
-    print(f"Exercise Name: {exercise_name_var.get()}\nDate Exercised: {date_var.get()}")
+    sets_var.set(sets_entry.get())
+    reps_var.set(reps_entry.get())
+    print(f"Exercise Name: {exercise_name_var.get()}\nDate Exercised: {date_var.get()} for {sets_var.get()} sets of {reps_var.get()} reps!")
 
 root = ctk.CTk()
 root.geometry("800+300")
 
 exercise_name_var = ctk.StringVar()
 date_var = ctk.StringVar()
+sets_var = ctk.StringVar()
+reps_var = ctk.StringVar()
 
 exercise_name_title = ctk.CTkLabel(root, text="Exercise Name:")
 exercise_entry = ctk.CTkEntry(root)
@@ -70,15 +99,25 @@ root.after(100, exercise_entry.focus_set)
 date_title = ctk.CTkLabel(root, text="Date:")
 date_entry = ctk.CTkEntry(root)
 
+sets_title = ctk.CTkLabel(root, text="Sets:")
+sets_entry = ctk.CTkEntry(root)
+reps_title = ctk.CTkLabel(root, text="Reps:")
+reps_entry = ctk.CTkEntry(root)
+
 submission = ctk.CTkButton(root, text="Print Details", command=print_details)
 
-exercise_name_title.grid(row=0, column=0, pady=(30, 10), padx=20)
-exercise_entry.grid(row=1, column=0, pady=10, padx=20)
-date_title.grid(row=2, column=0, pady=10, padx=20)
-date_entry.grid(row=3, column=0, pady=10, padx=20)
-submission.grid(row=4, column=0, pady=(10, 30), padx=20)
+exercise_name_title.grid(row=0, column=0, columnspan=2, pady=(30, 0), padx=20)
+exercise_entry.grid(row=1, column=0, columnspan=2, pady=10, padx=20)
+date_title.grid(row=2, column=0, columnspan=2, pady=(10, 0), padx=20)
+date_entry.grid(row=3, column=0, columnspan=2, pady=(5, 10), padx=20)
+sets_title.grid(row=4, column=0, pady=5, padx=10)
+sets_entry.grid(row=5, column=0, pady=5, padx=10)
+reps_title.grid(row=4, column=1, pady=5, padx=10)
+reps_entry.grid(row=5, column=1, pady=5, padx=10)
+submission.grid(row=6, column=0, columnspan=2, pady=(10, 30), padx=20)
 
 date_entry.bind("<Key>", lambda event: custom_date_entry_validation(event, date_entry))
-
+sets_entry.bind("<Key>", lambda event: custom_setrep_entry_validation(event, sets_entry))
+reps_entry.bind("<Key>", lambda event: custom_setrep_entry_validation(event, reps_entry))
 
 root.mainloop()
