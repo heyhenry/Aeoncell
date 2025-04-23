@@ -313,13 +313,16 @@ class DashboardPage(ctk.CTkFrame):
         self.steps_total_display.set(str(result))
         self.steps_add_var.set("")
 
-    # expanded list of entries population up to 10
+    # expanded list of entries population up to 25
     def populate_logs_expanded(self):
+        # clear existing entries data
         self.entries.delete(*self.entries.get_children())
+        # get latest entries from database
         self.controller.db_cursor.execute("SELECT exercise_name, date, type FROM exercise_entries ORDER BY id DESC LIMIT 25")
         result = self.controller.db_cursor.fetchall()
         if result:
             for entry_info in result:
+                # populate entries with latest data sourced from the database
                 exercise_name = entry_info[0]
                 exercise_date = entry_info[1]
                 exercise_type = entry_info[2]
@@ -337,6 +340,7 @@ class DashboardPage(ctk.CTkFrame):
                 exercise_type = entry_info[2]
                 self.entries.insert("", "end", values=(exercise_name, exercise_date, exercise_type))
 
+    # toggle between latest single entry view and multiple entries view (max. 25)
     def toggle_logs(self):
         if self.expand_log.get() == False:
             self.controller.geometry("800x600")
