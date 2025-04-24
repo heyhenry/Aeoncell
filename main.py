@@ -551,28 +551,43 @@ class SingleEntryPage(ctk.CTkFrame):
 
         return "break"
 
+    # store the entry data into the database
     def process_single_entry(self):
-        type = self.type_field.get()
-        exercise_name = self.exercise_name_field.get()
-        date = self.date_field.get()
-        time = self.time_field.get()
-        label = self.label_field.get()
-        sets = self.sets_field.get()
-        reps = self.reps_field.get()
-        weight = self.weight_field.get()
 
-        self.controller.db_cursor.execute("INSERT INTO exercise_entries (type, label, date, time, exercise_name, sets, reps, weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (type, label, date, time, exercise_name, sets, reps, weight))
+        data = self.get_entry_field_data()
+
+        self.controller.db_cursor.execute("INSERT INTO exercise_entries (type, label, date, time, exercise_name, sets, reps, weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (data["type"], data["label"], data["date"], data["time"], data["exercise_name"], data["sets"], data["reps"], data["weight"]))
         self.controller.db_connection.commit()
 
-        self.exercise_name_field.delete(0, ctk.END)
-        self.date_field.delete(0, ctk.END)
-        self.time_field.delete(0, ctk.END)
-        self.label_field.delete(0, ctk.END)
-        self.sets_field.delete(0, ctk.END)
-        self.reps_field.delete(0, ctk.END)
-        self.weight_field.delete(0, ctk.END)
+        self.clear_entry_fields()
 
         self.controller.show_page(DashboardPage)
+
+    # clear all the values in the form's entry fields
+    def clear_entry_fields(self):
+        for field in [
+            self.exercise_name_field,
+            self.date_field,
+            self.time_field,
+            self.label_field,
+            self.sets_field,
+            self.reps_field,
+            self.weight_field
+        ]:
+            field.delete(0, ctk.END)
+
+    # get all the values from the form's entry fields
+    def get_entry_field_data(self):
+        return {
+            "type": self.type_field.get(),
+            "exercise_name": self.exercise_name_field.get(),
+            "date": self.date_field.get(),
+            "time": self.time_field.get(),
+            "label": self.label_field.get(),
+            "sets": self.sets_field.get(),
+            "reps": self.reps_field.get(),
+            "weight": self.weight_field.get(),
+        }
 
 class UpdateEntryPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
