@@ -30,7 +30,7 @@ class Windows(ctk.CTk):
         container.grid_columnconfigure(0, weight=1)
 
         self.pages = {}
-        for P in (RegisterPage, LoginPage, DashboardPage, StatsPage, SingleEntryPage, UpdateEntryPage):
+        for P in (RegisterPage, LoginPage, DashboardPage, StatsPage, SingleEntryPage, SessionEntryPage, UpdateEntryPage):
             page = P(container, self)
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
@@ -280,7 +280,7 @@ class DashboardPage(ctk.CTkFrame):
         self.entries.column("exercise_date", width=200, minwidth=200, stretch=False)
         self.entries.column("exercise_type", width=200, minwidth=200, stretch=False)
 
-        add_session = ctk.CTkButton(self.log_section, text="Add Session", font=("", 24))
+        add_session = ctk.CTkButton(self.log_section, text="Add Session", font=("", 24), command=lambda: self.controller.show_page(SessionEntryPage))
         add_single = ctk.CTkButton(self.log_section, text="Add Single Exercise", font=("", 24), command=lambda: self.controller.show_page(SingleEntryPage))
 
         # log section layout
@@ -371,7 +371,7 @@ class SingleEntryPage(ctk.CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
-        form_window = ctk.CTkFrame(self, width=700, height=500, fg_color=self.controller.frame_bg_colour, corner_radius=10)
+        self.form_window = ctk.CTkFrame(self, width=700, height=500, fg_color=self.controller.frame_bg_colour, corner_radius=10)
         
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=0)
@@ -380,38 +380,38 @@ class SingleEntryPage(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
 
-        form_window.grid(row=1, column=1)
+        self.form_window.grid(row=1, column=1)
 
-        page_title = ctk.CTkLabel(form_window, text="Create a New Entry [Single]", font=("", 24, "bold"))
+        page_title = ctk.CTkLabel(self.form_window, text="Create a New Entry [Single]", font=("", 24, "bold"))
         
-        type_title = ctk.CTkLabel(form_window, text="Type:*", font=("", 18))
-        self.type_field = ctk.CTkEntry(form_window, font=("", 18), width=300, textvariable=self.type_var, state="readonly")
-        exercise_name_title = ctk.CTkLabel(form_window, text="Exercise Name*:", font=("", 18))
-        self.exercise_name_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
-        date_title = ctk.CTkLabel(form_window, text="Date (dd-mm-yyyy)*:", font=("", 18))
-        self.date_field = ctk.CTkEntry(form_window, font=("", 18))
-        time_title = ctk.CTkLabel(form_window, text="Time (24 HR)*:", font=("", 18))
-        self.time_field = ctk.CTkEntry(form_window, font=("", 18))
-        label_title = ctk.CTkLabel(form_window, text="Label (Optional Desc):", font=("", 18))
-        self.label_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
-        sets_title = ctk.CTkLabel(form_window, text="Sets:*", font=("", 18))
-        self.sets_field = ctk.CTkEntry(form_window, font=("", 18))
-        reps_title = ctk.CTkLabel(form_window, text="Reps:*", font=("", 18))
-        self.reps_field = ctk.CTkEntry(form_window, font=("", 18))
-        weight_title = ctk.CTkLabel(form_window, text="Weight (Free Flow):*", font=("", 18))
-        self.weight_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
-        self.error_message = ctk.CTkLabel(form_window, text="", text_color="red", font=("", 14))
-        self.add_exercise = ctk.CTkButton(form_window, text="Add Exercise", font=("", 18), height=48, command=self.process_single_entry)
+        type_title = ctk.CTkLabel(self.form_window, text="Type:*", font=("", 18))
+        self.type_field = ctk.CTkEntry(self.form_window, font=("", 18), width=300, textvariable=self.type_var, state="readonly")
+        exercise_name_title = ctk.CTkLabel(self.form_window, text="Exercise Name*:", font=("", 18))
+        self.exercise_name_field = ctk.CTkEntry(self.form_window, font=("", 18), width=300)
+        date_title = ctk.CTkLabel(self.form_window, text="Date (dd-mm-yyyy)*:", font=("", 18))
+        self.date_field = ctk.CTkEntry(self.form_window, font=("", 18))
+        time_title = ctk.CTkLabel(self.form_window, text="Time (24 HR)*:", font=("", 18))
+        self.time_field = ctk.CTkEntry(self.form_window, font=("", 18))
+        label_title = ctk.CTkLabel(self.form_window, text="Label (Optional Desc):", font=("", 18))
+        self.label_field = ctk.CTkEntry(self.form_window, font=("", 18), width=300)
+        sets_title = ctk.CTkLabel(self.form_window, text="Sets:*", font=("", 18))
+        self.sets_field = ctk.CTkEntry(self.form_window, font=("", 18))
+        reps_title = ctk.CTkLabel(self.form_window, text="Reps:*", font=("", 18))
+        self.reps_field = ctk.CTkEntry(self.form_window, font=("", 18))
+        weight_title = ctk.CTkLabel(self.form_window, text="Weight (Free Flow):*", font=("", 18))
+        self.weight_field = ctk.CTkEntry(self.form_window, font=("", 18), width=300)
+        self.error_message = ctk.CTkLabel(self.form_window, text="", text_color="red", font=("", 14))
+        self.add_exercise = ctk.CTkButton(self.form_window, text="Add Exercise", font=("", 18), height=48, command=self.process_single_entry)
         
-        form_window.grid_columnconfigure(0, weight=1)
-        form_window.grid_columnconfigure(1, weight=0)
-        form_window.grid_columnconfigure(2, weight=0)
-        form_window.grid_columnconfigure(3, weight=1)
+        self.form_window.grid_columnconfigure(0, weight=1)
+        self.form_window.grid_columnconfigure(1, weight=0)
+        self.form_window.grid_columnconfigure(2, weight=0)
+        self.form_window.grid_columnconfigure(3, weight=1)
 
-        form_window.grid_rowconfigure(0, weight=1)
-        form_window.grid_rowconfigure(15, weight=1)
+        self.form_window.grid_rowconfigure(0, weight=1)
+        self.form_window.grid_rowconfigure(15, weight=1)
 
-        form_window.grid_propagate(False)
+        self.form_window.grid_propagate(False)
 
         page_title.grid(row=1, column=1, columnspan=2, pady=5)
 
@@ -446,12 +446,15 @@ class SingleEntryPage(ctk.CTkFrame):
         # display when error message is triggered
         self.error_message.configure(text=message)
         self.error_message.grid(row=14, column=1, columnspan=2, pady=(10, 0), sticky="n")
-        self.add_exercise.grid(row=15, column=1, columnspan=2, pady=10)
+        self.add_exercise.grid(row=15, column=1, pady=10)
+        self.form_window.grid_rowconfigure(15, weight=0)
+        self.form_window.grid_rowconfigure(16, weight=1)
 
         # update display back to normal after timed period
-        self.after(1000, lambda: self.error_message.configure(text=""))
         self.after(1000, lambda: self.error_message.grid_forget())
         self.after(1000, lambda: self.add_exercise.grid(row=14, column=1, columnspan=2, pady=(20, 10), sticky="n"))
+        self.after(1000, lambda: self.form_window.grid_rowconfigure(15, weight=1))
+        self.after(1000, lambda: self.form_window.grid_rowconfigure(16, weight=0))
 
     # checks and ensures all required fields are filled.
     # also filled properly.
@@ -631,6 +634,322 @@ class SingleEntryPage(ctk.CTkFrame):
             "reps": self.reps_field.get(),
             "weight": self.weight_field.get(),
         }
+
+class SessionEntryPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller
+        self.type_var = ctk.StringVar(value="session")
+        self.create_widgets()
+
+    def create_widgets(self):
+        self.form_window = ctk.CTkFrame(self, width=700, height=500, fg_color=self.controller.frame_bg_colour, corner_radius=10)
+        
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0)
+        self.grid_columnconfigure(2, weight=1)
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+
+        self.form_window.grid(row=1, column=1)
+
+        page_title = ctk.CTkLabel(self.form_window, text="Create a New Entry [Session]", font=("", 24, "bold"))
+        
+        type_title = ctk.CTkLabel(self.form_window, text="Type:*", font=("", 18))
+        self.type_field = ctk.CTkEntry(self.form_window, font=("", 18), width=300, textvariable=self.type_var, state="readonly")
+        exercise_name_title = ctk.CTkLabel(self.form_window, text="Exercise Name*:", font=("", 18))
+        self.exercise_name_field = ctk.CTkEntry(self.form_window, font=("", 18), width=300)
+        date_title = ctk.CTkLabel(self.form_window, text="Date (dd-mm-yyyy)*:", font=("", 18))
+        self.date_field = ctk.CTkEntry(self.form_window, font=("", 18))
+        time_title = ctk.CTkLabel(self.form_window, text="Time (24 HR)*:", font=("", 18))
+        self.time_field = ctk.CTkEntry(self.form_window, font=("", 18))
+        label_title = ctk.CTkLabel(self.form_window, text="Label (Optional Desc):", font=("", 18))
+        self.label_field = ctk.CTkEntry(self.form_window, font=("", 18), width=300)
+        sets_title = ctk.CTkLabel(self.form_window, text="Sets:*", font=("", 18))
+        self.sets_field = ctk.CTkEntry(self.form_window, font=("", 18))
+        reps_title = ctk.CTkLabel(self.form_window, text="Reps:*", font=("", 18))
+        self.reps_field = ctk.CTkEntry(self.form_window, font=("", 18))
+        weight_title = ctk.CTkLabel(self.form_window, text="Weight (Free Flow):*", font=("", 18))
+        self.weight_field = ctk.CTkEntry(self.form_window, font=("", 18), width=300)
+        self.error_message = ctk.CTkLabel(self.form_window, text="", text_color="red", font=("", 14))
+        self.add_exercise = ctk.CTkButton(self.form_window, text="Add Exercise", font=("", 18), height=48, command=self.process_single_entry)
+        self.go_dashboard = ctk.CTkButton(self.form_window, text="Go to Dashboard", font=("", 18), height=48, command=self.return_to_dashboard)
+        
+        self.form_window.grid_columnconfigure(0, weight=1)
+        self.form_window.grid_columnconfigure(1, weight=0)
+        self.form_window.grid_columnconfigure(2, weight=0)
+        self.form_window.grid_columnconfigure(3, weight=1)
+
+        self.form_window.grid_rowconfigure(0, weight=1)
+        self.form_window.grid_rowconfigure(15, weight=1)
+
+        self.form_window.grid_propagate(False)
+
+        page_title.grid(row=1, column=1, columnspan=2, pady=5)
+
+        type_title.grid(row=2, column=1, columnspan=2, sticky="w")
+        self.type_field.grid(row=3, column=1, columnspan=2, sticky="w")
+        exercise_name_title.grid(row=4, column=1, columnspan=2, sticky="w")
+        self.exercise_name_field.grid(row=5, column=1, columnspan=2, sticky="w")
+        date_title.grid(row=6, column=1, sticky="w")
+        self.date_field.grid(row=7, column=1, sticky="w")
+        time_title.grid(row=6, column=2, sticky="w")
+        self.time_field.grid(row=7, column=2, sticky="w")
+        label_title.grid(row=8, column=1, columnspan=2, sticky="w")
+        self.label_field.grid(row=9, column=1, columnspan=2, sticky="w")
+        sets_title.grid(row=10, column=1, sticky="w")
+        self.sets_field.grid(row=11, column=1, sticky="w")
+        reps_title.grid(row=10, column=2, sticky="w")
+        self.reps_field.grid(row=11, column=2, sticky="w")
+        weight_title.grid(row=12, column=1, columnspan=2, sticky="w")
+        self.weight_field.grid(row=13, column=1, columnspan=2, sticky="w")
+        self.add_exercise.grid(row=14, column=1, pady=(20, 10), sticky="n")
+        self.go_dashboard.grid(row=14, column=2, pady=(20, 10), sticky="n")
+
+        self.exercise_name_field.bind("<Key>", lambda event: self.custom_entry_limit_chars(event, self.exercise_name_field, 30))
+        self.date_field.bind("<Key>", lambda event: self.custom_date_entry_validation(event, self.date_field))
+        self.time_field.bind("<Key>", lambda event: self.custom_time_entry_validation(event, self.time_field))
+        self.label_field.bind("<Key>", lambda event: self.custom_entry_limit_chars(event, self.label_field, 100))
+        self.sets_field.bind("<Key>", lambda event: self.custom_setsreps_entry_validation(event, self.sets_field))
+        self.reps_field.bind("<Key>", lambda event: self.custom_setsreps_entry_validation(event, self.reps_field))
+        self.weight_field.bind("<Key>", lambda event: self.custom_entry_limit_chars(event, self.weight_field, 20))
+
+    # temporary error message popup notifying users why their entry is invalid
+    def error_popup(self, message):
+        # display when error message is triggered
+        self.error_message.configure(text=message)
+        self.error_message.grid(row=14, column=1, columnspan=2, pady=(10, 0), sticky="n")
+        self.add_exercise.grid(row=15, column=1, pady=10)
+        self.go_dashboard.grid(row=15, column=2, pady=10)
+        self.form_window.grid_rowconfigure(15, weight=0)
+        self.form_window.grid_rowconfigure(16, weight=1)
+
+        # update display back to normal after timed period
+        self.after(1000, lambda: self.error_message.grid_forget())
+        self.after(1000, lambda: self.add_exercise.grid(row=14, column=1, pady=(20, 10), sticky="n"))
+        self.after(1000, lambda: self.go_dashboard.grid(row=14, column=2, pady=(20, 10) ))
+        self.after(1000, lambda: self.form_window.grid_rowconfigure(15, weight=1))
+        self.after(1000, lambda: self.form_window.grid_rowconfigure(16, weight=0))
+
+    # checks and ensures all required fields are filled.
+    # also filled properly.
+    def validate_fields(self):
+        data = self.get_entry_field_data()
+        for key, val in data.items():
+            if key != "label" and len(val) < 1:
+                self.error_popup("All * fields need to be filled.")
+                return False
+            elif key == "date" and len(val) < 10:
+                self.error_popup("Date needs to be filled properly (dd-mm-yyyy).")
+                return False
+            elif key == "time" and len(val) < 5:
+                self.error_popup("Time needs to be filled properly (xx:xx).")
+                return False
+        return True
+
+    def custom_date_entry_validation(self, event, widget):
+        # allow normal function of the backspace key
+        if event.keysym == "BackSpace":
+            return
+        
+        # get char input
+        char = event.char
+        # get cursor position 
+        i = widget.index("insert")
+
+        # ignore if not a digit
+        if not char.isdigit():
+            return "break"
+        
+        # get current full length user input in the entry field
+        current = widget.get()
+        digits_only = [c for c in current if c.isdigit()]
+
+        # limit user full length input to 8 characters
+        # by ignoring further inputs
+        if len(digits_only) >= 8:
+            return "break"
+        
+        # insert the current user's input (char) in the correct position in the digits_only list,
+        # factoring and accounting for the dash 
+        # 2 worlds: reality of the what the user sees in the entry field vs the reality of what goes inside the digits_only list (dashes are excluded here)
+        digits_only.insert(i - current[:i].count("-"), char)
+
+        # create formatted string aka the user's validated input (visible to the user)
+        formatted_string = ""
+        for idx, c in enumerate(digits_only):
+            if idx == 2 or idx == 4:
+                formatted_string += "-"
+            formatted_string += c
+
+        # update the entry field
+        widget.delete(0, ctk.END)
+        widget.insert(0, formatted_string)
+
+        # set the cursor position to be post final char inserted last
+        if i == 2 or i == 5:
+            dash_offset = 1
+        else:
+            dash_offset = 0
+
+        # min function implemented as a guard clause, to ensure that index position isn't out of bounds
+        widget.icursor(min(i + 1 + dash_offset, len(formatted_string)))
+
+        # prevent duplicate insertion in the entry field, as char is inserted and dealt with earlier
+        return "break"
+
+    def custom_setsreps_entry_validation(self, event, widget):
+        if event.keysym == "BackSpace":
+            return
+        
+        i = widget.index("insert")
+        char = event.char
+
+        if not char.isdigit():
+            return "break"
+        
+        current = widget.get()
+        digits_only = [c for c in current if c.isdigit()]
+
+        if len(digits_only) >= 3:
+            return "break"
+        
+        digits_only.insert(i, char)
+
+        formatted_string = "".join(digits_only)
+
+        widget.delete(0, ctk.END)
+        widget.insert(0, formatted_string)
+
+        widget.icursor(min(i + 1, len(formatted_string)))
+
+        return "break"
+    
+    def custom_time_entry_validation(self, event, widget):
+        if event.keysym == "BackSpace":
+            return
+        
+        i = widget.index("insert")
+        char = event.char
+
+        if not char.isdigit():
+            return "break"
+        
+        current = widget.get()
+        digits_only = [c for c in current if c.isdigit()]
+
+        if len(digits_only) >= 4:
+            return "break"
+        
+        digits_only.insert(i - current[:i].count(":"), char)
+
+        formatted_string = ""
+        for idx, c in enumerate(digits_only):
+            if idx == 2:
+                formatted_string += ":"
+            formatted_string += c
+
+        widget.delete(0, ctk.END)
+        widget.insert(0, formatted_string)
+
+        if i == 2:
+            dash_offset = 1
+        else:
+            dash_offset = 0
+
+        widget.icursor(min(i + 1 + dash_offset, len(formatted_string)))
+
+        return "break"
+
+    def custom_entry_limit_chars(self, event, widget, limit):
+        if event.keysym == "BackSpace":
+            return 
+        
+        if len(widget.get()) >= limit:
+            return "break"
+    
+    # store the entry data into the database
+    def process_single_entry(self):
+        
+        # checks the fields to be properly filled, 
+        # else does not proceed with processing the entry
+        if self.validate_fields():
+
+            data = self.get_entry_field_data()
+
+            self.controller.db_cursor.execute("INSERT INTO exercise_entries (type, label, date, time, exercise_name, sets, reps, weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (data["type"], data["label"], data["date"], data["time"], data["exercise_name"], data["sets"], data["reps"], data["weight"]))
+            self.controller.db_connection.commit()
+
+            self.clear_entry_fields()
+
+    def return_to_dashboard(self):
+
+        def confirmation_dashboard():
+            self.clear_entry_fields()
+            self.label_field.delete(0, ctk.END)
+            confirm_return.destroy()
+            self.controller.show_page(DashboardPage)
+
+        # check if new entry is in process
+        mid_entry = False
+        data = self.get_entry_field_data()
+        for key, val in data.items():
+            if key != "label" and key != "type" and len(val) > 0:
+                mid_entry = True
+
+        # toplevel dialog popup lore
+        if mid_entry:
+
+            confirm_return = ctk.CTkToplevel(self.form_window)
+            # confirm_return.geometry("300x100")
+            # ensures the popup messagebox stays infront of the app's window
+            confirm_return.attributes("-topmost", "true")
+            confirm_return.title("Unsaved Entry Detected")
+            confirm_message = ctk.CTkLabel(confirm_return, text="You have an unsaved entry.\nMake sure to add each exercise before finishing your session.", font=("", 18))
+            confirm_prompt = ctk.CTkLabel(confirm_return, text="Are you sure you want to go to the Dashboard without completing your entry?", font=("", 18))
+            confirm_dashboard = ctk.CTkButton(confirm_return, text="Yes,\nGo To Dashboard", command=confirmation_dashboard, font=("", 18))
+            confirm_cancel = ctk.CTkButton(confirm_return, text="Cancel", command=confirm_return.destroy, font=("", 18))
+
+            confirm_return.grid_columnconfigure(0, weight=1)
+            confirm_return.grid_columnconfigure(3, weight=1)
+
+            confirm_return.grid_rowconfigure(0, weight=1)
+            confirm_return.grid_rowconfigure(4, weight=1)
+
+            confirm_message.grid(row=1, column=1, columnspan=2, pady=(20, 0), padx=10)
+            confirm_prompt.grid(row=2, column=1, columnspan=2, pady=10, padx=10)
+            confirm_dashboard.grid(row=3, column=1, pady=(0, 20), padx=10)
+            confirm_cancel.grid(row=3, column=2, pady=(0, 20), padx=10)
+
+        else:
+            confirmation_dashboard()
+
+    # clear all the values in the form's entry fields except Label (if entered)
+    def clear_entry_fields(self):
+        for field in [
+            self.exercise_name_field,
+            self.date_field,
+            self.time_field,
+            self.sets_field,
+            self.reps_field,
+            self.weight_field
+        ]:
+            field.delete(0, ctk.END)
+
+
+    # get all the values from the form's entry fields
+    def get_entry_field_data(self):
+        return {
+            "type": self.type_field.get(),
+            "exercise_name": self.exercise_name_field.get(),
+            "date": self.date_field.get(),
+            "time": self.time_field.get(),
+            "label": self.label_field.get(),
+            "sets": self.sets_field.get(),
+            "reps": self.reps_field.get(),
+            "weight": self.weight_field.get(),
+        }  
 
 class UpdateEntryPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
