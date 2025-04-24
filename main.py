@@ -384,24 +384,25 @@ class SingleEntryPage(ctk.CTkFrame):
 
         page_title = ctk.CTkLabel(form_window, text="Create a New Entry [Single]", font=("", 24, "bold"))
         
-        type_title = ctk.CTkLabel(form_window, text="Type:", font=("", 18))
+        type_title = ctk.CTkLabel(form_window, text="Type:*", font=("", 18))
         self.type_field = ctk.CTkEntry(form_window, font=("", 18), width=300, textvariable=self.type_var, state="readonly")
-        exercise_name_title = ctk.CTkLabel(form_window, text="Exercise Name:", font=("", 18))
+        exercise_name_title = ctk.CTkLabel(form_window, text="Exercise Name*:", font=("", 18))
         self.exercise_name_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
-        date_title = ctk.CTkLabel(form_window, text="Date (dd-mm-yyyy):", font=("", 18))
+        date_title = ctk.CTkLabel(form_window, text="Date (dd-mm-yyyy)*:", font=("", 18))
         self.date_field = ctk.CTkEntry(form_window, font=("", 18))
-        time_title = ctk.CTkLabel(form_window, text="Time (24 HR):", font=("", 18))
+        time_title = ctk.CTkLabel(form_window, text="Time (24 HR)*:", font=("", 18))
         self.time_field = ctk.CTkEntry(form_window, font=("", 18))
         label_title = ctk.CTkLabel(form_window, text="Label (Optional Desc):", font=("", 18))
         self.label_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
-        sets_title = ctk.CTkLabel(form_window, text="Sets:", font=("", 18))
+        sets_title = ctk.CTkLabel(form_window, text="Sets:*", font=("", 18))
         self.sets_field = ctk.CTkEntry(form_window, font=("", 18))
-        reps_title = ctk.CTkLabel(form_window, text="Reps:", font=("", 18))
+        reps_title = ctk.CTkLabel(form_window, text="Reps:*", font=("", 18))
         self.reps_field = ctk.CTkEntry(form_window, font=("", 18))
-        weight_title = ctk.CTkLabel(form_window, text="Weight (Free Flow):", font=("", 18))
+        weight_title = ctk.CTkLabel(form_window, text="Weight (Free Flow):*", font=("", 18))
         self.weight_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
-        add_exercise = ctk.CTkButton(form_window, text="Add Exercise", font=("", 18), height=48, command=self.process_single_entry)
-
+        self.error_message = ctk.CTkLabel(form_window, text="", text_color="red", font=("", 14))
+        self.add_exercise = ctk.CTkButton(form_window, text="Add Exercise", font=("", 18), height=48, command=self.process_single_entry)
+        
         form_window.grid_columnconfigure(0, weight=1)
         form_window.grid_columnconfigure(1, weight=0)
         form_window.grid_columnconfigure(2, weight=0)
@@ -430,12 +431,43 @@ class SingleEntryPage(ctk.CTkFrame):
         self.reps_field.grid(row=11, column=2, sticky="w")
         weight_title.grid(row=12, column=1, columnspan=2, sticky="w")
         self.weight_field.grid(row=13, column=1, columnspan=2, sticky="w")
-        add_exercise.grid(row=14, column=1, columnspan=2, pady=20)
+        self.add_exercise.grid(row=14, column=1, columnspan=2, pady=(20, 10), sticky="n")
 
+        self.exercise_name_field.bind("<Key>", lambda event: self.custom_entry_limit_chars(event, self.exercise_name_field, 30))
         self.date_field.bind("<Key>", lambda event: self.custom_date_entry_validation(event, self.date_field))
         self.time_field.bind("<Key>", lambda event: self.custom_time_entry_validation(event, self.time_field))
+        self.label_field.bind("<Key>", lambda event: self.custom_entry_limit_chars(event, self.label_field, 100))
         self.sets_field.bind("<Key>", lambda event: self.custom_setsreps_entry_validation(event, self.sets_field))
         self.reps_field.bind("<Key>", lambda event: self.custom_setsreps_entry_validation(event, self.reps_field))
+        self.weight_field.bind("<Key>", lambda event: self.custom_entry_limit_chars(event, self.weight_field, 20))
+
+    # temporary error message popup notifying users why their entry is invalid
+    def error_popup(self, message):
+        # display when error message is triggered
+        self.error_message.configure(text=message)
+        self.error_message.grid(row=14, column=1, columnspan=2, pady=(10, 0), sticky="n")
+        self.add_exercise.grid(row=15, column=1, columnspan=2, pady=10)
+
+        # update display back to normal after timed period
+        self.after(1000, lambda: self.error_message.configure(text=""))
+        self.after(1000, lambda: self.error_message.grid_forget())
+        self.after(1000, lambda: self.add_exercise.grid(row=14, column=1, columnspan=2, pady=(20, 10), sticky="n"))
+
+    # checks and ensures all required fields are filled.
+    # also filled properly.
+    def validate_fields(self):
+        data = self.get_entry_field_data()
+        for key, val in data.items():
+            if key != "label" and len(val) < 1:
+                self.error_popup("All * fields need to be filled.")
+                return False
+            elif key == "date" and len(val) < 10:
+                self.error_popup("Date needs to be filled properly (dd-mm-yyyy).")
+                return False
+            elif key == "time" and len(val) < 5:
+                self.error_popup("Time needs to be filled properly (xx:xx).")
+                return False
+        return True
 
     def custom_date_entry_validation(self, event, widget):
         # allow normal function of the backspace key
@@ -551,17 +583,28 @@ class SingleEntryPage(ctk.CTkFrame):
 
         return "break"
 
+    def custom_entry_limit_chars(self, event, widget, limit):
+        if event.keysym == "BackSpace":
+            return 
+        
+        if len(widget.get()) >= limit:
+            return "break"
+    
     # store the entry data into the database
     def process_single_entry(self):
+        
+        # checks the fields to be properly filled, 
+        # else does not proceed with processing the entry
+        if self.validate_fields():
 
-        data = self.get_entry_field_data()
+            data = self.get_entry_field_data()
 
-        self.controller.db_cursor.execute("INSERT INTO exercise_entries (type, label, date, time, exercise_name, sets, reps, weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (data["type"], data["label"], data["date"], data["time"], data["exercise_name"], data["sets"], data["reps"], data["weight"]))
-        self.controller.db_connection.commit()
+            self.controller.db_cursor.execute("INSERT INTO exercise_entries (type, label, date, time, exercise_name, sets, reps, weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (data["type"], data["label"], data["date"], data["time"], data["exercise_name"], data["sets"], data["reps"], data["weight"]))
+            self.controller.db_connection.commit()
 
-        self.clear_entry_fields()
+            self.clear_entry_fields()
 
-        self.controller.show_page(DashboardPage)
+            self.controller.show_page(DashboardPage)
 
     # clear all the values in the form's entry fields
     def clear_entry_fields(self):
