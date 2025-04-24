@@ -87,7 +87,6 @@ class RegisterPage(ctk.CTkFrame):
 
         # horizontal centering
         self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=0)
         self.grid_columnconfigure(2, weight=1)
 
         # vertical centering
@@ -135,7 +134,6 @@ class LoginPage(ctk.CTkFrame):
 
         # horizontal centering
         self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=0)
         self.grid_columnconfigure(2, weight=1)
 
         # vertical centering
@@ -196,8 +194,6 @@ class DashboardPage(ctk.CTkFrame):
 
         # page layout
         self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=0)
-        self.grid_columnconfigure(2, weight=0)
         self.grid_columnconfigure(3, weight=1)
 
         self.grid_rowconfigure(0, weight=1)
@@ -217,8 +213,6 @@ class DashboardPage(ctk.CTkFrame):
 
         # steps section layout
         steps_section.grid_columnconfigure(0, weight=1)
-        steps_section.grid_columnconfigure(1, weight=0)
-        steps_section.grid_columnconfigure(2, weight=0)
         steps_section.grid_columnconfigure(3, weight=1)
 
         steps_section.grid_rowconfigure(0, weight=1)
@@ -237,7 +231,6 @@ class DashboardPage(ctk.CTkFrame):
 
         # stats section layout
         stats_section.grid_columnconfigure(0, weight=1)
-        stats_section.grid_columnconfigure(1, weight=0)
         stats_section.grid_columnconfigure(2, weight=1)
 
         stats_section.grid_rowconfigure(0, weight=1)
@@ -255,8 +248,6 @@ class DashboardPage(ctk.CTkFrame):
 
         # summary section layout
         summary_section.grid_columnconfigure(0, weight=1)
-        summary_section.grid_columnconfigure(1, weight=0)
-        summary_section.grid_columnconfigure(2, weight=0)
         summary_section.grid_columnconfigure(3, weight=1)
 
         summary_section.grid_rowconfigure(0, weight=1)
@@ -285,8 +276,6 @@ class DashboardPage(ctk.CTkFrame):
 
         # log section layout
         self.log_section.grid_columnconfigure(0, weight=1)
-        self.log_section.grid_columnconfigure(1, weight=0)
-        self.log_section.grid_columnconfigure(2, weight=1)
         self.log_section.grid_columnconfigure(3, weight=1)
 
         self.log_section.grid_rowconfigure(0, weight=1)
@@ -374,7 +363,6 @@ class SingleEntryPage(ctk.CTkFrame):
         self.form_window = ctk.CTkFrame(self, width=700, height=500, fg_color=self.controller.frame_bg_colour, corner_radius=10)
         
         self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=0)
         self.grid_columnconfigure(2, weight=1)
 
         self.grid_rowconfigure(0, weight=1)
@@ -402,10 +390,9 @@ class SingleEntryPage(ctk.CTkFrame):
         self.weight_field = ctk.CTkEntry(self.form_window, font=("", 18), width=300)
         self.error_message = ctk.CTkLabel(self.form_window, text="", text_color="red", font=("", 14))
         self.add_exercise = ctk.CTkButton(self.form_window, text="Add Exercise", font=("", 18), height=48, command=self.process_single_entry)
+        self.cancel = ctk.CTkButton(self.form_window, text="Cancel", font=("", 18), height=48, command=self.confirm_cancel)
         
         self.form_window.grid_columnconfigure(0, weight=1)
-        self.form_window.grid_columnconfigure(1, weight=0)
-        self.form_window.grid_columnconfigure(2, weight=0)
         self.form_window.grid_columnconfigure(3, weight=1)
 
         self.form_window.grid_rowconfigure(0, weight=1)
@@ -431,7 +418,8 @@ class SingleEntryPage(ctk.CTkFrame):
         self.reps_field.grid(row=11, column=2, sticky="w")
         weight_title.grid(row=12, column=1, columnspan=2, sticky="w")
         self.weight_field.grid(row=13, column=1, columnspan=2, sticky="w")
-        self.add_exercise.grid(row=14, column=1, columnspan=2, pady=(20, 10), sticky="n")
+        self.add_exercise.grid(row=14, column=1, pady=(20, 10), sticky="n")
+        self.cancel.grid(row=14, column=2, pady=(20, 10), sticky="n")
 
         self.exercise_name_field.bind("<Key>", lambda event: self.custom_entry_limit_chars(event, self.exercise_name_field, 30))
         self.date_field.bind("<Key>", lambda event: self.custom_date_entry_validation(event, self.date_field))
@@ -447,12 +435,14 @@ class SingleEntryPage(ctk.CTkFrame):
         self.error_message.configure(text=message)
         self.error_message.grid(row=14, column=1, columnspan=2, pady=(10, 0), sticky="n")
         self.add_exercise.grid(row=15, column=1, pady=10)
+        self.cancel.grid(row=15, column=2, pady=10)
         self.form_window.grid_rowconfigure(15, weight=0)
         self.form_window.grid_rowconfigure(16, weight=1)
 
         # update display back to normal after timed period
         self.after(1000, lambda: self.error_message.grid_forget())
-        self.after(1000, lambda: self.add_exercise.grid(row=14, column=1, columnspan=2, pady=(20, 10), sticky="n"))
+        self.after(1000, lambda: self.add_exercise.grid(row=14, column=1, pady=(20, 10), sticky="n"))
+        self.after(1000, lambda: self.cancel.grid(row=14, column=2, pady=(20, 10), sticky="n"))
         self.after(1000, lambda: self.form_window.grid_rowconfigure(15, weight=1))
         self.after(1000, lambda: self.form_window.grid_rowconfigure(16, weight=0))
 
@@ -609,6 +599,39 @@ class SingleEntryPage(ctk.CTkFrame):
 
             self.controller.show_page(DashboardPage)
 
+    def confirm_cancel(self):
+        def confirm_to_dashboard():
+            self.clear_entry_fields()
+            confirmation_dialog.destroy()
+            self.controller.show_page(DashboardPage)
+            
+        mid_entry = False
+        data = self.get_entry_field_data()
+        for key, val in data.items():
+            if key != type and len(val) > 0:
+                mid_entry = True
+        
+        if mid_entry:
+            confirmation_dialog = ctk.CTkToplevel(self.form_window)
+            confirmation_dialog.attributes("-topmost", "true")
+            confirm_message = ctk.CTkLabel(confirmation_dialog, text="You have an unsaved entry.\nMake sure to add your exercise before fininshing your session.", font=("", 18))
+            confirm_prompt = ctk.CTkLabel(confirmation_dialog, text="Are you sure you want to go to the Dashboard without completing your entry?", font=("", 18))
+            confirm_dashboard = ctk.CTkButton(confirmation_dialog, text="Yes,\nGo to Dashboard", command=confirm_to_dashboard, font=("", 18))
+            confirm_cancel_btn = ctk.CTkButton(confirmation_dialog, text="Cancel", command=confirmation_dialog.destroy, font=("", 18))
+
+            confirmation_dialog.grid_columnconfigure(0, weight=1)
+            confirmation_dialog.grid_columnconfigure(3, weight=1)
+
+            confirmation_dialog.grid_rowconfigure(0, weight=1)
+            confirmation_dialog.grid_rowconfigure(4, weight=1)
+
+            confirm_message.grid(row=1, column=1, columnspan=2, pady=(20, 0), padx=10)
+            confirm_prompt.grid(row=2, column=1, columnspan=2, pady=10, padx=10)
+            confirm_dashboard.grid(row=3, column=1, pady=(0, 20), padx=10)
+            confirm_cancel_btn.grid(row=3, column=2, pady=(0, 20), padx=10)
+        else:
+            confirm_to_dashboard()
+
     # clear all the values in the form's entry fields
     def clear_entry_fields(self):
         for field in [
@@ -646,7 +669,6 @@ class SessionEntryPage(ctk.CTkFrame):
         self.form_window = ctk.CTkFrame(self, width=700, height=500, fg_color=self.controller.frame_bg_colour, corner_radius=10)
         
         self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=0)
         self.grid_columnconfigure(2, weight=1)
 
         self.grid_rowconfigure(0, weight=1)
@@ -677,8 +699,6 @@ class SessionEntryPage(ctk.CTkFrame):
         self.go_dashboard = ctk.CTkButton(self.form_window, text="Go to Dashboard", font=("", 18), height=48, command=self.return_to_dashboard)
         
         self.form_window.grid_columnconfigure(0, weight=1)
-        self.form_window.grid_columnconfigure(1, weight=0)
-        self.form_window.grid_columnconfigure(2, weight=0)
         self.form_window.grid_columnconfigure(3, weight=1)
 
         self.form_window.grid_rowconfigure(0, weight=1)
