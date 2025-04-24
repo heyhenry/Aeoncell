@@ -49,6 +49,8 @@ class Windows(ctk.CTk):
 
         if selected_page in (RegisterPage, LoginPage):
             self.set_initial_focus(page.password_entry)
+        elif selected_page == DashboardPage:
+            page.populate_logs_single()
 
     def set_initial_focus(self, widget_name):
         self.after(300, widget_name.focus_set)
@@ -298,8 +300,6 @@ class DashboardPage(ctk.CTkFrame):
         add_session.grid(row=4, column=1, pady=20)
         add_single.grid(row=4, column=2, pady=20)
 
-        self.populate_logs_single()
-
     # updating the daily steps taken based on user input
     def update_steps(self):
         steps_taken = self.steps_taken_var.get()
@@ -367,6 +367,14 @@ class SingleEntryPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
+        self.type_var = ctk.StringVar(value="single")
+        self.exercise_name_var = ctk.StringVar()
+        self.date_var = ctk.StringVar()
+        self.time_var = ctk.StringVar()
+        self.label_var = ctk.StringVar()
+        self.sets_var = ctk.StringVar()
+        self.reps_var = ctk.StringVar()
+        self.weight_var = ctk.StringVar()
         self.create_widgets()
 
     def create_widgets(self):
@@ -384,22 +392,22 @@ class SingleEntryPage(ctk.CTkFrame):
         page_title = ctk.CTkLabel(form_window, text="Create a New Entry [Single]", font=("", 24, "bold"))
         
         type_title = ctk.CTkLabel(form_window, text="Type:", font=("", 18))
-        type_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
+        self.type_field = ctk.CTkEntry(form_window, font=("", 18), width=300, textvariable=self.type_var, state="readonly")
         exercise_name_title = ctk.CTkLabel(form_window, text="Exercise Name:", font=("", 18))
-        exercise_name_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
-        date_title = ctk.CTkLabel(form_window, text="Date:", font=("", 18))
-        date_field = ctk.CTkEntry(form_window, font=("", 18))
-        time_title = ctk.CTkLabel(form_window, text="Time:", font=("", 18))
-        time_field = ctk.CTkEntry(form_window, font=("", 18))
-        label_title = ctk.CTkLabel(form_window, text="Label:", font=("", 18))
-        label_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
+        self.exercise_name_field = ctk.CTkEntry(form_window, font=("", 18), width=300, textvariable=self.exercise_name_var)
+        date_title = ctk.CTkLabel(form_window, text="Date (dd-mm-yyyy):", font=("", 18))
+        self.date_field = ctk.CTkEntry(form_window, font=("", 18))
+        time_title = ctk.CTkLabel(form_window, text="Time (24 HR):", font=("", 18))
+        self.time_field = ctk.CTkEntry(form_window, font=("", 18))
+        label_title = ctk.CTkLabel(form_window, text="Label (Optional Desc):", font=("", 18))
+        self.label_field = ctk.CTkEntry(form_window, font=("", 18), width=300, textvariable=self.label_var)
         sets_title = ctk.CTkLabel(form_window, text="Sets:", font=("", 18))
-        sets_field = ctk.CTkEntry(form_window, font=("", 18))
+        self.sets_field = ctk.CTkEntry(form_window, font=("", 18))
         reps_title = ctk.CTkLabel(form_window, text="Reps:", font=("", 18))
-        reps_field = ctk.CTkEntry(form_window, font=("", 18))
-        weight_title = ctk.CTkLabel(form_window, text="Weight:", font=("", 18))
-        weight_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
-        add_exercise = ctk.CTkButton(form_window, text="Add Exercise", font=("", 18), height=48)
+        self.reps_field = ctk.CTkEntry(form_window, font=("", 18))
+        weight_title = ctk.CTkLabel(form_window, text="Weight (kg):", font=("", 18))
+        self.weight_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
+        add_exercise = ctk.CTkButton(form_window, text="Add Exercise", font=("", 18), height=48, command=self.process_single_entry)
 
         form_window.grid_columnconfigure(0, weight=1)
         form_window.grid_columnconfigure(1, weight=0)
@@ -414,22 +422,168 @@ class SingleEntryPage(ctk.CTkFrame):
         page_title.grid(row=1, column=1, columnspan=2, pady=5)
 
         type_title.grid(row=2, column=1, columnspan=2, sticky="w")
-        type_field.grid(row=3, column=1, columnspan=2, sticky="w")
+        self.type_field.grid(row=3, column=1, columnspan=2, sticky="w")
         exercise_name_title.grid(row=4, column=1, columnspan=2, sticky="w")
-        exercise_name_field.grid(row=5, column=1, columnspan=2, sticky="w")
+        self.exercise_name_field.grid(row=5, column=1, columnspan=2, sticky="w")
         date_title.grid(row=6, column=1, sticky="w")
-        date_field.grid(row=7, column=1, sticky="w")
+        self.date_field.grid(row=7, column=1, sticky="w")
         time_title.grid(row=6, column=2, sticky="w")
-        time_field.grid(row=7, column=2, sticky="w")
+        self.time_field.grid(row=7, column=2, sticky="w")
         label_title.grid(row=8, column=1, columnspan=2, sticky="w")
-        label_field.grid(row=9, column=1, columnspan=2, sticky="w")
+        self.label_field.grid(row=9, column=1, columnspan=2, sticky="w")
         sets_title.grid(row=10, column=1, sticky="w")
-        sets_field.grid(row=11, column=1, sticky="w")
+        self.sets_field.grid(row=11, column=1, sticky="w")
         reps_title.grid(row=10, column=2, sticky="w")
-        reps_field.grid(row=11, column=2, sticky="w")
+        self.reps_field.grid(row=11, column=2, sticky="w")
         weight_title.grid(row=12, column=1, columnspan=2, sticky="w")
-        weight_field.grid(row=13, column=1, columnspan=2, sticky="w")
+        self.weight_field.grid(row=13, column=1, columnspan=2, sticky="w")
         add_exercise.grid(row=14, column=1, columnspan=2, pady=20)
+
+        self.date_field.bind("<Key>", lambda event: self.custom_date_entry_validation(event, self.date_field))
+        self.time_field.bind("<Key>", lambda event: self.custom_time_entry_validation(event, self.time_field))
+        self.sets_field.bind("<Key>", lambda event: self.custom_digits_only_entry_validation(event, self.sets_field, 3))
+        self.reps_field.bind("<Key>", lambda event: self.custom_digits_only_entry_validation(event, self.reps_field, 3))
+        self.weight_field.bind("<Key>", lambda event: self.custom_digits_only_entry_validation(event, self.weight_field, 4))
+
+    # def print_deets(self):
+    #     print(f"Type: {self.type_field.get()}\nExercise Name: {self.exercise_name_field.get()}\nDate: {self.date_field.get()}\nTime: {self.time_field.get()}\nLabel: {self.label_field.get()}\nSets: {self.sets_field.get()}\nReps: {self.reps_field.get()}\nWeight: {self.weight_field.get()}kg")
+
+    def custom_date_entry_validation(self, event, widget):
+        # allow normal function of the backspace key
+        if event.keysym == "BackSpace":
+            return
+        
+        # get char input
+        char = event.char
+        # get cursor position 
+        i = widget.index("insert")
+
+        # ignore if not a digit
+        if not char.isdigit():
+            return "break"
+        
+        # get current full length user input in the entry field
+        current = widget.get()
+        digits_only = [c for c in current if c.isdigit()]
+
+        # limit user full length input to 8 characters
+        # by ignoring further inputs
+        if len(digits_only) >= 8:
+            return "break"
+        
+        # insert the current user's input (char) in the correct position in the digits_only list,
+        # factoring and accounting for the dash 
+        # 2 worlds: reality of the what the user sees in the entry field vs the reality of what goes inside the digits_only list (dashes are excluded here)
+        digits_only.insert(i - current[:i].count("-"), char)
+
+        # create formatted string aka the user's validated input (visible to the user)
+        formatted_string = ""
+        for idx, c in enumerate(digits_only):
+            if idx == 2 or idx == 4:
+                formatted_string += "-"
+            formatted_string += c
+
+        # update the entry field
+        widget.delete(0, ctk.END)
+        widget.insert(0, formatted_string)
+
+        # set the cursor position to be post final char inserted last
+        if i == 2 or i == 5:
+            dash_offset = 1
+        else:
+            dash_offset = 0
+
+        # min function implemented as a guard clause, to ensure that index position isn't out of bounds
+        widget.icursor(min(i + 1 + dash_offset, len(formatted_string)))
+
+        # prevent duplicate insertion in the entry field, as char is inserted and dealt with earlier
+        return "break"
+
+    def custom_digits_only_entry_validation(self, event, widget, limit):
+        if event.keysym == "BackSpace":
+            return
+        
+        i = widget.index("insert")
+        char = event.char
+
+        if not char.isdigit():
+            return "break"
+        
+        current = widget.get()
+        digits_only = [c for c in current if c.isdigit()]
+
+        if len(digits_only) >= limit:
+            return "break"
+        
+        digits_only.insert(i, char)
+
+        formatted_string = "".join(digits_only)
+
+        widget.delete(0, ctk.END)
+        widget.insert(0, formatted_string)
+
+        widget.icursor(min(i + 1, len(formatted_string)))
+
+        return "break"
+    
+    def custom_time_entry_validation(self, event, widget):
+        if event.keysym == "BackSpace":
+            return
+        
+        i = widget.index("insert")
+        char = event.char
+
+        if not char.isdigit():
+            return "break"
+        
+        current = widget.get()
+        digits_only = [c for c in current if c.isdigit()]
+
+        if len(digits_only) >= 4:
+            return "break"
+        
+        digits_only.insert(i - current[:i].count(":"), char)
+
+        formatted_string = ""
+        for idx, c in enumerate(digits_only):
+            if idx == 2:
+                formatted_string += ":"
+            formatted_string += c
+
+        widget.delete(0, ctk.END)
+        widget.insert(0, formatted_string)
+
+        if i == 2:
+            dash_offset = 1
+        else:
+            dash_offset = 0
+
+        widget.icursor(min(i + 1 + dash_offset, len(formatted_string)))
+
+        return "break"
+
+    def process_single_entry(self):
+        type = self.type_field.get()
+        exercise_name = self.exercise_name_field.get()
+        date = self.date_field.get()
+        time = self.time_field.get()
+        label = self.label_field.get()
+        sets = self.sets_field.get()
+        reps = self.reps_field.get()
+        weight = self.weight_field.get()
+
+        self.controller.db_cursor.execute("INSERT INTO exercise_entries (type, label, date, time, exercise_name, sets, reps, weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (type, label, date, time, exercise_name, sets, reps, weight))
+        self.controller.db_connection.commit()
+
+        self.exercise_name_field.delete(0, ctk.END)
+        self.date_field.delete(0, ctk.END)
+        self.time_field.delete(0, ctk.END)
+        self.label_field.delete(0, ctk.END)
+        self.sets_field.delete(0, ctk.END)
+        self.reps_field.delete(0, ctk.END)
+        self.weight_field.delete(0, ctk.END)
+
+        self.controller.show_page(DashboardPage)
 
 class UpdateEntryPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
