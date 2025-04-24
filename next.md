@@ -21,6 +21,8 @@
     - fix naming convention in the 'return_to_dashboard' function in the SessionEntryPage
     - assess whether theres a more proper way than copying majority of code from SingleEntryPage to SessionEntryPage
     - add comments to the return_to_dashboard() function in the SessionEntryPage
+    ** WHEN IMPLEMENTING THE SWITCH BUTTON BETWEEN SINGLE AND SESSION PAGES **
+        - ensure to implement the popup confirmation box for both pages upon switching whilst there is content in the entry
 
 
 # To Consider
