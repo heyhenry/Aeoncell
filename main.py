@@ -368,13 +368,6 @@ class SingleEntryPage(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
         self.type_var = ctk.StringVar(value="single")
-        self.exercise_name_var = ctk.StringVar()
-        self.date_var = ctk.StringVar()
-        self.time_var = ctk.StringVar()
-        self.label_var = ctk.StringVar()
-        self.sets_var = ctk.StringVar()
-        self.reps_var = ctk.StringVar()
-        self.weight_var = ctk.StringVar()
         self.create_widgets()
 
     def create_widgets(self):
@@ -394,18 +387,18 @@ class SingleEntryPage(ctk.CTkFrame):
         type_title = ctk.CTkLabel(form_window, text="Type:", font=("", 18))
         self.type_field = ctk.CTkEntry(form_window, font=("", 18), width=300, textvariable=self.type_var, state="readonly")
         exercise_name_title = ctk.CTkLabel(form_window, text="Exercise Name:", font=("", 18))
-        self.exercise_name_field = ctk.CTkEntry(form_window, font=("", 18), width=300, textvariable=self.exercise_name_var)
+        self.exercise_name_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
         date_title = ctk.CTkLabel(form_window, text="Date (dd-mm-yyyy):", font=("", 18))
         self.date_field = ctk.CTkEntry(form_window, font=("", 18))
         time_title = ctk.CTkLabel(form_window, text="Time (24 HR):", font=("", 18))
         self.time_field = ctk.CTkEntry(form_window, font=("", 18))
         label_title = ctk.CTkLabel(form_window, text="Label (Optional Desc):", font=("", 18))
-        self.label_field = ctk.CTkEntry(form_window, font=("", 18), width=300, textvariable=self.label_var)
+        self.label_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
         sets_title = ctk.CTkLabel(form_window, text="Sets:", font=("", 18))
         self.sets_field = ctk.CTkEntry(form_window, font=("", 18))
         reps_title = ctk.CTkLabel(form_window, text="Reps:", font=("", 18))
         self.reps_field = ctk.CTkEntry(form_window, font=("", 18))
-        weight_title = ctk.CTkLabel(form_window, text="Weight (kg):", font=("", 18))
+        weight_title = ctk.CTkLabel(form_window, text="Weight (Free Flow):", font=("", 18))
         self.weight_field = ctk.CTkEntry(form_window, font=("", 18), width=300)
         add_exercise = ctk.CTkButton(form_window, text="Add Exercise", font=("", 18), height=48, command=self.process_single_entry)
 
@@ -441,12 +434,8 @@ class SingleEntryPage(ctk.CTkFrame):
 
         self.date_field.bind("<Key>", lambda event: self.custom_date_entry_validation(event, self.date_field))
         self.time_field.bind("<Key>", lambda event: self.custom_time_entry_validation(event, self.time_field))
-        self.sets_field.bind("<Key>", lambda event: self.custom_digits_only_entry_validation(event, self.sets_field, 3))
-        self.reps_field.bind("<Key>", lambda event: self.custom_digits_only_entry_validation(event, self.reps_field, 3))
-        self.weight_field.bind("<Key>", lambda event: self.custom_digits_only_entry_validation(event, self.weight_field, 4))
-
-    # def print_deets(self):
-    #     print(f"Type: {self.type_field.get()}\nExercise Name: {self.exercise_name_field.get()}\nDate: {self.date_field.get()}\nTime: {self.time_field.get()}\nLabel: {self.label_field.get()}\nSets: {self.sets_field.get()}\nReps: {self.reps_field.get()}\nWeight: {self.weight_field.get()}kg")
+        self.sets_field.bind("<Key>", lambda event: self.custom_setsreps_entry_validation(event, self.sets_field))
+        self.reps_field.bind("<Key>", lambda event: self.custom_setsreps_entry_validation(event, self.reps_field))
 
     def custom_date_entry_validation(self, event, widget):
         # allow normal function of the backspace key
@@ -499,7 +488,7 @@ class SingleEntryPage(ctk.CTkFrame):
         # prevent duplicate insertion in the entry field, as char is inserted and dealt with earlier
         return "break"
 
-    def custom_digits_only_entry_validation(self, event, widget, limit):
+    def custom_setsreps_entry_validation(self, event, widget):
         if event.keysym == "BackSpace":
             return
         
@@ -512,7 +501,7 @@ class SingleEntryPage(ctk.CTkFrame):
         current = widget.get()
         digits_only = [c for c in current if c.isdigit()]
 
-        if len(digits_only) >= limit:
+        if len(digits_only) >= 3:
             return "break"
         
         digits_only.insert(i, char)
