@@ -363,7 +363,7 @@ class BaseEntryPage(ctk.CTkFrame):
 
         self.entry_form.grid(row=1, column=1)
 
-        page_title = ctk.CTkLabel(self.entry_form, text=f"Create New Entry [{self.entry_type}]", font=("", 24, "bold"))
+        page_title = ctk.CTkLabel(self.entry_form, text=f"Create New Entry [{self.entry_type.capitalize()}]", font=("", 24, "bold"))
 
         type_title = ctk.CTkLabel(self.entry_form, text="Type*:", font=("", 18))
         self.type_entry = ctk.CTkEntry(self.entry_form, textvariable=self.type_var, width=300, font=("", 18), state="readonly")
@@ -532,9 +532,23 @@ class SingleEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
         BaseEntryPage.__init__(self, parent, controller, "single", "Cancel")
 
+    def after_entry_submission(self):
+        self.controller.show_page(DashboardPage)
+
 class SessionEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
         BaseEntryPage.__init__(self, parent, controller, "session", "Completed")
+
+    def clear_entry_fields(self):
+        for field in [
+            self.exercise_name_entry,
+            self.date_entry,
+            self.time_entry,
+            self.sets_entry,
+            self.reps_entry,
+            self.weight_entry
+        ]:
+            field.delete(0, ctk.END)
 
 class StatsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
