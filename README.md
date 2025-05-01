@@ -1,5 +1,7 @@
 # Aeoncell
-Just a personal app for tracking my current training goals.
+An exercise app personalised to track and provide deep analytics of a users progress.
+
+Main functionalities are operable whilst offline but some complimentary features may require an internet connection.
 
 # Pages
 - Register
