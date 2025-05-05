@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import sqlite3
 
-conn = sqlite3.connect("exercise_logs.db")
+conn = sqlite3.connect("aeoncell_database.db")
 cursor = conn.cursor()
 
 root = ctk.CTk()

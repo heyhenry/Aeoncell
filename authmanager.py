@@ -3,7 +3,7 @@ import argon2
 
 class AuthManager:
     def __init__(self):
-        self.auth_db = "authentication.db"
+        self.auth_db = "aeoncell_database.db"
         self.ph = argon2.PasswordHasher()
         self.auth_connection = sqlite3.connect(self.auth_db)
         self.auth_cursor = self.auth_connection.cursor()
