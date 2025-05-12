@@ -48,3 +48,6 @@ Main functionalities are operable whilst offline but some complimentary features
 - Streak tracker
 - Today's summary panel
 - Quick add (exercises done on the fly, usually one offs.)
+
+# Trello Link
+URL: to be added
