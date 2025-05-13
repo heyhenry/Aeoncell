@@ -7,12 +7,12 @@ class AuthManager:
         self.ph = argon2.PasswordHasher()
         self.auth_connection = sqlite3.connect(self.auth_db)
         self.auth_cursor = self.auth_connection.cursor()
-        self.create_auth_database()
-        self.create_exercise_database()
-        self.create_steps_database()
+        self.create_auth_table()
+        self.create_exercise_table()
+        self.create_daily_tracker_table()
         self.auth_connection.commit()
 
-    def create_auth_database(self):
+    def create_auth_table(self):
         self.auth_cursor.execute("CREATE TABLE IF NOT EXISTS authentication (desc TEXT, hash TEXT)")
 
     def create_password(self, password):
@@ -36,8 +36,30 @@ class AuthManager:
         if self.auth_cursor.fetchone():
             return True
         
-    def create_exercise_database(self):
-        self.auth_cursor.execute("CREATE TABLE IF NOT EXISTS exercise_entries (id INTEGER, type TEXT, label TEXT, date TEXT, time TEXT, exercise_name TEXT, sets INTEGER, reps INTEGER, weight TEXT)")
+    def create_exercise_table(self):
+        create_exercise_table = """
+        CREATE TABLE IF NOT EXISTS exercise_entries (
+        id INTEGER PRIMARY KEY,
+        type TEXT NOT NULL,
+        label TEXT,
+        date TEXT NOT NULL,
+        time TEXT NOT NULL,
+        exercise_name TEXT NOT NULL,
+        sets INTEGER,
+        reps INTEGER,
+        weight TEXT
+        )
+        """
+        self.auth_cursor.execute(create_exercise_table)
 
-    def create_steps_database(self):
-        self.auth_cursor.execute("CREATE TABLE IF NOT EXISTS steps_tracker (id INTEGER, date TEXT, total_steps INTEGER)")
+    def create_daily_tracker_table(self):
+        create_daily_tracking_table = """
+        CREATE TABLE IF NOT EXISTS daily_tracker (
+        id INTEGER PRIMARY KEY,
+        type TEXT NOT NULL,
+        date TEXT NOT NULL,
+        total_units FLOAT NOT NULL
+        )
+        """
+        self.auth_cursor.execute(create_daily_tracking_table)
+
