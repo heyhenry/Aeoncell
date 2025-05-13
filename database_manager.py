@@ -56,7 +56,7 @@ class DatabaseManager:
 
     def create_steps_table(self):
         create_steps_table_query = """
-        CREATE TABLE IF NOT EXISTS daily_tracker (
+        CREATE TABLE IF NOT EXISTS steps_tracker (
             id INTEGER PRIMARY KEY,
             date TEXT NOT NULL,
             steps_taken INTEGER
