@@ -4,6 +4,7 @@ from database_manager import DatabaseManager
 import sqlite3
 from datetime import date
 from aeoncell_utils import *
+from PIL import Image, ImageTk, ImageOps, ImageDraw
 
 ctk.set_appearance_mode("Light")
 ctk.set_default_color_theme("green")
@@ -18,6 +19,9 @@ class Windows(ctk.CTk):
 
         self.today = date.today()
         self.today = self.today.strftime("%d-%m-%Y")
+
+        # variables used on multiple pages
+        user_profile_image = 
 
         self.title("Aeoncell")
         self.geometry("1280x800")
@@ -63,6 +67,32 @@ class Windows(ctk.CTk):
             
         self.db_connection.commit()
 
+class RegisterPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller
 
+class LoginPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller
+        self.password_var = ctk.StringVar()
+        self.confirm_password_var = ctk.StringVar()
+        self.create_widgets()
+
+    def create_widgets(self):
+
+
+class DashboardPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller
+
+
+
+
+if __name__ == "__main__":
+    app = Windows()
+    app.mainloop()
 
 
