@@ -95,6 +95,10 @@ class RegisterPage(ctk.CTkFrame):
         register_form_section.grid_columnconfigure(2, weight=1)
 
         register_form_section.grid_propagate(False)
+
+        cover_image_section.grid_rowconfigure(0, weight=1)
+        cover_image_section.grid_columnconfigure(0, weight=1)
+
         cover_image_section.grid_propagate(False)
 
         # register form's frame
@@ -132,6 +136,11 @@ class RegisterPage(ctk.CTkFrame):
         confirm_password_title.grid(row=8, column=1, pady=(20, 0), sticky="w")
         confirm_password_entry.grid(row=9, column=1, pady=(5, 0))
         register_submit.grid(row=10, column=1, pady=(40, 0))
+
+        # cover image section
+        self.register_cover_image = ctk.CTkImage(light_image=Image.open("img/dumbbells.jpg"), dark_image=Image.open("img/dumbbells.jpg"), size=(1920, 1080))
+        self.cover_image_display = ctk.CTkLabel(cover_image_section, text="", image=self.register_cover_image)
+        self.cover_image_display.grid(row=0, column=0, sticky="nswe")
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
