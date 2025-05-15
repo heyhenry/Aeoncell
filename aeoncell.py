@@ -7,7 +7,7 @@ from aeoncell_utils import *
 from PIL import Image, ImageTk, ImageOps, ImageDraw
 
 ctk.set_appearance_mode("Light")
-ctk.set_default_color_theme("green")
+ctk.set_default_color_theme("themes/breeze.json")
 
 class Windows(ctk.CTk):
     def __init__(self, *args, **kwargs):
@@ -21,6 +21,7 @@ class Windows(ctk.CTk):
         self.today = self.today.strftime("%d-%m-%Y")
 
         self.user_profile_img = ctk.CTkImage(light_image=Image.open("img/user_profile_rounded.png"), dark_image=Image.open("img/user_profile_rounded.png"), size=(180,180))
+        self.app_icon_img = ctk.CTkImage(light_image=Image.open("img/capsule_original_recround.png"), dark_image=Image.open("img/capsule_original_recround.png"), size=(64,64))
 
         self.title("Aeoncell")
         self.geometry("1280x800")
@@ -80,13 +81,57 @@ class RegisterPage(ctk.CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
+        # register page's split frames
         register_form_section = ctk.CTkFrame(self, fg_color="red", corner_radius=0)
         cover_image_section = ctk.CTkFrame(self, fg_color="blue", corner_radius=0)
 
         register_form_section.grid(row=0, column=0, sticky="nswe")
         cover_image_section.grid(row=0, column=1, sticky="nswe")
 
-        
+        register_form_section.grid_rowconfigure(0, weight=1)
+        register_form_section.grid_rowconfigure(2, weight=1)
+
+        register_form_section.grid_columnconfigure(0, weight=1)
+        register_form_section.grid_columnconfigure(2, weight=1)
+
+        register_form_section.grid_propagate(False)
+        cover_image_section.grid_propagate(False)
+
+        # register form's frame
+        register_form = ctk.CTkFrame(register_form_section, fg_color="green", width=514, height=700)
+
+        register_form.grid(row=1, column=1)
+
+        register_form.grid_rowconfigure(0, weight=1)
+        register_form.grid_rowconfigure(11, weight=1)
+
+        register_form.grid_columnconfigure(0, weight=1)
+        register_form.grid_columnconfigure(2, weight=1)
+
+        register_form.grid_propagate(False)
+
+        # internal widgets for register form
+        app_name = ctk.CTkLabel(register_form, text="Aeoncell", font=("", 18))
+        form_name = ctk.CTkLabel(register_form, text="Register", font=("", 48))
+        app_icon_main = ctk.CTkLabel(register_form, text="", image=self.controller.app_icon_img)
+        username_title = ctk.CTkLabel(register_form, text="Username:", font=("", 24))
+        username_entry = ctk.CTkEntry(register_form, width=300, font=("", 24))
+        password_title = ctk.CTkLabel(register_form, text="Create Password:", font=("", 24))
+        password_entry = ctk.CTkEntry(register_form, width=300, font=("", 24))
+        confirm_password_title = ctk.CTkLabel(register_form, text="Confirm Password:", font=("", 24))
+        confirm_password_entry = ctk.CTkEntry(register_form, width=300, font=("", 24))
+        register_submit = ctk.CTkButton(register_form, text="Register", font=("", 24))
+
+        app_name.grid(row=1, column=1)
+        form_name.grid(row=2, column=1, pady=(20, 0))
+        app_icon_main.grid(row=3, column=1, pady=(20, 10))
+        username_title.grid(row=4, column=1, pady=(30, 0), sticky="w")
+        username_entry.grid(row=5, column=1, pady=(5, 0))
+        password_title.grid(row=6, column=1, pady=(20, 0), sticky="w")
+        password_entry.grid(row=7, column=1, pady=(5, 0))
+        confirm_password_title.grid(row=8, column=1, pady=(20, 0), sticky="w")
+        confirm_password_entry.grid(row=9, column=1, pady=(5, 0))
+        register_submit.grid(row=10, column=1, pady=(40, 0))
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
