@@ -20,8 +20,7 @@ class Windows(ctk.CTk):
         self.today = date.today()
         self.today = self.today.strftime("%d-%m-%Y")
 
-        # variables used on multiple pages
-        user_profile_image = 
+        self.user_profile_img = ctk.CTkImage(light_image=Image.open("img/user_profile_rounded.png"), dark_image=Image.open("img/user_profile_rounded.png"), size=(180,180))
 
         self.title("Aeoncell")
         self.geometry("1280x800")
@@ -41,7 +40,7 @@ class Windows(ctk.CTk):
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
 
-        # show page on startup
+        self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -71,25 +70,39 @@ class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
+        self.password_var = ctk.StringVar()
+        self.confirm_password_var = ctk.StringVar()
+        
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        register_form_section = ctk.CTkFrame(self, fg_color="red", corner_radius=0)
+        cover_image_section = ctk.CTkFrame(self, fg_color="blue", corner_radius=0)
+
+        register_form_section.grid(row=0, column=0, sticky="nswe")
+        cover_image_section.grid(row=0, column=1, sticky="nswe")
+
+        
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
         self.password_var = ctk.StringVar()
-        self.confirm_password_var = ctk.StringVar()
         self.create_widgets()
 
     def create_widgets(self):
-
+        profile_image = ctk.CTkLabel(self, text="", image=self.controller.user_profile_img)
+        profile_image.pack(pady=40)
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
-
-
-
 
 if __name__ == "__main__":
     app = Windows()
