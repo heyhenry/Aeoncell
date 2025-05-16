@@ -1,4 +1,18 @@
 
+# priority thought
+- unsatisfied with the design outcome of the register page... how to improve..?
+    - opt for the usage of an overflowing and engaging cover image that doesn't have a straight divide (i.e. cloud style)
+    - potentially opt for an image as a frame rather than the simple rectangle backdrop for the form
+        - but frames dont have an image attribute..
+            - so maybe a label widget will hold an image that encompasses the form's frame?
+            - or utilising the canvas widget?
+            - or not using a frame at all?
+- colour scheme uncertainty..
+    - best to choose one from the custom ctk themes and work on the project and alter colour palette later if need be
+    - or create a brand new customised colour scheme..
+        - but tkinter, or atleast customtkinter does not accept gradient colours..
+            - loop back to the initial solution proposal?
+
 ## SHOULD DO NEXT 
 - add padding and styling to the base entry page in reference to the form and the popup box.
 
