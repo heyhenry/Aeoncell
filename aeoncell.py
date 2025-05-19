@@ -7,7 +7,7 @@ from aeoncell_utils import *
 from PIL import Image, ImageTk, ImageOps, ImageDraw
 
 ctk.set_appearance_mode("Light")
-ctk.set_default_color_theme("themes/breeze.json")
+ctk.set_default_color_theme("themes/custom_lavender.json")
 
 class Windows(ctk.CTk):
     def __init__(self, *args, **kwargs):
@@ -73,17 +73,17 @@ class RegisterPage(ctk.CTkFrame):
         self.controller = controller
         self.password_var = ctk.StringVar()
         self.confirm_password_var = ctk.StringVar()
-        
+
         self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=4)
+        self.grid_columnconfigure(1, weight=6)
 
         self.create_widgets()
 
     def create_widgets(self):
         # register page's split frames
-        register_form_section = ctk.CTkFrame(self, fg_color="red", corner_radius=0)
-        cover_image_section = ctk.CTkFrame(self, fg_color="blue", corner_radius=0)
+        register_form_section = ctk.CTkFrame(self, corner_radius=0)
+        cover_image_section = ctk.CTkFrame(self, corner_radius=0)
 
         register_form_section.grid(row=0, column=0, sticky="nswe")
         cover_image_section.grid(row=0, column=1, sticky="nswe")
@@ -102,7 +102,7 @@ class RegisterPage(ctk.CTkFrame):
         cover_image_section.grid_propagate(False)
 
         # register form's frame
-        register_form = ctk.CTkFrame(register_form_section, fg_color="green", width=514, height=700)
+        register_form = ctk.CTkFrame(register_form_section, fg_color=("#F5F0FF", "#2A1A4A"), width=514, height=700, border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40)
 
         register_form.grid(row=1, column=1)
 
@@ -138,7 +138,7 @@ class RegisterPage(ctk.CTkFrame):
         register_submit.grid(row=10, column=1, pady=(40, 0))
 
         # cover image section
-        self.register_cover_image = ctk.CTkImage(light_image=Image.open("img/dumbbells.jpg"), dark_image=Image.open("img/dumbbells.jpg"), size=(1920, 1080))
+        self.register_cover_image = ctk.CTkImage(light_image=Image.open("img/cartoon_gym_background.png"), dark_image=Image.open("img/cartoon_gym_background.png"), size=(1920, 1080))
         self.cover_image_display = ctk.CTkLabel(cover_image_section, text="", image=self.register_cover_image)
         self.cover_image_display.grid(row=0, column=0, sticky="nswe")
 
