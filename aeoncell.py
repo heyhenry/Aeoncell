@@ -122,11 +122,11 @@ class RegisterPage(ctk.CTkFrame):
         form_name = ctk.CTkLabel(register_form, text="Register", font=("", 48))
         app_icon_main = ctk.CTkLabel(register_form, text="", image=self.controller.app_icon_img)
         username_title = ctk.CTkLabel(register_form, text="Username:", font=("", 24))
-        self.username_entry = ctk.CTkEntry(register_form, width=300, font=("", 24))
+        self.username_entry = ctk.CTkEntry(register_form, textvariable=self.username_var, width=300, font=("", 24))
         password_title = ctk.CTkLabel(register_form, text="Create Password:", font=("", 24))
-        password_entry = ctk.CTkEntry(register_form, width=300, font=("", 24))
+        password_entry = ctk.CTkEntry(register_form, textvariable=self.password_var, width=300, font=("", 24))
         confirm_password_title = ctk.CTkLabel(register_form, text="Confirm Password:", font=("", 24))
-        confirm_password_entry = ctk.CTkEntry(register_form, width=300, font=("", 24))
+        confirm_password_entry = ctk.CTkEntry(register_form, textvariable=self.confirm_password_var, width=300, font=("", 24))
         self.error_message = ctk.CTkLabel(register_form, text="asdf", font=("", 18))
         register_submit = ctk.CTkButton(register_form, height=50, text="Register", font=("", 24), command=self.process_registration)
 
@@ -134,11 +134,11 @@ class RegisterPage(ctk.CTkFrame):
         form_name.grid(row=2, column=1, pady=(20, 0))
         app_icon_main.grid(row=3, column=1, pady=(20, 10))
         username_title.grid(row=4, column=1, pady=(30, 0), sticky="w")
-        self.username_entry.grid(row=5, column=1, pady=(5, 0), sticky="w")
+        self.username_entry.grid(row=5, column=1, pady=(5, 0))
         password_title.grid(row=6, column=1, pady=(20, 0), sticky="w")
-        password_entry.grid(row=7, column=1, pady=(5, 0), sticky="w")
+        password_entry.grid(row=7, column=1, pady=(5, 0))
         confirm_password_title.grid(row=8, column=1, pady=(20, 0), sticky="w")
-        confirm_password_entry.grid(row=9, column=1, pady=(5, 0), sticky="w")
+        confirm_password_entry.grid(row=9, column=1, pady=(5, 0))
         self.error_message.grid(row=10, column=1, pady=(20, 0))
         register_submit.grid(row=11, column=1, pady=(10, 0))
 
@@ -151,38 +151,50 @@ class RegisterPage(ctk.CTkFrame):
         username = self.username_var.get()
         password = self.password_var.get()
         confirm_password = self.confirm_password_var.get()
-        
+        print(username)
         # validate username
         if len(username) < 4:
-            self.error_message.configure(text="Error: Username must be atleast 4 chars.")
+            self.show_error_message("Username must be atleast 4 chars.")
+            # self.error_message.configure(text="Error: Username must be atleast 4 chars.")
             return 
         elif len(username) > 8:
-            self.error_message.configure(text="Error: Username must be less than 8 chars.")
+            self.show_error_message("Username must be less than 8 chars.")
+            # self.error_message.configure(text="Error: Username must be less than 8 chars.")
             return 
         elif username.isspace():
-            self.error_message.configure(text="Error: Username cannot be whitespaces.")
+            self.show_error_message("Username cannot be whitespaces.")
+            # self.error_message.configure(text="Error: Username cannot be whitespaces.")
             return 
         elif " " in username:
-            self.error_message.configure(text="Error: Username cannot contain spaces.")
+            self.show_error_message("Username cannot contain spaces.")
+            # self.error_message.configure(text="Error: Username cannot contain spaces.")
             return 
 
         # validate password
         if password != confirm_password:
-            self.error_message.configure(text="Error: Passwords do not match.")
+            self.show_error_message("Passwords do not match.")
+            # self.error_message.configure(text="Error: Passwords do not match.")
             return 
         elif password.isspace():
-            self.error_message.configure(text="Error: Password cannot be white spaces.")
+            self.show_error_message("Password cannot be white spaces.")
+            # self.error_message.configure(text="Error: Password cannot be white spaces.")
             return 
         elif " " in password:
-            self.error_message.configure(text="Error: Password cannot contain spaces.")
+            self.show_error_message("Password cannot contain spaces.")
+            # self.error_message.configure(text="Error: Password cannot contain spaces.")
             return 
         elif len(password) < 8:
-            self.error_message.configure(text="Error: Password must be atleast 8 chars.")
+            self.show_error_message("Password must be atleast 8 chars.")
+            # self.error_message.configure(text="Error: Password must be atleast 8 chars.")
             return 
     
         # if validation is successful run the following
-        self.controller.db_create_username_and_password(username, password)
+        self.controller.db.create_username_and_password(username, password)
         self.controller.show_page(LoginPage)
+
+    def show_error_message(self, message):
+        self.error_message.configure(text=message)
+        self.after(1000, lambda: self.error_message.configure(text=""))
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
