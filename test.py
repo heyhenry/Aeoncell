@@ -1,41 +1,22 @@
 import customtkinter as ctk
-from PIL import Image, ImageOps, ImageDraw
-import os
+from PIL import Image
 
-def round_yo_pics(filepath):
-    # higher the file size, the better the image quality
-    size = (256, 256)
-    mask = Image.new('L', size, 0)
-    draw = ImageDraw.Draw(mask)
-    draw.ellipse((0, 0) + size, fill=255)
-
-    im = Image.open(filepath)
-
-    output = ImageOps.fit(im, mask.size, centering=(0.5, 0.5))
-    output.putalpha(mask)
-
-    dot_pos = filepath.rfind(".")
-    new_filename = filepath[:dot_pos] + "_rounded.png"
-    output.save(new_filename)
-
-if not os.path.exists("img/user_profile_rounded.png"):
-    round_yo_pics("img/user_profile.jpg")
+ctk.set_appearance_mode("Light")
+ctk.set_default_color_theme("themes/lavender.json")
 
 root = ctk.CTk()
-root.geometry("500x600")
+root.geometry("1280x800")
+root.minsize(1280, 800)
 
-title = ctk.CTkLabel(root, text="Display Profile Image", font=("", 32))
-title.pack(pady=40)
 
-profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile_rounded.png"), dark_image=Image.open("img/user_profile_rounded.png"), size=(180,180))
-profile_image_display = ctk.CTkLabel(root, text="", image=profile_image)
-profile_image_display.pack()
+bg_frame = ctk.CTkFrame(root)
+bg_frame.pack(fill="both", expand=True)
+
+bg_image = ctk.CTkImage(Image.open("img/cartoon_gym_background.png"), size=(root.winfo_screenwidth(), root.winfo_screenheight()))
+bg_label = ctk.CTkLabel(bg_frame, image=bg_image, text="")
+bg_label.pack(fill="both", expand=True, pady=0, padx=0)
+
+form_win = ctk.CTkFrame(bg_frame, width=500, height=400, border_color="red", border_width=5)
+form_win.place(relx=0.5, rely=0.5, anchor="center")
 
 root.mainloop()
-
-# ** some thought process notes after the fact **
-# to ensure images arent being rounded every startup, 
-# use naming conventions to distinguish and also have a 
-# structured process to ensure every new profile image goes 
-# through the process of being rounded (the latter part, could make the former before the conjunction redundant)
-
