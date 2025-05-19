@@ -73,10 +73,10 @@ class RegisterPage(ctk.CTkFrame):
         self.controller = controller
         self.password_var = ctk.StringVar()
         self.confirm_password_var = ctk.StringVar()
-
+        
         self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=4)
-        self.grid_columnconfigure(1, weight=6)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
 
         self.create_widgets()
 
@@ -138,7 +138,7 @@ class RegisterPage(ctk.CTkFrame):
         register_submit.grid(row=10, column=1, pady=(40, 0))
 
         # cover image section
-        self.register_cover_image = ctk.CTkImage(light_image=Image.open("img/cartoon_gym_background.png"), dark_image=Image.open("img/cartoon_gym_background.png"), size=(1920, 1080))
+        self.register_cover_image = ctk.CTkImage(light_image=Image.open("img/cartoon_gym_background.png"), dark_image=Image.open("img/cartoon_gym_background.png"), size=((self.winfo_screenwidth()/2), (self.winfo_screenheight())))
         self.cover_image_display = ctk.CTkLabel(cover_image_section, text="", image=self.register_cover_image)
         self.cover_image_display.grid(row=0, column=0, sticky="nswe")
 
