@@ -15,11 +15,11 @@ class DatabaseManager:
         self.db_connection.commit()
 
     def create_authentication_table(self):
-        self.db_cursor.execute("CREATE TABLE IF NOT EXISTS authentication (desc TEXT, hash TEXT)")
+        self.db_cursor.execute("CREATE TABLE IF NOT EXISTS authentication (username TEXT, password TEXT)")
 
-    def create_password(self, password):
+    def create_username_and_password(self, username, password):
         hashed_password = self.ph.hash(password)
-        self.db_cursor.execute("INSERT INTO authentication (desc, hash) values ('password', ?)", (hashed_password,))
+        self.db_cursor.execute("INSERT INTO authentication (username, password) values (?, ?)", (username, hashed_password))
         self.db_connection.commit()
 
     def verify_password(self, given_password):
