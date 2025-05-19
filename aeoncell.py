@@ -49,7 +49,9 @@ class Windows(ctk.CTk):
         page.tkraise()
 
         # field focus config on startup for pages
-        
+        if selected_page == RegisterPage:
+            self.set_initial_focus(page.username_entry)
+
         # loading logs for dashboard latest 25 entries display
 
     # set cursor focus to chosen field
@@ -71,6 +73,7 @@ class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
+        self.username_var = ctk.StringVar()
         self.password_var = ctk.StringVar()
         self.confirm_password_var = ctk.StringVar()
         
@@ -107,7 +110,7 @@ class RegisterPage(ctk.CTkFrame):
         register_form.grid(row=1, column=1)
 
         register_form.grid_rowconfigure(0, weight=1)
-        register_form.grid_rowconfigure(11, weight=1)
+        register_form.grid_rowconfigure(12, weight=1)
 
         register_form.grid_columnconfigure(0, weight=1)
         register_form.grid_columnconfigure(2, weight=1)
@@ -119,28 +122,67 @@ class RegisterPage(ctk.CTkFrame):
         form_name = ctk.CTkLabel(register_form, text="Register", font=("", 48))
         app_icon_main = ctk.CTkLabel(register_form, text="", image=self.controller.app_icon_img)
         username_title = ctk.CTkLabel(register_form, text="Username:", font=("", 24))
-        username_entry = ctk.CTkEntry(register_form, width=300, font=("", 24))
+        self.username_entry = ctk.CTkEntry(register_form, width=300, font=("", 24))
         password_title = ctk.CTkLabel(register_form, text="Create Password:", font=("", 24))
         password_entry = ctk.CTkEntry(register_form, width=300, font=("", 24))
         confirm_password_title = ctk.CTkLabel(register_form, text="Confirm Password:", font=("", 24))
         confirm_password_entry = ctk.CTkEntry(register_form, width=300, font=("", 24))
-        register_submit = ctk.CTkButton(register_form, text="Register", font=("", 24))
+        self.error_message = ctk.CTkLabel(register_form, text="asdf", font=("", 18))
+        register_submit = ctk.CTkButton(register_form, height=50, text="Register", font=("", 24), command=self.process_registration)
 
         app_name.grid(row=1, column=1)
         form_name.grid(row=2, column=1, pady=(20, 0))
         app_icon_main.grid(row=3, column=1, pady=(20, 10))
         username_title.grid(row=4, column=1, pady=(30, 0), sticky="w")
-        username_entry.grid(row=5, column=1, pady=(5, 0))
+        self.username_entry.grid(row=5, column=1, pady=(5, 0), sticky="w")
         password_title.grid(row=6, column=1, pady=(20, 0), sticky="w")
-        password_entry.grid(row=7, column=1, pady=(5, 0))
+        password_entry.grid(row=7, column=1, pady=(5, 0), sticky="w")
         confirm_password_title.grid(row=8, column=1, pady=(20, 0), sticky="w")
-        confirm_password_entry.grid(row=9, column=1, pady=(5, 0))
-        register_submit.grid(row=10, column=1, pady=(40, 0))
+        confirm_password_entry.grid(row=9, column=1, pady=(5, 0), sticky="w")
+        self.error_message.grid(row=10, column=1, pady=(20, 0))
+        register_submit.grid(row=11, column=1, pady=(10, 0))
 
         # cover image section
-        self.register_cover_image = ctk.CTkImage(light_image=Image.open("img/cartoon_gym_background.png"), dark_image=Image.open("img/cartoon_gym_background.png"), size=((self.winfo_screenwidth()/2), (self.winfo_screenheight())))
-        self.cover_image_display = ctk.CTkLabel(cover_image_section, text="", image=self.register_cover_image)
-        self.cover_image_display.grid(row=0, column=0, sticky="nswe")
+        register_cover_image = ctk.CTkImage(light_image=Image.open("img/cartoon_gym_background.png"), dark_image=Image.open("img/cartoon_gym_background.png"), size=((self.winfo_screenwidth()/2), (self.winfo_screenheight())))
+        cover_image_display = ctk.CTkLabel(cover_image_section, text="", image=register_cover_image)
+        cover_image_display.grid(row=0, column=0, sticky="nswe")
+
+    def process_registration(self):
+        username = self.username_var.get()
+        password = self.password_var.get()
+        confirm_password = self.confirm_password_var.get()
+        
+        # validate username
+        if len(username) < 4:
+            self.error_message.configure(text="Error: Username must be atleast 4 chars.")
+            return 
+        elif len(username) > 8:
+            self.error_message.configure(text="Error: Username must be less than 8 chars.")
+            return 
+        elif username.isspace():
+            self.error_message.configure(text="Error: Username cannot be whitespaces.")
+            return 
+        elif " " in username:
+            self.error_message.configure(text="Error: Username cannot contain spaces.")
+            return 
+
+        # validate password
+        if password != confirm_password:
+            self.error_message.configure(text="Error: Passwords do not match.")
+            return 
+        elif password.isspace():
+            self.error_message.configure(text="Error: Password cannot be white spaces.")
+            return 
+        elif " " in password:
+            self.error_message.configure(text="Error: Password cannot contain spaces.")
+            return 
+        elif len(password) < 8:
+            self.error_message.configure(text="Error: Password must be atleast 8 chars.")
+            return 
+    
+        # if validation is successful run the following
+        self.controller.db_create_username_and_password(username, password)
+        self.controller.show_page(LoginPage)
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
