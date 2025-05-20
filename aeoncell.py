@@ -45,6 +45,7 @@ class Windows(ctk.CTk):
         if self.db.check_password_exists():
             self.set_username()
             self.show_page(LoginPage)
+            print(self.username.get())
         else:
             self.show_page(RegisterPage)
 
@@ -94,7 +95,7 @@ class RegisterPage(ctk.CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
-        # register page's split frames
+        # register page's split frames (50/50)
         register_form_section = ctk.CTkFrame(self, corner_radius=0)
         cover_image_section = ctk.CTkFrame(self, corner_radius=0)
 
@@ -127,7 +128,7 @@ class RegisterPage(ctk.CTkFrame):
 
         register_form.grid_propagate(False)
 
-        # internal widgets for register form
+        # internal widgets for the register form
         app_name = ctk.CTkLabel(register_form, text="Aeoncell", font=("", 18))
         form_name = ctk.CTkLabel(register_form, text="Register", font=("", 48))
         app_icon_main = ctk.CTkLabel(register_form, text="", image=self.controller.app_icon_img)
@@ -210,11 +211,64 @@ class LoginPage(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
         self.password_var = ctk.StringVar()
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
+
         self.create_widgets()
 
     def create_widgets(self):
-        profile_image = ctk.CTkLabel(self, text="", image=self.controller.user_profile_img)
-        profile_image.pack(pady=40)
+        # login page's split frames (50/50)
+        cover_image_section = ctk.CTkFrame(self, corner_radius=0)
+        login_form_section = ctk.CTkFrame(self, corner_radius=0)
+        
+        cover_image_section.grid(row=0, column=0, sticky="nswe")
+        cover_image_section.grid_rowconfigure(0, weight=1)
+        cover_image_section.grid_columnconfigure(0, weight=1)
+        cover_image_section.grid_propagate(False)
+
+        login_form_section.grid(row=0, column=1, sticky="nswe")
+        login_form_section.grid_rowconfigure(0, weight=1)
+        login_form_section.grid_rowconfigure(2, weight=1)
+        login_form_section.grid_columnconfigure(0, weight=1)
+        login_form_section.grid_columnconfigure(2, weight=1)
+
+        # login form's frame
+        login_form = ctk.CTkFrame(login_form_section, fg_color=("#F5F0FF", "#2A1A4A"), width=514, height=700, border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40)
+
+        login_form.grid(row=1, column=1)
+        login_form.grid_rowconfigure(0, weight=1)
+        login_form.grid_rowconfigure(9, weight=1)
+        login_form.grid_columnconfigure(0, weight=1)
+        login_form.grid_columnconfigure(3, weight=1)
+        login_form.grid_propagate(False)
+
+        # internal widgets for the login form
+        app_name = ctk.CTkLabel(login_form, text="Aeoncell", font=("", 18))
+        profile_image = ctk.CTkLabel(login_form, text="", image=self.controller.user_profile_img)
+        form_name = ctk.CTkLabel(login_form, text="Login", font=("", 48))
+        welcome_message = ctk.CTkLabel(login_form, text=f"Welcome back, {self.controller.username.get()}", font=("", 24))
+        password_title = ctk.CTkLabel(login_form, text="Enter Password:", font=("", 24))
+        password_entry = ctk.CTkEntry(login_form, textvariable=self.password_var, font=("", 24), width=300)
+        toggle_password_mask = ctk.CTkButton(login_form, text="Mask Password", font=("", 18))
+        self.error_message = ctk.CTkLabel(login_form, text="dummy error message ii", font=("", 18))
+        login_submit = ctk.CTkButton(login_form, text="Login", font=("", 24))
+
+        app_name.grid(row=1, column=1, columnspan=2, pady=10)
+        profile_image.grid(row=2, column=1, columnspan=2, pady=10)
+        form_name.grid(row=3, column=1, columnspan=2, pady=10)
+        welcome_message.grid(row=4, column=1, columnspan=2, pady=10)
+        password_title.grid(row=5, column=1, columnspan=2, pady=10)
+        password_entry.grid(row=6, column=1, pady=10)
+        toggle_password_mask.grid(row=6, column=2, pady=10)
+        self.error_message.grid(row=7, column=1, columnspan=2, pady=10)
+        login_submit.grid(row=8, column=1, columnspan=2, pady=10)
+
+        # cover image section
+        login_cover_image = ctk.CTkImage(light_image=Image.open("img/cartoon_gym_background.png"), dark_image=Image.open("img/cartoon_gym_background.png"), size=((self.winfo_screenwidth()/2), (self.winfo_screenheight())))
+        cover_image_display = ctk.CTkLabel(cover_image_section, text="", image=login_cover_image)
+        cover_image_display.grid(row=0, column=0, sticky="nswe")
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
