@@ -204,6 +204,9 @@ class RegisterPage(ctk.CTkFrame):
     
         # if validation is successful run the following
         self.controller.db.create_username_and_password(username, password)
+        self.controller.set_username()
+        # update the login page's welcome_message widget
+        self.controller.pages[LoginPage].welcome_message.configure(text=f"Welcome back, {self.controller.username.get()}!")
         self.controller.show_page(LoginPage)
 
     def show_error_message(self, message):
@@ -257,7 +260,7 @@ class LoginPage(ctk.CTkFrame):
         app_name = ctk.CTkLabel(login_form, text="Aeoncell", font=("", 18))
         form_name = ctk.CTkLabel(login_form, text="Login", font=("", 48))
         profile_image = ctk.CTkLabel(login_form, text="", image=self.controller.user_profile_img)
-        welcome_message = ctk.CTkLabel(login_form, text=f"Welcome back, {self.controller.username.get()}!", font=("", 24))
+        self.welcome_message = ctk.CTkLabel(login_form, text=f"Welcome back, {self.controller.username.get()}!", font=("", 24))
         password_title = ctk.CTkLabel(login_form, text="Enter Password:", font=("", 24))
         password_entry = ctk.CTkEntry(login_form, textvariable=self.password_var, font=("", 24), width=300)
         toggle_password_mask = ctk.CTkButton(login_form, text="", image=self.masked_password_icon, bg_color="transparent", fg_color="transparent", hover_color="#B19CD9", width=0)
@@ -267,7 +270,7 @@ class LoginPage(ctk.CTkFrame):
         app_name.grid(row=1, column=1, columnspan=2)
         form_name.grid(row=2, column=1, columnspan=2, pady=(10, 20))
         profile_image.grid(row=3, column=1, columnspan=2, pady=(0, 30))
-        welcome_message.grid(row=4, column=1, columnspan=2, pady=(0, 40))
+        self.welcome_message.grid(row=4, column=1, columnspan=2, pady=(0, 40))
         password_title.grid(row=5, column=1, columnspan=2, sticky="w")
         password_entry.grid(row=6, column=1, pady=(0, 10))
         toggle_password_mask.grid(row=6, column=2, pady=(0, 10), padx=(5, 0))
