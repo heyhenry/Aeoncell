@@ -36,6 +36,10 @@ class Windows(ctk.CTk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
+        # set the username's value if possible
+        if self.db.check_password_exists():
+            self.set_username()
+
         self.pages = {}
         for P in (RegisterPage, LoginPage, DashboardPage):
             page = P(container, self)
@@ -43,7 +47,6 @@ class Windows(ctk.CTk):
             page.grid(row=0, column=0, sticky="nswe")
 
         if self.db.check_password_exists():
-            self.set_username()
             self.show_page(LoginPage)
             print(self.username.get())
         else:
@@ -75,10 +78,11 @@ class Windows(ctk.CTk):
             
         self.db_connection.commit()
 
-    # retrieve username from the database
+    # retrieve and set username from value found in database
     def set_username(self):
         self.db_cursor.execute("SELECT username FROM authentication WHERE rowid=1")
-        self.username.set(self.db_cursor.fetchone()[0])
+        result = self.db_cursor.fetchone()
+        self.username.set(result[0])
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
