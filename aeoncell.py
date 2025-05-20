@@ -48,7 +48,6 @@ class Windows(ctk.CTk):
 
         if self.db.check_password_exists():
             self.show_page(LoginPage)
-            print(self.username.get())
         else:
             self.show_page(RegisterPage)
 
@@ -60,6 +59,8 @@ class Windows(ctk.CTk):
         # field focus config on startup for pages
         if selected_page == RegisterPage:
             self.set_initial_focus(page.username_entry)
+        elif selected_page == LoginPage:
+            self.set_initial_focus(page.password_entry)
 
         # loading logs for dashboard latest 25 entries display
 
@@ -262,17 +263,17 @@ class LoginPage(ctk.CTkFrame):
         profile_image = ctk.CTkLabel(login_form, text="", image=self.controller.user_profile_img)
         self.welcome_message = ctk.CTkLabel(login_form, text=f"Welcome back, {self.controller.username.get()}!", font=("", 24))
         password_title = ctk.CTkLabel(login_form, text="Enter Password:", font=("", 24))
-        password_entry = ctk.CTkEntry(login_form, textvariable=self.password_var, font=("", 24), width=300)
+        self.password_entry = ctk.CTkEntry(login_form, textvariable=self.password_var, font=("", 24), width=300)
         toggle_password_mask = ctk.CTkButton(login_form, text="", image=self.masked_password_icon, bg_color="transparent", fg_color="transparent", hover_color="#B19CD9", width=0)
         self.error_message = ctk.CTkLabel(login_form, text="", font=("", 18))
-        login_submit = ctk.CTkButton(login_form, text="Login", font=("", 24))
+        login_submit = ctk.CTkButton(login_form, text="Login", height=50, font=("", 24))
 
         app_name.grid(row=1, column=1, columnspan=2)
         form_name.grid(row=2, column=1, columnspan=2, pady=(10, 20))
         profile_image.grid(row=3, column=1, columnspan=2, pady=(0, 30))
         self.welcome_message.grid(row=4, column=1, columnspan=2, pady=(0, 40))
         password_title.grid(row=5, column=1, columnspan=2, sticky="w")
-        password_entry.grid(row=6, column=1, pady=(0, 10))
+        self.password_entry.grid(row=6, column=1, pady=(0, 10))
         toggle_password_mask.grid(row=6, column=2, pady=(0, 10), padx=(5, 0))
         self.error_message.grid(row=7, column=1, columnspan=2)
         login_submit.grid(row=8, column=1, columnspan=2, pady=(20, 40))
