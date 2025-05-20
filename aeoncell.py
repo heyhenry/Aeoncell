@@ -142,7 +142,7 @@ class RegisterPage(ctk.CTkFrame):
         password_entry = ctk.CTkEntry(register_form, textvariable=self.password_var, width=300, font=("", 24))
         confirm_password_title = ctk.CTkLabel(register_form, text="Confirm Password:", font=("", 24))
         confirm_password_entry = ctk.CTkEntry(register_form, textvariable=self.confirm_password_var, width=300, font=("", 24))
-        self.error_message = ctk.CTkLabel(register_form, text="asdf", font=("", 18))
+        self.error_message = ctk.CTkLabel(register_form, text="", font=("", 18))
         register_submit = ctk.CTkButton(register_form, height=50, text="Register", font=("", 24), command=self.process_registration)
 
         app_name.grid(row=1, column=1)
@@ -168,8 +168,8 @@ class RegisterPage(ctk.CTkFrame):
         confirm_password = self.confirm_password_var.get()
         # validate username
         if len(username) < 4:
-            self.show_error_message("Username must be atleast 4 chars.")
-            # self.error_message.configure(text="Error: Username must be atleast 4 chars.")
+            self.show_error_message("Username must be at least 4 chars.")
+            # self.error_message.configure(text="Error: Username must be at least 4 chars.")
             return 
         elif len(username) > 8:
             self.show_error_message("Username must be less than 8 chars.")
@@ -198,8 +198,8 @@ class RegisterPage(ctk.CTkFrame):
             # self.error_message.configure(text="Error: Password cannot contain spaces.")
             return 
         elif len(password) < 8:
-            self.show_error_message("Password must be atleast 8 chars.")
-            # self.error_message.configure(text="Error: Password must be atleast 8 chars.")
+            self.show_error_message("Password must be at least 8 chars.")
+            # self.error_message.configure(text="Error: Password must be at least 8 chars.")
             return 
     
         # if validation is successful run the following
@@ -261,7 +261,7 @@ class LoginPage(ctk.CTkFrame):
         password_title = ctk.CTkLabel(login_form, text="Enter Password:", font=("", 24))
         password_entry = ctk.CTkEntry(login_form, textvariable=self.password_var, font=("", 24), width=300)
         toggle_password_mask = ctk.CTkButton(login_form, text="", image=self.masked_password_icon, bg_color="transparent", fg_color="transparent", hover_color="#B19CD9", width=0)
-        self.error_message = ctk.CTkLabel(login_form, text="dummy error message ii", font=("", 18))
+        self.error_message = ctk.CTkLabel(login_form, text="", font=("", 18))
         login_submit = ctk.CTkButton(login_form, text="Login", font=("", 24))
 
         app_name.grid(row=1, column=1, columnspan=2)
@@ -278,6 +278,8 @@ class LoginPage(ctk.CTkFrame):
         login_cover_image = ctk.CTkImage(light_image=Image.open("img/cartoon_gym_background.png"), dark_image=Image.open("img/cartoon_gym_background.png"), size=((self.winfo_screenwidth()/2), (self.winfo_screenheight())))
         cover_image_display = ctk.CTkLabel(cover_image_section, text="", image=login_cover_image)
         cover_image_display.grid(row=0, column=0, sticky="nswe")
+
+    
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
