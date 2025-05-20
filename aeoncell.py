@@ -85,6 +85,10 @@ class Windows(ctk.CTk):
         result = self.db_cursor.fetchone()
         self.username.set(result[0])
 
+    def show_error_message(self, widget, message):
+        widget.configure(text=message)
+        widget.after(1000, lambda: widget.configure(text=""))
+
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
@@ -169,38 +173,30 @@ class RegisterPage(ctk.CTkFrame):
         confirm_password = self.confirm_password_var.get()
         # validate username
         if len(username) < 4:
-            self.show_error_message("Username must be at least 4 chars.")
-            # self.error_message.configure(text="Error: Username must be at least 4 chars.")
+            self.controller.show_error_message(self.error_message, "Username must be at least 4 chars.")
             return 
         elif len(username) > 8:
-            self.show_error_message("Username must be less than 8 chars.")
-            # self.error_message.configure(text="Error: Username must be less than 8 chars.")
+            self.controller.show_error_message(self.error_message, "Username must be less than 8 chars.")
             return 
         elif username.isspace():
-            self.show_error_message("Username cannot be whitespaces.")
-            # self.error_message.configure(text="Error: Username cannot be whitespaces.")
+            self.controller.show_error_message(self.error_message, "Username cannot be whitespaces.")
             return 
         elif " " in username:
-            self.show_error_message("Username cannot contain spaces.")
-            # self.error_message.configure(text="Error: Username cannot contain spaces.")
+            self.controller.show_error_message(self.error_message, "Username cannot contain spaces.")
             return 
 
         # validate password
         if password != confirm_password:
-            self.show_error_message("Passwords do not match.")
-            # self.error_message.configure(text="Error: Passwords do not match.")
+            self.controller.show_error_message(self.error_message, "Passwords do not match.")
             return 
         elif password.isspace():
-            self.show_error_message("Password cannot be white spaces.")
-            # self.error_message.configure(text="Error: Password cannot be white spaces.")
+            self.controller.show_error_message(self.error_message, "Password cannot be whitespaces.")
             return 
         elif " " in password:
-            self.show_error_message("Password cannot contain spaces.")
-            # self.error_message.configure(text="Error: Password cannot contain spaces.")
+            self.controller.show_error_message(self.error_message, "Password cannot contain spaces.")
             return 
         elif len(password) < 8:
-            self.show_error_message("Password must be at least 8 chars.")
-            # self.error_message.configure(text="Error: Password must be at least 8 chars.")
+            self.controller.show_error_message(self.error_message, "Password must be at least 8 chars.")
             return 
     
         # if validation is successful run the following
@@ -209,10 +205,6 @@ class RegisterPage(ctk.CTkFrame):
         # update the login page's welcome_message widget
         self.controller.pages[LoginPage].welcome_message.configure(text=f"Welcome back, {self.controller.username.get()}!")
         self.controller.show_page(LoginPage)
-
-    def show_error_message(self, message):
-        self.error_message.configure(text=message)
-        self.after(1000, lambda: self.error_message.configure(text=""))
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -288,11 +280,7 @@ class LoginPage(ctk.CTkFrame):
         if self.controller.db.verify_password(password):
             self.controller.show_page(DashboardPage)
         else:
-            self.show_error_message("Incorrect Password.")
-
-    def show_error_message(self, message):
-        self.error_message.configure(text=message)
-        self.after(1000, lambda: self.error_message.configure(text=""))
+            self.controller.show_error_message(self.error_message, "Incorrect Password.")
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
