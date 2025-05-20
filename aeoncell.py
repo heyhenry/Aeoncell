@@ -266,7 +266,7 @@ class LoginPage(ctk.CTkFrame):
         self.password_entry = ctk.CTkEntry(login_form, textvariable=self.password_var, font=("", 24), width=300)
         toggle_password_mask = ctk.CTkButton(login_form, text="", image=self.masked_password_icon, bg_color="transparent", fg_color="transparent", hover_color="#B19CD9", width=0)
         self.error_message = ctk.CTkLabel(login_form, text="", font=("", 18))
-        login_submit = ctk.CTkButton(login_form, text="Login", height=50, font=("", 24))
+        login_submit = ctk.CTkButton(login_form, text="Login", height=50, font=("", 24), command=self.process_login)
 
         app_name.grid(row=1, column=1, columnspan=2)
         form_name.grid(row=2, column=1, columnspan=2, pady=(10, 20))
@@ -283,12 +283,27 @@ class LoginPage(ctk.CTkFrame):
         cover_image_display = ctk.CTkLabel(cover_image_section, text="", image=login_cover_image)
         cover_image_display.grid(row=0, column=0, sticky="nswe")
 
-    
+    def process_login(self):
+        password = self.password_var.get()
+        if self.controller.db.verify_password(password):
+            self.controller.show_page(DashboardPage)
+        else:
+            self.show_error_message("Incorrect Password.")
+
+    def show_error_message(self, message):
+        self.error_message.configure(text=message)
+        self.after(1000, lambda: self.error_message.configure(text=""))
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        sample = ctk.CTkLabel(self, text="Dashboard")
+        sample.pack()
 
 if __name__ == "__main__":
     app = Windows()
