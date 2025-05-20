@@ -20,6 +20,7 @@ class Windows(ctk.CTk):
         self.today = date.today()
         self.today = self.today.strftime("%d-%m-%Y")
 
+        self.username = ctk.StringVar()
         self.user_profile_img = ctk.CTkImage(light_image=Image.open("img/user_profile_rounded.png"), dark_image=Image.open("img/user_profile_rounded.png"), size=(180,180))
         self.app_icon_img = ctk.CTkImage(light_image=Image.open("img/capsule_original_recround.png"), dark_image=Image.open("img/capsule_original_recround.png"), size=(64,64))
 
@@ -41,7 +42,11 @@ class Windows(ctk.CTk):
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
 
-        self.show_page(RegisterPage)
+        if self.db.check_password_exists():
+            self.set_username()
+            self.show_page(LoginPage)
+        else:
+            self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -68,6 +73,11 @@ class Windows(ctk.CTk):
             self.db_cursor.execute("INSERT INTO sleep_tracker (date) VALUES (?)", (self.today,))
             
         self.db_connection.commit()
+
+    # retrieve username from the database
+    def set_username(self):
+        self.db_cursor.execute("SELECT username FROM authentication WHERE rowid=1")
+        self.username.set(self.db_cursor.fetchone()[0])
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -151,7 +161,6 @@ class RegisterPage(ctk.CTkFrame):
         username = self.username_var.get()
         password = self.password_var.get()
         confirm_password = self.confirm_password_var.get()
-        print(username)
         # validate username
         if len(username) < 4:
             self.show_error_message("Username must be atleast 4 chars.")
