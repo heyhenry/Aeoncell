@@ -144,9 +144,9 @@ class RegisterPage(ctk.CTkFrame):
         username_title = ctk.CTkLabel(register_form, text="Username:", font=("", 24))
         self.username_entry = ctk.CTkEntry(register_form, textvariable=self.username_var, width=300, font=("", 24))
         password_title = ctk.CTkLabel(register_form, text="Create Password:", font=("", 24))
-        password_entry = ctk.CTkEntry(register_form, textvariable=self.password_var, width=300, font=("", 24))
+        self.password_entry = ctk.CTkEntry(register_form, textvariable=self.password_var, width=300, font=("", 24))
         confirm_password_title = ctk.CTkLabel(register_form, text="Confirm Password:", font=("", 24))
-        confirm_password_entry = ctk.CTkEntry(register_form, textvariable=self.confirm_password_var, width=300, font=("", 24))
+        self.confirm_password_entry = ctk.CTkEntry(register_form, textvariable=self.confirm_password_var, width=300, font=("", 24))
         self.error_message = ctk.CTkLabel(register_form, text="", font=("", 18))
         register_submit = ctk.CTkButton(register_form, height=50, text="Register", font=("", 24), command=self.process_registration)
 
@@ -156,9 +156,9 @@ class RegisterPage(ctk.CTkFrame):
         username_title.grid(row=4, column=1, pady=(30, 0), sticky="w")
         self.username_entry.grid(row=5, column=1, pady=(5, 0))
         password_title.grid(row=6, column=1, pady=(20, 0), sticky="w")
-        password_entry.grid(row=7, column=1, pady=(5, 0))
+        self.password_entry.grid(row=7, column=1, pady=(5, 0))
         confirm_password_title.grid(row=8, column=1, pady=(20, 0), sticky="w")
-        confirm_password_entry.grid(row=9, column=1, pady=(5, 0))
+        self.confirm_password_entry.grid(row=9, column=1, pady=(5, 0))
         self.error_message.grid(row=10, column=1, pady=(20, 0))
         register_submit.grid(row=11, column=1, pady=(10, 0))
 
@@ -167,7 +167,12 @@ class RegisterPage(ctk.CTkFrame):
         cover_image_display = ctk.CTkLabel(cover_image_section, text="", image=register_cover_image)
         cover_image_display.grid(row=0, column=0, sticky="nswe")
 
-    def process_registration(self):
+        # detect and process 'Enter' keybind interaction
+        self.username_entry.bind("<Return>", self.process_registration)
+        self.password_entry.bind("<Return>", self.process_registration)
+        self.confirm_password_entry.bind("<Return>", self.process_registration)
+
+    def process_registration(self, event=None):
         username = self.username_var.get()
         password = self.password_var.get()
         confirm_password = self.confirm_password_var.get()
@@ -275,7 +280,10 @@ class LoginPage(ctk.CTkFrame):
         cover_image_display = ctk.CTkLabel(cover_image_section, text="", image=login_cover_image)
         cover_image_display.grid(row=0, column=0, sticky="nswe")
 
-    def process_login(self):
+        # detect and process 'Enter' keybind interaction
+        self.password_entry.bind("<Return>", self.process_login)
+
+    def process_login(self, event=None):
         password = self.password_var.get()
         if self.controller.db.verify_password(password):
             self.controller.show_page(DashboardPage)
