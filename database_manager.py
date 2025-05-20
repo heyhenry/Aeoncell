@@ -15,15 +15,15 @@ class DatabaseManager:
         self.db_connection.commit()
 
     def create_authentication_table(self):
-        self.db_cursor.execute("CREATE TABLE IF NOT EXISTS authentication (username TEXT, password TEXT)")
+        self.db_cursor.execute("CREATE TABLE IF NOT EXISTS authentication (username TEXT, hashed_password TEXT)")
 
     def create_username_and_password(self, username, password):
         hashed_password = self.ph.hash(password)
-        self.db_cursor.execute("INSERT INTO authentication (username, password) values (?, ?)", (username, hashed_password))
+        self.db_cursor.execute("INSERT INTO authentication (username, hashed_password) values (?, ?)", (username, hashed_password))
         self.db_connection.commit()
 
     def verify_password(self, given_password):
-        self.db_cursor.execute("SELECT hash FROM authentication WHERE rowid=1")
+        self.db_cursor.execute("SELECT hashed_password FROM authentication WHERE rowid=1")
         result = self.db_cursor.fetchone()
         hashed_password = result[0]
 
@@ -34,7 +34,7 @@ class DatabaseManager:
             return False
         
     def check_password_exists(self):
-        self.db_cursor.execute("SELECT hash FROM authentication WHERE rowid = 1")
+        self.db_cursor.execute("SELECT hashed_password FROM authentication WHERE rowid = 1")
         if self.db_cursor.fetchone():
             return True
         
