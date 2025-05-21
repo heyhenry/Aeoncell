@@ -145,3 +145,23 @@ def generate_round_frame_image(filepath):
     new_filename = filepath[:dot_pos] + "_rounded.png"
     # save new rounded image 
     round_image.save(new_filename)
+
+def generate_round_rectangle_image(filepath):
+    original_image = Image.open(filepath)
+
+    mask = Image.new('L', original_image.size, 0)
+    draw = ImageDraw.Draw(mask)
+    draw.rounded_rectangle(
+        [(0,0), original_image.size],
+        radius=40,
+        fill=255
+    )
+
+    round_image = original_image.copy()
+    round_image.putalpha(mask)
+
+    new_filename = filepath[:filepath.rfind(".")] + "_recround.png"
+    round_image.save(new_filename)
+    print("successfully created image.")
+
+# generate_round_rectangle_image("img/capsule_original.png")
