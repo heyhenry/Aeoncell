@@ -41,7 +41,7 @@ class Windows(ctk.CTk):
             self.set_username()
 
         self.pages = {}
-        for P in (RegisterPage, LoginPage, DashboardPage):
+        for P in (RegisterPage, LoginPage, DashboardPage, DiscoverPage, EntryPage, StatsPage, AchievementsPage, SettingsPage):
             page = P(container, self)
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
@@ -300,6 +300,46 @@ class DashboardPage(ctk.CTkFrame):
     def create_widgets(self):
         sample = ctk.CTkLabel(self, text="Dashboard")
         sample.pack()
+
+class DiscoverPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller
+
+    def create_widgets(self):
+        pass
+
+class EntryPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller
+
+    def create_widgets(self):
+        pass
+
+class StatsPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller
+
+    def create_widgets(self):
+        pass
+
+class AchievementsPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller
+
+    def create_widgets(self):
+        pass
+
+class SettingsPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller 
+
+    def create_widgets(self):
+        pass
 
 if __name__ == "__main__":
     app = Windows()
