@@ -94,6 +94,9 @@ class Navbar(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
+
+        # grid configures not required, as we do not want to center the widgets.
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -106,6 +109,8 @@ class Navbar(ctk.CTkFrame):
         achievements_icon = ctk.CTkLabel(self, text="Achievements Icon")
         settings_icon = ctk.CTkLabel(self, text="Settings Icon")
         logout_icon = ctk.CTkLabel(self, text="Logout")
+
+        # add padding to create proper spacing
 
         app_name.grid(row=1, column=1)
         app_icon.grid(row=2, column=1)
