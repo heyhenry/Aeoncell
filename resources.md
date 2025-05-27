@@ -16,3 +16,5 @@ Achievements Icon created by Freepik | flaticon.com (27th May 2025): https://www
 Settings Icon created by Freepik | flaticon.com (27th May 2025): https://www.flaticon.com/free-icons/amazon-web-services
 Dashboard Icon created by annisa-rahman | flaticon.com (27th May 2025): https://www.flaticon.com/free-icons/desktop
 Logout Icon created by rikhwan fatih | flaticon.com (27th May 2025): https://www.flaticon.com/free-icons/ui
+Display message when hovering over something with mouse cursor in Python (27th May 2025): https://stackoverflow.com/questions/20399243/display-message-when-hovering-over-something-with-mouse-cursor-in-python
+How do i change my cursor to a hand ONLY when it is hovering over a label? (27th May 2025): https://stackoverflow.com/questions/45184462/how-do-i-change-my-cursor-to-a-hand-only-when-it-is-hovering-over-a-label
