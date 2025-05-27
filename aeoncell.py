@@ -46,10 +46,11 @@ class Windows(ctk.CTk):
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
 
-        if self.db.check_password_exists():
-            self.show_page(LoginPage)
-        else:
-            self.show_page(RegisterPage)
+        self.show_page(DashboardPage)
+        # if self.db.check_password_exists():
+        #     self.show_page(LoginPage)
+        # else:
+        #     self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -88,6 +89,33 @@ class Windows(ctk.CTk):
     def show_error_message(self, widget, message):
         widget.configure(text=message)
         widget.after(1000, lambda: widget.configure(text=""))
+
+class Navbar(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller
+        self.create_widgets()
+
+    def create_widgets(self):
+        app_name = ctk.CTkLabel(self, text="Aeoncell")
+        app_icon = ctk.CTkLabel(self, text="App Icon")
+        dashboard_icon = ctk.CTkLabel(self, text="Dashboard Icon")
+        discover_icon = ctk.CTkLabel(self, text="Discover Icon")
+        entry_icon = ctk.CTkLabel(self, text="Entry Icon")
+        stats_icon = ctk.CTkLabel(self, text="Stats Icon")
+        achievements_icon = ctk.CTkLabel(self, text="Achievements Icon")
+        settings_icon = ctk.CTkLabel(self, text="Settings Icon")
+        logout_icon = ctk.CTkLabel(self, text="Logout")
+
+        app_name.grid(row=1, column=1)
+        app_icon.grid(row=2, column=1)
+        dashboard_icon.grid(row=3, column=1)
+        discover_icon.grid(row=4, column=1)
+        entry_icon.grid(row=5, column=1)
+        stats_icon.grid(row=6, column=1)
+        achievements_icon.grid(row=7, column=1)
+        settings_icon.grid(row=8, column=1)
+        logout_icon.grid(row=9, column=1)
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -295,11 +323,21 @@ class DashboardPage(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
 
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+
         self.create_widgets()
 
     def create_widgets(self):
-        sample = ctk.CTkLabel(self, text="Dashboard")
-        sample.pack()
+        navbar = Navbar(self, self.controller)
+        content = ctk.CTkFrame(self, fg_color="black")
+
+        navbar.grid(row=0, column=0, sticky="nswe")
+        content.grid(row=0, column=1, sticky="nswe")
+
+        dashboard_title = ctk.CTkLabel(content, text="This is the Dashboard!", text_color="green")
+        dashboard_title.pack()
 
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
