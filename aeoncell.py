@@ -178,7 +178,6 @@ class Navbar(ctk.CTkFrame):
     def undisplay_underline(self, widget_name, event=None):
         widget_name.configure(font=("", 11, "bold"))
     
-
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
@@ -398,7 +397,7 @@ class DashboardPage(ctk.CTkFrame):
         navbar.grid(row=0, column=0, sticky="nswe")
         content.grid(row=0, column=1, sticky="nswe")
 
-        dashboard_title = ctk.CTkLabel(content, text="This is the Dashboard!", text_color="green")
+        dashboard_title = ctk.CTkLabel(content, text="This is the Dashboard Page!", text_color="green")
         dashboard_title.pack()
 
 class DiscoverPage(ctk.CTkFrame):
@@ -406,40 +405,105 @@ class DiscoverPage(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
 
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+
+        self.create_widgets()
+
     def create_widgets(self):
-        pass
+        navbar = Navbar(self, self.controller)
+        content = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
+
+        navbar.grid(row=0, column=0, sticky="nswe")
+        content.grid(row=0, column=1, sticky="nswe")
+
+        dashboard_title = ctk.CTkLabel(content, text="This is the Discover Page!", text_color="green")
+        dashboard_title.pack()
 
 class EntryPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
 
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+
+        self.create_widgets()
+
     def create_widgets(self):
-        pass
+        navbar = Navbar(self, self.controller)
+        content = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
+
+        navbar.grid(row=0, column=0, sticky="nswe")
+        content.grid(row=0, column=1, sticky="nswe")
+
+        dashboard_title = ctk.CTkLabel(content, text="This is the Entry Page!", text_color="green")
+        dashboard_title.pack()
 
 class StatsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
 
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+
+        self.create_widgets()
+
     def create_widgets(self):
-        pass
+        navbar = Navbar(self, self.controller)
+        content = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
+
+        navbar.grid(row=0, column=0, sticky="nswe")
+        content.grid(row=0, column=1, sticky="nswe")
+
+        dashboard_title = ctk.CTkLabel(content, text="This is the Statistics Page!", text_color="green")
+        dashboard_title.pack()
 
 class AchievementsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
 
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+
+        self.create_widgets()
+
     def create_widgets(self):
-        pass
+        navbar = Navbar(self, self.controller)
+        content = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
+
+        navbar.grid(row=0, column=0, sticky="nswe")
+        content.grid(row=0, column=1, sticky="nswe")
+
+        dashboard_title = ctk.CTkLabel(content, text="This is the Achievements Page!", text_color="green")
+        dashboard_title.pack()
 
 class SettingsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
-        self.controller = controller 
+        self.controller = controller
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+
+        self.create_widgets()
 
     def create_widgets(self):
-        pass
+        navbar = Navbar(self, self.controller)
+        content = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
+
+        navbar.grid(row=0, column=0, sticky="nswe")
+        content.grid(row=0, column=1, sticky="nswe")
+
+        dashboard_title = ctk.CTkLabel(content, text="This is the Settings Page!", text_color="green")
+        dashboard_title.pack()
 
 if __name__ == "__main__":
     app = Windows()
