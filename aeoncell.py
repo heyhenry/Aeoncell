@@ -159,7 +159,18 @@ class Navbar(ctk.CTkFrame):
         self.stats_icon.bind("<Leave>", lambda event: self.undisplay_underline(self.stats_title))
         self.stats_title.bind("<Enter>", lambda event: self.display_underline(self.stats_title))
         self.stats_title.bind("<Leave>", lambda event: self.undisplay_underline(self.stats_title))
-
+        self.achievements_icon.bind("<Enter>", lambda event: self.display_underline(self.achievements_title))
+        self.achievements_icon.bind("<Leave>", lambda event: self.undisplay_underline(self.achievements_title))
+        self.achievements_title.bind("<Enter>", lambda event: self.display_underline(self.achievements_title))
+        self.achievements_title.bind("<Leave>", lambda event: self.undisplay_underline(self.achievements_title))
+        self.settings_icon.bind("<Enter>", lambda event: self.display_underline(self.settings_title))
+        self.settings_icon.bind("<Leave>", lambda event: self.undisplay_underline(self.settings_title))
+        self.settings_title.bind("<Enter>", lambda event: self.display_underline(self.settings_title))
+        self.settings_title.bind("<Leave>", lambda event: self.undisplay_underline(self.settings_title))
+        self.logout_icon.bind("<Enter>", lambda event: self.display_underline(self.logout_title))
+        self.logout_icon.bind("<Leave>", lambda event: self.undisplay_underline(self.logout_title))
+        self.logout_title.bind("<Enter>", lambda event: self.display_underline(self.logout_title))
+        self.logout_title.bind("<Leave>", lambda event: self.undisplay_underline(self.logout_title))
 
     def display_underline(self, widget_name, event=None):
         widget_name.configure(font=("", 11, "bold", "underline"))
