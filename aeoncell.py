@@ -95,8 +95,9 @@ class Navbar(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
 
+        self.configure(fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0)
+
         # icon images
-        
         self.dashboard_img = ctk.CTkImage(light_image=Image.open("img/dashboard_icon.png"), dark_image=Image.open("img/dashboard_icon.png"), size=(32, 32))
         self.discover_img = ctk.CTkImage(light_image=Image.open("img/discover_icon.png"), dark_image=Image.open("img/discover_icon.png"), size=(32, 32))
         self.entry_img = ctk.CTkImage(light_image=Image.open("img/entry_icon.png"), dark_image=Image.open("img/entry_icon.png"), size=(32, 32))
@@ -358,7 +359,7 @@ class DashboardPage(ctk.CTkFrame):
 
     def create_widgets(self):
         navbar = Navbar(self, self.controller)
-        content = ctk.CTkFrame(self, fg_color="black")
+        content = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
 
         navbar.grid(row=0, column=0, sticky="nswe")
         content.grid(row=0, column=1, sticky="nswe")
