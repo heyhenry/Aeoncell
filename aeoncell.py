@@ -95,32 +95,54 @@ class Navbar(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
 
-        # grid configures not required, as we do not want to center the widgets.
+        # icon images
+        
+        self.dashboard_img = ctk.CTkImage(light_image=Image.open("img/dashboard_icon.png"), dark_image=Image.open("img/dashboard_icon.png"), size=(32, 32))
+        self.discover_img = ctk.CTkImage(light_image=Image.open("img/discover_icon.png"), dark_image=Image.open("img/discover_icon.png"), size=(32, 32))
+        self.entry_img = ctk.CTkImage(light_image=Image.open("img/entry_icon.png"), dark_image=Image.open("img/entry_icon.png"), size=(32, 32))
+        self.stats_img = ctk.CTkImage(light_image=Image.open("img/stats_icon.png"), dark_image=Image.open("img/stats_icon.png"), size=(32, 32))
+        self.achievements_img = ctk.CTkImage(light_image=Image.open("img/achievements_icon.png"), dark_image=Image.open("img/achievements_icon.png"), size=(32, 32))
+        self.settings_img = ctk.CTkImage(light_image=Image.open("img/settings_icon.png"), dark_image=Image.open("img/settings_icon.png"), size=(32, 32))
+        self.logout_img = ctk.CTkImage(light_image=Image.open("img/logout_icon.png"), dark_image=Image.open("img/logout_icon.png"), size=(32, 32))
 
         self.create_widgets()
 
     def create_widgets(self):
-        app_name = ctk.CTkLabel(self, text="Aeoncell")
-        app_icon = ctk.CTkLabel(self, text="App Icon")
-        dashboard_icon = ctk.CTkLabel(self, text="Dashboard Icon")
-        discover_icon = ctk.CTkLabel(self, text="Discover Icon")
-        entry_icon = ctk.CTkLabel(self, text="Entry Icon")
-        stats_icon = ctk.CTkLabel(self, text="Stats Icon")
-        achievements_icon = ctk.CTkLabel(self, text="Achievements Icon")
-        settings_icon = ctk.CTkLabel(self, text="Settings Icon")
-        logout_icon = ctk.CTkLabel(self, text="Logout")
+        app_name = ctk.CTkLabel(self, text="Aeoncell", font=("", 18))
+        app_icon = ctk.CTkLabel(self, text="", image=self.controller.app_icon_img)
+        dashboard_icon = ctk.CTkLabel(self, text="", image=self.dashboard_img)
+        dashoard_title = ctk.CTkLabel(self, text="Dashboard", font=("", 11, "bold"))
+        discover_icon = ctk.CTkLabel(self, text="", image=self.discover_img)
+        discover_title = ctk.CTkLabel(self, text="Discover", font=("", 11, "bold"))
+        entry_icon = ctk.CTkLabel(self, text="", image=self.entry_img)
+        entry_title = ctk.CTkLabel(self, text="Entry", font=("", 11, "bold"))
+        stats_icon = ctk.CTkLabel(self, text="", image=self.stats_img)
+        stats_title = ctk.CTkLabel(self, text="Statistics", font=("", 11, "bold"))
+        achievements_icon = ctk.CTkLabel(self, text="", image=self.achievements_img)
+        achievements_title = ctk.CTkLabel(self, text="Achievements", font=("", 11, "bold"))
+        settings_icon = ctk.CTkLabel(self, text="", image=self.settings_img)
+        settings_title = ctk.CTkLabel(self, text="Settings", font=("", 11, "bold"))
+        logout_icon = ctk.CTkLabel(self, text="", image=self.logout_img)
+        logout_title = ctk.CTkLabel(self, text="Logout", font=("", 11, "bold"))
 
         # add padding to create proper spacing
 
-        app_name.grid(row=1, column=1)
-        app_icon.grid(row=2, column=1)
-        dashboard_icon.grid(row=3, column=1)
-        discover_icon.grid(row=4, column=1)
-        entry_icon.grid(row=5, column=1)
-        stats_icon.grid(row=6, column=1)
-        achievements_icon.grid(row=7, column=1)
-        settings_icon.grid(row=8, column=1)
-        logout_icon.grid(row=9, column=1)
+        app_name.grid(row=1, column=1, pady=20, padx=10)
+        app_icon.grid(row=2, column=1, pady=(0, 50))
+        dashboard_icon.grid(row=3, column=1, pady=(10, 0))
+        dashoard_title.grid(row=4, column=1, pady=(0, 10))
+        discover_icon.grid(row=5, column=1, pady=(10, 0))
+        discover_title.grid(row=6, column=1, pady=(0, 10))
+        entry_icon.grid(row=7, column=1, pady=(10, 0))
+        entry_title.grid(row=8, column=1, pady=(0, 10))
+        stats_icon.grid(row=9, column=1, pady=(10, 0))
+        stats_title.grid(row=10, column=1, pady=(0, 10))
+        achievements_icon.grid(row=11, column=1, pady=(10, 0))
+        achievements_title.grid(row=12, column=1, pady=(0, 10))
+        settings_icon.grid(row=13, column=1, pady=(10, 0))
+        settings_title.grid(row=14, column=1, pady=(0, 20))
+        logout_icon.grid(row=15, column=1, pady=(50, 0))
+        logout_title.grid(row=16, column=1)
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
