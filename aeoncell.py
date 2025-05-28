@@ -454,17 +454,28 @@ class BaseEntryPage(ctk.CTkFrame):
         self.entry_type = entry_type
         self.btn_name = btn_name
         self.type_var = ctk.StringVar(value=self.entry_type)
+
+        self.grid_rowconfigure(0, weight=1)
+        
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+
         self.create_widgets()
 
     def create_widgets(self):
-        self.entry_form = ctk.CTkFrame(self, width=700, height=500, corner_radius=10)
+        navbar = Navbar(self, self.controller)
+        content = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
 
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_rowconfigure(2, weight=1)
+        navbar.grid(row=0, column=0, sticky="nswe")
+        content.grid(row=0, column=1, sticky="nswe")
 
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(2, weight=1)
+        content.grid_rowconfigure(0, weight=1)
+        content.grid_rowconfigure(2, weight=1)
 
+        content.grid_columnconfigure(0, weight=1)
+        content.grid_columnconfigure(2, weight=1)
+
+        self.entry_form = ctk.CTkFrame(content, width=700, height=500, corner_radius=10)
         self.entry_form.grid(row=1, column=1)
 
         page_title = ctk.CTkLabel(self.entry_form, text=f"Create New Entry [{self.entry_type.capitalize()}]", font=("", 24, "bold"))
@@ -522,7 +533,7 @@ class BaseEntryPage(ctk.CTkFrame):
         self.label_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, self.label_entry, 100))
         self.sets_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, self.sets_entry, 3))
         self.reps_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, self.reps_entry, 3))
-        self.weight_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, self.weight_entry, 5))
+        self.weight_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, self.weight_entry, 3))
 
     def process_entry(self):
         if self.validate_entry_fields():
