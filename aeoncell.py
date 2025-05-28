@@ -46,11 +46,11 @@ class Windows(ctk.CTk):
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
 
-        self.show_page(SingleEntryPage)
-        # if self.db.check_password_exists():
-        #     self.show_page(LoginPage)
-        # else:
-        #     self.show_page(RegisterPage)
+        # self.show_page(SingleEntryPage)
+        if self.db.check_password_exists():
+            self.show_page(LoginPage)
+        else:
+            self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -455,6 +455,9 @@ class BaseEntryPage(ctk.CTkFrame):
         self.btn_name = btn_name
         self.type_var = ctk.StringVar(value=self.entry_type)
 
+        self.single_entry_icon = ctk.CTkImage(light_image=Image.open("img/small_flame.png"), dark_image=Image.open("img/small_flame.png"), size=(48, 48))
+        self.session_entry_icon = ctk.CTkImage(light_image=Image.open("img/big_flame.png"), dark_image=Image.open("img/big_flame.png"), size=(48, 48))
+
         self.grid_rowconfigure(0, weight=1)
         
         self.grid_columnconfigure(0, weight=0)
@@ -464,7 +467,7 @@ class BaseEntryPage(ctk.CTkFrame):
 
     def create_widgets(self):
         navbar = Navbar(self, self.controller)
-        content = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
+        content = ctk.CTkFrame(self)
 
         navbar.grid(row=0, column=0, sticky="nswe")
         content.grid(row=0, column=1, sticky="nswe")
@@ -486,6 +489,8 @@ class BaseEntryPage(ctk.CTkFrame):
         self.entry_form.grid_rowconfigure(15, weight=1)
 
         self.entry_form.grid_propagate(False)
+
+        toggle_entry_type = ctk.CTkLabel(self.entry_form, text="", image=self.single_entry_icon)
 
         page_title = ctk.CTkLabel(self.entry_form, text=f"Create New Entry [{self.entry_type.capitalize()}]", font=("", 32, "bold"))
 
@@ -509,27 +514,29 @@ class BaseEntryPage(ctk.CTkFrame):
         self.add_exercise_btn = ctk.CTkButton(self.entry_form, text="Add Exercise", height=48, font=("", 24), command=self.process_entry)
         self.redirect_btn = ctk.CTkButton(self.entry_form, text=f"{self.btn_name}", height=48, font=("", 24), command=self.process_confirmation)
 
-        page_title.grid(row=1, column=1, columnspan=2, pady=(20, 40), padx=20)
+        toggle_entry_type.grid(row=1, column=2, sticky="e")
 
-        type_title.grid(row=2, column=1, pady=(20, 0), padx=20, sticky="w")
-        self.type_entry.grid(row=3, column=1, pady=(5, 0), padx=20)
-        exercise_name_title.grid(row=2, column=2, pady=(20, 0), padx=20, sticky="w")
-        self.exercise_name_entry.grid(row=3, column=2, pady=(5, 0), padx=20)
-        date_title.grid(row=4, column=1, padx=20, pady=(20, 0), sticky="w")
-        self.date_entry.grid(row=5, column=1, pady=(5, 0), padx=20)
-        time_title.grid(row=4, column=2, pady=(20, 0), padx=20, sticky="w")
-        self.time_entry.grid(row=5, column=2, pady=(5, 0), padx=20)
-        sets_title.grid(row=6, column=1, pady=(20, 0), padx=20, sticky="w")
-        self.sets_entry.grid(row=7, column=1, pady=(5, 0), padx=20)
-        reps_title.grid(row=6, column=2, pady=(20, 0), padx=20, sticky="w")
-        self.reps_entry.grid(row=7, column=2, pady=(5, 0), padx=20)
-        weight_title.grid(row=8, column=1, pady=(20, 0), padx=20, sticky="w")
-        self.weight_entry.grid(row=9, column=1, pady=(5, 10), padx=20)
-        label_title.grid(row=8, column=2, pady=(20, 0), padx=20, sticky="w")
-        self.label_entry.grid(row=9, column=2, pady=(5, 10), padx=20)
-        self.error_message.grid(row=10, column=1, columnspan=2, pady=5, padx=20)
-        self.add_exercise_btn.grid(row=11, column=1,pady=(10, 0), padx=20)
-        self.redirect_btn.grid(row=11, column=2, pady=(10, 0), padx=20)
+        page_title.grid(row=2, column=1, columnspan=2, pady=(20, 40), padx=20)
+
+        type_title.grid(row=3, column=1, pady=(20, 0), padx=20, sticky="w")
+        self.type_entry.grid(row=4, column=1, pady=(5, 0), padx=20)
+        exercise_name_title.grid(row=3, column=2, pady=(20, 0), padx=20, sticky="w")
+        self.exercise_name_entry.grid(row=4, column=2, pady=(5, 0), padx=20)
+        date_title.grid(row=5, column=1, padx=20, pady=(20, 0), sticky="w")
+        self.date_entry.grid(row=6, column=1, pady=(5, 0), padx=20)
+        time_title.grid(row=5, column=2, pady=(20, 0), padx=20, sticky="w")
+        self.time_entry.grid(row=6, column=2, pady=(5, 0), padx=20)
+        sets_title.grid(row=7, column=1, pady=(20, 0), padx=20, sticky="w")
+        self.sets_entry.grid(row=8, column=1, pady=(5, 0), padx=20)
+        reps_title.grid(row=7, column=2, pady=(20, 0), padx=20, sticky="w")
+        self.reps_entry.grid(row=8, column=2, pady=(5, 0), padx=20)
+        weight_title.grid(row=9, column=1, pady=(20, 0), padx=20, sticky="w")
+        self.weight_entry.grid(row=10, column=1, pady=(5, 10), padx=20)
+        label_title.grid(row=9, column=2, pady=(20, 0), padx=20, sticky="w")
+        self.label_entry.grid(row=10, column=2, pady=(5, 10), padx=20)
+        self.error_message.grid(row=11, column=1, columnspan=2, pady=5, padx=20)
+        self.add_exercise_btn.grid(row=12, column=1,pady=(10, 0), padx=20)
+        self.redirect_btn.grid(row=12, column=2, pady=(10, 0), padx=20)
 
         self.exercise_name_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, self.exercise_name_entry, 30))
         self.date_entry.bind("<Key>", lambda event: custom_date_entry_validation(event, self.date_entry))
