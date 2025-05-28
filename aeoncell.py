@@ -490,7 +490,7 @@ class BaseEntryPage(ctk.CTkFrame):
 
         self.entry_form.grid_propagate(False)
 
-        toggle_entry_type = ctk.CTkLabel(self.entry_form, text="", image=self.single_entry_icon)
+        self.toggle_entry_type_icon = ctk.CTkLabel(self.entry_form, text="", image=self.single_entry_icon)
 
         page_title = ctk.CTkLabel(self.entry_form, text=f"Create New Entry [{self.entry_type.capitalize()}]", font=("", 32, "bold"))
 
@@ -514,7 +514,7 @@ class BaseEntryPage(ctk.CTkFrame):
         self.add_exercise_btn = ctk.CTkButton(self.entry_form, text="Add Exercise", height=48, font=("", 24), command=self.process_entry)
         self.redirect_btn = ctk.CTkButton(self.entry_form, text=f"{self.btn_name}", height=48, font=("", 24), command=self.process_confirmation)
 
-        toggle_entry_type.grid(row=1, column=2, sticky="e")
+        self.toggle_entry_type_icon.grid(row=1, column=2, sticky="e")
 
         page_title.grid(row=2, column=1, columnspan=2, pady=(20, 40), padx=20)
 
@@ -545,6 +545,7 @@ class BaseEntryPage(ctk.CTkFrame):
         self.sets_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, self.sets_entry, 3))
         self.reps_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, self.reps_entry, 3))
         self.weight_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, self.weight_entry, 3))
+        self.toggle_entry_type_icon.bind("<Button-1>", self.toggle_entry_type)
 
     def process_entry(self):
         if self.validate_entry_fields():
@@ -634,10 +635,22 @@ class BaseEntryPage(ctk.CTkFrame):
                 return False
         return True
 
+    # switch between the different types of entry pages via icon
+    def toggle_entry_type(self, event=None):
+        if self.entry_type == "single":
+            self.controller.show_page(SessionEntryPage)
+        elif self.entry_type == "session":
+            self.controller.show_page(SingleEntryPage)
+
 class SingleEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
         BaseEntryPage.__init__(self, parent, controller, "single", "Cancel")
         
+    # override the toggle icon's image
+    def create_widgets(self):
+        super().create_widgets()
+        self.toggle_entry_type_icon.configure(image=self.single_entry_icon)
+
     # ensure user is redirect to the dashboard after completing an singular entry
     def after_entry_submission(self):
         self.controller.show_page(DashboardPage)
@@ -645,6 +658,11 @@ class SingleEntryPage(BaseEntryPage):
 class SessionEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
         BaseEntryPage.__init__(self, parent, controller, "session", "Completed")
+
+    # override the toggle icon's image
+    def create_widgets(self):
+        super().create_widgets()
+        self.toggle_entry_type_icon.configure(image=self.session_entry_icon)
 
     def clear_entry_fields(self):
         for field in [
