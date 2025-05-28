@@ -57,6 +57,8 @@ class Windows(ctk.CTk):
         page = self.pages[selected_page]
         page.tkraise()
 
+        self.center_window(self, 1280, 800)
+
         # field focus config on startup for pages
         if selected_page == RegisterPage:
             self.set_initial_focus(page.username_entry)
@@ -89,6 +91,11 @@ class Windows(ctk.CTk):
     def show_error_message(self, widget, message):
         widget.configure(text=message)
         widget.after(1000, lambda: widget.configure(text=""))
+
+    def center_window(self, widget_frame, win_width, win_height):
+        x = (self.winfo_screenwidth() // 2) - (win_width // 2)
+        y = (self.winfo_screenheight() // 2) - (win_height // 2)
+        return widget_frame.geometry(f"{win_width}x{win_height}+{x}+{y}")
 
 class Navbar(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -545,6 +552,7 @@ class BaseEntryPage(ctk.CTkFrame):
             confirmation_window = ctk.CTkToplevel(self.entry_form)
             confirmation_window.attributes("-topmost", "true")
             confirmation_window.title("Incomplete Entry Detected!")
+            confirmation_window.geometry("600x150")
             message = ctk.CTkLabel(confirmation_window, text="Are you sure you want to leave the page without saving the entry?", font=("", 18))
             confirm_btn = ctk.CTkButton(confirmation_window, text="Confirm", font=("", 24), command=proceed_confirmation)
             cancel_btn = ctk.CTkButton(confirmation_window, text="Cancel", font=("", 24), command=confirmation_window.destroy)
@@ -555,9 +563,11 @@ class BaseEntryPage(ctk.CTkFrame):
             confirmation_window.grid_rowconfigure(0, weight=1)
             confirmation_window.grid_rowconfigure(3, weight=1)
 
-            message.grid(row=1, column=1, columnspan=2)
+            message.grid(row=1, column=1, columnspan=2, pady=(0, 10))
             confirm_btn.grid(row=2, column=1)
             cancel_btn.grid(row=2, column=2)
+
+            self.controller.center_window(confirmation_window, 600, 150)
         else:
             self.controller.show_page(DashboardPage)
 
