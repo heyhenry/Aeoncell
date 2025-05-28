@@ -496,7 +496,7 @@ class BaseEntryPage(ctk.CTkFrame):
         self.reps_entry = ctk.CTkEntry(self.entry_form, font=("", 18))
         weight_title = ctk.CTkLabel(self.entry_form, text="Weight (kg)*:", font=("", 18))
         self.weight_entry = ctk.CTkEntry(self.entry_form, font=("", 18))
-        self.error_message = ctk.CTkLabel(self.entry_form, text_color="red", font=("", 14))
+        self.error_message = ctk.CTkLabel(self.entry_form, text="", text_color="red", font=("", 14))
         self.add_exercise_btn = ctk.CTkButton(self.entry_form, text="Add Exercise", height=48, font=("", 18), command=self.process_entry)
         self.redirect_btn = ctk.CTkButton(self.entry_form, text=f"{self.btn_name}", height=48, font=("", 18), command=self.process_confirmation)
 
@@ -506,26 +506,27 @@ class BaseEntryPage(ctk.CTkFrame):
         self.entry_form.grid_rowconfigure(0, weight=1)
         self.entry_form.grid_rowconfigure(15, weight=1)
 
-        page_title.grid(row=1, column=1, columnspan=2, sticky="w", pady=20, padx=20)
+        page_title.grid(row=1, column=1, columnspan=2, pady=20, padx=20)
 
-        type_title.grid(row=2, column=1, columnspan=2, sticky="w", padx=20)
-        self.type_entry.grid(row=3, column=1, columnspan=2, sticky="w", padx=20)
-        exercise_name_title.grid(row=4, column=1, columnspan=2, sticky="w", padx=20)
-        self.exercise_name_entry.grid(row=5, column=1, columnspan=2, sticky="w", padx=20)
-        date_title.grid(row=6, column=1, sticky="w", padx=20)
-        self.date_entry.grid(row=7, column=1, sticky="w", padx=20)
-        time_title.grid(row=6, column=2, sticky="w", padx=20)
-        self.time_entry.grid(row=7, column=2, sticky="w", padx=20)
-        label_title.grid(row=8, column=1, columnspan=2, sticky="w", padx=20)
-        self.label_entry.grid(row=9, column=1, columnspan=2, sticky="w", padx=20)
-        sets_title.grid(row=10, column=1, sticky="w", padx=20)
-        self.sets_entry.grid(row=11, column=1, sticky="w", padx=20)
-        reps_title.grid(row=10, column=2, sticky="w", padx=20)
-        self.reps_entry.grid(row=11, column=2, sticky="w", padx=20)
-        weight_title.grid(row=12, column=1, columnspan=2, sticky="w", padx=20)
-        self.weight_entry.grid(row=13, column=1, columnspan=2, sticky="w", padx=20)
-        self.add_exercise_btn.grid(row=14, column=1, sticky="w", pady=20, padx=20)
-        self.redirect_btn.grid(row=14, column=2, sticky="w", pady=20, padx=20)
+        type_title.grid(row=2, column=1, columnspan=2, padx=20)
+        self.type_entry.grid(row=3, column=1, columnspan=2, padx=20)
+        exercise_name_title.grid(row=4, column=1, columnspan=2, padx=20)
+        self.exercise_name_entry.grid(row=5, column=1, columnspan=2, padx=20)
+        date_title.grid(row=6, column=1, padx=20)
+        self.date_entry.grid(row=7, column=1, padx=20)
+        time_title.grid(row=6, column=2, padx=20)
+        self.time_entry.grid(row=7, column=2, padx=20)
+        label_title.grid(row=8, column=1, columnspan=2, padx=20)
+        self.label_entry.grid(row=9, column=1, columnspan=2, padx=20)
+        sets_title.grid(row=10, column=1, padx=20)
+        self.sets_entry.grid(row=11, column=1, padx=20)
+        reps_title.grid(row=10, column=2, padx=20)
+        self.reps_entry.grid(row=11, column=2, padx=20)
+        weight_title.grid(row=12, column=1, columnspan=2, padx=20)
+        self.weight_entry.grid(row=13, column=1, columnspan=2, padx=20)
+        self.error_message.grid(row=14, column=1, columnspan=2, padx=20)
+        self.add_exercise_btn.grid(row=15, column=1, pady=20, padx=20)
+        self.redirect_btn.grid(row=15, column=2, pady=20, padx=20)
 
         self.exercise_name_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, self.exercise_name_entry, 30))
         self.date_entry.bind("<Key>", lambda event: custom_date_entry_validation(event, self.date_entry))
@@ -585,29 +586,6 @@ class BaseEntryPage(ctk.CTkFrame):
     def after_entry_submission(self):
         pass
 
-    # flashes an error message in the form
-    def error_display(self, message):
-
-        # component of the error_display function - changes widget settings back to normal after timed period
-        def error_display_revert():
-            self.error_message.configure(text="") # not really needed. more for extra protecc | might remove later after tests
-            self.error_message.grid_forget()
-            self.add_exercise_btn.grid(row=14, column=1)
-            self.redirect_btn.grid(row=14, column=2)
-            self.entry_form.grid_rowconfigure(15, weight=1)
-            self.entry_form.grid_rowconfigure(16, weight=0)
-
-        # display error message and reconfig widgets
-        self.error_message.configure(text=message)
-        self.error_message.grid(row=14, column=1, columnspan=2, sticky="n")
-        self.add_exercise_btn.grid(row=15, column=1)
-        self.redirect_btn.grid(row=15, column=2)
-        self.entry_form.grid_rowconfigure(15, weight=0)
-        self.entry_form.grid_rowconfigure(16, weight=1)
-
-        # revert error message and widgets back to original state/configuration
-        self.after(1000, error_display_revert)
-
     def get_entry_field_data(self):
         return {
             "type": self.type_entry.get(),
@@ -636,13 +614,13 @@ class BaseEntryPage(ctk.CTkFrame):
         data = self.get_entry_field_data()
         for key, val in data.items():
             if key != "label" and len(val) < 1:
-                self.error_display("All * fields need to be filled.")
+                self.controller.show_error_message(self.error_message, "All * fields need to be filled.")
                 return False
             elif key == "date" and len(val) < 10:
-                self.error_display("Date info incomplete. [dd-mm-yyyy]")
+                self.controller.show_error_message(self.error_message, "Date info incomplete. [dd-mm-yyyy]")
                 return False
             elif key == "time" and len(val) < 5:
-                self.error_display("Time info incomplete. [xx:xx]")
+                self.controller.show_error_message(self.error_message, "Time info incomplete. [xx:xx]")
                 return False
         return True
 
