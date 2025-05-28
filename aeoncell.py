@@ -521,15 +521,15 @@ class BaseEntryPage(ctk.CTkFrame):
         if self.validate_entry_fields():
             data = self.get_entry_field_data()
             
-            self.controller.db_cursor.execute("INSERT INTO exercise_entries (type, label, date, time, exercise_name, sets, reps, weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (data["type"], data["label"], data["date"], data["time"], data["exercise_name"], data["sets"], data["reps"], data["weight"]))
+            self.controller.db_cursor.execute("INSERT INTO exercise_entries (entry_type, exercise_label, date, time, exercise_name, sets_count, reps_count, weight_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (data["type"], data["label"], data["date"], data["time"], data["exercise_name"], data["sets"], data["reps"], data["weight"]))
             self.controller.db_connection.commit()
 
             self.clear_entry_fields()
-
-        self.after_entry_submission()
+            self.after_entry_submission()
 
     def process_confirmation(self):
 
+        # confirm prompt to leave midway through filling form
         def proceed_confirmation():
             self.clear_entry_fields()
             confirmation_window.destroy()
@@ -538,7 +538,7 @@ class BaseEntryPage(ctk.CTkFrame):
         incomplete_entry = False
         data = self.get_entry_field_data()
         for key, val in data.items():
-            if key != "type" and len(val) > 0:
+            if key != "type" and len(val) == 0:
                 incomplete_entry = True
         
         if incomplete_entry:
@@ -627,14 +627,15 @@ class BaseEntryPage(ctk.CTkFrame):
 
 class SingleEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
-        BaseEntryPage.__init__(self, parent, controller, "Single", "Cancel")
+        BaseEntryPage.__init__(self, parent, controller, "single", "Cancel")
         
     def after_entry_submission(self):
+        # self.clear_entry_fields()
         self.controller.show_page(DashboardPage)
 
 class SessionEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
-        BaseEntryPage.__init__(self, parent, controller, "Session", "Completed")
+        BaseEntryPage.__init__(self, parent, controller, "session", "Completed")
 
     def clear_entry_fields(self):
         for field in [
