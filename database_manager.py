@@ -47,9 +47,9 @@ class DatabaseManager:
             date TEXT NOT NULL,
             time TEXT NOT NULL,
             exercise_name TEXT NOT NULL,
-            sets_count INTEGER,
-            reps_count INTEGER,
-            weight_value INTEGER
+            sets_count INTEGER NOT NULL,
+            reps_count INTEGER NOT NULL,
+            weight_value INTEGER NOT NULL
         )
         """
         self.db_cursor.execute(create_exercise_table_query)
