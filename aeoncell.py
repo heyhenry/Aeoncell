@@ -41,7 +41,7 @@ class Windows(ctk.CTk):
             self.set_username()
 
         self.pages = {}
-        for P in (RegisterPage, LoginPage, DashboardPage, DiscoverPage, EntryPage, StatsPage, AchievementsPage, SettingsPage):
+        for P in (RegisterPage, LoginPage, DashboardPage, DiscoverPage, SingleEntryPage, SessionEntryPage, StatsPage, AchievementsPage, SettingsPage):
             page = P(container, self)
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
@@ -157,10 +157,10 @@ class Navbar(ctk.CTkFrame):
         self.discover_title.bind("<Button-1>", lambda event: self.controller.show_page(DiscoverPage))
         self.entry_icon.bind("<Enter>", lambda event: self.display_underline(self.entry_icon, self.entry_title))
         self.entry_icon.bind("<Leave>", lambda event: self.undisplay_underline(self.entry_icon, self.entry_title))
-        self.entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(EntryPage))
+        self.entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(SingleEntryPage))
         self.entry_title.bind("<Enter>", lambda event: self.display_underline(self.entry_icon, self.entry_title))
         self.entry_title.bind("<Leave>", lambda event: self.undisplay_underline(self.entry_icon, self.entry_title))
-        self.entry_title.bind("<Button-1>", lambda event: self.controller.show_page(EntryPage))
+        self.entry_title.bind("<Button-1>", lambda event: self.controller.show_page(SingleEntryPage))
         self.stats_icon.bind("<Enter>", lambda event: self.display_underline(self.stats_icon, self.stats_title))
         self.stats_icon.bind("<Leave>", lambda event: self.undisplay_underline(self.stats_icon, self.stats_title))
         self.stats_icon.bind("<Button-1>", lambda event: self.controller.show_page(StatsPage))
@@ -440,7 +440,7 @@ class DiscoverPage(ctk.CTkFrame):
         dashboard_title = ctk.CTkLabel(content, text="This is the Discover Page!", text_color="green")
         dashboard_title.pack()
 
-class EntryPage(ctk.CTkFrame):
+class SingleEntryPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
@@ -458,7 +458,28 @@ class EntryPage(ctk.CTkFrame):
         navbar.grid(row=0, column=0, sticky="nswe")
         content.grid(row=0, column=1, sticky="nswe")
 
-        dashboard_title = ctk.CTkLabel(content, text="This is the Entry Page!", text_color="green")
+        dashboard_title = ctk.CTkLabel(content, text="This is the Single Entry Page!", text_color="green")
+        dashboard_title.pack()
+
+class SessionEntryPage(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        ctk.CTkFrame.__init__(self, parent)
+        self.controller = controller
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=0)
+        self.grid_columnconfigure(1, weight=1)
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        navbar = Navbar(self, self.controller)
+        content = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
+
+        navbar.grid(row=0, column=0, sticky="nswe")
+        content.grid(row=0, column=1, sticky="nswe")
+
+        dashboard_title = ctk.CTkLabel(content, text="This is the Session Entry Page!", text_color="green")
         dashboard_title.pack()
 
 class StatsPage(ctk.CTkFrame):
