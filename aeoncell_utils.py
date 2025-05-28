@@ -52,7 +52,7 @@ def custom_date_entry_validation(event, widget):
     # prevent duplicate insertion in the entry field, as char is inserted and dealt with earlier
     return "break"
 
-def custom_setsreps_entry_validation(event, widget):
+def custom_digit_limit_entry_validation(event, widget, digit_limit):
     if event.keysym == "BackSpace":
         return
     
@@ -65,7 +65,7 @@ def custom_setsreps_entry_validation(event, widget):
     current = widget.get()
     digits_only = [c for c in current if c.isdigit()]
 
-    if len(digits_only) >= 3:
+    if len(digits_only) >= digit_limit:
         return "break"
     
     digits_only.insert(i, char)

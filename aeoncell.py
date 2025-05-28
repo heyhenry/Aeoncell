@@ -473,9 +473,9 @@ class BaseEntryPage(ctk.CTkFrame):
         self.type_entry = ctk.CTkEntry(self.entry_form, textvariable=self.type_var, width=300, font=("", 18), state="readonly")
         exercise_name_title = ctk.CTkLabel(self.entry_form, text="Exercise Name*:", font=("", 18))
         self.exercise_name_entry = ctk.CTkEntry(self.entry_form, width=300, font=("", 18))
-        date_title = ctk.CTkLabel(self.entry_form, text="Date*:", font=("", 18))
+        date_title = ctk.CTkLabel(self.entry_form, text="Date (dd-mm-yyy)*:", font=("", 18))
         self.date_entry = ctk.CTkEntry(self.entry_form, font=("", 18))
-        time_title = ctk.CTkLabel(self.entry_form, text="Time*:", font=("", 18))
+        time_title = ctk.CTkLabel(self.entry_form, text="Time (hh:mm)*:", font=("", 18))
         self.time_entry = ctk.CTkEntry(self.entry_form, font=("", 18))
         label_title = ctk.CTkLabel(self.entry_form, text="Label:", width=300, font=("", 18))
         self.label_entry = ctk.CTkEntry(self.entry_form, width=300, font=("", 18))
@@ -483,7 +483,7 @@ class BaseEntryPage(ctk.CTkFrame):
         self.sets_entry = ctk.CTkEntry(self.entry_form, font=("", 18))
         reps_title = ctk.CTkLabel(self.entry_form, text="Reps*:", font=("", 18))
         self.reps_entry = ctk.CTkEntry(self.entry_form, font=("", 18))
-        weight_title = ctk.CTkLabel(self.entry_form, text="Weight*:", font=("", 18))
+        weight_title = ctk.CTkLabel(self.entry_form, text="Weight (kg)*:", font=("", 18))
         self.weight_entry = ctk.CTkEntry(self.entry_form, font=("", 18))
         self.error_message = ctk.CTkLabel(self.entry_form, text_color="red", font=("", 14))
         self.add_exercise_btn = ctk.CTkButton(self.entry_form, text="Add Exercise", height=48, font=("", 18), command=self.process_entry)
@@ -520,9 +520,9 @@ class BaseEntryPage(ctk.CTkFrame):
         self.date_entry.bind("<Key>", lambda event: custom_date_entry_validation(event, self.date_entry))
         self.time_entry.bind("<Key>", lambda event: custom_time_entry_validation(event, self.time_entry))
         self.label_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, self.label_entry, 100))
-        self.sets_entry.bind("<Key>", lambda event: custom_setsreps_entry_validation(event, self.sets_entry))
-        self.reps_entry.bind("<Key>", lambda event: custom_setsreps_entry_validation(event, self.reps_entry))
-        self.weight_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, self.weight_entry, 20))
+        self.sets_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, self.sets_entry, 3))
+        self.reps_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, self.reps_entry, 3))
+        self.weight_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, self.weight_entry, 5))
 
     def process_entry(self):
         if self.validate_entry_fields():
@@ -639,8 +639,8 @@ class SingleEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
         BaseEntryPage.__init__(self, parent, controller, "single", "Cancel")
         
+    # ensure user is redirect to the dashboard after completing an singular entry
     def after_entry_submission(self):
-        # self.clear_entry_fields()
         self.controller.show_page(DashboardPage)
 
 class SessionEntryPage(BaseEntryPage):

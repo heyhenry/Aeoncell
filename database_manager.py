@@ -45,11 +45,11 @@ class DatabaseManager:
             entry_type TEXT NOT NULL,
             exercise_label TEXT,
             date TEXT NOT NULL,
-            time_spent TEXT NOT NULL,
+            time TEXT NOT NULL,
             exercise_name TEXT NOT NULL,
             sets_count INTEGER,
             reps_count INTEGER,
-            weight_value TEXT
+            weight_value INTEGER
         )
         """
         self.db_cursor.execute(create_exercise_table_query)
