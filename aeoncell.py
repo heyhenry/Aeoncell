@@ -646,8 +646,11 @@ class BaseEntryPage(ctk.CTkFrame):
     # switch between the different types of entry pages via icon
     def toggle_entry_type(self, event=None):
         if self.entry_type == "single":
+            self.clear_entry_fields()
             self.controller.show_page(SessionEntryPage)
         elif self.entry_type == "session":
+            self.clear_entry_fields()
+            self.label_entry.delete(0, ctk.END)
             self.controller.show_page(SingleEntryPage)
 
 class SingleEntryPage(BaseEntryPage):
