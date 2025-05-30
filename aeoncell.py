@@ -165,10 +165,10 @@ class Navbar(ctk.CTkFrame):
         self.discover_title.bind("<Button-1>", lambda event: self.controller.show_page(DiscoverPage))
         self.entry_icon.bind("<Enter>", lambda event: self.display_selection(self.entry_icon, self.entry_title))
         self.entry_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.entry_icon, self.entry_title))
-        self.entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(SessionEntryPage))
+        self.entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(SingleEntryPage))
         self.entry_title.bind("<Enter>", lambda event: self.display_selection(self.entry_icon, self.entry_title))
         self.entry_title.bind("<Leave>", lambda event: self.undisplay_selection(self.entry_icon, self.entry_title))
-        self.entry_title.bind("<Button-1>", lambda event: self.controller.show_page(SessionEntryPage))
+        self.entry_title.bind("<Button-1>", lambda event: self.controller.show_page(SingleEntryPage))
         self.stats_icon.bind("<Enter>", lambda event: self.display_selection(self.stats_icon, self.stats_title))
         self.stats_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.stats_icon, self.stats_title))
         self.stats_icon.bind("<Button-1>", lambda event: self.controller.show_page(StatsPage))
@@ -600,6 +600,9 @@ class BaseEntryPage(ctk.CTkFrame):
             if self.entry_type == "session":
                 self.process_entry()
                 self.label_entry.delete(0, ctk.END)
+            # catch and clear user pressing the cancel button with a valid entry (filled)
+            elif self.entry_type == "single":
+                self.clear_entry_fields()
             self.controller.show_page(DashboardPage)
 
     def after_entry_submission(self):
