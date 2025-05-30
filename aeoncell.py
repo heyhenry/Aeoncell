@@ -165,10 +165,10 @@ class Navbar(ctk.CTkFrame):
         self.discover_title.bind("<Button-1>", lambda event: self.controller.show_page(DiscoverPage))
         self.entry_icon.bind("<Enter>", lambda event: self.display_selection(self.entry_icon, self.entry_title))
         self.entry_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.entry_icon, self.entry_title))
-        self.entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(SingleEntryPage))
+        self.entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(SessionEntryPage))
         self.entry_title.bind("<Enter>", lambda event: self.display_selection(self.entry_icon, self.entry_title))
         self.entry_title.bind("<Leave>", lambda event: self.undisplay_selection(self.entry_icon, self.entry_title))
-        self.entry_title.bind("<Button-1>", lambda event: self.controller.show_page(SingleEntryPage))
+        self.entry_title.bind("<Button-1>", lambda event: self.controller.show_page(SessionEntryPage))
         self.stats_icon.bind("<Enter>", lambda event: self.display_selection(self.stats_icon, self.stats_title))
         self.stats_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.stats_icon, self.stats_title))
         self.stats_icon.bind("<Button-1>", lambda event: self.controller.show_page(StatsPage))
@@ -563,6 +563,9 @@ class BaseEntryPage(ctk.CTkFrame):
         # confirm prompt to leave midway through filling form
         def proceed_confirmation():
             self.clear_entry_fields()
+            # if prematurely exiting session entry page, ensure label is also cleared
+            if self.entry_type == "session":
+                self.label_entry.delete(0, ctk.END)
             confirmation_window.destroy()
             self.controller.show_page(DashboardPage)
 
