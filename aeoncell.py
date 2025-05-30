@@ -46,7 +46,10 @@ class Windows(ctk.CTk):
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
 
-        # self.show_page(SingleEntryPage)
+        # center the app upon startup
+        self.center_window(self, 1280, 800)
+
+        # determine initial page display based on user existence
         if self.db.check_password_exists():
             self.show_page(LoginPage)
         else:
@@ -56,8 +59,6 @@ class Windows(ctk.CTk):
     def show_page(self, selected_page):
         page = self.pages[selected_page]
         page.tkraise()
-
-        self.center_window(self, 1280, 800)
 
         # field focus config on startup for pages
         if selected_page == RegisterPage:
