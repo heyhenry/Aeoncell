@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from PIL import Image, ImageOps, ImageDraw
 
 def custom_date_entry_validation(event, widget):
     # allow normal function of the backspace key
@@ -51,7 +52,7 @@ def custom_date_entry_validation(event, widget):
     # prevent duplicate insertion in the entry field, as char is inserted and dealt with earlier
     return "break"
 
-def custom_setsreps_entry_validation(event, widget):
+def custom_digit_limit_entry_validation(event, widget, digit_limit):
     if event.keysym == "BackSpace":
         return
     
@@ -64,7 +65,7 @@ def custom_setsreps_entry_validation(event, widget):
     current = widget.get()
     digits_only = [c for c in current if c.isdigit()]
 
-    if len(digits_only) >= 3:
+    if len(digits_only) >= digit_limit:
         return "break"
     
     digits_only.insert(i, char)
@@ -120,3 +121,47 @@ def custom_entry_limit_chars(event, widget, limit):
     
     if len(widget.get()) >= limit:
         return "break"
+
+# give an image a rounded frame and saved as its own file
+def generate_round_frame_image(filepath):
+    # create the mask shape
+    size = (256, 256)
+    mask = Image.new('L', size, 0)
+    draw = ImageDraw.Draw(mask)
+    draw.ellipse((0, 0) + size, fill=255)
+
+    # choose an image to be altered
+    selected_image = Image.open(filepath)
+
+    # round the selected image
+    round_image = ImageOps.fit(selected_image, mask.size, centering=(0.5, 0.5))
+    # prioritise the shape over image
+    round_image.putalpha(mask)
+
+    # get the full file path including the current name of the selected image without it's extension
+    dot_pos = filepath.rfind(".")
+    # concatenate and create a new filename in the same filepath with the same general naming convention with a unique marker (i.e. '_rounded')
+    # also, using 'png' image extension as jpg, jpeg is incompatible
+    new_filename = filepath[:dot_pos] + "_rounded.png"
+    # save new rounded image 
+    round_image.save(new_filename)
+
+def generate_round_rectangle_image(filepath):
+    original_image = Image.open(filepath)
+
+    mask = Image.new('L', original_image.size, 0)
+    draw = ImageDraw.Draw(mask)
+    draw.rounded_rectangle(
+        [(0,0), original_image.size],
+        radius=40,
+        fill=255
+    )
+
+    round_image = original_image.copy()
+    round_image.putalpha(mask)
+
+    new_filename = filepath[:filepath.rfind(".")] + "_recround.png"
+    round_image.save(new_filename)
+    print("successfully created image.")
+
+# generate_round_rectangle_image("img/capsule_original.png")
