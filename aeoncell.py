@@ -49,11 +49,12 @@ class Windows(ctk.CTk):
         # center the app upon startup
         self.center_window(self, 1280, 800)
 
+        self.show_page(SettingsPage)
         # determine initial page display based on user existence
-        if self.db.check_password_exists():
-            self.show_page(LoginPage)
-        else:
-            self.show_page(RegisterPage)
+        # if self.db.check_password_exists():
+        #     self.show_page(LoginPage)
+        # else:
+        #     self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -737,6 +738,7 @@ class SettingsPage(ctk.CTkFrame):
         self.controller = controller
 
         self.grid_rowconfigure(0, weight=1)
+
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
@@ -744,13 +746,32 @@ class SettingsPage(ctk.CTkFrame):
 
     def create_widgets(self):
         navbar = Navbar(self, self.controller)
-        content = ctk.CTkFrame(self, fg_color="black", corner_radius=0)
+        content = ctk.CTkScrollableFrame(self, corner_radius=0)
 
         navbar.grid(row=0, column=0, sticky="nswe")
         content.grid(row=0, column=1, sticky="nswe")
 
-        dashboard_title = ctk.CTkLabel(content, text="This is the Settings Page!", text_color="green")
-        dashboard_title.pack()
+        content.grid_rowconfigure(0, weight=1)
+        content.grid_rowconfigure(6, weight=1)
+
+        content.grid_columnconfigure(0, weight=1)
+        content.grid_columnconfigure(2, weight=1)
+
+        page_title = ctk.CTkLabel(content, text="Settings", font=("", 24))
+        page_message = ctk.CTkLabel(content, text="Update your information here", font=("", 14))
+        self.profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=820, height=400)
+        self.monthly_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=820, height=500)
+        self.daily_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=820, height=400)
+
+        self.profile_section.grid_propagate(False)
+        self.monthly_goals_section.grid_propagate(False)
+        self.daily_goals_section.grid_propagate(False)
+
+        page_title.grid(row=1, column=1, pady=(30, 0), sticky="w", padx=(0, 1000))
+        page_message.grid(row=2, column=1, sticky="w")
+        self.profile_section.grid(row=3, column=1, pady=50)
+        self.monthly_goals_section.grid(row=4, column=1)
+        self.daily_goals_section.grid(row=5, column=1)
 
 if __name__ == "__main__":
     app = Windows()
