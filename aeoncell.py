@@ -596,6 +596,10 @@ class BaseEntryPage(ctk.CTkFrame):
 
             self.controller.center_window(confirmation_window, 600, 150)
         else:
+            # if entry is a session and valid, then process the entry accordingly before redirecting to dashboard
+            if self.entry_type == "session":
+                self.process_entry()
+                self.label_entry.delete(0, ctk.END)
             self.controller.show_page(DashboardPage)
 
     def after_entry_submission(self):
