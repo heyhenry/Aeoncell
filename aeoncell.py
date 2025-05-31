@@ -760,7 +760,7 @@ class SettingsPage(ctk.CTkFrame):
         page_title = ctk.CTkLabel(content, text="Settings", font=("", 24))
         page_message = ctk.CTkLabel(content, text="Update your information here", font=("", 14))
         self.profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=820, height=400)
-        self.monthly_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=820, height=500)
+        self.monthly_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=820, height=400)
         self.daily_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=820, height=400)
 
         self.profile_section.grid_propagate(False)
@@ -768,10 +768,36 @@ class SettingsPage(ctk.CTkFrame):
         self.daily_goals_section.grid_propagate(False)
 
         page_title.grid(row=1, column=1, pady=(30, 0), sticky="w", padx=(0, 1000))
-        page_message.grid(row=2, column=1, sticky="w")
-        self.profile_section.grid(row=3, column=1, pady=50)
-        self.monthly_goals_section.grid(row=4, column=1)
-        self.daily_goals_section.grid(row=5, column=1)
+        page_message.grid(row=2, column=1, sticky="w", pady=(0, 50))
+        self.profile_section.grid(row=3, column=1, pady=(0, 50))
+        self.monthly_goals_section.grid(row=4, column=1, pady=(0, 50))
+        self.daily_goals_section.grid(row=5, column=1, pady=(0, 50))
+
+        # profile section
+        monthly_title = ctk.CTkLabel(self.monthly_goals_section, text="Profile Details", font=("", 18))
+        lose_weight_button = ctk.CTkButton(self.monthly_goals_section, text="Lose Weight", height=40, font=("", 18))
+        gain_weight_button = ctk.CTkButton(self.monthly_goals_section, text="Gain Weight", height=40, font=("", 18))
+        monthly_weight_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350)
+        monthly_hydration_title = ctk.CTkLabel(self.monthly_goals_section, text="Hydration (L):", font=("", 18))
+        monthly_hydration_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350)
+        monthly_sleep_title = ctk.CTkLabel(self.monthly_goals_section, text="Sleep (Hrs):", font=("", 18))
+        monthly_sleep_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350)
+        monthly_walking_title = ctk.CTkLabel(self.monthly_goals_section, text="Walking (Steps):", font=("", 18))
+        monthly_walking_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350)
+        monthly_update_button = ctk.CTkButton(self.monthly_goals_section, text="Update Goals", height=60, width=200, font=("", 24))
+
+        monthly_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
+        lose_weight_button.grid(row=1, column=0, padx=(30, 0), pady=(0, 10), sticky="w")
+        gain_weight_button.grid(row=1, column=1, pady=(0, 10), sticky="w")
+        monthly_weight_entry.grid(row=2, column=0, columnspan=2, padx=30)
+        monthly_hydration_title.grid(row=1, column=2, padx=30, sticky="w")
+        monthly_hydration_entry.grid(row=2, column=2, padx=30)
+        monthly_sleep_title.grid(row=3, column=0, columnspan=2, pady=(30, 0), padx=30, sticky="w")
+        monthly_sleep_entry.grid(row=4, column=0, columnspan=2, padx=30)
+        monthly_walking_title.grid(row=3, column=2, padx=30, pady=(30, 0), sticky="w")
+        monthly_walking_entry.grid(row=4, column=2, padx=30)
+        monthly_update_button.grid(row=5, column=0, columnspan=3, pady=(30, 0))
+
 
 if __name__ == "__main__":
     app = Windows()
