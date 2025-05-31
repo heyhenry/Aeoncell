@@ -1,22 +1,28 @@
-import customtkinter as ctk
-from PIL import Image
+# credit: https://www.w3resource.com/python-exercises/tkinter/python-tkinter-dialogs-and-file-handling-exercise-8.php
 
-ctk.set_appearance_mode("Light")
-ctk.set_default_color_theme("themes/lavender.json")
+import customtkinter as ctk
+from tkinter import filedialog
+from PIL import Image, ImageTk
+
+def open_image():
+    file_path = filedialog.askopenfilename(title='Open Image File', filetypes=[('Image Files', '*.png *.jpg *.jpeg')])
+    if file_path:
+        display_image(file_path)
+def display_image(file_path):
+    print(file_path)
+    image = ctk.CTkImage(light_image=Image.open(file_path), dark_image=Image.open(file_path))
+    image_display.configure(image=image)
+    status_label.configure(text=f'Image loaded: {file_path}')
 
 root = ctk.CTk()
-root.geometry("1280x800")
-root.minsize(1280, 800)
+root.title('Simple Image Viewer')
 
-
-bg_frame = ctk.CTkFrame(root)
-bg_frame.pack(fill="both", expand=True)
-
-bg_image = ctk.CTkImage(Image.open("img/cartoon_gym_background.png"), size=(root.winfo_screenwidth(), root.winfo_screenheight()))
-bg_label = ctk.CTkLabel(bg_frame, image=bg_image, text="")
-bg_label.pack(fill="both", expand=True, pady=0, padx=0)
-
-form_win = ctk.CTkFrame(bg_frame, width=500, height=400, border_color="red", border_width=5)
-form_win.place(relx=0.5, rely=0.5, anchor="center")
+text_widget = ctk.CTkTextbox(root, wrap=ctk.WORD, height=15, width=35)
+open_button = ctk.CTkButton(root, text='Open Image', command=open_image)
+open_button.pack(pady=20, padx=10)
+image_display = ctk.CTkLabel(root, text="", image=None)
+image_display.pack(padx=20, pady=20)
+status_label = ctk.CTkLabel(root, text='', padx=20, pady=10)
+status_label.pack()
 
 root.mainloop()
