@@ -19,6 +19,6 @@ Logout Icon created by rikhwan fatih | flaticon.com (27th May 2025): https://www
 Display message when hovering over something with mouse cursor in Python (27th May 2025): https://stackoverflow.com/questions/20399243/display-message-when-hovering-over-something-with-mouse-cursor-in-python
 How do i change my cursor to a hand ONLY when it is hovering over a label? (27th May 2025): https://stackoverflow.com/questions/45184462/how-do-i-change-my-cursor-to-a-hand-only-when-it-is-hovering-over-a-label
 BetterLife | My own github repo (31st May 2025): https://github.com/heyhenry/BetterLife/blob/main/testing_simulations/imaging/image_viewer.py
-Getting every child widget of a Tkinter window (31st May 2025): https://stackoverflow.com/questions/7290071/getting-every-child-widget-of-a-tkinter-window
-How to check type of a Tkinter Widget (31st May 2025): https://coderslegacy.com/python/check-type-of-tkinter-widget/
-Tkinter check if entry box is empty (1st June 2025): https://stackoverflow.com/questions/15455113/tkinter-check-if-entry-box-is-empty
+Getting every child widget of a Tkinter window (1st June 2025): https://stackoverflow.com/questions/7290071/getting-every-child-widget-of-a-tkinter-window
+How to check type of a Tkinter Widget (2nd June 2025): https://coderslegacy.com/python/check-type-of-tkinter-widget/
+Tkinter check if entry box is empty (2nd June 2025): https://stackoverflow.com/questions/15455113/tkinter-check-if-entry-box-is-empty
