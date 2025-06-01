@@ -913,6 +913,14 @@ class SettingsPage(ctk.CTkFrame):
         for widget in self.profile_section.winfo_children():
             if isinstance(widget, ctk.CTkEntry):
                 widget.delete(0, ctk.END)
+        self.profile_image_preview.configure(image=None)
+        # only viable solution after testing -> 
+        # destroy label widget and re-implement due to internal ctk canvas redraw issues with images
+        self.profile_image_preview.destroy()
+        self.profile_image_preview = ctk.CTkLabel(self.profile_section, text="")
+        self.profile_image_preview.grid(row=3, column=0, padx=30)
+        self.profile_image_message.configure(text="")
+        self.profile_section.configure(height=580)
 
         # daily related
         for widget in self.daily_goals_section.winfo_children():
