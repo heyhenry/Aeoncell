@@ -68,13 +68,11 @@ class Windows(ctk.CTk):
         elif selected_page == LoginPage:
             self.set_initial_focus(page.password_entry)
 
-        # temp check if reset_section_fields() function works.
-        if selected_page != SettingsPage:
-            self.pages[SettingsPage].reset_section_fields()
-
+        # only reset settings section fields if user is leaving the Settings page
         if isinstance(self.current_page, SettingsPage) and self.current_page != page:
-            pass
+            self.pages[SettingsPage].reset_section_fields()
     
+        # keep track of the which page was previously selected, prior to selected_page
         self.current_page = page
 
         page.tkraise()
@@ -908,7 +906,6 @@ class SettingsPage(ctk.CTkFrame):
             self.profile_image_message.configure(text="Image Preview")
 
     def reset_section_fields(self):
-        
         # profile related
         for widget in self.profile_section.winfo_children():
             if isinstance(widget, ctk.CTkEntry):
