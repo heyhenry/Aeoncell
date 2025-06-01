@@ -1,10 +1,10 @@
 import customtkinter as ctk
-from tkinter import ttk as btk
+from tkinter import filedialog
 from database_manager import DatabaseManager
 import sqlite3
 from datetime import date
 from aeoncell_utils import *
-from PIL import Image, ImageTk, ImageOps, ImageDraw
+from PIL import Image
 
 ctk.set_appearance_mode("Light")
 ctk.set_default_color_theme("themes/custom_lavender.json")
@@ -777,7 +777,9 @@ class SettingsPage(ctk.CTkFrame):
         profile_title = ctk.CTkLabel(self.profile_section, text="Profile Details", font=("", 18))
         profile_image_title = ctk.CTkLabel(self.profile_section, text="Profile Image:", font=("", 18))
         # temporary widget, will change to one for image browsing..
-        profile_browse_image_select = ctk.CTkButton(self.profile_section, text="Browse Image", height=40, font=("", 18))
+        profile_browse_image_select = ctk.CTkButton(self.profile_section, text="Browse Image", font=("", 18), command=self.browse_new_profile_image)
+        self.profile_image_preview = ctk.CTkLabel(self.profile_section, text="")
+        self.profile_image_message = ctk.CTkLabel(self.profile_section, text="", font=("", 14))
         profile_username_title = ctk.CTkLabel(self.profile_section, text="Username:", font=("", 18))
         profile_username_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350)
         profile_first_name_title = ctk.CTkLabel(self.profile_section, text="First Name:", font=("", 18))
@@ -796,22 +798,24 @@ class SettingsPage(ctk.CTkFrame):
 
         profile_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
         profile_image_title.grid(row=1, column=0, padx=30, sticky="w")
-        profile_browse_image_select.grid(row=2, column=0, padx=30)
+        profile_browse_image_select.grid(row=2, column=0, padx=30, pady=(0, 10))
+        self.profile_image_preview.grid(row=3, column=0, padx=30)
+        self.profile_image_message.grid(row=4, column=0, padx=30)
         profile_username_title.grid(row=1, column=1, padx=30, sticky="w")
         profile_username_entry.grid(row=2, column=1, padx=30)
-        profile_first_name_title.grid(row=3, column=0, padx=30, pady=(30, 0), sticky="w")
-        profile_first_name_entry.grid(row=4, column=0, padx=30)
-        profile_last_name_title.grid(row=3, column=1, padx=30, pady=(30, 0), sticky="w")
-        profile_last_name_entry.grid(row=4, column=1, padx=30)
-        profile_age_title.grid(row=5, column=0, padx=30, pady=(30, 0), sticky="w")
-        profile_age_entry.grid(row=6, column=0, padx=30)
-        profile_height_title.grid(row=5, column=1, padx=30, pady=(30, 0), sticky="w")
-        profile_height_entry.grid(row=6, column=1, padx=30)
-        profile_current_weight_title.grid(row=7, column=0, padx=30, pady=(30, 0), sticky="w")
-        profile_current_weight_entry.grid(row=8, column=0, padx=30)
-        profile_goal_weight_title.grid(row=7, column=1, padx=30, pady=(30, 0), sticky="w")
-        profile_goal_weight_entry.grid(row=8, column=1, padx=30)
-        profile_update_button.grid(row=9, column=0, columnspan=2, pady=(30, 0))
+        profile_first_name_title.grid(row=5, column=0, padx=30, sticky="w")
+        profile_first_name_entry.grid(row=6, column=0, padx=30)
+        profile_last_name_title.grid(row=5, column=1, padx=30, sticky="w")
+        profile_last_name_entry.grid(row=6, column=1, padx=30)
+        profile_age_title.grid(row=7, column=0, padx=30, pady=(30, 0), sticky="w")
+        profile_age_entry.grid(row=8, column=0, padx=30)
+        profile_height_title.grid(row=7, column=1, padx=30, pady=(30, 0), sticky="w")
+        profile_height_entry.grid(row=8, column=1, padx=30)
+        profile_current_weight_title.grid(row=9, column=0, padx=30, pady=(30, 0), sticky="w")
+        profile_current_weight_entry.grid(row=10, column=0, padx=30)
+        profile_goal_weight_title.grid(row=9, column=1, padx=30, pady=(30, 0), sticky="w")
+        profile_goal_weight_entry.grid(row=10, column=1, padx=30)
+        profile_update_button.grid(row=11, column=0, columnspan=2, pady=(30, 0))
 
         # daily section
         daily_title = ctk.CTkLabel(self.daily_goals_section, text="Daily Goals", font=("", 18))
@@ -856,6 +860,18 @@ class SettingsPage(ctk.CTkFrame):
         monthly_walking_title.grid(row=3, column=2, padx=30, pady=(30, 0), sticky="w")
         monthly_walking_entry.grid(row=4, column=2, padx=30, pady=(5, 0))
         monthly_update_button.grid(row=5, column=0, columnspan=3, pady=(30, 0))
+
+    # allow user to search their local storage for a new profile image (.png only)
+    def browse_new_profile_image(self):
+        file_path = filedialog.askopenfilename(title="Select New Profile Image", filetypes=[('Image Files', '*.png')])
+        if file_path:
+            new_profile_image = ctk.CTkImage(light_image=Image.open(file_path), dark_image=Image.open(file_path), size=(128, 128))
+            # increase section box area size to accomodate new widgets
+            self.profile_section.configure(height=700)
+            # showcase the selected image
+            self.profile_image_preview.configure(image=new_profile_image)
+            # display informative message to user about their action
+            self.profile_image_message.configure(text="Image Preview")
 
 if __name__ == "__main__":
     app = Windows()
