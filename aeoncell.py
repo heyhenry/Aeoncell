@@ -766,7 +766,7 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_weight_choice_var = ctk.StringVar()
         self.monthly_weight_var = ctk.StringVar()
         self.monhtly_hydration_var = ctk.StringVar()
-        self.monthy_sleep_var = ctk.StringVar()
+        self.monthly_sleep_var = ctk.StringVar()
         self.monhtly_walking_var = ctk.StringVar()
 
         self.grid_rowconfigure(0, weight=1)
@@ -808,7 +808,6 @@ class SettingsPage(ctk.CTkFrame):
         # profile section
         profile_title = ctk.CTkLabel(self.profile_section, text="Profile Details", font=("", 18))
         profile_image_title = ctk.CTkLabel(self.profile_section, text="Profile Image:", font=("", 18))
-        # temporary widget, will change to one for image browsing..
         profile_browse_image_select = ctk.CTkButton(self.profile_section, text="Browse Image", font=("", 18), command=self.browse_new_profile_image)
         self.profile_image_preview = ctk.CTkLabel(self.profile_section, text="")
         self.profile_image_message = ctk.CTkLabel(self.profile_section, text="", font=("", 14))
@@ -830,7 +829,7 @@ class SettingsPage(ctk.CTkFrame):
 
         profile_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
         profile_image_title.grid(row=1, column=0, padx=30, sticky="w")
-        profile_browse_image_select.grid(row=2, column=0, padx=30, pady=(0, 10))
+        profile_browse_image_select.grid(row=2, column=0, padx=30, pady=10)
         self.profile_image_preview.grid(row=3, column=0, padx=30)
         self.profile_image_message.grid(row=4, column=0, padx=30)
         profile_username_title.grid(row=1, column=1, padx=30, sticky="w")
@@ -876,7 +875,7 @@ class SettingsPage(ctk.CTkFrame):
         monthly_hydration_title = ctk.CTkLabel(self.monthly_goals_section, text="Hydration (L):", font=("", 24))
         monthly_hydration_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monhtly_hydration_var)
         monthly_sleep_title = ctk.CTkLabel(self.monthly_goals_section, text="Sleep (Hrs):", font=("", 24))
-        monthly_sleep_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthy_sleep_var)
+        monthly_sleep_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_sleep_var)
         monthly_walking_title = ctk.CTkLabel(self.monthly_goals_section, text="Walking (Steps):", font=("", 24))
         monthly_walking_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monhtly_walking_var)
         monthly_update_button = ctk.CTkButton(self.monthly_goals_section, text="Update Goals", height=60, width=200, font=("", 24))
