@@ -68,8 +68,9 @@ class Windows(ctk.CTk):
         elif selected_page == LoginPage:
             self.set_initial_focus(page.password_entry)
 
-        # only reset settings section fields if user is leaving the Settings page
-        if isinstance(self.current_page, SettingsPage) and self.current_page != page:
+        # only reset settings section fields if user is leaving the Settings page and there are unsaved changes
+        if isinstance(self.current_page, SettingsPage) and self.current_page != page and self.pages[SettingsPage].has_unsaved_changes():
+            print("triggered a reset")
             self.pages[SettingsPage].reset_section_fields()
     
         # keep track of the which page was previously selected, prior to selected_page
@@ -929,6 +930,30 @@ class SettingsPage(ctk.CTkFrame):
             if isinstance(widget, ctk.CTkEntry):
                 widget.delete(0, ctk.END)
 
+    # check if there are any unsaved changes committed to the sections
+    def has_unsaved_changes(self):
+        # check if an unsaved profile image has been selected
+        if self.profile_image_preview.cget('image') is not None:
+            return True
+
+        # check profile entry fields for unsaved values
+        for widget in self.profile_section.winfo_children():
+            if isinstance(widget, ctk.CTkEntry):     
+                if len(widget.get()) > 0:
+                    return True
+        
+        # check daily goal section entry fields for unsaved values
+        for widget in self.daily_goals_section.winfo_children():
+            if isinstance(widget, ctk.CTkEntry):
+                if len(widget.get()) > 0:
+                    return True
+                
+        # check monthly goal section entry fields for unsaved values
+        for widget in self.monthly_goals_section.winfo_children():
+                if isinstance(widget, ctk.CTkEntry):
+                    if len(widget.get()) > 0:
+                        return True
+            
 if __name__ == "__main__":
     app = Windows()
     app.mainloop()
