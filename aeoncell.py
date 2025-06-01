@@ -46,6 +46,8 @@ class Windows(ctk.CTk):
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
 
+        self.current_page = None
+
         # center the app upon startup
         self.center_window(self, 1280, 800)
 
@@ -59,13 +61,21 @@ class Windows(ctk.CTk):
     # display the selected page to the user
     def show_page(self, selected_page):
         page = self.pages[selected_page]
-        page.tkraise()
 
         # field focus config on startup for pages
         if selected_page == RegisterPage:
             self.set_initial_focus(page.username_entry)
         elif selected_page == LoginPage:
             self.set_initial_focus(page.password_entry)
+
+        if isinstance(self.current_page, SettingsPage) and self.current_page != page:
+            pass
+    
+        self.current_page = page
+
+        page.tkraise()
+        
+        
 
         # loading logs for dashboard latest 25 entries display
 
@@ -737,6 +747,26 @@ class SettingsPage(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
 
+        # profile related vars
+        self.profile_username_var = ctk.StringVar()
+        self.profile_first_name_var = ctk.StringVar()
+        self.profile_last_name_var = ctk.StringVar()
+        self.profile_age_var = ctk.StringVar()
+        self.profile_height_var = ctk.StringVar()
+        self.profile_current_weight_var = ctk.StringVar()
+        self.profile_goal_weight_var = ctk.StringVar()
+
+        # daily related vars
+        self.daily_sleep_var = ctk.StringVar()
+        self.daily_walking_var = ctk.StringVar()
+        self.daily_hydration_var = ctk.StringVar()
+        
+        # monthly related vars
+        self.monthly_weight_choice_var = ctk.StringVar()
+        self.monhtly_hyration_var = ctk.StringVar()
+        self.monthy_sleep_var = ctk.StringVar()
+        self.monhtly_walking_var = ctk.StringVar()
+
         self.grid_rowconfigure(0, weight=1)
 
         self.grid_columnconfigure(0, weight=0)
@@ -865,6 +895,7 @@ class SettingsPage(ctk.CTkFrame):
     def browse_new_profile_image(self):
         file_path = filedialog.askopenfilename(title="Select New Profile Image", filetypes=[('Image Files', '*.png')])
         if file_path:
+            # newly selected profile image storage
             new_profile_image = ctk.CTkImage(light_image=Image.open(file_path), dark_image=Image.open(file_path), size=(128, 128))
             # increase section box area size to accomodate new widgets
             self.profile_section.configure(height=700)
@@ -872,6 +903,11 @@ class SettingsPage(ctk.CTkFrame):
             self.profile_image_preview.configure(image=new_profile_image)
             # display informative message to user about their action
             self.profile_image_message.configure(text="Image Preview")
+
+    def reset_section_fields(self):
+        pass
+
+    
 
 if __name__ == "__main__":
     app = Windows()
