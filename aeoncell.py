@@ -68,6 +68,10 @@ class Windows(ctk.CTk):
         elif selected_page == LoginPage:
             self.set_initial_focus(page.password_entry)
 
+        # temp check if reset_section_fields() function works.
+        if selected_page != SettingsPage:
+            self.pages[SettingsPage].reset_section_fields()
+
         if isinstance(self.current_page, SettingsPage) and self.current_page != page:
             pass
     
@@ -75,8 +79,6 @@ class Windows(ctk.CTk):
 
         page.tkraise()
         
-        
-
         # loading logs for dashboard latest 25 entries display
 
     # set cursor focus to chosen field
@@ -906,9 +908,21 @@ class SettingsPage(ctk.CTkFrame):
             self.profile_image_message.configure(text="Image Preview")
 
     def reset_section_fields(self):
-        pass
+        
+        # profile related
+        for widget in self.profile_section.winfo_children():
+            if isinstance(widget, ctk.CTkEntry):
+                widget.delete(0, ctk.END)
 
-    
+        # daily related
+        for widget in self.daily_goals_section.winfo_children():
+            if isinstance(widget, ctk.CTkEntry):
+                widget.delete(0, ctk.END)
+
+        # monthly related
+        for widget in self.monthly_goals_section.winfo_children():
+            if isinstance(widget, ctk.CTkEntry):
+                widget.delete(0, ctk.END)
 
 if __name__ == "__main__":
     app = Windows()
