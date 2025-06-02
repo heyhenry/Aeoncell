@@ -907,14 +907,14 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_goal_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.profile_goal_weight_entry, 3))
 
         # daily related binds
-        self.daily_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.daily_sleep_entry, None))
+        self.daily_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.daily_sleep_entry))
         self.daily_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.daily_walking_entry, None))
-        self.daily_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.daily_hydration_entry, None))
+        self.daily_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.daily_hydration_entry))
 
         # monthly related binds
         self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
-        self.monthly_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_hydration_entry, None))
-        self.monthly_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_sleep_entry, None))
+        self.monthly_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_hydration_entry))
+        self.monthly_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_sleep_entry))
         self.monthly_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_walking_entry, None))
 
     # allow user to search their local storage for a new profile image (.png only)
