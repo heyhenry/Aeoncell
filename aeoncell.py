@@ -51,12 +51,12 @@ class Windows(ctk.CTk):
         # center the app upon startup
         self.center_window(self, 1280, 800)
 
-        # self.show_page(SettingsPage)
+        self.show_page(SettingsPage)
         # determine initial page display based on user existence
-        if self.db.check_password_exists():
-            self.show_page(LoginPage)
-        else:
-            self.show_page(RegisterPage)
+        # if self.db.check_password_exists():
+        #     self.show_page(LoginPage)
+        # else:
+        #     self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -856,20 +856,20 @@ class SettingsPage(ctk.CTkFrame):
         # daily section
         daily_title = ctk.CTkLabel(self.daily_goals_section, text="Daily Goals", font=("", 18))
         daily_sleep_title = ctk.CTkLabel(self.daily_goals_section, text="Sleep (Hrs):", font=("", 24))
-        daily_sleep_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_sleep_var)
+        self.daily_sleep_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_sleep_var)
         daily_walking_title = ctk.CTkLabel(self.daily_goals_section, text="Walking (Steps):", font=("", 24))
-        daily_walking_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_walking_var)
+        self.daily_walking_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_walking_var)
         daily_hydration_title = ctk.CTkLabel(self.daily_goals_section, text="Hydration (L):", font=("", 24))
-        daily_hydration_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_hydration_var)
+        self.daily_hydration_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_hydration_var)
         daily_update_button = ctk.CTkButton(self.daily_goals_section, text="Update Goals", height=60, width=200, font=("", 24))
 
         daily_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
         daily_sleep_title.grid(row=1, column=0, padx=30, sticky="w")
-        daily_sleep_entry.grid(row=2, column=0, padx=30, pady=(5, 0))
+        self.daily_sleep_entry.grid(row=2, column=0, padx=30, pady=(5, 0))
         daily_walking_title.grid(row=1, column=1, padx=30, sticky="w")
-        daily_walking_entry.grid(row=2, column=1, padx=30, pady=(5, 0))
+        self.daily_walking_entry.grid(row=2, column=1, padx=30, pady=(5, 0))
         daily_hydration_title.grid(row=3, column=0, padx=30, pady=(30, 0), sticky="w")
-        daily_hydration_entry.grid(row=4, column=0, padx=30, pady=(5, 0))
+        self.daily_hydration_entry.grid(row=4, column=0, padx=30, pady=(5, 0))
         daily_update_button.grid(row=5, column=0, columnspan=2, pady=(30, 0))
 
         # monthly section
@@ -897,6 +897,7 @@ class SettingsPage(ctk.CTkFrame):
         monthly_walking_entry.grid(row=4, column=2, padx=30, pady=(5, 0))
         monthly_update_button.grid(row=5, column=0, columnspan=3, pady=(30, 0))
 
+        # profile related binds
         self.profile_username_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_username_entry, None))
         self.profile_first_name_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_first_name_entry, None))
         self.profile_last_name_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_last_name_entry, None))
@@ -904,6 +905,13 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_height_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.profile_height_entry, 3))
         self.profile_current_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.profile_current_weight_entry, 3))
         self.profile_goal_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.profile_goal_weight_entry, 3))
+
+        # daily related binds
+        self.daily_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.daily_sleep_entry, None))
+        self.daily_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.daily_walking_entry, None))
+        self.daily_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.daily_hydration_entry, None))
+
+        # monthly related binds
 
     # allow user to search their local storage for a new profile image (.png only)
     def browse_new_profile_image(self):
