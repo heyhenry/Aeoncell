@@ -876,25 +876,25 @@ class SettingsPage(ctk.CTkFrame):
         monthly_title = ctk.CTkLabel(self.monthly_goals_section, text="Monthly Goals", font=("", 18))
         lose_weight_button = ctk.CTkButton(self.monthly_goals_section, text="Lose Weight", height=40, font=("", 18))
         gain_weight_button = ctk.CTkButton(self.monthly_goals_section, text="Gain Weight", height=40, font=("", 18))
-        monthly_weight_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_weight_var)
+        self.monthly_weight_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_weight_var)
         monthly_hydration_title = ctk.CTkLabel(self.monthly_goals_section, text="Hydration (L):", font=("", 24))
-        monthly_hydration_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monhtly_hydration_var)
+        self.monthly_hydration_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monhtly_hydration_var)
         monthly_sleep_title = ctk.CTkLabel(self.monthly_goals_section, text="Sleep (Hrs):", font=("", 24))
-        monthly_sleep_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_sleep_var)
+        self.monthly_sleep_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_sleep_var)
         monthly_walking_title = ctk.CTkLabel(self.monthly_goals_section, text="Walking (Steps):", font=("", 24))
-        monthly_walking_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monhtly_walking_var)
+        self.monthly_walking_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monhtly_walking_var)
         monthly_update_button = ctk.CTkButton(self.monthly_goals_section, text="Update Goals", height=60, width=200, font=("", 24))
 
         monthly_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
         lose_weight_button.grid(row=1, column=0, padx=(30, 0), pady=(0, 10), sticky="nw")
         gain_weight_button.grid(row=1, column=1, pady=(0, 10), sticky="w")
-        monthly_weight_entry.grid(row=2, column=0, columnspan=2, padx=30)
+        self.monthly_weight_entry.grid(row=2, column=0, columnspan=2, padx=30)
         monthly_hydration_title.grid(row=1, column=2, padx=30, pady=(0, 10), sticky="w")
-        monthly_hydration_entry.grid(row=2, column=2, padx=30)
+        self.monthly_hydration_entry.grid(row=2, column=2, padx=30)
         monthly_sleep_title.grid(row=3, column=0, columnspan=2, padx=30, pady=(30, 0), sticky="w")
-        monthly_sleep_entry.grid(row=4, column=0, columnspan=2, padx=30, pady=(5, 0))
+        self.monthly_sleep_entry.grid(row=4, column=0, columnspan=2, padx=30, pady=(5, 0))
         monthly_walking_title.grid(row=3, column=2, padx=30, pady=(30, 0), sticky="w")
-        monthly_walking_entry.grid(row=4, column=2, padx=30, pady=(5, 0))
+        self.monthly_walking_entry.grid(row=4, column=2, padx=30, pady=(5, 0))
         monthly_update_button.grid(row=5, column=0, columnspan=3, pady=(30, 0))
 
         # profile related binds
@@ -912,6 +912,10 @@ class SettingsPage(ctk.CTkFrame):
         self.daily_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.daily_hydration_entry, None))
 
         # monthly related binds
+        self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
+        self.monthly_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_hydration_entry, None))
+        self.monthly_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_sleep_entry, None))
+        self.monthly_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_walking_entry, None))
 
     # allow user to search their local storage for a new profile image (.png only)
     def browse_new_profile_image(self):
