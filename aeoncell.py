@@ -71,11 +71,11 @@ class Windows(ctk.CTk):
             self.db_cursor.execute("SELECT username FROM profile_details WHERE rowid=1")
             result = self.db_cursor.fetchone()
             result = result[0]
-            page.profile_username_var.set(result)
+            if page.profile_username_var.get() != result:
+                page.profile_username_var.set(result)
 
         # only reset settings section fields if user is leaving the Settings page and there are unsaved changes
         if isinstance(self.current_page, SettingsPage) and self.current_page != page and self.pages[SettingsPage].has_unsaved_changes():
-            print("triggered a reset")
             self.pages[SettingsPage].reset_section_fields()
     
         # keep track of the which page was previously selected, prior to selected_page
@@ -817,7 +817,7 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_image_preview = ctk.CTkLabel(self.profile_section, text="")
         self.profile_image_message = ctk.CTkLabel(self.profile_section, text="", font=("", 14))
         profile_username_title = ctk.CTkLabel(self.profile_section, text="Username:", font=("", 18))
-        profile_username_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_username_var)
+        self.profile_username_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_username_var)
         profile_first_name_title = ctk.CTkLabel(self.profile_section, text="First Name:", font=("", 18))
         profile_first_name_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_first_name_var)
         profile_last_name_title = ctk.CTkLabel(self.profile_section, text="Last Name:", font=("", 18))
@@ -838,7 +838,7 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_image_preview.grid(row=3, column=0, padx=30)
         self.profile_image_message.grid(row=4, column=0, padx=30)
         profile_username_title.grid(row=1, column=1, padx=30, sticky="w")
-        profile_username_entry.grid(row=2, column=1, padx=30)
+        self.profile_username_entry.grid(row=2, column=1, padx=30)
         profile_first_name_title.grid(row=5, column=0, padx=30, sticky="w")
         profile_first_name_entry.grid(row=6, column=0, padx=30)
         profile_last_name_title.grid(row=5, column=1, padx=30, sticky="w")
@@ -913,7 +913,7 @@ class SettingsPage(ctk.CTkFrame):
     def reset_section_fields(self):
         # profile related
         for widget in self.profile_section.winfo_children():
-            if isinstance(widget, ctk.CTkEntry):
+            if isinstance(widget, ctk.CTkEntry) and widget != self.profile_username_entry:
                 widget.delete(0, ctk.END)
         self.profile_image_preview.configure(image=None)
         # only viable solution after testing -> 
@@ -942,7 +942,7 @@ class SettingsPage(ctk.CTkFrame):
 
         # check profile entry fields for unsaved values
         for widget in self.profile_section.winfo_children():
-            if isinstance(widget, ctk.CTkEntry):     
+            if isinstance(widget, ctk.CTkEntry) and widget != self.profile_username_entry:     
                 if len(widget.get()) > 0:
                     return True
         
