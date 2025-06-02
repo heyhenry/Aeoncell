@@ -122,6 +122,16 @@ def custom_entry_limit_chars(event, widget, limit):
     if len(widget.get()) >= limit:
         return "break"
 
+def custom_word_only_entry_validation(event, widget):
+    if event.keysym == "BackSpace":
+        return
+    
+    char = event.char
+
+    # if next input value is not a letter, then ignore
+    if not char.isalpha():
+        return "break"
+
 # give an image a rounded frame and saved as its own file
 def generate_round_frame_image(filepath):
     # create the mask shape
