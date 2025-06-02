@@ -147,13 +147,9 @@ def custom_digit_only_entry_validation(event, widget, digit_limit):
     if not char.isdigit():
         return "break"
     
-def custom_float_only_entry_validation(event, widget, position_limit):
+def custom_float_only_entry_validation(event, widget):
     if event.keysym == "BackSpace":
         return
-    
-    # if there is a limit set and said limit has been met, ignore rest of the incoming input
-    if position_limit is not None and len(widget.get()) >= position_limit:
-        return "break"
     
     char = event.char
 
