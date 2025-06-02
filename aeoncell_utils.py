@@ -122,7 +122,7 @@ def custom_entry_limit_chars(event, widget, limit):
     if len(widget.get()) >= limit:
         return "break"
 
-def custom_word_only_entry_validation(event, widget):
+def custom_word_only_entry_validation(event=None):
     if event.keysym == "BackSpace":
         return
     
