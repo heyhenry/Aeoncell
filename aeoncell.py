@@ -51,12 +51,12 @@ class Windows(ctk.CTk):
         # center the app upon startup
         self.center_window(self, 1280, 800)
 
-        self.show_page(SettingsPage)
+        # self.show_page(SettingsPage)
         # determine initial page display based on user existence
-        # if self.db.check_password_exists():
-        #     self.show_page(LoginPage)
-        # else:
-        #     self.show_page(RegisterPage)
+        if self.db.check_password_exists():
+            self.show_page(LoginPage)
+        else:
+            self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -67,6 +67,11 @@ class Windows(ctk.CTk):
             self.set_initial_focus(page.username_entry)
         elif selected_page == LoginPage:
             self.set_initial_focus(page.password_entry)
+        elif selected_page == SettingsPage:
+            self.db_cursor.execute("SELECT username FROM profile_details WHERE rowid=1")
+            result = self.db_cursor.fetchone()
+            result = result[0]
+            page.profile_username_var.set(result)
 
         # only reset settings section fields if user is leaving the Settings page and there are unsaved changes
         if isinstance(self.current_page, SettingsPage) and self.current_page != page and self.pages[SettingsPage].has_unsaved_changes():
