@@ -8,6 +8,7 @@ class DatabaseManager:
         self.db_connection = sqlite3.connect(self.db)
         self.db_cursor = self.db_connection.cursor()
         self.create_authentication_table()
+        self.create_profile_table()
         self.create_exercise_table()
         self.create_steps_table()
         self.create_hydration_table()
@@ -84,5 +85,24 @@ class DatabaseManager:
         """
         self.db_cursor.execute(create_sleep_table_query)
 
-
+    def create_profile_table(self):
+        create_profile_table_query = """
+        CREATE TABLE IF NOT EXISTS profile_details (
+            username TEXT NOT NULL,
+            first_name TEXT,
+            last_name TEXT,
+            age INTEGER,
+            height INTEGER
+            current_weight INTEGER,
+            goal_weight INTEGER,
+            daily_sleep_goal FLOAT,
+            daily_steps_goal INTEGER,
+            daily_hydration_goal FLOAT,
+            monthly_weight_goal TEXT,
+            monthly_hydration_goal FLOAT,
+            monthly_sleep_goal FLOAT,
+            monthly_steps_goal INTEGER
+        )
+        """
+        self.db_cursor.execute(create_profile_table_query)
 
