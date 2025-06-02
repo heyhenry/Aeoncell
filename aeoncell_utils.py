@@ -146,6 +146,28 @@ def custom_digit_only_entry_validation(event, widget, digit_limit):
 
     if not char.isdigit():
         return "break"
+    
+def custom_float_only_entry_validation(event, widget, position_limit):
+    if event.keysym == "BackSpace":
+        return
+    
+    # if there is a limit set and said limit has been met, ignore rest of the incoming input
+    if position_limit is not None and len(widget.get()) >= position_limit:
+        return "break"
+    
+    char = event.char
+
+    # if the input is not a digit or ".", ignore
+    if not (char.isdigit() or char == "."):
+        return "break"
+
+    # if the user attempts to input a "." as the first char, ignore (ex. 12.2 <-- valid, ex. .2 <-- invalid)
+    if len(widget.get()) < 2 and char == ".":
+        return "break" 
+    
+    # if there already is a ".", ignore any future "." 
+    if char == "." and "." in widget.get():
+        return "break"
 
 # give an image a rounded frame and saved as its own file
 def generate_round_frame_image(filepath):
