@@ -168,6 +168,14 @@ def custom_float_only_entry_validation(event, widget, position_limit):
     # if there already is a ".", ignore any future "." 
     if char == "." and "." in widget.get():
         return "break"
+    
+    # ignore incoming inputs if there is already 2 digits post the "." placement
+    if "." in widget.get():
+        # when the index of the "."
+        dot_index = widget.get().rfind(".")
+        # using the found index, find out the length of digits after the "."
+        if len(widget.get()[dot_index+1:]) == 2:
+            return "break"
 
 # give an image a rounded frame and saved as its own file
 def generate_round_frame_image(filepath):
