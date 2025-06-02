@@ -134,6 +134,18 @@ def custom_word_only_entry_validation(event, widget, letter_limit):
     # if next input value is not a letter, then ignore
     if not char.isalpha():
         return "break"
+    
+def custom_digit_only_entry_validation(event, widget, digit_limit):
+    if event.keysym == "BackSpace":
+        return
+    
+    if digit_limit is not None and len(widget.get()) >= digit_limit:
+        return "break"
+    
+    char = event.char
+
+    if not char.isdigit():
+        return "break"
 
 # give an image a rounded frame and saved as its own file
 def generate_round_frame_image(filepath):
