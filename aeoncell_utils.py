@@ -162,8 +162,8 @@ def custom_float_only_entry_validation(event, widget, position_limit):
         return "break"
 
     # if the user attempts to input a "." as the first char, ignore (ex. 12.2 <-- valid, ex. .2 <-- invalid)
-    if len(widget.get()) < 2 and char == ".":
-        return "break" 
+    if char == "." and widget.index("insert") == 0:
+        return "break"
     
     # if there already is a ".", ignore any future "." 
     if char == "." and "." in widget.get():
