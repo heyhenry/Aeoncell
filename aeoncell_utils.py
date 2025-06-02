@@ -52,33 +52,6 @@ def custom_date_entry_validation(event, widget):
     # prevent duplicate insertion in the entry field, as char is inserted and dealt with earlier
     return "break"
 
-def custom_digit_limit_entry_validation(event, widget, digit_limit):
-    if event.keysym == "BackSpace":
-        return
-    
-    i = widget.index("insert")
-    char = event.char
-
-    if not char.isdigit():
-        return "break"
-    
-    current = widget.get()
-    digits_only = [c for c in current if c.isdigit()]
-
-    if len(digits_only) >= digit_limit:
-        return "break"
-    
-    digits_only.insert(i, char)
-
-    formatted_string = "".join(digits_only)
-
-    widget.delete(0, ctk.END)
-    widget.insert(0, formatted_string)
-
-    widget.icursor(min(i + 1, len(formatted_string)))
-
-    return "break"
-    
 def custom_time_entry_validation(event, widget):
     if event.keysym == "BackSpace":
         return
@@ -115,6 +88,33 @@ def custom_time_entry_validation(event, widget):
 
     return "break"
 
+def custom_digit_limit_entry_validation(event, widget, digit_limit):
+    if event.keysym == "BackSpace":
+        return
+    
+    i = widget.index("insert")
+    char = event.char
+
+    if not char.isdigit():
+        return "break"
+    
+    current = widget.get()
+    digits_only = [c for c in current if c.isdigit()]
+
+    if len(digits_only) >= digit_limit:
+        return "break"
+    
+    digits_only.insert(i, char)
+
+    formatted_string = "".join(digits_only)
+
+    widget.delete(0, ctk.END)
+    widget.insert(0, formatted_string)
+
+    widget.icursor(min(i + 1, len(formatted_string)))
+
+    return "break"
+
 def custom_entry_limit_chars(event, widget, limit):
     if event.keysym == "BackSpace":
         return 
@@ -122,10 +122,13 @@ def custom_entry_limit_chars(event, widget, limit):
     if len(widget.get()) >= limit:
         return "break"
 
-def custom_word_only_entry_validation(event=None):
+def custom_word_only_entry_validation(event, widget, letter_limit):
     if event.keysym == "BackSpace":
         return
     
+    if letter_limit is not None and len(widget.get()) >= letter_limit:
+        return "break"
+
     char = event.char
 
     # if next input value is not a letter, then ignore
