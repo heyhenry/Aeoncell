@@ -21,8 +21,8 @@ class DatabaseManager:
     def create_username_and_password(self, username, password):
         hashed_password = self.ph.hash(password)
         self.db_cursor.execute("INSERT INTO authentication (username, hashed_password) values (?, ?)", (username, hashed_password))
-        # update the profile with user given username upon registration
-        self.db_cursor.execute("UPDATE profile_details SET username = ? WHERE rowid=1", (username,))
+        # create the initial profile details and store the given username
+        self.db_cursor.execute("INSERT INTO profile_details (username) values (?)", (username,))
         self.db_connection.commit()
 
     def verify_password(self, given_password):
@@ -107,9 +107,3 @@ class DatabaseManager:
         )
         """
         self.db_cursor.execute(create_profile_table_query)
-        create_initial_row_query = """
-        INSERT INTO profile_details (username)
-        SELECT 'default_user'
-        WHERE NOT EXISTS (SELECT 1 FROM profile_details);
-        """
-        self.db_cursor.execute(create_initial_row_query)

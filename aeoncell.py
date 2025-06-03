@@ -51,12 +51,12 @@ class Windows(ctk.CTk):
         # center the app upon startup
         self.center_window(self, 1280, 800)
 
-        self.show_page(SettingsPage)
-        # determine initial page display based on user existence
-        # if self.db.check_password_exists():
-        #     self.show_page(LoginPage)
-        # else:
-        #     self.show_page(RegisterPage)
+        # self.show_page(SettingsPage)
+        # determine initial page display based on user having a password (i.e. guaranteed account registration)
+        if self.db.check_password_exists():
+            self.show_page(LoginPage)
+        else:
+            self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -977,7 +977,10 @@ class SettingsPage(ctk.CTkFrame):
                 if isinstance(widget, ctk.CTkEntry):
                     if len(widget.get()) > 0:
                         return True
-            
+
+    def process_daily_goals(self):
+        pass
+
 if __name__ == "__main__":
     app = Windows()
     app.mainloop()
