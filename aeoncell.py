@@ -990,6 +990,9 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_cursor.execute(update_daily_goals_query, (self.daily_sleep_var.get(), self.daily_walking_var.get(), self.daily_hydration_var.get()))
         self.controller.db_connection.commit()
 
+        # THERE NEEDS TO BE A NOTICE TO LET THE USER KNOW THE UPDATE WENT THROUGH.. MAKE SURE THE INFORMATION STAYS AS WELL? 
+        # MAYBE VIA INSERT BASED ON WHAT IS SAVED IN DB ELSE INSERT NO DATA
+
 if __name__ == "__main__":
     app = Windows()
     app.mainloop()
