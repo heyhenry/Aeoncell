@@ -861,7 +861,7 @@ class SettingsPage(ctk.CTkFrame):
         self.daily_walking_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_walking_var)
         daily_hydration_title = ctk.CTkLabel(self.daily_goals_section, text="Hydration (L):", font=("", 24))
         self.daily_hydration_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_hydration_var)
-        daily_update_button = ctk.CTkButton(self.daily_goals_section, text="Update Goals", height=60, width=200, font=("", 24))
+        daily_update_button = ctk.CTkButton(self.daily_goals_section, text="Update Goals", height=60, width=200, font=("", 24), command=self.process_daily_goals)
 
         daily_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
         daily_sleep_title.grid(row=1, column=0, padx=30, sticky="w")
@@ -978,8 +978,17 @@ class SettingsPage(ctk.CTkFrame):
                     if len(widget.get()) > 0:
                         return True
 
+    # updates the daily goals set by user
     def process_daily_goals(self):
-        pass
+        update_daily_goals_query = """
+        UPDATE profile_details
+        SET daily_sleep_goal = ?,
+        daily_steps_goal = ?,
+        daily_hydration_goal = ?
+        WHERE rowid=1
+        """
+        self.controller.db_cursor.execute(update_daily_goals_query, (self.daily_sleep_var.get(), self.daily_walking_var.get(), self.daily_hydration_var.get()))
+        self.controller.db_connection.commit()
 
 if __name__ == "__main__":
     app = Windows()
