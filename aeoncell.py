@@ -796,9 +796,9 @@ class SettingsPage(ctk.CTkFrame):
 
         page_title = ctk.CTkLabel(content, text="Settings", font=("", 24))
         page_message = ctk.CTkLabel(content, text="Update your information here", font=("", 14))
-        self.profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=900, height=580)
-        self.daily_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=900, height=380)
-        self.monthly_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=900, height=400)
+        self.profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=900, height=650)
+        self.daily_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=900, height=430)
+        self.monthly_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=900, height=450)
 
         self.profile_section.grid_propagate(False)
         self.daily_goals_section.grid_propagate(False)
@@ -830,6 +830,7 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_current_weight_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_current_weight_var)
         profile_goal_weight_title = ctk.CTkLabel(self.profile_section, text="Goal Weight:", font=("", 18))
         self.profile_goal_weight_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_goal_weight_var)
+        self.profile_action_message = ctk.CTkLabel(self.profile_section, text="Successfully Updated Profile.", font=("", 18))
         profile_update_button = ctk.CTkButton(self.profile_section, height=60, width=200, text="Update Profile", font=("", 24))
 
         profile_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
@@ -851,7 +852,8 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_current_weight_entry.grid(row=10, column=0, padx=30)
         profile_goal_weight_title.grid(row=9, column=1, padx=30, pady=(30, 0), sticky="w")
         self.profile_goal_weight_entry.grid(row=10, column=1, padx=30)
-        profile_update_button.grid(row=11, column=0, columnspan=2, pady=(30, 0))
+        self.profile_action_message.grid(row=11, column=0, columnspan=2, pady=20)
+        profile_update_button.grid(row=12, column=0, columnspan=2)
 
         # daily section
         daily_title = ctk.CTkLabel(self.daily_goals_section, text="Daily Goals", font=("", 18))
@@ -861,6 +863,7 @@ class SettingsPage(ctk.CTkFrame):
         self.daily_walking_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_walking_var)
         daily_hydration_title = ctk.CTkLabel(self.daily_goals_section, text="Hydration (L):", font=("", 24))
         self.daily_hydration_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_hydration_var)
+        self.daily_action_message = ctk.CTkLabel(self.daily_goals_section, text="Successfully Updated Goals.", font=("", 18))
         daily_update_button = ctk.CTkButton(self.daily_goals_section, text="Update Goals", height=60, width=200, font=("", 24), command=self.process_daily_goals)
 
         daily_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
@@ -870,7 +873,8 @@ class SettingsPage(ctk.CTkFrame):
         self.daily_walking_entry.grid(row=2, column=1, padx=30, pady=(5, 0))
         daily_hydration_title.grid(row=3, column=0, padx=30, pady=(30, 0), sticky="w")
         self.daily_hydration_entry.grid(row=4, column=0, padx=30, pady=(5, 0))
-        daily_update_button.grid(row=5, column=0, columnspan=2, pady=(30, 0))
+        self.daily_action_message.grid(row=5, column=0, columnspan=2, pady=20)
+        daily_update_button.grid(row=6, column=0, columnspan=2)
 
         # monthly section
         monthly_title = ctk.CTkLabel(self.monthly_goals_section, text="Monthly Goals", font=("", 18))
@@ -883,6 +887,7 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_sleep_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_sleep_var)
         monthly_walking_title = ctk.CTkLabel(self.monthly_goals_section, text="Walking (Steps):", font=("", 24))
         self.monthly_walking_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_walking_var)
+        self.monthly_action_message = ctk.CTkLabel(self.monthly_goals_section, text="Successfully Updated Goals.", font=("", 18))
         monthly_update_button = ctk.CTkButton(self.monthly_goals_section, text="Update Goals", height=60, width=200, font=("", 24), command=self.process_monthly_goals)
 
         monthly_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
@@ -895,7 +900,8 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_sleep_entry.grid(row=4, column=0, columnspan=2, padx=30, pady=(5, 0))
         monthly_walking_title.grid(row=3, column=2, padx=30, pady=(30, 0), sticky="w")
         self.monthly_walking_entry.grid(row=4, column=2, padx=30, pady=(5, 0))
-        monthly_update_button.grid(row=5, column=0, columnspan=3, pady=(30, 0))
+        self.monthly_action_message.grid(row=5, column=0, columnspan=3, pady=20)
+        monthly_update_button.grid(row=6, column=0, columnspan=3)
 
         # profile related binds
         self.profile_username_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_username_entry, None))
@@ -924,7 +930,7 @@ class SettingsPage(ctk.CTkFrame):
             # newly selected profile image storage
             new_profile_image = ctk.CTkImage(light_image=Image.open(file_path), dark_image=Image.open(file_path), size=(128, 128))
             # increase section box area size to accomodate new widgets
-            self.profile_section.configure(height=700)
+            self.profile_section.configure(height=760)
             # showcase the selected image
             self.profile_image_preview.configure(image=new_profile_image)
             # display informative message to user about their action
