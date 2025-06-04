@@ -72,7 +72,7 @@ class DatabaseManager:
         CREATE TABLE IF NOT EXISTS hydration_tracker (
             id INTEGER PRIMARY KEY,
             date TEXT NOT NULL,
-            consumption_ml FLOAT
+            consumption_ml REAL
         )
         """
         self.db_cursor.execute(create_hydration_table_query)
@@ -82,7 +82,7 @@ class DatabaseManager:
         CREATE TABLE IF NOT EXISTS sleep_tracker (
             id INTEGER PRIMARY KEY,
             date TEXT NOT NULL,
-            sleep_hrs FLOAT
+            sleep_hrs REAL
         )
         """
         self.db_cursor.execute(create_sleep_table_query)
@@ -97,12 +97,12 @@ class DatabaseManager:
             height INTEGER DEFAULT 0,
             current_weight INTEGER DEFAULT 0,
             goal_weight INTEGER DEFAULT 0,
-            daily_sleep_goal FLOAT DEFAULT 0.00,
+            daily_sleep_goal REAL DEFAULT 0.00,
             daily_steps_goal INTEGER DEFAULT 0,
-            daily_hydration_goal FLOAT DEFAULT 0.00,
+            daily_hydration_goal REAL DEFAULT 0.00,
             monthly_weight_goal INTEGER DEFAULT 0,
-            monthly_hydration_goal FLOAT DEFAULT 0.00,
-            monthly_sleep_goal FLOAT DEFAULT 0.00,
+            monthly_hydration_goal REAL DEFAULT 0.00,
+            monthly_sleep_goal REAL DEFAULT 0.00,
             monthly_steps_goal INTEGER DEFAULT 0
         )
         """
