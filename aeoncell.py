@@ -831,7 +831,7 @@ class SettingsPage(ctk.CTkFrame):
         profile_goal_weight_title = ctk.CTkLabel(self.profile_section, text="Goal Weight:", font=("", 18))
         self.profile_goal_weight_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_goal_weight_var)
         self.profile_action_message = ctk.CTkLabel(self.profile_section, text="Successfully Updated Profile.", font=("", 18))
-        profile_update_button = ctk.CTkButton(self.profile_section, height=60, width=200, text="Update Profile", font=("", 24))
+        profile_update_button = ctk.CTkButton(self.profile_section, height=60, width=200, text="Update Profile", font=("", 24), command=self.process_profile)
 
         profile_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
         profile_image_title.grid(row=1, column=0, padx=30, sticky="w")
@@ -984,6 +984,10 @@ class SettingsPage(ctk.CTkFrame):
                     if len(widget.get()) > 0:
                         return True
 
+    # updates the profile set by user
+    def process_profile(self):
+        self.show_action_message(self.profile_action_message)
+
     # updates the daily goals set by user
     def process_daily_goals(self):
         sleep = self.daily_sleep_var.get()
@@ -998,6 +1002,7 @@ class SettingsPage(ctk.CTkFrame):
         """
         self.controller.db_cursor.execute(update_daily_goals_query, (sleep, steps, hydration))
         self.controller.db_connection.commit()
+        self.show_action_message(self.daily_action_message)
 
         # THERE NEEDS TO BE A NOTICE TO LET THE USER KNOW THE UPDATE WENT THROUGH.. MAKE SURE THE INFORMATION STAYS AS WELL? 
         # MAYBE VIA INSERT BASED ON WHAT IS SAVED IN DB ELSE INSERT NO DATA
@@ -1018,6 +1023,20 @@ class SettingsPage(ctk.CTkFrame):
         """
         self.controller.db_cursor.execute(update_monthly_goals_query, (weight, steps, hydration, sleep))
         self.controller.db_connection.commit()
+        self.show_action_message(self.monthly_action_message)
+
+    def show_action_message(self, section_widget):
+        if section_widget == self.profile_action_message:
+            section_widget.configure(text="Profile Successfully Updated.")
+            section_widget.after(800, lambda: section_widget.configure(text=""))
+        elif section_widget == self.daily_action_message:
+            section_widget.configure(text="Daily Goals Updated.")
+            section_widget.after(800, lambda: section_widget.configure(text=""))
+        else:
+            section_widget.configure(text="Monthly Goals Updated.")
+            section_widget.after(800, lambda: section_widget.configure(text=""))
+
+           
 
 if __name__ == "__main__":
     app = Windows()
