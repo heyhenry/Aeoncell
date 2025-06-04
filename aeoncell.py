@@ -46,8 +46,6 @@ class Windows(ctk.CTk):
             self.pages[P] = page
             page.grid(row=0, column=0, sticky="nswe")
 
-        self.current_page = None
-
         # center the app upon startup
         self.center_window(self, 1280, 800)
 
@@ -68,18 +66,7 @@ class Windows(ctk.CTk):
         elif selected_page == LoginPage:
             self.set_initial_focus(page.password_entry)
         elif selected_page == SettingsPage:
-            self.db_cursor.execute("SELECT username FROM profile_details WHERE rowid=1")
-            result = self.db_cursor.fetchone()
-            result = result[0]
-            if page.profile_username_var.get() != result:
-                page.profile_username_var.set(result)
-
-        # only reset settings section fields if user is leaving the Settings page and there are unsaved changes
-        if isinstance(self.current_page, SettingsPage) and self.current_page != page and self.pages[SettingsPage].has_unsaved_changes():
-            self.pages[SettingsPage].reset_section_fields()
-    
-        # keep track of the which page was previously selected, prior to selected_page
-        self.current_page = page
+            page.retrieve_current_info()
 
         page.tkraise()
         
@@ -774,24 +761,6 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_sleep_var = ctk.StringVar()
         self.monthly_walking_var = ctk.StringVar()
 
-        # listed profile detail initialised variables in order of sql table
-        self.entry_vars = [
-            self.profile_username_var,
-            self.profile_first_name_var,
-            self.profile_last_name_var,
-            self.profile_age_var,
-            self.profile_height_var,
-            self.profile_current_weight_var, 
-            self.profile_goal_weight_var,
-            self.daily_sleep_var,
-            self.daily_walking_var,
-            self.daily_hydration_var,
-            self.monthly_weight_var,
-            self.monthly_hydration_var,
-            self.monthly_sleep_var,
-            self.monthly_walking_var
-        ]
-
         self.grid_rowconfigure(0, weight=1)
 
         self.grid_columnconfigure(0, weight=0)
@@ -941,8 +910,6 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_sleep_entry))
         self.monthly_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_walking_entry, None))
 
-        self.retrieve_current_info()
-
     # allow user to search their local storage for a new profile image (.png only)
     def browse_new_profile_image(self):
         file_path = filedialog.askopenfilename(title="Select New Profile Image", filetypes=[('Image Files', '*.png')])
@@ -955,54 +922,6 @@ class SettingsPage(ctk.CTkFrame):
             self.profile_image_preview.configure(image=new_profile_image)
             # display informative message to user about their action
             self.profile_image_message.configure(text="Image Preview")
-
-    def reset_section_fields(self):
-        # profile related
-        for widget in self.profile_section.winfo_children():
-            if isinstance(widget, ctk.CTkEntry) and widget != self.profile_username_entry:
-                widget.delete(0, ctk.END)
-        self.profile_image_preview.configure(image=None)
-        # only viable solution after testing -> 
-        # destroy label widget and re-implement due to internal ctk canvas redraw issues with images
-        self.profile_image_preview.destroy()
-        self.profile_image_preview = ctk.CTkLabel(self.profile_section, text="")
-        self.profile_image_preview.grid(row=3, column=0, padx=30)
-        self.profile_image_message.configure(text="")
-        self.profile_section.configure(height=580)
-
-        # daily related
-        for widget in self.daily_goals_section.winfo_children():
-            if isinstance(widget, ctk.CTkEntry):
-                widget.delete(0, ctk.END)
-
-        # monthly related
-        for widget in self.monthly_goals_section.winfo_children():
-            if isinstance(widget, ctk.CTkEntry):
-                widget.delete(0, ctk.END)
-
-    # check if there are any unsaved changes committed to the sections
-    def has_unsaved_changes(self):
-        # check if an unsaved profile image has been selected
-        if self.profile_image_preview.cget('image') is not None:
-            return True
-
-        # check profile entry fields for unsaved values
-        for widget in self.profile_section.winfo_children():
-            if isinstance(widget, ctk.CTkEntry) and widget != self.profile_username_entry:     
-                if len(widget.get()) > 0:
-                    return True
-        
-        # check daily goal section entry fields for unsaved values
-        for widget in self.daily_goals_section.winfo_children():
-            if isinstance(widget, ctk.CTkEntry):
-                if len(widget.get()) > 0:
-                    return True
-                
-        # check monthly goal section entry fields for unsaved values
-        for widget in self.monthly_goals_section.winfo_children():
-                if isinstance(widget, ctk.CTkEntry):
-                    if len(widget.get()) > 0:
-                        return True
 
     # updates the profile set by user
     def process_profile(self):
@@ -1078,6 +997,23 @@ class SettingsPage(ctk.CTkFrame):
     # retrieve the current saved data related to each section (if there is any)
     # and populate entry with it
     def retrieve_current_info(self):
+        # listed profile detail initialised variables in order of sql table
+        entry_vars = [
+            self.profile_username_var,
+            self.profile_first_name_var,
+            self.profile_last_name_var,
+            self.profile_age_var,
+            self.profile_height_var,
+            self.profile_current_weight_var, 
+            self.profile_goal_weight_var,
+            self.daily_sleep_var,
+            self.daily_walking_var,
+            self.daily_hydration_var,
+            self.monthly_weight_var,
+            self.monthly_hydration_var,
+            self.monthly_sleep_var,
+            self.monthly_walking_var
+        ]
         retrieve_current_data = """
         SELECT * FROM profile_details WHERE rowid=1
         """
@@ -1087,7 +1023,7 @@ class SettingsPage(ctk.CTkFrame):
         if result:
             # loop through and set each variable with its saved data from the database
             for i in range(len(result)):
-                self.entry_vars[i].set(result[i])
+                entry_vars[i].set(result[i])
 
 if __name__ == "__main__":
     app = Windows()
