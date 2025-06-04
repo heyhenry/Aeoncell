@@ -770,9 +770,9 @@ class SettingsPage(ctk.CTkFrame):
         # monthly related vars
         self.monthly_weight_choice_var = ctk.StringVar()
         self.monthly_weight_var = ctk.StringVar()
-        self.monhtly_hydration_var = ctk.StringVar()
+        self.monthly_hydration_var = ctk.StringVar()
         self.monthly_sleep_var = ctk.StringVar()
-        self.monhtly_walking_var = ctk.StringVar()
+        self.monthly_walking_var = ctk.StringVar()
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -878,12 +878,12 @@ class SettingsPage(ctk.CTkFrame):
         gain_weight_button = ctk.CTkButton(self.monthly_goals_section, text="Gain Weight", height=40, font=("", 18))
         self.monthly_weight_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_weight_var)
         monthly_hydration_title = ctk.CTkLabel(self.monthly_goals_section, text="Hydration (L):", font=("", 24))
-        self.monthly_hydration_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monhtly_hydration_var)
+        self.monthly_hydration_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_hydration_var)
         monthly_sleep_title = ctk.CTkLabel(self.monthly_goals_section, text="Sleep (Hrs):", font=("", 24))
         self.monthly_sleep_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_sleep_var)
         monthly_walking_title = ctk.CTkLabel(self.monthly_goals_section, text="Walking (Steps):", font=("", 24))
-        self.monthly_walking_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monhtly_walking_var)
-        monthly_update_button = ctk.CTkButton(self.monthly_goals_section, text="Update Goals", height=60, width=200, font=("", 24))
+        self.monthly_walking_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_walking_var)
+        monthly_update_button = ctk.CTkButton(self.monthly_goals_section, text="Update Goals", height=60, width=200, font=("", 24), command=self.process_monthly_goals)
 
         monthly_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
         lose_weight_button.grid(row=1, column=0, padx=(30, 0), pady=(0, 10), sticky="nw")
@@ -980,6 +980,9 @@ class SettingsPage(ctk.CTkFrame):
 
     # updates the daily goals set by user
     def process_daily_goals(self):
+        sleep = self.daily_sleep_var.get()
+        steps = self.daily_walking_var.get()
+        hydration = self.daily_hydration_var.get()
         update_daily_goals_query = """
         UPDATE profile_details
         SET daily_sleep_goal = ?,
@@ -987,11 +990,28 @@ class SettingsPage(ctk.CTkFrame):
         daily_hydration_goal = ?
         WHERE rowid=1
         """
-        self.controller.db_cursor.execute(update_daily_goals_query, (self.daily_sleep_var.get(), self.daily_walking_var.get(), self.daily_hydration_var.get()))
+        self.controller.db_cursor.execute(update_daily_goals_query, (sleep, steps, hydration))
         self.controller.db_connection.commit()
 
         # THERE NEEDS TO BE A NOTICE TO LET THE USER KNOW THE UPDATE WENT THROUGH.. MAKE SURE THE INFORMATION STAYS AS WELL? 
         # MAYBE VIA INSERT BASED ON WHAT IS SAVED IN DB ELSE INSERT NO DATA
+
+    # updates the monthly goals set by user
+    def process_monthly_goals(self):
+        weight = self.monthly_weight_var.get()
+        steps = self.monthly_walking_var.get()
+        hydration = self.monthly_hydration_var.get()
+        sleep = self.monthly_sleep_var.get()
+        update_monthly_goals_query = """
+        UPDATE profile_details
+        SET monthly_weight_goal = ?,
+        monthly_steps_goal = ?,
+        monthly_hydration_goal = ?,
+        monthly_sleep_goal = ?
+        WHERE rowid=1
+        """
+        self.controller.db_cursor.execute(update_monthly_goals_query, (weight, steps, hydration, sleep))
+        self.controller.db_connection.commit()
 
 if __name__ == "__main__":
     app = Windows()
