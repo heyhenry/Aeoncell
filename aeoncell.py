@@ -774,6 +774,24 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_sleep_var = ctk.StringVar()
         self.monthly_walking_var = ctk.StringVar()
 
+        # listed profile detail initialised variables in order of sql table
+        self.entry_vars = [
+            self.profile_username_var,
+            self.profile_first_name_var,
+            self.profile_last_name_var,
+            self.profile_age_var,
+            self.profile_height_var,
+            self.profile_current_weight_var, 
+            self.profile_goal_weight_var,
+            self.daily_sleep_var,
+            self.daily_walking_var,
+            self.daily_hydration_var,
+            self.monthly_weight_var,
+            self.monthly_hydration_var,
+            self.monthly_sleep_var,
+            self.monthly_walking_var
+        ]
+
         self.grid_rowconfigure(0, weight=1)
 
         self.grid_columnconfigure(0, weight=0)
@@ -1060,23 +1078,6 @@ class SettingsPage(ctk.CTkFrame):
     # retrieve the current saved data related to each section (if there is any)
     # and populate entry with it
     def retrieve_current_info(self):
-        # listed profile detail initialised variables in order of sql table
-        entry_vars = [
-            self.profile_username_var,
-            self.profile_first_name_var,
-            self.profile_last_name_var,
-            self.profile_age_var,
-            self.profile_height_var,
-            self.profile_current_weight_var, 
-            self.profile_goal_weight_var,
-            self.daily_sleep_var,
-            self.daily_walking_var,
-            self.daily_hydration_var,
-            self.monthly_weight_var,
-            self.monthly_hydration_var,
-            self.monthly_sleep_var,
-            self.monthly_walking_var
-        ]
         retrieve_current_data = """
         SELECT * FROM profile_details WHERE rowid=1
         """
@@ -1086,7 +1087,7 @@ class SettingsPage(ctk.CTkFrame):
         if result:
             # loop through and set each variable with its saved data from the database
             for i in range(len(result)):
-                entry_vars[i].set(result[i])
+                self.entry_vars[i].set(result[i])
 
 if __name__ == "__main__":
     app = Windows()
