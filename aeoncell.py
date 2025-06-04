@@ -830,7 +830,7 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_current_weight_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_current_weight_var)
         profile_goal_weight_title = ctk.CTkLabel(self.profile_section, text="Goal Weight:", font=("", 18))
         self.profile_goal_weight_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_goal_weight_var)
-        self.profile_action_message = ctk.CTkLabel(self.profile_section, text="Successfully Updated Profile.", font=("", 18))
+        self.profile_action_message = ctk.CTkLabel(self.profile_section, text="", font=("", 18))
         profile_update_button = ctk.CTkButton(self.profile_section, height=60, width=200, text="Update Profile", font=("", 24), command=self.process_profile)
 
         profile_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
@@ -863,7 +863,7 @@ class SettingsPage(ctk.CTkFrame):
         self.daily_walking_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_walking_var)
         daily_hydration_title = ctk.CTkLabel(self.daily_goals_section, text="Hydration (L):", font=("", 24))
         self.daily_hydration_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_hydration_var)
-        self.daily_action_message = ctk.CTkLabel(self.daily_goals_section, text="Successfully Updated Goals.", font=("", 18))
+        self.daily_action_message = ctk.CTkLabel(self.daily_goals_section, text="", font=("", 18))
         daily_update_button = ctk.CTkButton(self.daily_goals_section, text="Update Goals", height=60, width=200, font=("", 24), command=self.process_daily_goals)
 
         daily_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
@@ -887,7 +887,7 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_sleep_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_sleep_var)
         monthly_walking_title = ctk.CTkLabel(self.monthly_goals_section, text="Walking (Steps):", font=("", 24))
         self.monthly_walking_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_walking_var)
-        self.monthly_action_message = ctk.CTkLabel(self.monthly_goals_section, text="Successfully Updated Goals.", font=("", 18))
+        self.monthly_action_message = ctk.CTkLabel(self.monthly_goals_section, text="", font=("", 18))
         monthly_update_button = ctk.CTkButton(self.monthly_goals_section, text="Update Goals", height=60, width=200, font=("", 24), command=self.process_monthly_goals)
 
         monthly_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
@@ -1025,17 +1025,18 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_connection.commit()
         self.show_action_message(self.monthly_action_message)
 
+    # display a temporary notification letting the user know of the successful action
     def show_action_message(self, section_widget):
-        if section_widget == self.profile_action_message:
-            section_widget.configure(text="Profile Successfully Updated.")
-            section_widget.after(800, lambda: section_widget.configure(text=""))
-        elif section_widget == self.daily_action_message:
-            section_widget.configure(text="Daily Goals Updated.")
-            section_widget.after(800, lambda: section_widget.configure(text=""))
-        else:
-            section_widget.configure(text="Monthly Goals Updated.")
-            section_widget.after(800, lambda: section_widget.configure(text=""))
-
+        # list out the possible messages based on given widget
+        section_messages = {
+            self.profile_action_message: "Profile Successfully Updated.",
+            self.daily_action_message: "Daily Goals Successfully Updated.",
+            self.monthly_action_message: "Monthly Goals Successfully Updated."
+        }
+        # updated the widgets text
+        section_widget.configure(text=section_messages[section_widget])
+        # reset to an empty string after a delayed time
+        section_widget.after(800, lambda: section_widget.configure(text=""))
            
 
 if __name__ == "__main__":
