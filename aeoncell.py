@@ -923,6 +923,8 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_sleep_entry))
         self.monthly_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_walking_entry, None))
 
+        self.retrieve_current_info()
+
     # allow user to search their local storage for a new profile image (.png only)
     def browse_new_profile_image(self):
         file_path = filedialog.askopenfilename(title="Select New Profile Image", filetypes=[('Image Files', '*.png')])
@@ -1055,6 +1057,37 @@ class SettingsPage(ctk.CTkFrame):
         # reset to an empty string after a delayed time
         section_widget.after(800, lambda: section_widget.configure(text=""))
            
+    # retrieve the current saved data related to each section (if there is any)
+    # and populate entry with it
+    def retrieve_current_info(self):
+        # listed profile detail initialised variables in order of sql table
+        entry_vars = [
+            self.profile_username_var,
+            self.profile_first_name_var,
+            self.profile_last_name_var,
+            self.profile_age_var,
+            self.profile_height_var,
+            self.profile_current_weight_var, 
+            self.profile_goal_weight_var,
+            self.daily_sleep_var,
+            self.daily_walking_var,
+            self.daily_hydration_var,
+            self.monthly_weight_var,
+            self.monthly_hydration_var,
+            self.monthly_sleep_var,
+            self.monthly_walking_var
+        ]
+        retrieve_current_data = """
+        SELECT * FROM profile_details WHERE rowid=1
+        """
+        self.controller.db_cursor.execute(retrieve_current_data)
+        result = self.controller.db_cursor.fetchone()
+        # only proceed with updating entry fields if there is stored data found
+        if result:
+            # loop through and set each variable with its saved data from the database
+            for i in range(len(result)):
+                entry_vars[i].set(result[i])
+
 if __name__ == "__main__":
     app = Windows()
     app.mainloop()
