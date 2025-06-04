@@ -986,7 +986,26 @@ class SettingsPage(ctk.CTkFrame):
 
     # updates the profile set by user
     def process_profile(self):
-
+        username = self.profile_username_var.get()
+        first_name = self.profile_first_name_var.get()
+        last_name = self.profile_last_name_var.get()
+        age = self.profile_age_var.get()
+        height = self.profile_height_var.get()
+        current_weight = self.profile_current_weight_var.get()
+        goal_weight = self.profile_goal_weight_var.get()
+        update_profile_details_query = """
+        UPDATE profile_details
+        SET username = ?,
+        first_name = ?,
+        last_name = ?,
+        age = ?,
+        height = ?,
+        current_weight = ?,
+        goal_weight = ?
+        WHERE rowid=1
+        """
+        self.controller.db_cursor.execute(update_profile_details_query, (username, first_name, last_name, age, height, current_weight, goal_weight))
+        self.controller.db_connection.commit()
         self.show_action_message(self.profile_action_message)
 
     # updates the daily goals set by user
