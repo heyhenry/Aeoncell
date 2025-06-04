@@ -91,19 +91,19 @@ class DatabaseManager:
         create_profile_table_query = """
         CREATE TABLE IF NOT EXISTS profile_details (
             username TEXT NOT NULL,
-            first_name TEXT,
-            last_name TEXT,
-            age INTEGER,
-            height INTEGER,
-            current_weight INTEGER,
-            goal_weight INTEGER,
-            daily_sleep_goal FLOAT,
-            daily_steps_goal INTEGER,
-            daily_hydration_goal FLOAT,
-            monthly_weight_goal INTEGER,
-            monthly_hydration_goal FLOAT,
-            monthly_sleep_goal FLOAT,
-            monthly_steps_goal INTEGER
+            first_name TEXT DEFAULT '',
+            last_name TEXT DEFAULT '',
+            age INTEGER DEFAULT 0,
+            height INTEGER DEFAULT 0,
+            current_weight INTEGER DEFAULT 0,
+            goal_weight INTEGER DEFAULT 0,
+            daily_sleep_goal FLOAT DEFAULT 0.00,
+            daily_steps_goal INTEGER DEFAULT 0,
+            daily_hydration_goal FLOAT DEFAULT 0.00,
+            monthly_weight_goal INTEGER DEFAULT 0,
+            monthly_hydration_goal FLOAT DEFAULT 0.00,
+            monthly_sleep_goal FLOAT DEFAULT 0.00,
+            monthly_steps_goal INTEGER DEFAULT 0
         )
         """
         self.db_cursor.execute(create_profile_table_query)
