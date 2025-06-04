@@ -22,3 +22,7 @@ BetterLife | My own github repo (31st May 2025): https://github.com/heyhenry/Bet
 Getting every child widget of a Tkinter window (1st June 2025): https://stackoverflow.com/questions/7290071/getting-every-child-widget-of-a-tkinter-window
 How to check type of a Tkinter Widget (2nd June 2025): https://coderslegacy.com/python/check-type-of-tkinter-widget/
 Tkinter check if entry box is empty (2nd June 2025): https://stackoverflow.com/questions/15455113/tkinter-check-if-entry-box-is-empty
+The Tkinter Entry Widget | Concepts Indexes (2nd June 2025): https://dafarry.github.io/tkinterbook/entry.htm
+SQLITE Select (4th June 2025): https://www.sqlitetutorial.net/sqlite-select/
+How to Insert Double and Float Values in SQLite? (4th June 2025): https://www.geeksforgeeks.org/how-to-insert-double-and-float-values-in-sqlite/
+Datatypes in SQLite (4th June 2025): https://sqlite.org/datatype3.html
