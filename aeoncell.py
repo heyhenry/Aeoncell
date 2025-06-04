@@ -381,7 +381,7 @@ class LoginPage(ctk.CTkFrame):
         self.welcome_message = ctk.CTkLabel(login_form, text=f"Welcome back, {self.controller.username.get()}!", font=("", 24))
         password_title = ctk.CTkLabel(login_form, text="Enter Password:", font=("", 24))
         self.password_entry = ctk.CTkEntry(login_form, show="*", textvariable=self.password_var, font=("", 24), width=300)
-        self.toggle_password_mask = ctk.CTkButton(login_form, text="", image=self.masked_password_icon, bg_color="transparent", fg_color="transparent", hover_color="#B19CD9", width=0, command=self.toggle_masking)
+        self.toggle_password_mask_btn = ctk.CTkButton(login_form, text="", image=self.masked_password_icon, bg_color="transparent", fg_color="transparent", hover_color="#B19CD9", width=0, command=self.toggle_password_masking)
         self.error_message = ctk.CTkLabel(login_form, text="", font=("", 18))
         login_submit = ctk.CTkButton(login_form, text="Login", height=50, font=("", 24), command=self.process_login)
 
@@ -391,7 +391,7 @@ class LoginPage(ctk.CTkFrame):
         self.welcome_message.grid(row=4, column=1, columnspan=2, pady=(0, 40))
         password_title.grid(row=5, column=1, columnspan=2, sticky="w")
         self.password_entry.grid(row=6, column=1, pady=(0, 10))
-        self.toggle_password_mask.grid(row=6, column=2, pady=(0, 10), padx=(5, 0))
+        self.toggle_password_mask_btn.grid(row=6, column=2, pady=(0, 10), padx=(5, 0))
         self.error_message.grid(row=7, column=1, columnspan=2)
         login_submit.grid(row=8, column=1, columnspan=2, pady=(20, 40))
 
@@ -411,12 +411,12 @@ class LoginPage(ctk.CTkFrame):
             self.controller.show_error_message(self.error_message, "Incorrect Password.")
 
     # toggle password masking dependent on user's choice
-    def toggle_masking(self):
+    def toggle_password_masking(self):
         if self.password_entry.cget("show") == "*":
-            self.toggle_password_mask.configure(image=self.unmasked_password_icon)
+            self.toggle_password_mask_btn.configure(image=self.unmasked_password_icon)
             self.password_entry.configure(show="")
         else:
-            self.toggle_password_mask.configure(image=self.masked_password_icon)
+            self.toggle_password_mask_btn.configure(image=self.masked_password_icon)
             self.password_entry.configure(show="*")
 
 class DashboardPage(ctk.CTkFrame):
