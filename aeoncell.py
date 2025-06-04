@@ -986,6 +986,7 @@ class SettingsPage(ctk.CTkFrame):
 
     # updates the profile set by user
     def process_profile(self):
+
         self.show_action_message(self.profile_action_message)
 
     # updates the daily goals set by user
@@ -1003,9 +1004,6 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_cursor.execute(update_daily_goals_query, (sleep, steps, hydration))
         self.controller.db_connection.commit()
         self.show_action_message(self.daily_action_message)
-
-        # THERE NEEDS TO BE A NOTICE TO LET THE USER KNOW THE UPDATE WENT THROUGH.. MAKE SURE THE INFORMATION STAYS AS WELL? 
-        # MAYBE VIA INSERT BASED ON WHAT IS SAVED IN DB ELSE INSERT NO DATA
 
     # updates the monthly goals set by user
     def process_monthly_goals(self):
@@ -1034,11 +1032,10 @@ class SettingsPage(ctk.CTkFrame):
             self.monthly_action_message: "Monthly Goals Successfully Updated."
         }
         # updated the widgets text
-        section_widget.configure(text=section_messages[section_widget])
+        section_widget.configure(text=section_messages[section_widget], text_color="#2E7D32")
         # reset to an empty string after a delayed time
         section_widget.after(800, lambda: section_widget.configure(text=""))
            
-
 if __name__ == "__main__":
     app = Windows()
     app.mainloop()
