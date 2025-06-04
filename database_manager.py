@@ -100,7 +100,7 @@ class DatabaseManager:
             daily_sleep_goal FLOAT,
             daily_steps_goal INTEGER,
             daily_hydration_goal FLOAT,
-            monthly_weight_goal TEXT,
+            monthly_weight_goal INTEGER,
             monthly_hydration_goal FLOAT,
             monthly_sleep_goal FLOAT,
             monthly_steps_goal INTEGER
