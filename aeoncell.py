@@ -1061,6 +1061,10 @@ class SettingsPage(ctk.CTkFrame):
     # reset the profile image preview display
     def reset_profile_preview(self):
         self.profile_image_preview.configure(image=None)
+        # check to see if a temp profile image has been saved
+        if os.path.isfile("img/temp_profile_image.png"):
+            # if so, delete the temp image
+            os.remove("img/temp_profile_image.png")
         # only viable solution after testing ->
         # destroy the label widget and re-implement due to internal ctk cavas redraw issues with images
         self.profile_image_preview.destroy()
