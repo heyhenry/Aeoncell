@@ -174,7 +174,7 @@ def custom_float_only_entry_validation(event, widget):
             return "break"
 
 # give an image a rounded frame and saved as its own file
-def generate_round_frame_image(filepath):
+def generate_round_frame_image(filepath, new_filename):
     # create the mask shape
     size = (256, 256)
     mask = Image.new('L', size, 0)
@@ -189,11 +189,9 @@ def generate_round_frame_image(filepath):
     # prioritise the shape over image
     round_image.putalpha(mask)
 
-    # get the full file path including the current name of the selected image without it's extension
-    dot_pos = filepath.rfind(".")
     # concatenate and create a new filename in the same filepath with the same general naming convention with a unique marker (i.e. '_rounded')
     # also, using 'png' image extension as jpg, jpeg is incompatible
-    new_filename = filepath[:dot_pos] + "_rounded.png"
+    new_filename = "img/" + new_filename + ".png"
     # save new rounded image 
     round_image.save(new_filename)
 
