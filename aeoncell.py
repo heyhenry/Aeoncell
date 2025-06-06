@@ -21,7 +21,7 @@ class Windows(ctk.CTk):
         self.today = self.today.strftime("%d-%m-%Y")
 
         self.username = ctk.StringVar()
-        self.user_profile_img = ctk.CTkImage(light_image=Image.open("img/user_profile_rounded.png"), dark_image=Image.open("img/user_profile_rounded.png"), size=(120,120))
+        self.user_profile_img = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(120,120))
         self.app_icon_img = ctk.CTkImage(light_image=Image.open("img/capsule_original_recround.png"), dark_image=Image.open("img/capsule_original_recround.png"), size=(64,64))
 
         self.title("Aeoncell")
