@@ -1042,6 +1042,9 @@ class SettingsPage(ctk.CTkFrame):
             for i in range(len(result)):
                 entry_vars[i].set(result[i])
 
+        self.reset_profile_preview()
+
+    # update the user's profile image
     def update_user_profile_img(self):
         # updating user's profile image
         # check if a temp profile image exists aka user has selected a new image
@@ -1054,6 +1057,17 @@ class SettingsPage(ctk.CTkFrame):
             temp_image.save("img/user_profile.png")
             # remove the temporary image save -> 'temp_profile_image.png'
             os.remove("img/temp_profile_image.png")
+
+    # reset the profile image preview display
+    def reset_profile_preview(self):
+        self.profile_image_preview.configure(image=None)
+        # only viable solution after testing ->
+        # destroy the label widget and re-implement due to internal ctk cavas redraw issues with images
+        self.profile_image_preview.destroy()
+        self.profile_image_preview = ctk.CTkLabel(self.profile_section, text="")
+        self.profile_image_preview.grid(row=3, column=0, padx=30)
+        self.profile_image_message.configure(text="")
+        self.profile_section.configure(height=650)
 
 if __name__ == "__main__":
     app = Windows()
