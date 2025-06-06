@@ -923,8 +923,11 @@ class SettingsPage(ctk.CTkFrame):
     def browse_new_profile_image(self):
         file_path = filedialog.askopenfilename(title="Select New Profile Image", filetypes=[('Image Files', '*.png')])
         if file_path:
+            # generate temp rounded profile image
+            generate_round_frame_image(file_path, "temp_profile_image")
+            temp_profile_image = Image.open("img/temp_profile_image.png")
             # newly selected profile image storage
-            new_profile_image = ctk.CTkImage(light_image=Image.open(file_path), dark_image=Image.open(file_path), size=(128, 128))
+            new_profile_image = ctk.CTkImage(light_image=temp_profile_image, dark_image=temp_profile_image, size=(128, 128))
             # increase section box area size to accomodate new widgets
             self.profile_section.configure(height=760)
             # showcase the selected image
@@ -1033,6 +1036,9 @@ class SettingsPage(ctk.CTkFrame):
             # loop through and set each variable with its saved data from the database
             for i in range(len(result)):
                 entry_vars[i].set(result[i])
+
+    def update_user_profile_img(self):
+        pass
 
 if __name__ == "__main__":
     app = Windows()
