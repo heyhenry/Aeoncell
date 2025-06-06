@@ -5,6 +5,7 @@ import sqlite3
 from datetime import date
 from aeoncell_utils import *
 from PIL import Image
+import os
 
 ctk.set_appearance_mode("Light")
 ctk.set_default_color_theme("themes/custom_lavender.json")
@@ -957,6 +958,10 @@ class SettingsPage(ctk.CTkFrame):
         """
         self.controller.db_cursor.execute(update_profile_details_query, (username, first_name, last_name, age, height, current_weight, goal_weight))
         self.controller.db_connection.commit()
+
+        # update the user profile image IF there is a new image selected in the preview
+        self.update_user_profile_img()
+
         self.show_action_message(self.profile_action_message)
 
     # updates the daily goals set by user
@@ -1038,7 +1043,17 @@ class SettingsPage(ctk.CTkFrame):
                 entry_vars[i].set(result[i])
 
     def update_user_profile_img(self):
-        pass
+        # updating user's profile image
+        # check if a temp profile image exists aka user has selected a new image
+        if os.path.isfile("img/temp_profile_image.png"):
+            # log check
+            print('temp profile image found!')
+            # open the new profile image that's temporarily stored
+            temp_image = Image.open("img/temp_profile_image.png")
+            # update the user's profile image by overriding the user_profile.png by just renaming the new desire as 'user_profile.png'
+            temp_image.save("img/user_profile.png")
+            # remove the temporary image save -> 'temp_profile_image.png'
+            os.remove("img/temp_profile_image.png")
 
 if __name__ == "__main__":
     app = Windows()
