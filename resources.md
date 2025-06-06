@@ -26,3 +26,7 @@ The Tkinter Entry Widget | Concepts Indexes (2nd June 2025): https://dafarry.git
 SQLITE Select (4th June 2025): https://www.sqlitetutorial.net/sqlite-select/
 How to Insert Double and Float Values in SQLite? (4th June 2025): https://www.geeksforgeeks.org/how-to-insert-double-and-float-values-in-sqlite/
 Datatypes in SQLite (4th June 2025): https://sqlite.org/datatype3.html
+Python PIL | Image.save() method (6th June 2025): https://www.geeksforgeeks.org/python-pil-image-save-method/
+How do i check whether a file exists without exceptions? (6th June 2025): https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions
+How do delete a PIL Image? (6th June 2025): https://stackoverflow.com/questions/20816414/how-do-delete-a-pil-image
+Previous version of Aeoncell Repo | Refactored reset settings detail function() (6th June 2025): https://github.com/heyhenry/Aeoncell/blob/d013c5b723e69551911b9c13a0b5670b1482018e/aeoncell.py
