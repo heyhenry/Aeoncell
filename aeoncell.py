@@ -50,12 +50,12 @@ class Windows(ctk.CTk):
         # center the app upon startup
         self.center_window(self, 1280, 800)
 
-        # self.show_page(SettingsPage)
+        self.show_page(DashboardPage)
         # determine initial page display based on user having a password (i.e. guaranteed account registration)
-        if self.db.check_password_exists():
-            self.show_page(LoginPage)
-        else:
-            self.show_page(RegisterPage)
+        # if self.db.check_password_exists():
+        #     self.show_page(LoginPage)
+        # else:
+        #     self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -456,14 +456,17 @@ class DashboardPage(ctk.CTkFrame):
         weather_section = ctk.CTkFrame(content)
         latest_exercise_entries_section = ctk.CTkFrame(content)
 
+        # welcome back section aka hello section
         hello_user_message = ctk.CTkLabel(hello_section, text=f"Hello, Henry", font=("", 24))
         motivational_message = ctk.CTkLabel(hello_section, text=f"Keep Moving & Stay Healthy", font=("", 18))
 
+        # date section incl. motivation button
         current_date = ctk.CTkLabel(date_section, text="12 October 2025", font=("", 18))
         date_icon = ctk.CTkLabel(date_section, text="DATE ICON", font=("", 18))
         actionable_motivation_icon = ctk.CTkButton(date_section, text="Motivation Icon", font=("", 18))
 
         # temp button widget usage to mimic height x width 
+        # profile card section
         profile_image_display = ctk.CTkButton(profile_card_section, text="PROFILE IMAGE", font=("", 24))
         profile_name_display = ctk.CTkLabel(profile_card_section, text="Jojo Bizzaro", font=("", 18))
         profile_height_title = ctk.CTkLabel(profile_card_section, text="Height", font=("", 14))
@@ -490,8 +493,18 @@ class DashboardPage(ctk.CTkFrame):
         second_badge_spot = ctk.CTkButton(profile_card_section, text="BADGE 2", font=("", 24))
         third_badge_spot = ctk.CTkButton(profile_card_section, text="BADGE 3", font=("", 24))       
 
+        # daily tracker title
         daily_title = ctk.CTkLabel(content, text="Daily Tracking", font=("", 24))
 
+        # daily sleep section
+        total_hours_slept = ctk.CTkLabel(daily_sleep_section, text="8.80 Hours", font=("", 24))
+        sleep_icon = ctk.CTkButton(daily_sleep_section, text="ICON", font=("", 18))
+        sleep_reset = ctk.CTkButton(daily_sleep_section, text="Reset", font=("", 18))
+        sleep_subtitle = ctk.CTkLabel(daily_sleep_section, text="Sleep", font=("", 18))
+        sleep_goal_tally = ctk.CTkLabel(daily_sleep_section, text="8.00/8.00", font=("", 18))
+        sleep_progress_bar = ctk.CTkProgressBar(daily_sleep_section)
+        sleep_hours_entry = ctk.CTkEntry(daily_sleep_section)
+        sleep_add_hours = ctk.CTkButton(daily_sleep_section, font=("", 18))
 
         # GO BACK TO THE ORIGINAL DASHBOARD LAYOUT WIREFRAME BUT PUT "HELLO, HENRY & MOTIVATIONAL MESSAGE IN A FRAME"
 
