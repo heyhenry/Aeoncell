@@ -6,6 +6,7 @@ from datetime import date
 from aeoncell_utils import *
 from PIL import Image
 import os
+from CTkXYFrame import *
 
 ctk.set_appearance_mode("Light")
 ctk.set_default_color_theme("themes/custom_lavender.json")
@@ -434,13 +435,13 @@ class DashboardPage(ctk.CTkFrame):
 
     def create_widgets(self):
         navbar = Navbar(self, self.controller)
-        content = ctk.CTkScrollableFrame(self, corner_radius=0)
+        content = CTkXYFrame(self, corner_radius=0)
 
         navbar.grid(row=0, column=0, sticky="nswe")
         content.grid(row=0, column=1, sticky="nswe")
 
         content.grid_rowconfigure(0, weight=1)
-        content.grid_rowconfigure(6, weight=1)
+        content.grid_rowconfigure(5, weight=1)
 
         content.grid_columnconfigure(0, weight=1)
         content.grid_columnconfigure(5, weight=1)
@@ -455,62 +456,62 @@ class DashboardPage(ctk.CTkFrame):
         weather_section = ctk.CTkFrame(content, border_color="black", width=300, height=200, border_width=1)
         latest_exercise_entries_section = ctk.CTkFrame(content, border_color="black", width=600, height=200, border_width=1)
 
-        # hello_section.grid_propagate(False)
-        # date_section.grid_propagate(False)
-        # profile_card_section.grid_propagate(False)
-        # daily_sleep_section.grid_propagate(False)
-        # daily_hydration_section.grid_propagate(False)
-        # daily_walking_section.grid_propagate(False)
-        # exercise_summary_section.grid_propagate(False)
-        # weather_section.grid_propagate(False)
-        # latest_exercise_entries_section.grid_propagate(False)
+        hello_section.grid_propagate(False)
+        date_section.grid_propagate(False)
+        profile_card_section.grid_propagate(False)
+        daily_sleep_section.grid_propagate(False)
+        daily_hydration_section.grid_propagate(False)
+        daily_walking_section.grid_propagate(False)
+        exercise_summary_section.grid_propagate(False)
+        weather_section.grid_propagate(False)
+        latest_exercise_entries_section.grid_propagate(False)
 
-        hello_section.grid(row=1, column=1, columnspan=2, sticky="w", padx=(20))
-        date_section.grid(row=1, column=3)
+        hello_section.grid(row=1, column=1, columnspan=2, sticky="nw", padx=(20, 0))
+        date_section.grid(row=1, column=3, sticky="nw", padx=(0, 20))
         profile_card_section.grid(row=1, rowspan=4, column=4)
-        daily_sleep_section.grid(row=2, column=1)
-        daily_hydration_section.grid(row=2, column=2)
-        daily_walking_section.grid(row=2, column=3)
-        exercise_summary_section.grid(row=3, column=1, columnspan=2)
-        weather_section.grid(row=3, column=3)
-        latest_exercise_entries_section.grid(row=4, column=1, columnspan=3)
+        daily_sleep_section.grid(row=2, column=1, sticky="n")
+        daily_hydration_section.grid(row=2, column=2, sticky="n")
+        daily_walking_section.grid(row=2, column=3, sticky="n")
+        exercise_summary_section.grid(row=3, column=1, columnspan=2, sticky="n")
+        weather_section.grid(row=3, column=3, sticky="n")
+        latest_exercise_entries_section.grid(row=4, column=1, columnspan=3, sticky="n")
 
         # # welcome back section aka hello section
         hello_user_message = ctk.CTkLabel(hello_section, text=f"Hello, Henry", font=("", 32))
         motivational_message = ctk.CTkLabel(hello_section, text=f"Keep Moving & Stay Healthy", font=("", 14))
 
         # # date section incl. motivation button
-        # current_date = ctk.CTkLabel(date_section, text="12 October 2025", font=("", 18))
-        # date_icon = ctk.CTkLabel(date_section, text="DATE ICON", font=("", 18))
-        # actionable_motivation_icon = ctk.CTkButton(date_section, text="Motivation Icon", font=("", 18))
+        current_date = ctk.CTkLabel(date_section, text="12 October 2025", font=("", 18))
+        date_icon = ctk.CTkLabel(date_section, text="DATE ICON", font=("", 18))
+        actionable_motivation_icon = ctk.CTkButton(date_section, text="Motivation Icon", font=("", 18))
 
         # # temp button widget usage to mimic height x width 
         # # profile card section
-        # profile_image_display = ctk.CTkButton(profile_card_section, text="PROFILE IMAGE", font=("", 24))
-        # profile_name_display = ctk.CTkLabel(profile_card_section, text="Jojo Bizzaro", font=("", 18))
-        # profile_height_title = ctk.CTkLabel(profile_card_section, text="Height", font=("", 14))
-        # profile_weight_title = ctk.CTkLabel(profile_card_section, text="Weight", font=("", 14))
-        # profile_age_title = ctk.CTkLabel(profile_card_section, text="Age", font=("", 14))
-        # profile_height_display = ctk.CTkButton(profile_card_section, text="177cm", font=("", 18))
-        # profile_weight_display = ctk.CTkButton(profile_card_section, text="93kg", font=("", 18))
-        # profile_age_display = ctk.CTkButton(profile_card_section, text="43", font=("", 18))
-        # profile_monthly_title = ctk.CTkLabel(profile_card_section, text="Monthly Goals", font=("", 18))
-        # profile_weight_title = ctk.CTkLabel(profile_card_section, text="Lose Weight", font=("", 14))
-        # profile_weight_info = ctk.CTkLabel(profile_card_section, text="2/5 kilos", font=("", 14))
-        # profile_weight_progressbar = ctk.CTkButton(profile_card_section, text="weight progress bar", font=("", 18))
-        # profile_sleep_title = ctk.CTkLabel(profile_card_section, text="Sleep", font=("", 14))
-        # profile_sleep_info = ctk.CTkLabel(profile_card_section, text="110/300 hours", font=("", 14))
-        # profile_sleep_progressbar = ctk.CTkButton(profile_card_section, text="sleep progress bar", font=("", 18))
-        # profile_hydration_title = ctk.CTkLabel(profile_card_section, text="Hydration", font=("", 14)) 
-        # profile_hydration_info = ctk.CTkLabel(profile_card_section, text="80/250 litres", font=("", 14))
-        # profile_hydration_progressbar = ctk.CTkButton(profile_card_section, text="hydration progress bar", font=("", 18))
-        # profile_walking_title = ctk.CTkLabel(profile_card_section, text="Walking", font=("", 14))
-        # profile_walking_info = ctk.CTkLabel(profile_card_section, text="35,000/150,000 steps", font=("", 14))
-        # profile_walking_progressbar = ctk.CTkButton(profile_card_section, text="walking progress bar", font=("", 18))
-        # latest_achievements_section = ctk.CTkFrame(profile_card_section, bg_color="red")
-        # first_badge_spot = ctk.CTkButton(profile_card_section, text="BADGE 1", font=("", 24))
-        # second_badge_spot = ctk.CTkButton(profile_card_section, text="BADGE 2", font=("", 24))
-        # third_badge_spot = ctk.CTkButton(profile_card_section, text="BADGE 3", font=("", 24))       
+        profile_image_display = ctk.CTkButton(profile_card_section, text="PROFILE IMAGE", font=("", 24))
+        profile_name_display = ctk.CTkLabel(profile_card_section, text="Jojo Bizzaro", font=("", 18))
+        profile_height_title = ctk.CTkLabel(profile_card_section, text="Height", font=("", 14))
+        profile_weight_title = ctk.CTkLabel(profile_card_section, text="Weight", font=("", 14))
+        profile_age_title = ctk.CTkLabel(profile_card_section, text="Age", font=("", 14))
+        profile_height_display = ctk.CTkButton(profile_card_section, text="177cm", font=("", 18))
+        profile_weight_display = ctk.CTkButton(profile_card_section, text="93kg", font=("", 18))
+        profile_age_display = ctk.CTkButton(profile_card_section, text="43", font=("", 18))
+        profile_monthly_title = ctk.CTkLabel(profile_card_section, text="Monthly Goals", font=("", 18))
+        profile_monthly_weight_title = ctk.CTkLabel(profile_card_section, text="Lose Weight", font=("", 14))
+        profile_monthly_weight_info = ctk.CTkLabel(profile_card_section, text="2/5 kilos", font=("", 14))
+        profile_monthly_weight_progressbar = ctk.CTkButton(profile_card_section, text="weight progress bar", font=("", 18))
+        profile_sleep_title = ctk.CTkLabel(profile_card_section, text="Sleep", font=("", 14))
+        profile_sleep_info = ctk.CTkLabel(profile_card_section, text="110/300 hours", font=("", 14))
+        profile_sleep_progressbar = ctk.CTkButton(profile_card_section, text="sleep progress bar", font=("", 18))
+        profile_hydration_title = ctk.CTkLabel(profile_card_section, text="Hydration", font=("", 14)) 
+        profile_hydration_info = ctk.CTkLabel(profile_card_section, text="80/250 litres", font=("", 14))
+        profile_hydration_progressbar = ctk.CTkButton(profile_card_section, text="hydration progress bar", font=("", 18))
+        profile_walking_title = ctk.CTkLabel(profile_card_section, text="Walking", font=("", 14))
+        profile_walking_info = ctk.CTkLabel(profile_card_section, text="35,000/150,000 steps", font=("", 14))
+        profile_walking_progressbar = ctk.CTkButton(profile_card_section, text="walking progress bar", font=("", 18))
+        latest_achievements_section = ctk.CTkFrame(profile_card_section, bg_color="red")
+        first_badge_spot = ctk.CTkButton(profile_card_section, text="BADGE 1", font=("", 24))
+        second_badge_spot = ctk.CTkButton(profile_card_section, text="BADGE 2", font=("", 24))
+        third_badge_spot = ctk.CTkButton(profile_card_section, text="BADGE 3", font=("", 24))       
 
         # # daily tracker title
         # daily_title = ctk.CTkLabel(content, text="Daily Tracking", font=("", 24))
@@ -527,6 +528,25 @@ class DashboardPage(ctk.CTkFrame):
 
         hello_user_message.grid(row=0, column=0, sticky="w")
         motivational_message.grid(row=1, column=0, sticky="w")
+
+        current_date.grid(row=0, column=0, padx=(0, 10))
+        date_icon.grid(row=0, column=1, padx=(0, 30))
+        actionable_motivation_icon.grid(row=0, column=2)
+
+        profile_image_display.grid(row=0, column=0, columnspan=3)
+        profile_name_display.grid(row=1, column=0, columnspan=3)
+        profile_height_title.grid(row=2, column=0)
+        profile_age_title.grid(row=2, column=1)
+        profile_weight_title.grid(row=2, column=2)
+        profile_height_display.grid(row=3, column=0)
+        profile_age_display.grid(row=3, column=1)
+        profile_weight_display.grid(row=3, column=2)
+        profile_monthly_title.grid(row=4, column=0, columnspan=3, sticky="w")
+        profile_monthly_weight_title.grid(row=5, column=0, columnspan=2)
+        profile_monthly_weight_info.grid(row=5, column=2)
+        profile_monthly_weight_progressbar.grid(row=6, column=0, columnspan=3)
+        
+
 
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
