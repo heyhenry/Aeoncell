@@ -33,6 +33,12 @@ Main functionalities are operable whilst offline but some complimentary features
     - Session entry (continuous entry of exercise til you decide to stop)
 - Custom Exercise Session Presets
 - Update entry option (on the fence, to be decided if required, over just deleting and re-entering)
+- Discover 
+    - Api driven suggestions of latest trends and information regarding fitness, nutrition, health and locationd for activities.
+- Settings
+    - update user details
+    - update user daily goals
+    - update user monthly goals
 
 # Features
 - Password protected
