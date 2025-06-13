@@ -435,7 +435,7 @@ class DashboardPage(ctk.CTkFrame):
 
     def create_widgets(self):
         navbar = Navbar(self, self.controller)
-        content = CTkXYFrame(self, corner_radius=0)
+        content = CTkXYFrame(self, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0)
 
         navbar.grid(row=0, column=0, sticky="nswe")
         content.grid(row=0, column=1, sticky="nswe")
@@ -445,6 +445,8 @@ class DashboardPage(ctk.CTkFrame):
 
         content.grid_columnconfigure(0, weight=1)
         content.grid_columnconfigure(5, weight=1)
+
+        content.grid_columnconfigure()
 
         hello_section = ctk.CTkFrame(content, border_color="black", width=450, height=100, border_width=1, fg_color="yellow")
         date_section = ctk.CTkFrame(content, border_color="black", width=250, height=100, border_width=1)
@@ -466,12 +468,12 @@ class DashboardPage(ctk.CTkFrame):
         weather_section.grid_propagate(False)
         latest_exercise_entries_section.grid_propagate(False)
 
-        hello_section.grid(row=1, column=1, columnspan=2, sticky="nw", padx=(20, 0))
-        date_section.grid(row=1, column=3, sticky="nw", padx=(0, 20))
-        profile_card_section.grid(row=1, rowspan=4, column=4)
-        daily_sleep_section.grid(row=3, column=1, sticky="n")
-        daily_hydration_section.grid(row=3, column=2, sticky="n")
-        daily_walking_section.grid(row=3, column=3, sticky="n")
+        hello_section.grid(row=1, column=1, columnspan=2, sticky="nw", padx=(20, 0), pady=(20, 0))
+        date_section.grid(row=1, column=3, sticky="nw", padx=(0, 20), pady=(20, 0))
+        profile_card_section.grid(row=1, rowspan=4, column=4, pady=(20, 0))
+        daily_sleep_section.grid(row=3, column=1, sticky="n", padx=5, pady=(0, 150))
+        daily_hydration_section.grid(row=3, column=2, sticky="n", padx=5, pady=(0, 150))
+        daily_walking_section.grid(row=3, column=3, sticky="n", padx=5, pady=(0, 150))
         exercise_summary_section.grid(row=4, column=1, columnspan=2, sticky="n")
         weather_section.grid(row=4, column=3, sticky="n")
         latest_exercise_entries_section.grid(row=5, column=1, columnspan=3, sticky="n")
@@ -569,7 +571,7 @@ class DashboardPage(ctk.CTkFrame):
         third_badge_spot.grid(row=0, column=2)
 
         # dashboard sub title - Daily Tracker
-        daily_title.grid(row=2, column=0, columnspan=3, sticky="w")
+        daily_title.grid(row=2, column=0, columnspan=3, sticky="w", padx=10)
 
         # daily sleep section
         total_hours_slept.grid(row=0, column=0, padx=(10, 0))
