@@ -30,3 +30,14 @@ Python PIL | Image.save() method (6th June 2025): https://www.geeksforgeeks.org/
 How do i check whether a file exists without exceptions? (6th June 2025): https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions
 How do delete a PIL Image? (6th June 2025): https://stackoverflow.com/questions/20816414/how-do-delete-a-pil-image
 Previous version of Aeoncell Repo | Refactored reset settings detail function() (6th June 2025): https://github.com/heyhenry/Aeoncell/blob/d013c5b723e69551911b9c13a0b5670b1482018e/aeoncell.py
+ScrollableFrame with both vertical and horizontal scrollbars required. #2084 (10th June 2025): https://github.com/TomSchimansky/CustomTkinter/issues/2084
+Akascape / CTkXYFrame (10th June 2025): https://github.com/Akascape/CTkXYFrame?tab=readme-ov-file
+CTkProgressBar: Progress Bar in CustomTkinter (11th June 2025): https://python-hub.com/ctkprogressbar-progress-bar-in-customtkinter/
+how to create ProgressBar in customtkinter (11th June 2025): https://www.youtube.com/watch?v=27QHq5hVs_A
+First Day Achievement created by Steven Edward Simanjuntak| flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/first-day_11287363?term=first+day&page=1&position=10&origin=search&related_id=11287363
+First Steps Achievement created by Freepik | flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/pathway_15090451?term=walking&page=1&position=72&origin=search&related_id=15090451
+First Workout Achievement created by Freepik | flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/excercise_5963438?term=workout&page=1&position=78&origin=search&related_id=5963438
+First Drink Achievement created by Freepik | flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/mineral-water_9027795?term=hydration&page=1&position=13&origin=search&related_id=9027795
+First Sleep Achievement created by Freepik | flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/sleep_3003124?term=sleep&page=1&position=40&origin=search&related_id=3003124
+Ten Exercises Achievement created by Freepik | flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/weightlifting_502128?term=gym&page=1&position=13&origin=search&related_id=502128
+New Profile Achievement created by Freepik | flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/id-card_4859220?term=identity&page=1&position=19&origin=search&related_id=4859220
