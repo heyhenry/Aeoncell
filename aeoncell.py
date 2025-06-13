@@ -469,12 +469,12 @@ class DashboardPage(ctk.CTkFrame):
         hello_section.grid(row=1, column=1, columnspan=2, sticky="nw", padx=(20, 0))
         date_section.grid(row=1, column=3, sticky="nw", padx=(0, 20))
         profile_card_section.grid(row=1, rowspan=4, column=4)
-        daily_sleep_section.grid(row=2, column=1, sticky="n")
-        daily_hydration_section.grid(row=2, column=2, sticky="n")
-        daily_walking_section.grid(row=2, column=3, sticky="n")
-        exercise_summary_section.grid(row=3, column=1, columnspan=2, sticky="n")
-        weather_section.grid(row=3, column=3, sticky="n")
-        latest_exercise_entries_section.grid(row=4, column=1, columnspan=3, sticky="n")
+        daily_sleep_section.grid(row=3, column=1, sticky="n")
+        daily_hydration_section.grid(row=3, column=2, sticky="n")
+        daily_walking_section.grid(row=3, column=3, sticky="n")
+        exercise_summary_section.grid(row=4, column=1, columnspan=2, sticky="n")
+        weather_section.grid(row=4, column=3, sticky="n")
+        latest_exercise_entries_section.grid(row=5, column=1, columnspan=3, sticky="n")
 
         # # welcome back section aka hello section
         hello_user_message = ctk.CTkLabel(hello_section, text=f"Hello, Henry", font=("", 32))
@@ -518,25 +518,30 @@ class DashboardPage(ctk.CTkFrame):
         third_badge_spot = ctk.CTkButton(latest_achievements_section, text="BADGE 3", font=("", 24))       
 
         # # daily tracker title
-        # daily_title = ctk.CTkLabel(content, text="Daily Tracking", font=("", 24))
+        daily_title = ctk.CTkLabel(content, text="Daily Tracking", font=("", 18))
 
-        # # daily sleep section
-        # total_hours_slept = ctk.CTkLabel(daily_sleep_section, text="8.80 Hours", font=("", 24))
-        # sleep_icon = ctk.CTkButton(daily_sleep_section, text="ICON", font=("", 18))
-        # sleep_reset = ctk.CTkButton(daily_sleep_section, text="Reset", font=("", 18))
-        # sleep_subtitle = ctk.CTkLabel(daily_sleep_section, text="Sleep", font=("", 18))
-        # sleep_goal_tally = ctk.CTkLabel(daily_sleep_section, text="8.00/8.00", font=("", 18))
-        # sleep_progress_bar = ctk.CTkProgressBar(daily_sleep_section)
-        # sleep_hours_entry = ctk.CTkEntry(daily_sleep_section)
-        # sleep_add_hours = ctk.CTkButton(daily_sleep_section, font=("", 18))
+        # daily sleep section
+        total_hours_slept = ctk.CTkLabel(daily_sleep_section, text="8.80 Hours", font=("", 18))
+        sleep_icon = ctk.CTkLabel(daily_sleep_section, text="ICON", font=("", 12))
+        sleep_reset = ctk.CTkLabel(daily_sleep_section, text="Reset", font=("", 12))
+        sleep_subtitle = ctk.CTkLabel(daily_sleep_section, text="Sleep", font=("", 12))
+        sleep_goal_tally = ctk.CTkLabel(daily_sleep_section, text="8.00/8.00", font=("", 12))
+        sleep_progress_bar = ctk.CTkProgressBar(daily_sleep_section)
+        sleep_hours_entry = ctk.CTkEntry(daily_sleep_section)
+        sleep_add_hours = ctk.CTkButton(daily_sleep_section, font=("", 10), width=20)
 
+        # grid -- 
+
+        # welcome back section
         hello_user_message.grid(row=0, column=0, sticky="w")
         motivational_message.grid(row=1, column=0, sticky="w")
 
+        # date section
         current_date.grid(row=0, column=0, padx=(0, 10))
         date_icon.grid(row=0, column=1, padx=(0, 30))
         actionable_motivation_icon.grid(row=0, column=2)
 
+        # profile card
         profile_image_display.grid(row=0, column=0, columnspan=3)
         profile_name_display.grid(row=1, column=0, columnspan=3)
         profile_height_title.grid(row=2, column=0)
@@ -562,7 +567,19 @@ class DashboardPage(ctk.CTkFrame):
         first_badge_spot.grid(row=0, column=0)
         second_badge_spot.grid(row=0, column=1)
         third_badge_spot.grid(row=0, column=2)
-        
+
+        # dashboard sub title - Daily Tracker
+        daily_title.grid(row=2, column=0, columnspan=3, sticky="w")
+
+        # daily sleep section
+        total_hours_slept.grid(row=0, column=0, padx=(10, 0))
+        sleep_icon.grid(row=0, column=1, sticky="e")
+        sleep_reset.grid(row=0, column=2)
+        sleep_subtitle.grid(row=1, column=0, columnspan=3, padx=(10, 0), sticky="w")
+        sleep_goal_tally.grid(row=2, column=0, columnspan=3, sticky="e")
+        sleep_progress_bar.grid(row=3, column=0, columnspan=3, padx=(10, 0), sticky="w")
+        sleep_hours_entry.grid(row=4, column=0, columnspan=2, padx=(10, 0), sticky="w")
+        sleep_add_hours.grid(row=4, column=2, sticky="w")
 
 
 class DiscoverPage(ctk.CTkFrame):
