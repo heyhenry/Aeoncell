@@ -435,153 +435,48 @@ class DashboardPage(ctk.CTkFrame):
 
     def create_widgets(self):
         navbar = Navbar(self, self.controller)
-        content = CTkXYFrame(self, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0)
+        content = ctk.CTkFrame(self, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0)
 
         navbar.grid(row=0, column=0, sticky="nswe")
         content.grid(row=0, column=1, sticky="nswe")
 
         content.grid_rowconfigure(0, weight=1)
-        content.grid_rowconfigure(5, weight=1)
+        content.grid_rowconfigure(2, weight=1)
 
         content.grid_columnconfigure(0, weight=1)
-        content.grid_columnconfigure(5, weight=1)
+        content.grid_columnconfigure(2, weight=1)
+ctk.CTkScrollableFrame
+        scroll_content_holder = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1280, height=800)
+        
+        scroll_content_holder.grid(row=1, column=1, sticky="nswe")
+        scroll_content_holder.grid_propagate(False)
 
-        content.grid_columnconfigure()
+        scroll_content = CTkXYFrame(scroll_content_holder, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1280, height=800)
 
-        hello_section = ctk.CTkFrame(content, border_color="black", width=450, height=100, border_width=1, fg_color="yellow")
-        date_section = ctk.CTkFrame(content, border_color="black", width=250, height=100, border_width=1)
-        profile_card_section = ctk.CTkFrame(content, border_color="black", width=380, height=800, border_width=1)
-        daily_sleep_section = ctk.CTkFrame(content, border_color="black", width=250, height=250, border_width=1)
-        daily_hydration_section = ctk.CTkFrame(content, border_color="black", width=250, height=250, border_width=1)
-        daily_walking_section = ctk.CTkFrame(content, border_color="black", width=250, height=250, border_width=1)
-        exercise_summary_section = ctk.CTkFrame(content, border_color="black", width=450, height=200, border_width=1)
-        weather_section = ctk.CTkFrame(content, border_color="black", width=300, height=200, border_width=1)
-        latest_exercise_entries_section = ctk.CTkFrame(content, border_color="black", width=600, height=200, border_width=1)
+        scroll_content.grid(row=0, column=0, sticky="nswe")
 
-        hello_section.grid_propagate(False)
-        date_section.grid_propagate(False)
-        profile_card_section.grid_propagate(False)
-        daily_sleep_section.grid_propagate(False)
-        daily_hydration_section.grid_propagate(False)
-        daily_walking_section.grid_propagate(False)
-        exercise_summary_section.grid_propagate(False)
-        weather_section.grid_propagate(False)
-        latest_exercise_entries_section.grid_propagate(False)
+        actual_content = ctk.CTkFrame(scroll_content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1280, height=800)
+        actual_content.grid(row=0, column=0, sticky="nswe")
 
-        hello_section.grid(row=1, column=1, columnspan=2, sticky="nw", padx=(20, 0), pady=(20, 0))
-        date_section.grid(row=1, column=3, sticky="nw", padx=(0, 20), pady=(20, 0))
-        profile_card_section.grid(row=1, rowspan=4, column=4, pady=(20, 0))
-        daily_sleep_section.grid(row=3, column=1, sticky="n", padx=5, pady=(0, 150))
-        daily_hydration_section.grid(row=3, column=2, sticky="n", padx=5, pady=(0, 150))
-        daily_walking_section.grid(row=3, column=3, sticky="n", padx=5, pady=(0, 150))
-        exercise_summary_section.grid(row=4, column=1, columnspan=2, sticky="n")
-        weather_section.grid(row=4, column=3, sticky="n")
-        latest_exercise_entries_section.grid(row=5, column=1, columnspan=3, sticky="n")
+        actual_content.grid_propagate(False)
 
-        # # welcome back section aka hello section
-        hello_user_message = ctk.CTkLabel(hello_section, text=f"Hello, Henry", font=("", 32))
-        motivational_message = ctk.CTkLabel(hello_section, text=f"Keep Moving & Stay Healthy", font=("", 14))
+        actual_content.grid_rowconfigure(0, weight=1)
+        actual_content.grid_rowconfigure(5, weight=1)
 
-        # # date section incl. motivation button
-        current_date = ctk.CTkLabel(date_section, text="12 October 2025", font=("", 18))
-        date_icon = ctk.CTkLabel(date_section, text="DATE ICON", font=("", 18))
-        actionable_motivation_icon = ctk.CTkButton(date_section, text="Motivation Icon", font=("", 18))
+        actual_content.grid_columnconfigure(0, weight=1)
+        actual_content.grid_columnconfigure(3, weight=1)
 
-        # # temp button widget usage to mimic height x width 
-        # # profile card section
-        profile_image_display = ctk.CTkButton(profile_card_section, text="PROFILE IMAGE", font=("", 24))
-        profile_name_display = ctk.CTkLabel(profile_card_section, text="Jojo Bizzaro", font=("", 18))
-        profile_height_title = ctk.CTkLabel(profile_card_section, text="Height", font=("", 14))
-        profile_weight_title = ctk.CTkLabel(profile_card_section, text="Weight", font=("", 14))
-        profile_age_title = ctk.CTkLabel(profile_card_section, text="Age", font=("", 14))
-        profile_height_display = ctk.CTkButton(profile_card_section, text="177cm", font=("", 18))
-        profile_weight_display = ctk.CTkButton(profile_card_section, text="93kg", font=("", 18))
-        profile_age_display = ctk.CTkButton(profile_card_section, text="43", font=("", 18))
-        profile_monthly_title = ctk.CTkLabel(profile_card_section, text="Monthly Goals", font=("", 18))
-        profile_monthly_weight_title = ctk.CTkLabel(profile_card_section, text="Lose Weight", font=("", 18))
-        profile_monthly_weight_info = ctk.CTkLabel(profile_card_section, text="2/5 kilos", font=("", 14))
-        profile_monthly_weight_progressbar = ctk.CTkProgressBar(profile_card_section, height=20, width=300)
-        profile_monthly_weight_progressbar.set(0.30)
-        profile_sleep_title = ctk.CTkLabel(profile_card_section, text="Sleep", font=("", 18))
-        profile_sleep_info = ctk.CTkLabel(profile_card_section, text="110/300 hours", font=("", 14))
-        profile_sleep_progressbar = ctk.CTkProgressBar(profile_card_section, height=20, width=300)
-        profile_sleep_progressbar.set(0.35)
-        profile_hydration_title = ctk.CTkLabel(profile_card_section, text="Hydration", font=("", 18)) 
-        profile_hydration_info = ctk.CTkLabel(profile_card_section, text="80/250 litres", font=("", 14))
-        profile_hydration_progressbar = ctk.CTkProgressBar(profile_card_section, height=20, width=300)
-        profile_hydration_progressbar.set(0.45)
-        profile_walking_title = ctk.CTkLabel(profile_card_section, text="Walking", font=("", 18))
-        profile_walking_info = ctk.CTkLabel(profile_card_section, text="35,000/150,000 steps", font=("", 14))
-        profile_walking_progressbar = ctk.CTkProgressBar(profile_card_section, height=20, width=300)
-        profile_walking_progressbar.set(0.70)
-        latest_achievements_section = ctk.CTkFrame(profile_card_section, border_color="red", border_width=1)
-        first_badge_spot = ctk.CTkButton(latest_achievements_section, text="BADGE 1", font=("", 24))
-        second_badge_spot = ctk.CTkButton(latest_achievements_section, text="BADGE 2", font=("", 24))
-        third_badge_spot = ctk.CTkButton(latest_achievements_section, text="BADGE 3", font=("", 24))       
+        section_one = ctk.CTkFrame(actual_content, border_width=3, border_color="black", width=900, height=100)
+        section_two = ctk.CTkFrame(actual_content, border_width=3, border_color="black", width=900, height=100)
+        section_three = ctk.CTkFrame(actual_content, border_width=3, border_color="black", width=900, height=100)
+        section_four = ctk.CTkFrame(actual_content, border_width=3, border_color="black", width=900, height=300)
+        profile_card_section = ctk.CTkFrame(actual_content, border_width=3, border_color="black", width=400, height=800)
 
-        # # daily tracker title
-        daily_title = ctk.CTkLabel(content, text="Daily Tracking", font=("", 18))
-
-        # daily sleep section
-        total_hours_slept = ctk.CTkLabel(daily_sleep_section, text="8.80 Hours", font=("", 18))
-        sleep_icon = ctk.CTkLabel(daily_sleep_section, text="ICON", font=("", 12))
-        sleep_reset = ctk.CTkLabel(daily_sleep_section, text="Reset", font=("", 12))
-        sleep_subtitle = ctk.CTkLabel(daily_sleep_section, text="Sleep", font=("", 12))
-        sleep_goal_tally = ctk.CTkLabel(daily_sleep_section, text="8.00/8.00", font=("", 12))
-        sleep_progress_bar = ctk.CTkProgressBar(daily_sleep_section)
-        sleep_hours_entry = ctk.CTkEntry(daily_sleep_section)
-        sleep_add_hours = ctk.CTkButton(daily_sleep_section, font=("", 10), width=20)
-
-        # grid -- 
-
-        # welcome back section
-        hello_user_message.grid(row=0, column=0, sticky="w")
-        motivational_message.grid(row=1, column=0, sticky="w")
-
-        # date section
-        current_date.grid(row=0, column=0, padx=(0, 10))
-        date_icon.grid(row=0, column=1, padx=(0, 30))
-        actionable_motivation_icon.grid(row=0, column=2)
-
-        # profile card
-        profile_image_display.grid(row=0, column=0, columnspan=3)
-        profile_name_display.grid(row=1, column=0, columnspan=3)
-        profile_height_title.grid(row=2, column=0)
-        profile_age_title.grid(row=2, column=1)
-        profile_weight_title.grid(row=2, column=2)
-        profile_height_display.grid(row=3, column=0)
-        profile_age_display.grid(row=3, column=1)
-        profile_weight_display.grid(row=3, column=2)
-        profile_monthly_title.grid(row=4, column=0, columnspan=3, sticky="w")
-        profile_monthly_weight_title.grid(row=5, column=0, columnspan=2)
-        profile_monthly_weight_info.grid(row=5, column=2)
-        profile_monthly_weight_progressbar.grid(row=6, column=0, columnspan=3)
-        profile_sleep_title.grid(row=7, column=0, columnspan=2)
-        profile_sleep_info.grid(row=7, column=2)
-        profile_sleep_progressbar.grid(row=8, column=0, columnspan=3)
-        profile_hydration_title.grid(row=9, column=0, columnspan=2)
-        profile_hydration_info.grid(row=9, column=2)
-        profile_hydration_progressbar.grid(row=10, column=0, columnspan=3)
-        profile_walking_title.grid(row=11, column=0, columnspan=2)
-        profile_walking_info.grid(row=11, column=2)
-        profile_walking_progressbar.grid(row=12, column=0, columnspan=3)
-        latest_achievements_section.grid(row=13, column=0, columnspan=3)
-        first_badge_spot.grid(row=0, column=0)
-        second_badge_spot.grid(row=0, column=1)
-        third_badge_spot.grid(row=0, column=2)
-
-        # dashboard sub title - Daily Tracker
-        daily_title.grid(row=2, column=0, columnspan=3, sticky="w", padx=10)
-
-        # daily sleep section
-        total_hours_slept.grid(row=0, column=0, padx=(10, 0))
-        sleep_icon.grid(row=0, column=1, sticky="e")
-        sleep_reset.grid(row=0, column=2)
-        sleep_subtitle.grid(row=1, column=0, columnspan=3, padx=(10, 0), sticky="w")
-        sleep_goal_tally.grid(row=2, column=0, columnspan=3, sticky="e")
-        sleep_progress_bar.grid(row=3, column=0, columnspan=3, padx=(10, 0), sticky="w")
-        sleep_hours_entry.grid(row=4, column=0, columnspan=2, padx=(10, 0), sticky="w")
-        sleep_add_hours.grid(row=4, column=2, sticky="w")
+        section_one.grid(row=1, column=1, sticky="nswe")
+        section_two.grid(row=2, column=1, sticky="nswe")
+        section_three.grid(row=3, column=1, sticky="nswe")
+        section_four.grid(row=4, column=1, sticky="nswe")
+        profile_card_section.grid(row=1, rowspan=4, column=2, sticky="nswe")
 
 
 class DiscoverPage(ctk.CTkFrame):
