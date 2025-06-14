@@ -1,53 +1,65 @@
 import customtkinter as ctk
-from tkinter import filedialog
-from PIL import Image
+
+def configure_scroll_region():
+    # Update both the scrollregion AND force a canvas update
+    canvas.configure(scrollregion=canvas.bbox("all"))
+    canvas.update_idletasks()  # This forces immediate update
+    
+    # Additional check to ensure scrollbars appear correctly
+    if content.winfo_height() > canvas.winfo_height():
+        v_scroll.grid()  # Ensure vertical scrollbar is visible
+    if content.winfo_width() > canvas.winfo_width():
+        h_scroll.grid()  # Ensure horizontal scrollbar is visible
 
 root = ctk.CTk()
+root.geometry("1200x1000")
+root.grid_rowconfigure(0, weight=1)
+root.grid_rowconfigure(2, weight=1)
+root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(2, weight=1)
 
-temp_file_path = ""
-new_image = None
+# Main container
+container = ctk.CTkFrame(root)
+container.grid(row=1, column=1, sticky="nsew")
+container.grid_rowconfigure(0, weight=1)
+container.grid_columnconfigure(0, weight=1)
 
-def browse_image():
-    global temp_file_path, new_image
-    file_path = filedialog.askopenfilename(title="Save a new image.", filetypes=[('Image Files', '*.png')])
-    if file_path:
-        new_image = ctk.CTkImage(light_image=Image.open(file_path), dark_image=Image.open(file_path), size=(128,128))
-        image_showcase.configure(image=new_image)
-        temp_file_path = file_path
+# Canvas setup
+canvas = ctk.CTkCanvas(container, bg="gray14", highlightthickness=0)
+canvas.grid(row=0, column=0, sticky="nsew")
 
-def save_image():
-    if temp_file_path:
-        print(temp_file_path)
-        save_image = Image.open(temp_file_path)
-        save_image = save_image.save("img/test_image.png")
-        notif_message.configure(text="Image has been saved.", text_color="green")
-        notif_message.after(500, lambda: notif_message.configure(text="", text_color="white"))
+# Scrollbars
+v_scroll = ctk.CTkScrollbar(container, orientation="vertical", command=canvas.yview)
+h_scroll = ctk.CTkScrollbar(container, orientation="horizontal", command=canvas.xview)
+v_scroll.grid(row=0, column=1, sticky="ns")
+h_scroll.grid(row=1, column=0, sticky="ew")
 
-def clear_image():
-    global temp_file_path, new_image
-    if temp_file_path:
-        new_image = None
-        image_showcase.configure(image=None)
-        image_showcase.pack_forget()
-        image_showcase.pack()
-        notif_message.configure(text="Image has been cleared.", text_color="blue")
-        notif_message.after(500, lambda: notif_message.configure(text="", text_color="white"))
-        temp_file_path = ""
+# Connect scrollbars
+canvas.configure(yscrollcommand=v_scroll.set, xscrollcommand=h_scroll.set)
 
-root.geometry("400x300")
+# Content frame
+content = ctk.CTkFrame(canvas, width=1500, height=1200, border_width=3, border_color="red")
+content.grid_propagate(False)
+canvas.create_window((0, 0), window=content, anchor="nw")
 
-show_save_img = ctk.CTkButton(root, text="show and save image.", command=browse_image)
-show_save_img.pack(pady=20)
+# Add content
+for i in range(30):
+    ctk.CTkButton(content, text=f"Row {i}").grid(row=i, column=0, padx=5, pady=5)
+for i in range(15):
+    ctk.CTkButton(content, text=f"Col {i}").grid(row=0, column=i+1, padx=5, pady=5)
 
-image_showcase = ctk.CTkLabel(root, text="")
-image_showcase.pack()
+# Initial configuration
+content.update_idletasks()  # Ensure widgets are rendered
+configure_scroll_region()  # Force proper scrollbar initialization
 
-clear_image_btn = ctk.CTkButton(root, text="Clear Image", command=clear_image)
-clear_image_btn.pack(side=ctk.LEFT, padx=(40, 20))
+# Mouse wheel bindings
+def on_mousewheel(event):
+    if event.state & 0x0001:  # Shift key
+        canvas.xview_scroll(-1*(event.delta//120), "units")
+    else:
+        canvas.yview_scroll(-1*(event.delta//120), "units")
 
-save_image_btn = ctk.CTkButton(root, text="Save Image", command=save_image)
-save_image_btn.pack(side=ctk.LEFT)
-
-notif_message = ctk.CTkLabel(root, text="")
+canvas.bind_all("<MouseWheel>", on_mousewheel)
+canvas.bind_all("<Shift-MouseWheel>", on_mousewheel)
 
 root.mainloop()
