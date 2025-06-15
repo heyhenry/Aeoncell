@@ -435,48 +435,33 @@ class DashboardPage(ctk.CTkFrame):
 
     def create_widgets(self):
         navbar = Navbar(self, self.controller)
-        content = ctk.CTkFrame(self, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0)
-
+        content = ctk.CTkScrollableFrame(self, corner_radius=0)
+        
         navbar.grid(row=0, column=0, sticky="nswe")
         content.grid(row=0, column=1, sticky="nswe")
 
         content.grid_rowconfigure(0, weight=1)
-        content.grid_rowconfigure(2, weight=1)
+        content.grid_rowconfigure(7, weight=1)
 
         content.grid_columnconfigure(0, weight=1)
         content.grid_columnconfigure(2, weight=1)
-ctk.CTkScrollableFrame
-        scroll_content_holder = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1280, height=800)
+
+        intro_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
+        profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
+        subtitle_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
+        dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
+        quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
+        recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
+
+        intro_section.grid(row=1, column=1, pady=20)
+        profile_section.grid(row=2, column=1, pady=(0, 20))
+        subtitle_section.grid(row=3, column=1, pady=(0, 20))
+        dailies_section.grid(row=4, column=1, pady=(0, 20))
+        quick_stats_section.grid(row=5, column=1)
+        recent_exercises_section.grid(row=6, column=1, pady=20)
+
         
-        scroll_content_holder.grid(row=1, column=1, sticky="nswe")
-        scroll_content_holder.grid_propagate(False)
 
-        scroll_content = CTkXYFrame(scroll_content_holder, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1280, height=800)
-
-        scroll_content.grid(row=0, column=0, sticky="nswe")
-
-        actual_content = ctk.CTkFrame(scroll_content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1280, height=800)
-        actual_content.grid(row=0, column=0, sticky="nswe")
-
-        actual_content.grid_propagate(False)
-
-        actual_content.grid_rowconfigure(0, weight=1)
-        actual_content.grid_rowconfigure(5, weight=1)
-
-        actual_content.grid_columnconfigure(0, weight=1)
-        actual_content.grid_columnconfigure(3, weight=1)
-
-        section_one = ctk.CTkFrame(actual_content, border_width=3, border_color="black", width=900, height=100)
-        section_two = ctk.CTkFrame(actual_content, border_width=3, border_color="black", width=900, height=100)
-        section_three = ctk.CTkFrame(actual_content, border_width=3, border_color="black", width=900, height=100)
-        section_four = ctk.CTkFrame(actual_content, border_width=3, border_color="black", width=900, height=300)
-        profile_card_section = ctk.CTkFrame(actual_content, border_width=3, border_color="black", width=400, height=800)
-
-        section_one.grid(row=1, column=1, sticky="nswe")
-        section_two.grid(row=2, column=1, sticky="nswe")
-        section_three.grid(row=3, column=1, sticky="nswe")
-        section_four.grid(row=4, column=1, sticky="nswe")
-        profile_card_section.grid(row=1, rowspan=4, column=2, sticky="nswe")
 
 
 class DiscoverPage(ctk.CTkFrame):
