@@ -521,7 +521,7 @@ class DashboardPage(ctk.CTkFrame):
         profile_walking_info = ctk.CTkLabel(profile_monthly_section, text="35,000/150,000 steps", font=("", 14))
         profile_walking_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=2, height=30, width=350)
         profile_walking_progressbar.set(0.70)
-        profile_achievements_section = ctk.CTkFrame(profile_section, border_color="red", border_width=1, fg_color="transparent")
+        profile_achievements_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_achievements_title = ctk.CTkLabel(profile_achievements_section, text="Recent Achievements", font=("", 24))
         first_badge_name = ctk.CTkLabel(profile_achievements_section, text="Running Madman", font=("", 14))
         first_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.badge)
@@ -537,9 +537,9 @@ class DashboardPage(ctk.CTkFrame):
         fourth_badge_date = ctk.CTkLabel(profile_achievements_section, text="Unlocked:\n16/06/2025", font=("", 12, "bold"))
 
         # main frames inside profile section
-        profile_info_section.grid(row=1, column=1, padx=20)
-        profile_monthly_section.grid(row=1, column=2)
-        profile_achievements_section.grid(row=1, column=3, padx=20)
+        profile_info_section.grid(row=1, column=1, padx=(10, 20), pady=(0, 20))
+        profile_monthly_section.grid(row=1, column=2, pady=(0, 20))
+        profile_achievements_section.grid(row=1, column=3, padx=20, pady=(0, 20))
         
         # profile info section
         profile_image.grid(row=0, column=0, columnspan=3, pady=(20, 0))
