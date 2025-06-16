@@ -429,6 +429,7 @@ class DashboardPage(ctk.CTkFrame):
         # temp
         self.icon = ctk.CTkImage(light_image=Image.open("img/big_flame.png"), dark_image=Image.open("img/big_flame.png"), size=(32, 32))
         self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(128, 128))
+        self.badge = ctk.CTkImage(light_image=Image.open("img/achievements/first_workout_achievement.png"), dark_image=Image.open("img/achievements/first_workout_achievement.png"), size=(64, 64))
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -521,14 +522,24 @@ class DashboardPage(ctk.CTkFrame):
         profile_walking_progressbar = ctk.CTkProgressBar(profile_monthly_section, height=30, width=350)
         profile_walking_progressbar.set(0.70)
         profile_achievements_section = ctk.CTkFrame(profile_section, border_color="red", border_width=1)
-        first_badge_spot = ctk.CTkButton(profile_achievements_section, text="BADGE 1", font=("", 24))
-        second_badge_spot = ctk.CTkButton(profile_achievements_section, text="BADGE 2", font=("", 24))
-        third_badge_spot = ctk.CTkButton(profile_achievements_section, text="BADGE 3", font=("", 24))  
+        profile_achievements_title = ctk.CTkLabel(profile_achievements_section, text="Recent Achievements", font=("", 24))
+        first_badge_name = ctk.CTkLabel(profile_achievements_section, text="Running Madman", font=("", 14))
+        first_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.badge)
+        first_badge_date = ctk.CTkLabel(profile_achievements_section, text="Unlocked:\n16/06/2025", font=("", 12, "bold"))
+        second_badge_name = ctk.CTkLabel(profile_achievements_section, text="First Workout", font=("", 14))
+        second_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.badge)
+        second_badge_date = ctk.CTkLabel(profile_achievements_section, text="Unlocked:\n16/06/2025", font=("", 12, "bold"))
+        third_badge_name = ctk.CTkLabel(profile_achievements_section, text="First Exercise", font=("", 14))
+        third_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.badge)
+        third_badge_date = ctk.CTkLabel(profile_achievements_section, text="Unlocked:\n16/06/2025", font=("", 12, "bold"))
+        fourth_badge_name = ctk.CTkLabel(profile_achievements_section, text="Ten Exercises", font=("", 14))
+        fourth_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.badge)
+        fourth_badge_date = ctk.CTkLabel(profile_achievements_section, text="Unlocked:\n16/06/2025", font=("", 12, "bold"))
 
         # main frames inside profile section
-        profile_info_section.grid(row=1, column=1, padx=(10, 50))
+        profile_info_section.grid(row=1, column=1, padx=20)
         profile_monthly_section.grid(row=1, column=2)
-        profile_achievements_section.grid(row=1, column=3, padx=(50, 10))
+        profile_achievements_section.grid(row=1, column=3, padx=20)
         
         # profile info section
         profile_image.grid(row=0, column=0, columnspan=3, pady=(20, 0))
@@ -567,6 +578,20 @@ class DashboardPage(ctk.CTkFrame):
         profile_walking_info.grid(row=7, column=1, pady=(20, 0), sticky="e")
         profile_walking_progressbar.grid(row=8, column=0, columnspan=2)
 
+        # profile achievements section
+        profile_achievements_title.grid(row=0, column=0, columnspan=2, padx=20, pady=(20, 10))
+        first_badge_name.grid(row=1, column=0, padx=10)
+        first_badge_spot.grid(row=2, column=0, padx=10)
+        first_badge_date.grid(row=3, column=0, pady=(0, 20))
+        second_badge_name.grid(row=1, column=1, padx=(0, 10))
+        second_badge_spot.grid(row=2, column=1, padx=(0, 10))
+        second_badge_date.grid(row=3, column=1, pady=(0, 20))
+        third_badge_name.grid(row=4, column=0, padx=10)
+        third_badge_spot.grid(row=5, column=0, padx=10)
+        third_badge_date.grid(row=6, column=0, pady=(0, 20))
+        fourth_badge_name.grid(row=4, column=1, padx=(0, 10))
+        fourth_badge_spot.grid(row=5, column=1, padx=(0, 10))
+        fourth_badge_date.grid(row=6, column=1, pady=(0, 20))
 
 
 class DiscoverPage(ctk.CTkFrame):
