@@ -453,7 +453,7 @@ class DashboardPage(ctk.CTkFrame):
 
         intro_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=100)
         profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=450)
-        subtitle_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
+        subtitle_section = ctk.CTkFrame(content, fg_color="transparent", width=1100, height=80)
         dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
         recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
@@ -477,7 +477,10 @@ class DashboardPage(ctk.CTkFrame):
         profile_section.grid_columnconfigure(0, weight=1)
         profile_section.grid_columnconfigure(4, weight=1)
 
-        # introduction section
+        subtitle_section.grid_rowconfigure(0, weight=1)
+        subtitle_section.grid_columnconfigure(0, weight=1)
+
+        # [Introduction Section]
         hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", font=("", 32))
         motivational_message = ctk.CTkLabel(intro_section, text="Keep Moving & Stay Healthy")
         current_date = ctk.CTkLabel(intro_section, text="12 October 2025", font=("", 18))
@@ -490,7 +493,7 @@ class DashboardPage(ctk.CTkFrame):
         date_icon.grid(row=0, rowspan=2, column=2, sticky="e", padx=(20, 0), pady=(20, 0))
         motivation_button.grid(row=0, rowspan=2, column=3, sticky="e", padx=(20, 0), pady=(20, 0))
 
-        # profile section
+        # [Profile Section]
         profile_info_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_image = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
         profile_name = ctk.CTkLabel(profile_info_section, text="Jojo Bizzaro", font=("", 24))
@@ -592,6 +595,11 @@ class DashboardPage(ctk.CTkFrame):
         fourth_badge_name.grid(row=4, column=1, padx=(0, 10))
         fourth_badge_spot.grid(row=5, column=1, padx=(0, 10))
         fourth_badge_date.grid(row=6, column=1, pady=(0, 20))
+
+        # [Subtitle Section]
+        subtitle_display = ctk.CTkLabel(subtitle_section, text="Daily Tracking", font=("", 32))
+
+        subtitle_display.grid(row=0, column=0, padx=(20, 0), sticky="sw")
 
 
 class DiscoverPage(ctk.CTkFrame):
