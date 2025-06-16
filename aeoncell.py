@@ -471,6 +471,11 @@ class DashboardPage(ctk.CTkFrame):
         quick_stats_section.grid(row=5, column=1)
         recent_exercises_section.grid(row=6, column=1, pady=20)
 
+        profile_section.grid_rowconfigure(0, weight=1)
+        profile_section.grid_rowconfigure(2, weight=1)
+        profile_section.grid_columnconfigure(0, weight=1)
+        profile_section.grid_columnconfigure(4, weight=1)
+
         # introduction section
         hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", font=("", 32))
         motivational_message = ctk.CTkLabel(intro_section, text="Keep Moving & Stay Healthy")
@@ -520,9 +525,9 @@ class DashboardPage(ctk.CTkFrame):
         second_badge_spot = ctk.CTkButton(profile_achievements_section, text="BADGE 2", font=("", 24))
         third_badge_spot = ctk.CTkButton(profile_achievements_section, text="BADGE 3", font=("", 24))  
 
-        profile_info_section.grid(row=0, column=0, padx=20)
-        profile_monthly_section.grid(row=0, column=1)
-        profile_achievements_section.grid(row=0, column=2, padx=20)
+        profile_info_section.grid(row=1, column=1, padx=(10, 50))
+        profile_monthly_section.grid(row=1, column=2)
+        profile_achievements_section.grid(row=1, column=3, padx=(50, 10))
         
         # profile info section
         profile_image.grid(row=0, column=0, columnspan=3, pady=(20, 0))
