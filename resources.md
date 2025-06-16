@@ -41,3 +41,5 @@ First Drink Achievement created by Freepik | flaticon.com (13th June 2025): http
 First Sleep Achievement created by Freepik | flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/sleep_3003124?term=sleep&page=1&position=40&origin=search&related_id=3003124
 Ten Exercises Achievement created by Freepik | flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/weightlifting_502128?term=gym&page=1&position=13&origin=search&related_id=502128
 New Profile Achievement created by Freepik | flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/id-card_4859220?term=identity&page=1&position=19&origin=search&related_id=4859220
+How To Make A Label Bold Tkinter? (16th June 2025): https://www.geeksforgeeks.org/python/how-to-make-a-label-bold-tkinter/
+HTML Color Codes (16th June 2025): https://htmlcolorcodes.com/
