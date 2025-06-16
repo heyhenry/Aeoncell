@@ -428,7 +428,7 @@ class DashboardPage(ctk.CTkFrame):
 
         # temp
         self.icon = ctk.CTkImage(light_image=Image.open("img/big_flame.png"), dark_image=Image.open("img/big_flame.png"), size=(32, 32))
-        self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(64, 64))
+        self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(128, 128))
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -451,7 +451,7 @@ class DashboardPage(ctk.CTkFrame):
         content.grid_columnconfigure(2, weight=1)
 
         intro_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=100)
-        profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
+        profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=400)
         subtitle_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
         dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
@@ -483,6 +483,73 @@ class DashboardPage(ctk.CTkFrame):
         current_date.grid(row=0, rowspan=2, column=1, sticky="e", padx=(550, 0), pady=(20, 0))
         date_icon.grid(row=0, rowspan=2, column=2, sticky="e", padx=(20, 0), pady=(20, 0))
         motivation_button.grid(row=0, rowspan=2, column=3, sticky="e", padx=(20, 0), pady=(20, 0))
+
+        # profile section
+        profile_info_section = ctk.CTkFrame(profile_section, border_color="green", border_width=1)
+        profile_image = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
+        profile_name = ctk.CTkLabel(profile_info_section, text="Jojo Bizzaro", font=("", 24))
+        profile_height_title = ctk.CTkLabel(profile_info_section, text="Height", font=("", 14, "bold"))
+        profile_height_frame = ctk.CTkFrame(profile_info_section, border_width=1, border_color="black", corner_radius=15, width=100, height=50)
+        profile_height_display = ctk.CTkLabel(profile_height_frame, text="177cm", font=("", 18))
+        profile_weight_title = ctk.CTkLabel(profile_info_section, text="Weight", font=("", 14, "bold"))
+        profile_weight_frame = ctk.CTkFrame(profile_info_section, border_width=1, border_color="black", corner_radius=15, width=100, height=50)
+        profile_weight_display = ctk.CTkLabel(profile_weight_frame, text="93kg", font=("", 18))
+        profile_age_title = ctk.CTkLabel(profile_info_section, text="Age", font=("", 14, "bold"))
+        profile_age_frame = ctk.CTkFrame(profile_info_section, border_width=1, border_color="black", corner_radius=15, width=100, height=50)
+        profile_age_display = ctk.CTkLabel(profile_age_frame, text="43yo", font=("", 18))
+        profile_monthly_section = ctk.CTkFrame(profile_section, border_color="blue", border_width=1)
+        profile_monthly_title = ctk.CTkLabel(profile_image, text="Monthly Progress", font=("", 18))
+        profile_monthly_weight_title = ctk.CTkLabel(profile_section, text="Weight Loss", font=("", 18))
+        profile_monthly_weight_info = ctk.CTkLabel(profile_section, text="2/5 Kilos", font=("", 14))
+        profile_monthly_weight_progressbar = ctk.CTkProgressBar(profile_section, height=20, width=300)
+        profile_monthly_weight_progressbar.set(0.30)
+        profile_sleep_title = ctk.CTkLabel(profile_section, text="Sleep", font=("", 18))
+        profile_sleep_info = ctk.CTkLabel(profile_section, text="110/300 hours", font=("", 14))
+        profile_sleep_progressbar = ctk.CTkProgressBar(profile_section, height=20, width=300)
+        profile_sleep_progressbar.set(0.35)
+        profile_hydration_title = ctk.CTkLabel(profile_section, text="Hydration", font=("", 18)) 
+        profile_hydration_info = ctk.CTkLabel(profile_section, text="80/250 litres", font=("", 14))
+        profile_hydration_progressbar = ctk.CTkProgressBar(profile_section, height=20, width=300)
+        profile_hydration_progressbar.set(0.45)
+        profile_walking_title = ctk.CTkLabel(profile_section, text="Walking", font=("", 18))
+        profile_walking_info = ctk.CTkLabel(profile_section, text="35,000/150,000 steps", font=("", 14))
+        profile_walking_progressbar = ctk.CTkProgressBar(profile_section, height=20, width=300)
+        profile_walking_progressbar.set(0.70)
+        profile_achievements_section = ctk.CTkFrame(profile_section, border_color="red", border_width=1)
+        first_badge_spot = ctk.CTkButton(profile_achievements_section, text="BADGE 1", font=("", 24))
+        second_badge_spot = ctk.CTkButton(profile_achievements_section, text="BADGE 2", font=("", 24))
+        third_badge_spot = ctk.CTkButton(profile_achievements_section, text="BADGE 3", font=("", 24))  
+
+        profile_info_section.grid(row=0, column=0, padx=20)
+        profile_monthly_section.grid(row=0, column=1)
+        profile_achievements_section.grid(row=0, column=2, padx=20)
+        
+        # profile info section
+        profile_image.grid(row=0, column=0, columnspan=3, pady=(20, 0))
+        profile_name.grid(row=1, column=0, columnspan=3, pady=(10, 0))
+        profile_height_title.grid(row=2, column=0, padx=(0, 10), pady=(20, 0))
+        profile_height_frame.grid(row=3, column=0, padx=20, pady=(0, 20))
+        profile_height_frame.grid_propagate(False)
+        profile_height_frame.grid_rowconfigure(0, weight=1)
+        profile_height_frame.grid_columnconfigure(0, weight=1)
+        profile_height_display.grid(row=0, column=0, padx=10, pady=10)
+        profile_weight_title.grid(row=2, column=1, padx=(0, 10),  pady=(20, 0))
+        profile_weight_frame.grid(row=3, column=1, pady=(0, 20))
+        profile_weight_frame.grid_propagate(False)
+        profile_weight_frame.grid_rowconfigure(0, weight=1)
+        profile_weight_frame.grid_columnconfigure(0, weight=1)
+        profile_weight_display.grid(row=0, column=0, padx=10, pady=10)
+        profile_age_title.grid(row=2, column=2, padx=(0, 10),  pady=(20, 0))
+        profile_age_frame.grid(row=3, column=2, padx=20, pady=(0, 20))
+        profile_age_frame.grid_propagate(False)
+        profile_age_frame.grid_rowconfigure(0, weight=1)
+        profile_age_frame.grid_columnconfigure(0, weight=1)
+        profile_age_display.grid(row=0, column=0, padx=10, pady=10)
+
+
+
+
+
 
 
 class DiscoverPage(ctk.CTkFrame):
