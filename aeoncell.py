@@ -452,7 +452,7 @@ class DashboardPage(ctk.CTkFrame):
         content.grid_columnconfigure(2, weight=1)
 
         intro_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=100)
-        profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=400)
+        profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=450)
         subtitle_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
         dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
@@ -579,7 +579,7 @@ class DashboardPage(ctk.CTkFrame):
         profile_walking_progressbar.grid(row=8, column=0, columnspan=2)
 
         # profile achievements section
-        profile_achievements_title.grid(row=0, column=0, columnspan=2, padx=20, pady=(20, 10))
+        profile_achievements_title.grid(row=0, column=0, columnspan=2, padx=20, pady=20)
         first_badge_name.grid(row=1, column=0, padx=10)
         first_badge_spot.grid(row=2, column=0, padx=10)
         first_badge_date.grid(row=3, column=0, pady=(0, 20))
