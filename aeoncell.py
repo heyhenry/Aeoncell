@@ -454,7 +454,7 @@ class DashboardPage(ctk.CTkFrame):
         intro_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=100)
         profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=450)
         subtitle_section = ctk.CTkFrame(content, fg_color="transparent", width=1100, height=80)
-        dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
+        dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=400)
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
         recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
 
@@ -479,6 +479,11 @@ class DashboardPage(ctk.CTkFrame):
 
         subtitle_section.grid_rowconfigure(0, weight=1)
         subtitle_section.grid_columnconfigure(0, weight=1)
+
+        dailies_section.grid_rowconfigure(0, weight=1)
+        dailies_section.grid_rowconfigure(2, weight=1)
+        dailies_section.grid_columnconfigure(0, weight=1)
+        dailies_section.grid_columnconfigure(4, weight=1)
 
         # [Introduction Section]
         hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", font=("", 32))
@@ -601,6 +606,41 @@ class DashboardPage(ctk.CTkFrame):
 
         subtitle_display.grid(row=0, column=0, padx=(20, 0), sticky="sw")
 
+        # [Dailies Section]
+        sleep_section = ctk.CTkFrame(dailies_section, border_width=5)
+        hydration_section = ctk.CTkFrame(dailies_section, border_width=1)
+        walking_section = ctk.CTkFrame(dailies_section, border_width=1)
+
+        sleep_section.grid(row=1, column=1, padx=20)
+        hydration_section.grid(row=1, column=2)
+        walking_section.grid(row=1, column=3, padx=20)
+
+        # sleep section
+        total_hours_slept = ctk.CTkLabel(sleep_section, text="8.80 Hours", font=("", 24))
+        icon_reset_frame = ctk.CTkFrame(sleep_section, fg_color="transparent")
+        sleep_icon = ctk.CTkLabel(icon_reset_frame, text="", image=self.icon)
+        sleep_reset = ctk.CTkLabel(icon_reset_frame, text="", image=self.icon)
+        sleep_title = ctk.CTkLabel(sleep_section, text="Sleep", font=("", 14))
+        sleep_goal_tally = ctk.CTkLabel(sleep_section, text="8.00 / 8.00", font=("", 14))
+        sleep_progressbar = ctk.CTkProgressBar(sleep_section, border_width=3, height=40, width=300)
+        sleep_progressbar.set(1)
+        sleep_hours_entry = ctk.CTkEntry(sleep_section, width=140, height=60, font=("", 24))
+        sleep_add_hours = ctk.CTkButton(sleep_section, width=140, height=60, text="Add Steps", font=("", 18))
+
+        total_hours_slept.grid(row=0, column=0, padx=(40, 0), pady=(20, 0), sticky="sw")
+        icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(20, 0), sticky="e")
+        sleep_icon.grid(row=0, column=0, padx=(0, 20))
+        sleep_reset.grid(row=0, column=1)
+        sleep_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
+        sleep_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
+        sleep_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
+        sleep_hours_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 30))
+        sleep_add_hours.grid(row=4, column=1, padx=(0, 40), pady=(20, 30))
+
+
+    # Reminder to adjust after finishing all widgets... 
+    # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
+    # remember to implement binding for the actionable icons like -> reset icon
 
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
