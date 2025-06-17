@@ -608,8 +608,8 @@ class DashboardPage(ctk.CTkFrame):
 
         # [Dailies Section]
         sleep_section = ctk.CTkFrame(dailies_section, border_width=5)
-        hydration_section = ctk.CTkFrame(dailies_section, border_width=1)
-        walking_section = ctk.CTkFrame(dailies_section, border_width=1)
+        hydration_section = ctk.CTkFrame(dailies_section, border_width=5)
+        walking_section = ctk.CTkFrame(dailies_section, border_width=5)
 
         sleep_section.grid(row=1, column=1, padx=20)
         hydration_section.grid(row=1, column=2)
@@ -617,9 +617,9 @@ class DashboardPage(ctk.CTkFrame):
 
         # sleep section
         total_hours_slept = ctk.CTkLabel(sleep_section, text="8.80 Hours", font=("", 24))
-        icon_reset_frame = ctk.CTkFrame(sleep_section, fg_color="transparent")
-        sleep_icon = ctk.CTkLabel(icon_reset_frame, text="", image=self.icon)
-        sleep_reset = ctk.CTkLabel(icon_reset_frame, text="", image=self.icon)
+        sleep_icon_reset_frame = ctk.CTkFrame(sleep_section, fg_color="transparent")
+        sleep_icon = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.icon)
+        sleep_reset = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.icon)
         sleep_title = ctk.CTkLabel(sleep_section, text="Sleep", font=("", 14))
         sleep_goal_tally = ctk.CTkLabel(sleep_section, text="8.00 / 8.00", font=("", 14))
         sleep_progressbar = ctk.CTkProgressBar(sleep_section, border_width=3, height=40, width=300)
@@ -628,7 +628,7 @@ class DashboardPage(ctk.CTkFrame):
         sleep_add_hours = ctk.CTkButton(sleep_section, width=140, height=60, text="Add Steps", font=("", 18))
 
         total_hours_slept.grid(row=0, column=0, padx=(40, 0), pady=(20, 0), sticky="sw")
-        icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(20, 0), sticky="e")
+        sleep_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(20, 0), sticky="e")
         sleep_icon.grid(row=0, column=0, padx=(0, 20))
         sleep_reset.grid(row=0, column=1)
         sleep_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
@@ -637,6 +637,27 @@ class DashboardPage(ctk.CTkFrame):
         sleep_hours_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 30))
         sleep_add_hours.grid(row=4, column=1, padx=(0, 40), pady=(20, 30))
 
+        # hydration section
+        total_litres_drunk = ctk.CTkLabel(hydration_section, text="1.5 Litres", font=("", 24))
+        hydration_icon_reset_frame = ctk.CTkFrame(hydration_section, fg_color="transparent")
+        hydration_icon = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.icon)
+        hydration_reset = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.icon)
+        hydration_title = ctk.CTkLabel(hydration_section, text="Hydration", font=("", 14))
+        hydration_goal_tally = ctk.CTkLabel(hydration_section, text="1.5 / 3.0", font=("", 14))
+        hydration_progressbar = ctk.CTkProgressBar(hydration_section, border_width=3, height=40, width=300)
+        hydration_progressbar.set(0.50)
+        hydration_litres_entry = ctk.CTkEntry(hydration_section, width=140, height=60, font=("", 24))
+        hydration_add_ml = ctk.CTkButton(hydration_section, width=140, height=60, text="Add Ml", font=("", 18))
+
+        total_litres_drunk.grid(row=0, column=0, padx=(40, 0), pady=(20, 0), sticky="sw")
+        hydration_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(20, 0), sticky="e")
+        hydration_icon.grid(row=0, column=0, padx=(0, 20))
+        hydration_reset.grid(row=0, column=1)
+        hydration_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
+        hydration_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
+        hydration_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
+        hydration_litres_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 30))
+        hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 30))
 
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
