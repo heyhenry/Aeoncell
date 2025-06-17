@@ -431,6 +431,7 @@ class DashboardPage(ctk.CTkFrame):
         self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(192, 192))
         self.badge = ctk.CTkImage(light_image=Image.open("img/achievements/first_workout_achievement.png"), dark_image=Image.open("img/achievements/first_workout_achievement.png"), size=(64, 64))
         self.mini_banner = ctk.CTkImage(light_image=Image.open("img/laid_dumbbell_man.png"), dark_image=Image.open("img/laid_dumbbell_man.png"), size=(100, 100))
+        self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -696,7 +697,7 @@ class DashboardPage(ctk.CTkFrame):
         weather_info.grid(row=1, column=2)
 
         exercise_top_frame = ctk.CTkFrame(exercise_summary, fg_color="transparent")
-        exercise_title = ctk.CTkLabel(exercise_top_frame, text="Exercise Summary", font=("", 14))
+        exercise_title = ctk.CTkLabel(exercise_top_frame, text="Exercise Summary", font=("", 18))
         exercise_icon = ctk.CTkLabel(exercise_top_frame, text="", image=self.icon)
         exercise_today_title = ctk.CTkLabel(exercise_top_frame, text="Today", font=("", 24))
         exercise_mini_banner = ctk.CTkLabel(exercise_top_frame, text="", image=self.mini_banner)
@@ -714,6 +715,21 @@ class DashboardPage(ctk.CTkFrame):
         exercise_reps.grid(row=1, column=1, padx=20, pady=(0, 20), sticky="w")
         exercise_volume.grid(row=2, column=0, padx=20, pady=(0, 40), sticky="w")
         exercise_sets.grid(row=2, column=1, padx=20, pady=(0, 40), sticky="w")
+
+        weather_top_frame = ctk.CTkFrame(weather_info, fg_color="transparent")
+        weather_title = ctk.CTkLabel(weather_top_frame, text="Weather", font=("", 18))
+        weather_icon = ctk.CTkLabel(weather_top_frame, text="", image=self.icon)
+        weather_location = ctk.CTkLabel(weather_top_frame, text="Perth, Western Australia", font=("", 24))
+        weather_current_forecast = ctk.CTkLabel(weather_top_frame, text="", image=self.weather_forecast)
+        # tbd based on api data
+        api_widget = ctk.CTkFrame(weather_info, height=60, width=350, border_width=3)
+
+        weather_top_frame.grid(row=0, column=0, padx=40, pady=(40, 0))
+        weather_title.grid(row=0, column=0, columnspan=2, sticky="w")
+        weather_icon.grid(row=1, column=0, padx=(0, 20))
+        weather_location.grid(row=1, column=1, padx=(0, 40))
+        weather_current_forecast.grid(row=0, rowspan=2, column=2, pady=(0, 30))
+        api_widget.grid(row=1, column=0, padx=40, pady=(0, 40))
 
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
