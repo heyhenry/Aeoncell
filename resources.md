@@ -43,3 +43,7 @@ Ten Exercises Achievement created by Freepik | flaticon.com (13th June 2025): ht
 New Profile Achievement created by Freepik | flaticon.com (13th June 2025): https://www.flaticon.com/free-icon/id-card_4859220?term=identity&page=1&position=19&origin=search&related_id=4859220
 How To Make A Label Bold Tkinter? (16th June 2025): https://www.geeksforgeeks.org/python/how-to-make-a-label-bold-tkinter/
 HTML Color Codes (16th June 2025): https://htmlcolorcodes.com/
+UX checklist for desktop applications (17th June 2025): https://learn.microsoft.com/en-us/windows/win32/uxguide/top-violations?utm_source=chatgpt.com
+Common Screen Resolutions for Your Website for App in 2025 (17th June 2025): https://www.qaoncloud.com/blog/common-screen-resolutions-2025?utm_source=chatgpt.com
+Understanding Common SCreen Sizes Across Devices (17th June 2025): https://medium.com/@reedjace28/understanding-common-screen-sizes-across-devices-4ab1247137e4
+Screen sizes, breakpoints and responsive design techniques (17th June 2025): https://learn.microsoft.com/en-us/windows/apps/design/layout/screen-sizes-and-breakpoints-for-responsive-design
