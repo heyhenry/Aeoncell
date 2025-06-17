@@ -509,13 +509,13 @@ class DashboardPage(ctk.CTkFrame):
         profile_image = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
         profile_name = ctk.CTkLabel(profile_info_section, text="Jojo Bizzaro", font=("", 24))
         profile_height_title = ctk.CTkLabel(profile_info_section, text="Height", font=("", 14, "bold"))
-        profile_height_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50, fg_color="transparent")
+        profile_height_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
         profile_height_display = ctk.CTkLabel(profile_height_frame, text="177cm", font=("", 18))
         profile_weight_title = ctk.CTkLabel(profile_info_section, text="Weight", font=("", 14, "bold"))
-        profile_weight_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50, fg_color="transparent")
+        profile_weight_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
         profile_weight_display = ctk.CTkLabel(profile_weight_frame, text="93kg", font=("", 18))
         profile_age_title = ctk.CTkLabel(profile_info_section, text="Age", font=("", 14, "bold"))
-        profile_age_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50, fg_color="transparent")
+        profile_age_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
         profile_age_display = ctk.CTkLabel(profile_age_frame, text="43yo", font=("", 18))
         profile_monthly_section = ctk.CTkFrame(profile_section, border_color="blue", fg_color="transparent")
         profile_monthly_title = ctk.CTkLabel(profile_monthly_section, text="Monthly Progress", font=("", 24))
@@ -551,9 +551,9 @@ class DashboardPage(ctk.CTkFrame):
         fourth_badge_date = ctk.CTkLabel(profile_achievements_section, text="Unlocked:\n16/06/2025", font=("", 12, "bold"))
 
         # main frames inside profile section
-        profile_info_section.grid(row=1, column=1, padx=(10, 20), pady=(0, 20))
-        profile_monthly_section.grid(row=1, column=2, pady=(0, 20))
-        profile_achievements_section.grid(row=1, column=3, padx=20, pady=(0, 20))
+        profile_info_section.grid(row=1, column=1, padx=(10, 100), pady=(0, 20))
+        profile_monthly_section.grid(row=1, column=2, padx=(0, 100), pady=(0, 30))
+        profile_achievements_section.grid(row=1, column=3, padx=(0, 50), pady=(0, 20))
         
         # profile info section
         profile_image.grid(row=0, column=0, columnspan=3, pady=(20, 0))
