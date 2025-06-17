@@ -430,6 +430,7 @@ class DashboardPage(ctk.CTkFrame):
         self.icon = ctk.CTkImage(light_image=Image.open("img/big_flame.png"), dark_image=Image.open("img/big_flame.png"), size=(32, 32))
         self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(192, 192))
         self.badge = ctk.CTkImage(light_image=Image.open("img/achievements/first_workout_achievement.png"), dark_image=Image.open("img/achievements/first_workout_achievement.png"), size=(64, 64))
+        self.mini_banner = ctk.CTkImage(light_image=Image.open("img/laid_dumbbell_man.png"), dark_image=Image.open("img/laid_dumbbell_man.png"), size=(100, 100))
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -451,12 +452,12 @@ class DashboardPage(ctk.CTkFrame):
         content.grid_columnconfigure(0, weight=1)
         content.grid_columnconfigure(2, weight=1)
 
-        intro_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=100)
-        profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=450)
+        intro_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=100)
+        profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=450)
         subtitle_section = ctk.CTkFrame(content, fg_color="transparent", width=1100, height=80)
-        dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1200, height=400)
-        quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
-        recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
+        dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
+        quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
+        recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=200)
 
         intro_section.grid_propagate(False)
         profile_section.grid_propagate(False)
@@ -485,7 +486,12 @@ class DashboardPage(ctk.CTkFrame):
         dailies_section.grid_columnconfigure(0, weight=1)
         dailies_section.grid_columnconfigure(4, weight=1)
 
-        # [Introduction Section]
+        quick_stats_section.grid_rowconfigure(0, weight=1)
+        quick_stats_section.grid_rowconfigure(2, weight=1)
+        quick_stats_section.grid_columnconfigure(0, weight=1)
+        quick_stats_section.grid_columnconfigure(3, weight=1)
+
+        # [ Introduction Section ]
         hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", font=("", 32))
         motivational_message = ctk.CTkLabel(intro_section, text="Keep Moving & Stay Healthy")
         current_date = ctk.CTkLabel(intro_section, text="12 October 2025", font=("", 18))
@@ -498,7 +504,7 @@ class DashboardPage(ctk.CTkFrame):
         date_icon.grid(row=0, rowspan=2, column=2, sticky="e", padx=(20, 0), pady=(20, 0))
         motivation_button.grid(row=0, rowspan=2, column=3, sticky="e", padx=(20, 0), pady=(20, 0))
 
-        # [Profile Section]
+        # [ Profile Section ]
         profile_info_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_image = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
         profile_name = ctk.CTkLabel(profile_info_section, text="Jojo Bizzaro", font=("", 24))
@@ -601,19 +607,19 @@ class DashboardPage(ctk.CTkFrame):
         fourth_badge_spot.grid(row=5, column=1, padx=(0, 10))
         fourth_badge_date.grid(row=6, column=1, pady=(0, 20))
 
-        # [Subtitle Section]
+        # [ Subtitle Section ]
         subtitle_display = ctk.CTkLabel(subtitle_section, text="Daily Tracking", font=("", 32))
 
-        subtitle_display.grid(row=0, column=0, padx=(20, 0), sticky="sw")
+        subtitle_display.grid(row=0, column=0, padx=(10, 0), sticky="sw")
 
-        # [Dailies Section]
-        sleep_section = ctk.CTkFrame(dailies_section, border_width=5)
-        hydration_section = ctk.CTkFrame(dailies_section, border_width=5)
-        walking_section = ctk.CTkFrame(dailies_section, border_width=5)
+        # [ Dailies Section ] 
+        sleep_section = ctk.CTkFrame(dailies_section, border_width=5, border_color="#B19CD9")
+        hydration_section = ctk.CTkFrame(dailies_section, border_width=5, border_color="#B19CD9")
+        walking_section = ctk.CTkFrame(dailies_section, border_width=5, border_color="#B19CD9")
 
-        sleep_section.grid(row=1, column=1)
+        sleep_section.grid(row=1, column=1, padx=20)
         hydration_section.grid(row=1, column=2)
-        walking_section.grid(row=1, column=3)
+        walking_section.grid(row=1, column=3, padx=20)
 
         # sleep section
         total_hours_slept = ctk.CTkLabel(sleep_section, text="8.80 Hours", font=("", 24))
@@ -627,15 +633,15 @@ class DashboardPage(ctk.CTkFrame):
         sleep_hours_entry = ctk.CTkEntry(sleep_section, width=140, height=60, font=("", 24))
         sleep_add_hours = ctk.CTkButton(sleep_section, width=140, height=60, text="Add Steps", font=("", 18))
 
-        total_hours_slept.grid(row=0, column=0, padx=(40, 0), pady=(20, 0), sticky="sw")
-        sleep_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(20, 0), sticky="e")
+        total_hours_slept.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
+        sleep_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
         sleep_icon.grid(row=0, column=0, padx=(0, 20))
         sleep_reset.grid(row=0, column=1)
         sleep_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         sleep_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         sleep_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
-        sleep_hours_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 30))
-        sleep_add_hours.grid(row=4, column=1, padx=(0, 40), pady=(20, 30))
+        sleep_hours_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
+        sleep_add_hours.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
         # hydration section
         total_litres_drunk = ctk.CTkLabel(hydration_section, text="1.5 Litres", font=("", 24))
@@ -649,15 +655,15 @@ class DashboardPage(ctk.CTkFrame):
         hydration_litres_entry = ctk.CTkEntry(hydration_section, width=140, height=60, font=("", 24))
         hydration_add_ml = ctk.CTkButton(hydration_section, width=140, height=60, text="Add Ml", font=("", 18))
 
-        total_litres_drunk.grid(row=0, column=0, padx=(40, 0), pady=(20, 0), sticky="sw")
-        hydration_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(20, 0), sticky="e")
+        total_litres_drunk.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
+        hydration_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
         hydration_icon.grid(row=0, column=0, padx=(0, 20))
         hydration_reset.grid(row=0, column=1)
         hydration_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         hydration_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         hydration_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
-        hydration_litres_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 30))
-        hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 30))
+        hydration_litres_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
+        hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
         # walking section
         total_steps_walked = ctk.CTkLabel(walking_section, text="1.5 Litres", font=("", 24))
@@ -671,15 +677,35 @@ class DashboardPage(ctk.CTkFrame):
         walking_steps_entry = ctk.CTkEntry(walking_section, width=140, height=60, font=("", 24))
         walking_add_steps = ctk.CTkButton(walking_section, width=140, height=60, text="Add Ml", font=("", 18))
 
-        total_steps_walked.grid(row=0, column=0, padx=(40, 0), pady=(20, 0), sticky="sw")
-        walking_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(20, 0), sticky="e")
+        total_steps_walked.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
+        walking_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
         walking_icon.grid(row=0, column=0, padx=(0, 20))
         walking_reset.grid(row=0, column=1)
         walking_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         walking_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         walking_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
-        walking_steps_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 30))
-        walking_add_steps.grid(row=4, column=1, padx=(0, 40), pady=(20, 30))
+        walking_steps_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
+        walking_add_steps.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
+
+        # [ Quick Stats Section ]
+
+        exercise_summary = ctk.CTkFrame(quick_stats_section, border_width=5, border_color="#B19CD9")
+        weather_info = ctk.CTkFrame(quick_stats_section, border_width=5, border_color="#B19CD9")
+
+        exercise_summary.grid(row=1, column=1, padx=(0, 20))
+        weather_info.grid(row=1, column=2)
+
+        exercise_top_frame = ctk.CTkFrame(exercise_summary, fg_color="transparent", border_width=3)
+        exercise_title = ctk.CTkLabel(exercise_top_frame, text="Exercise Summary", font=("", 14))
+        exercise_icon = ctk.CTkLabel(exercise_top_frame, text="", image=self.icon)
+        exercise_today_title = ctk.CTkLabel(exercise_top_frame, text="Today", font=("", 24))
+        exercise_mini_banner = ctk.CTkLabel(exercise_top_frame, text="", image=self.mini_banner)
+
+        exercise_top_frame.grid(row=0, column=0, padx=20, pady=20)
+        exercise_title.grid(row=0, column=0, columnspan=2, padx=(40, 0), pady=(20, 0), sticky="s")
+        exercise_icon.grid(row=1, column=0, padx=(40, 0), pady=(0, 40))
+        exercise_today_title.grid(row=1, column=1, pady=(0, 40))
+        exercise_mini_banner.grid(row=0, rowspan=2, column=2, padx=(60, 40), pady=20)
 
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
