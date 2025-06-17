@@ -7,6 +7,7 @@ from aeoncell_utils import *
 from PIL import Image
 import os
 from CTkXYFrame import *
+from tkinter import ttk as btk
 
 ctk.set_appearance_mode("Light")
 ctk.set_default_color_theme("themes/custom_lavender.json")
@@ -432,6 +433,7 @@ class DashboardPage(ctk.CTkFrame):
         self.badge = ctk.CTkImage(light_image=Image.open("img/achievements/first_workout_achievement.png"), dark_image=Image.open("img/achievements/first_workout_achievement.png"), size=(64, 64))
         self.mini_banner = ctk.CTkImage(light_image=Image.open("img/laid_dumbbell_man.png"), dark_image=Image.open("img/laid_dumbbell_man.png"), size=(100, 100))
         self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
+        self.entry_icon = ctk.CTkImage(light_image=Image.open("img/entry_icon.png"), dark_image=Image.open("img/entry_icon.png"), size=(64, 64))
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -458,7 +460,7 @@ class DashboardPage(ctk.CTkFrame):
         subtitle_section = ctk.CTkFrame(content, fg_color="transparent", width=1100, height=80)
         dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
-        recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=200)
+        recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=800)
 
         intro_section.grid_propagate(False)
         profile_section.grid_propagate(False)
@@ -491,6 +493,11 @@ class DashboardPage(ctk.CTkFrame):
         quick_stats_section.grid_rowconfigure(2, weight=1)
         quick_stats_section.grid_columnconfigure(0, weight=1)
         quick_stats_section.grid_columnconfigure(3, weight=1)
+
+        recent_exercises_section.grid_rowconfigure(0, weight=1)
+        recent_exercises_section.grid_rowconfigure(4, weight=1)
+        recent_exercises_section.grid_columnconfigure(0, weight=1)
+        recent_exercises_section.grid_columnconfigure(3, weight=1)
 
         # [ Introduction Section ]
         hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", font=("", 32))
@@ -730,6 +737,27 @@ class DashboardPage(ctk.CTkFrame):
         weather_location.grid(row=1, column=1, padx=(0, 40))
         weather_current_forecast.grid(row=0, rowspan=2, column=2, pady=(0, 30))
         api_widget.grid(row=1, column=0, padx=40, pady=(0, 40))
+
+        # [ Recent Exercises Section ]
+        recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 24))
+        redirect_entry_button = ctk.CTkLabel(recent_exercises_section, text="", image=self.entry_icon)
+        entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=3)
+        entries = btk.Treeview(entries_frame, columns=("exercise_name", "exercise_date", "exercise_type"), show="headings", height=25, selectmode="browse")
+        entries.heading("exercise_name", text="Exercise Name", anchor="w")
+        entries.heading("exercise_date", text="Date", anchor="w")
+        entries.heading("exercise_type", text="Entry Type", anchor="w")
+        entries.column("exercise_name", width=200, minwidth=200, stretch=False)
+        entries.column("exercise_date", width=200, minwidth=200, stretch=False)
+        entries.column("exercise_type", width=200, minwidth=200, stretch=False)
+        add_session = ctk.CTkButton(recent_exercises_section, text="Add a Session", width=140, height=60, font=("", 18))
+        add_single = ctk.CTkButton(recent_exercises_section, text="Add an Exercise", width=140, height=60, font=("", 18))
+
+        recent_exercises_title.grid(row=1, column=1, pady=20, sticky="e")
+        redirect_entry_button.grid(row=1, column=2, pady=20)
+        entries_frame.grid(row=2, column=1, columnspan=2)
+        entries.grid(row=0, column=0)
+        add_session.grid(row=3, column=1, pady=20)
+        add_single.grid(row=3, column=2, pady=20)
 
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
