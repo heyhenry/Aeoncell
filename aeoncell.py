@@ -666,16 +666,16 @@ class DashboardPage(ctk.CTkFrame):
         hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
         # walking section
-        total_steps_walked = ctk.CTkLabel(walking_section, text="1.5 Litres", font=("", 24))
+        total_steps_walked = ctk.CTkLabel(walking_section, text="12,031 Steps", font=("", 24))
         walking_icon_reset_frame = ctk.CTkFrame(walking_section, fg_color="transparent")
         walking_icon = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.icon)
         walking_reset = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.icon)
-        walking_title = ctk.CTkLabel(walking_section, text="Hydration", font=("", 14))
-        walking_goal_tally = ctk.CTkLabel(walking_section, text="1.5 / 3.0", font=("", 14))
+        walking_title = ctk.CTkLabel(walking_section, text="Walking", font=("", 14))
+        walking_goal_tally = ctk.CTkLabel(walking_section, text="10,000 / 10,000", font=("", 14))
         walking_progressbar = ctk.CTkProgressBar(walking_section, border_width=3, height=40, width=300)
         walking_progressbar.set(0.50)
         walking_steps_entry = ctk.CTkEntry(walking_section, width=140, height=60, font=("", 24))
-        walking_add_steps = ctk.CTkButton(walking_section, width=140, height=60, text="Add Ml", font=("", 18))
+        walking_add_steps = ctk.CTkButton(walking_section, width=140, height=60, text="Add Steps", font=("", 18))
 
         total_steps_walked.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
         walking_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
