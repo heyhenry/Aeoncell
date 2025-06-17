@@ -695,17 +695,25 @@ class DashboardPage(ctk.CTkFrame):
         exercise_summary.grid(row=1, column=1, padx=(0, 20))
         weather_info.grid(row=1, column=2)
 
-        exercise_top_frame = ctk.CTkFrame(exercise_summary, fg_color="transparent", border_width=3)
+        exercise_top_frame = ctk.CTkFrame(exercise_summary, fg_color="transparent")
         exercise_title = ctk.CTkLabel(exercise_top_frame, text="Exercise Summary", font=("", 14))
         exercise_icon = ctk.CTkLabel(exercise_top_frame, text="", image=self.icon)
         exercise_today_title = ctk.CTkLabel(exercise_top_frame, text="Today", font=("", 24))
         exercise_mini_banner = ctk.CTkLabel(exercise_top_frame, text="", image=self.mini_banner)
+        exercise_total = ctk.CTkLabel(exercise_summary, text=f"Total Exercises: {5}", font=("", 24))
+        exercise_reps = ctk.CTkLabel(exercise_summary, text=f"Total Reps: {40}", font=("", 24))
+        exercise_volume = ctk.CTkLabel(exercise_summary, text=f"Total Volume (kg): {160}", font=("", 24))
+        exercise_sets = ctk.CTkLabel(exercise_summary, text=f"Total Sets: {8}", font=("", 24))
 
-        exercise_top_frame.grid(row=0, column=0, padx=20, pady=20)
-        exercise_title.grid(row=0, column=0, columnspan=2, padx=(40, 0), pady=(20, 0), sticky="s")
-        exercise_icon.grid(row=1, column=0, padx=(40, 0), pady=(0, 40))
+        exercise_top_frame.grid(row=0, column=0, columnspan=2, padx=20, pady=20, sticky="w")
+        exercise_title.grid(row=0, column=0, columnspan=2, pady=(20, 0), sticky="s")
+        exercise_icon.grid(row=1, column=0, pady=(0, 40))
         exercise_today_title.grid(row=1, column=1, pady=(0, 40))
-        exercise_mini_banner.grid(row=0, rowspan=2, column=2, padx=(60, 40), pady=20)
+        exercise_mini_banner.grid(row=0, rowspan=2, column=2, padx=(200, 40), pady=20)
+        exercise_total.grid(row=1, column=0, padx=20, pady=(0, 20), sticky="w")
+        exercise_reps.grid(row=1, column=1, padx=20, pady=(0, 20), sticky="w")
+        exercise_volume.grid(row=2, column=0, padx=20, pady=(0, 40), sticky="w")
+        exercise_sets.grid(row=2, column=1, padx=20, pady=(0, 40), sticky="w")
 
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
