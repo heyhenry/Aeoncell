@@ -454,7 +454,7 @@ class DashboardPage(ctk.CTkFrame):
         intro_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=100)
         profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=450)
         subtitle_section = ctk.CTkFrame(content, fg_color="transparent", width=1100, height=80)
-        dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=400)
+        dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1200, height=400)
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
         recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=200)
 
@@ -611,9 +611,9 @@ class DashboardPage(ctk.CTkFrame):
         hydration_section = ctk.CTkFrame(dailies_section, border_width=5)
         walking_section = ctk.CTkFrame(dailies_section, border_width=5)
 
-        sleep_section.grid(row=1, column=1, padx=20)
+        sleep_section.grid(row=1, column=1)
         hydration_section.grid(row=1, column=2)
-        walking_section.grid(row=1, column=3, padx=20)
+        walking_section.grid(row=1, column=3)
 
         # sleep section
         total_hours_slept = ctk.CTkLabel(sleep_section, text="8.80 Hours", font=("", 24))
@@ -658,6 +658,28 @@ class DashboardPage(ctk.CTkFrame):
         hydration_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
         hydration_litres_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 30))
         hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 30))
+
+        # walking section
+        total_steps_walked = ctk.CTkLabel(walking_section, text="1.5 Litres", font=("", 24))
+        walking_icon_reset_frame = ctk.CTkFrame(walking_section, fg_color="transparent")
+        walking_icon = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.icon)
+        walking_reset = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.icon)
+        walking_title = ctk.CTkLabel(walking_section, text="Hydration", font=("", 14))
+        walking_goal_tally = ctk.CTkLabel(walking_section, text="1.5 / 3.0", font=("", 14))
+        walking_progressbar = ctk.CTkProgressBar(walking_section, border_width=3, height=40, width=300)
+        walking_progressbar.set(0.50)
+        walking_steps_entry = ctk.CTkEntry(walking_section, width=140, height=60, font=("", 24))
+        walking_add_steps = ctk.CTkButton(walking_section, width=140, height=60, text="Add Ml", font=("", 18))
+
+        total_steps_walked.grid(row=0, column=0, padx=(40, 0), pady=(20, 0), sticky="sw")
+        walking_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(20, 0), sticky="e")
+        walking_icon.grid(row=0, column=0, padx=(0, 20))
+        walking_reset.grid(row=0, column=1)
+        walking_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
+        walking_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
+        walking_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
+        walking_steps_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 30))
+        walking_add_steps.grid(row=4, column=1, padx=(0, 40), pady=(20, 30))
 
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
