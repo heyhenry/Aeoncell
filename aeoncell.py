@@ -27,8 +27,8 @@ class Windows(ctk.CTk):
         self.app_icon_img = ctk.CTkImage(light_image=Image.open("img/capsule_original_recround.png"), dark_image=Image.open("img/capsule_original_recround.png"), size=(64,64))
 
         self.title("Aeoncell")
-        self.geometry("1280x800")
-        self.minsize(1280, 800)
+        self.geometry("1440x900")
+        self.minsize(1440, 900)
         
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
