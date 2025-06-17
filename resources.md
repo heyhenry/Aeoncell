@@ -47,4 +47,5 @@ UX checklist for desktop applications (17th June 2025): https://learn.microsoft.
 Common Screen Resolutions for Your Website for App in 2025 (17th June 2025): https://www.qaoncloud.com/blog/common-screen-resolutions-2025?utm_source=chatgpt.com
 Understanding Common SCreen Sizes Across Devices (17th June 2025): https://medium.com/@reedjace28/understanding-common-screen-sizes-across-devices-4ab1247137e4
 Screen sizes, breakpoints and responsive design techniques (17th June 2025): https://learn.microsoft.com/en-us/windows/apps/design/layout/screen-sizes-and-breakpoints-for-responsive-design
-Exercise Arm Exercise Boy by 588ku | pngtree.com (17th June 2025): https://pngtree.com/freepng/exercise-arm-exercise-boy_4620159.html
+Exercise Arm Exercise Boy created by 588ku | pngtree.com (17th June 2025): https://pngtree.com/freepng/exercise-arm-exercise-boy_4620159.html
+stormy weather forecast created by Freepik | flaticon.com (17th June 2025):  https://www.flaticon.com/free-icon/storm_1146860?term=weather+forecast&page=1&position=10&origin=tag&related_id=1146860
