@@ -731,12 +731,12 @@ class DashboardPage(ctk.CTkFrame):
         # tbd based on api data
         api_widget = ctk.CTkFrame(weather_info, height=60, width=350, border_width=3)
 
-        weather_top_frame.grid(row=0, column=0, padx=40, pady=(40, 0))
+        weather_top_frame.grid(row=0, column=0, padx=40, pady=(70, 0))
         weather_title.grid(row=0, column=0, columnspan=2, sticky="w")
         weather_icon.grid(row=1, column=0, padx=(0, 20))
         weather_location.grid(row=1, column=1, padx=(0, 40))
         weather_current_forecast.grid(row=0, rowspan=2, column=2, pady=(0, 30))
-        api_widget.grid(row=1, column=0, padx=40, pady=(0, 40))
+        api_widget.grid(row=1, column=0, padx=40, pady=(0, 70))
 
         # [ Recent Exercises Section ]
         recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 24))
