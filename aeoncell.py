@@ -450,8 +450,22 @@ class DashboardPage(ctk.CTkFrame):
         self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
         self.entry_icon = ctk.CTkImage(light_image=Image.open("img/entry_icon.png"), dark_image=Image.open("img/entry_icon.png"), size=(64, 64))
 
-        # vars
+        # variables
+        self.today = self.controller.today
         self.steps_var = ctk.StringVar()
+        self.steps_display = ctk.StringVar()
+
+        # check and retrieve valid data
+        # retrieve steps_taken if the entry exists
+        # check if a step entry exists for today
+        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
+        if 1 in self.controller.db_cursor.fetchone():
+            self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (self.today,))
+            # retrieve total upon app startup
+            steps_taken = self.controller.db_cursor.fetchone()[0]
+            # format and set total steps display
+            steps_taken = f"{steps_taken:,}"
+            self.steps_display.set(str(steps_taken))
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -692,7 +706,7 @@ class DashboardPage(ctk.CTkFrame):
         hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
         # walking section
-        total_steps_walked = ctk.CTkLabel(walking_section, text="12,031 Steps", font=("", 24))
+        total_steps_walked = ctk.CTkLabel(walking_section, textvariable=self.steps_display, font=("", 24))
         walking_icon_reset_frame = ctk.CTkFrame(walking_section, fg_color="transparent")
         walking_icon = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.icon)
         walking_reset = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.icon)
@@ -792,8 +806,7 @@ class DashboardPage(ctk.CTkFrame):
     # remember to implement binding for the actionable icons like -> reset icon
 
     def process_steps_entry(self):
-        today = self.controller.today
-        print(today)
+        print(self.today)
         steps = self.steps_var.get()
         # check if any steps were inputted
         if len(steps) < 1:
@@ -801,22 +814,22 @@ class DashboardPage(ctk.CTkFrame):
             # do nothing on button click
             return 
         # check if an entry exists for today
-        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (today,))
+        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
         if not 1 in self.controller.db_cursor.fetchone():
             # if none exists, create a new entry with the initially given steps
-            self.controller.db_cursor.execute("INSERT INTO steps_tracker (date, steps_taken) VALUES (?, ?)", (today, steps))
+            self.controller.db_cursor.execute("INSERT INTO steps_tracker (date, steps_taken) VALUES (?, ?)", (self.today, steps))
             self.controller.db_connection.commit()
             print("success in creating a new entry")
         # update the already existing entry
         else:
             # find out how many steps have been already taken (prior to this new input)
-            self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (today,))
+            self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (self.today,))
             # int var by default from sqlite
             steps_taken = self.controller.db_cursor.fetchone()[0]
             # steps_taken + steps (current input)
             steps_taken += int(steps)
             # update the entry with the new total steps taken
-            self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (steps_taken, today))
+            self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (steps_taken, self.today))
             self.controller.db_connection.commit()
             print("success in updating entry")
 
