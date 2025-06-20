@@ -59,9 +59,6 @@ class Windows(ctk.CTk):
         # else:
         #     self.show_page(RegisterPage)
 
-        # self.auto_create_daily_tracking_entries()
-        # self.protocol("WM_DELETE_WINDOW", self.auto_del_daily_tracking_entries)
-
     # display the selected page to the user
     def show_page(self, selected_page):
         page = self.pages[selected_page]
@@ -81,28 +78,6 @@ class Windows(ctk.CTk):
     # set cursor focus to chosen field
     def set_initial_focus(self, widget_name):
         self.after(300, widget_name.focus_set)
-
-    # checks to see if an entry for the daily trackers have been created for today
-    # if not, the daily trackers will be created
-    def auto_create_daily_tracking_entries(self):
-        self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
-        if not 1 in self.db_cursor.fetchone():
-            self.db_cursor.execute("INSERT INTO steps_tracker (date) VALUES (?)", (self.today,))
-            self.db_cursor.execute("INSERT INTO hydration_tracker (date) VALUES (?)", (self.today,))
-            self.db_cursor.execute("INSERT INTO sleep_tracker (date) VALUES (?)", (self.today,))
-            
-        self.db_connection.commit()
-        # create a new steps entry if not created yet
-        self.db_cursor.execute
-
-    # def auto_del_daily_tracking_entries(self):
-    #     self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ? AND steps_taken IS NULL)", (self.today,))
-    #     if not  in self.db_cursor.fetchone():
-            
-
-
-    #     self.destroy()
-        
 
 
     # retrieve and set username from value found in database
