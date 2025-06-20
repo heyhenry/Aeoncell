@@ -781,11 +781,9 @@ class DashboardPage(ctk.CTkFrame):
     # remember to implement binding for the actionable icons like -> reset icon
 
     def process_steps_entry(self):
-        print(self.today)
         steps = int(self.steps_var.get())
         # check if any steps were inputted
         if steps < 1:
-            print("nope invalid input!")
             # do nothing on button click
             return 
         # check if an entry exists for today
@@ -794,7 +792,6 @@ class DashboardPage(ctk.CTkFrame):
             # if none exists, create a new entry with the initially given steps
             self.controller.db_cursor.execute("INSERT INTO steps_tracker (date, steps_taken) VALUES (?, ?)", (self.today, steps))
             self.controller.db_connection.commit()
-            print("success in creating a new entry")
             # format and update the total steps taken display
             steps = f"{steps:,}"
             self.steps_display.set(str(steps))
@@ -810,7 +807,6 @@ class DashboardPage(ctk.CTkFrame):
             steps_taken += steps
             # check if the tally is valid (aka humanly possible)
             if steps_taken > 99999:
-                print("uh oh you tried to have a tally bigger than 99999 but ill atleast max you out to 99999 :)")
                 self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (99999, self.today))
                 self.controller.db_connection.commit()
                 # set to max num if tally is equal to over 99999
@@ -819,7 +815,6 @@ class DashboardPage(ctk.CTkFrame):
             else:
                 self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (steps_taken, self.today))
                 self.controller.db_connection.commit()
-                print("success in updating entry")
             # format and update the total steps taken display
             steps_taken = f"{steps_taken:,}"
             self.steps_display.set(str(steps_taken))
