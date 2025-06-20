@@ -202,10 +202,41 @@ def custom_float_only_entry_limited_validation(event, widget, digit_limit):
         if len(widget.get()[dot_index+1:]) == 2:
             return "break"
 
-# def custom_float_incl_deci_limited_validation(event, widget, digit_limit):
-#     if event.keysym
+def custom_hydration_validation(event, widget):
+    if event.keysym == "BackSpace":
+        return 
+    
+    char = event.char
+    i = widget.index("insert")
 
+    if not char.isdigit():
+        return "break"
+    
+    current = widget.get()
+    digits_only = [c for c in current if c.isdigit()]
 
+    if len(digits_only) >= 6:
+        return "break"
+    
+    digits_only.insert(i - current[:i].count("."), char)
+
+    formatted_string = ""
+    for idx, c in enumerate(digits_only):
+        if idx == 4:
+            formatted_string += "."
+        formatted_string += c
+    
+    widget.delete(0, ctk.END)
+    widget.insert(0, formatted_string)
+
+    if i == 4:
+        decimal_point_offset = 1
+    else:
+        decimal_point_offset = 0
+
+    widget.icursor(min(i + 1 + decimal_point_offset, len(formatted_string)))
+
+    return "break"
 
 
 
