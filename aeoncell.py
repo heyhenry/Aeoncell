@@ -809,9 +809,9 @@ class DashboardPage(ctk.CTkFrame):
 
     def process_steps_entry(self):
         print(self.today)
-        steps = self.steps_var.get()
+        steps = int(self.steps_var.get())
         # check if any steps were inputted
-        if int(steps) < 1:
+        if steps < 1:
             print("nope invalid input!")
             # do nothing on button click
             return 
@@ -822,6 +822,11 @@ class DashboardPage(ctk.CTkFrame):
             self.controller.db_cursor.execute("INSERT INTO steps_tracker (date, steps_taken) VALUES (?, ?)", (self.today, steps))
             self.controller.db_connection.commit()
             print("success in creating a new entry")
+            # format and update the total steps taken display
+            steps = f"{steps:,}"
+            self.steps_display.set(str(steps))
+            # clear the steps entry field
+            self.steps_var.set("")
         # update the already existing entry
         else:
             # find out how many steps have been already taken (prior to this new input)
@@ -829,7 +834,7 @@ class DashboardPage(ctk.CTkFrame):
             # int var by default from sqlite
             steps_taken = self.controller.db_cursor.fetchone()[0]
             # steps_taken + steps (current input)
-            steps_taken += int(steps)
+            steps_taken += steps
             # check if the tally is valid (aka humanly possible)
             if steps_taken > 99999:
                 print("uh oh you tried to have a tally bigger than 99999 but ill atleast max you out to 99999 :)")
@@ -842,11 +847,11 @@ class DashboardPage(ctk.CTkFrame):
                 self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (steps_taken, self.today))
                 self.controller.db_connection.commit()
                 print("success in updating entry")
-        # format and update the total steps taken display
-        steps_taken = f"{steps_taken:,}"
-        self.steps_display.set(str(steps_taken))
-        # clear the steps entry field
-        self.steps_var.set("")
+            # format and update the total steps taken display
+            steps_taken = f"{steps_taken:,}"
+            self.steps_display.set(str(steps_taken))
+            # clear the steps entry field
+            self.steps_var.set("")
 
     
 
