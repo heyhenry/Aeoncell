@@ -504,7 +504,7 @@ class DashboardPage(ctk.CTkFrame):
         recent_exercises_section.grid_columnconfigure(0, weight=1)
         recent_exercises_section.grid_columnconfigure(3, weight=1)
 
-        # [ Introduction Section ]
+        #region [ Introduction Section ]
         hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", font=("", 32))
         motivational_message = ctk.CTkLabel(intro_section, text="Keep Moving & Stay Healthy")
         current_date = ctk.CTkLabel(intro_section, text="12 October 2025", font=("", 18))
@@ -516,8 +516,9 @@ class DashboardPage(ctk.CTkFrame):
         current_date.grid(row=0, rowspan=2, column=1, sticky="e", padx=(550, 0), pady=(20, 0))
         date_icon.grid(row=0, rowspan=2, column=2, sticky="e", padx=(20, 0), pady=(20, 0))
         motivation_button.grid(row=0, rowspan=2, column=3, sticky="e", padx=(20, 0), pady=(20, 0))
+        #endregion
 
-        # [ Profile Section ]
+        #region [ Profile Section ]
         profile_info_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_image = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
         profile_name = ctk.CTkLabel(profile_info_section, text="Jojo Bizzaro", font=("", 24))
@@ -619,13 +620,15 @@ class DashboardPage(ctk.CTkFrame):
         fourth_badge_name.grid(row=4, column=1, padx=(0, 10))
         fourth_badge_spot.grid(row=5, column=1, padx=(0, 10))
         fourth_badge_date.grid(row=6, column=1, pady=(0, 20))
+        # endregion
 
-        # [ Subtitle Section ]
+        #region [ Subtitle Section ]
         subtitle_display = ctk.CTkLabel(subtitle_section, text="Daily Tracking", font=("", 32))
 
         subtitle_display.grid(row=0, column=0, padx=(10, 0), sticky="sw")
+        #endregion
 
-        # [ Dailies Section ] 
+        #region [ Dailies Section ] 
         sleep_section = ctk.CTkFrame(dailies_section, border_width=5, border_color="#B19CD9")
         hydration_section = ctk.CTkFrame(dailies_section, border_width=5, border_color="#B19CD9")
         walking_section = ctk.CTkFrame(dailies_section, border_width=5, border_color="#B19CD9")
@@ -701,8 +704,9 @@ class DashboardPage(ctk.CTkFrame):
         walking_add_steps.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
         self.walking_steps_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.walking_steps_entry, 5))
+        #endregion
 
-        # [ Quick Stats Section ]
+        #region [ Quick Stats Section ]
 
         exercise_summary = ctk.CTkFrame(quick_stats_section, border_width=5, border_color="#B19CD9")
         weather_info = ctk.CTkFrame(quick_stats_section, border_width=5, border_color="#B19CD9")
@@ -744,8 +748,9 @@ class DashboardPage(ctk.CTkFrame):
         weather_location.grid(row=1, column=1, padx=(0, 40))
         weather_current_forecast.grid(row=0, rowspan=2, column=2, pady=(0, 30))
         api_widget.grid(row=1, column=0, padx=40, pady=(0, 70))
+        #endregion
 
-        # [ Recent Exercises Section ]
+        #region [ Recent Exercises Section ]
         recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 24))
         redirect_entry_button = ctk.CTkLabel(recent_exercises_section, text="", image=self.entry_icon)
         entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=3)
@@ -775,6 +780,7 @@ class DashboardPage(ctk.CTkFrame):
         entries.grid(row=0, column=0)
         add_session.grid(row=3, column=1, pady=20)
         add_single.grid(row=3, column=2, pady=20)
+        #endregion
 
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
