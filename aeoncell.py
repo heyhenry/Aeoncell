@@ -714,7 +714,7 @@ class DashboardPage(ctk.CTkFrame):
         walking_goal_tally = ctk.CTkLabel(walking_section, text="10,000 / 10,000", font=("", 14))
         walking_progressbar = ctk.CTkProgressBar(walking_section, border_width=3, height=40, width=300)
         walking_progressbar.set(0.50)
-        walking_steps_entry = ctk.CTkEntry(walking_section, textvariable=self.steps_var, width=140, height=60, font=("", 24))
+        self.walking_steps_entry = ctk.CTkEntry(walking_section, textvariable=self.steps_var, width=140, height=60, font=("", 24))
         walking_add_steps = ctk.CTkButton(walking_section, width=140, height=60, text="Add Steps", font=("", 18), command=self.process_steps_entry)
 
         total_steps_walked.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
@@ -724,8 +724,10 @@ class DashboardPage(ctk.CTkFrame):
         walking_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         walking_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         walking_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
-        walking_steps_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
+        self.walking_steps_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         walking_add_steps.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
+
+        self.walking_steps_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.walking_steps_entry, 5))
 
         # [ Quick Stats Section ]
 
@@ -809,7 +811,7 @@ class DashboardPage(ctk.CTkFrame):
         print(self.today)
         steps = self.steps_var.get()
         # check if any steps were inputted
-        if len(steps) < 1:
+        if int(steps) < 1:
             print("nope invalid input!")
             # do nothing on button click
             return 
@@ -828,17 +830,25 @@ class DashboardPage(ctk.CTkFrame):
             steps_taken = self.controller.db_cursor.fetchone()[0]
             # steps_taken + steps (current input)
             steps_taken += int(steps)
+            # check if the tally is valid (aka humanly possible)
+            if steps_taken > 99999:
+                print("uh oh you tried to have a tally bigger than 99999 but ill atleast max you out to 99999 :)")
+                self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (99999, self.today))
+                self.controller.db_connection.commit()
+                # set to max num if tally is equal to over 99999
+                steps_taken = 99999
             # update the entry with the new total steps taken
-            self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (steps_taken, self.today))
-            self.controller.db_connection.commit()
-            print("success in updating entry")
+            else:
+                self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (steps_taken, self.today))
+                self.controller.db_connection.commit()
+                print("success in updating entry")
         # format and update the total steps taken display
         steps_taken = f"{steps_taken:,}"
         self.steps_display.set(str(steps_taken))
         # clear the steps entry field
         self.steps_var.set("")
 
-
+    
 
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
