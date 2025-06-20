@@ -450,18 +450,16 @@ class DashboardPage(ctk.CTkFrame):
         self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
         self.entry_icon = ctk.CTkImage(light_image=Image.open("img/entry_icon.png"), dark_image=Image.open("img/entry_icon.png"), size=(64, 64))
 
-        # variables
+        # variables with placeholder values
         self.today = self.controller.today
         self.steps_var = ctk.StringVar()
-        self.steps_display = ctk.StringVar()
+        self.steps_display = ctk.StringVar(value="0")
 
-        # check and retrieve valid data
-        # retrieve steps_taken if the entry exists
-        # check if a step entry exists for today
+        # check and see if an entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
         if 1 in self.controller.db_cursor.fetchone():
+            # an existing entry exists, retrieve the value of total steps taken
             self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (self.today,))
-            # retrieve total upon app startup
             steps_taken = self.controller.db_cursor.fetchone()[0]
             # format and set total steps display
             steps_taken = f"{steps_taken:,}"
