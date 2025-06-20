@@ -832,6 +832,11 @@ class DashboardPage(ctk.CTkFrame):
             self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (steps_taken, self.today))
             self.controller.db_connection.commit()
             print("success in updating entry")
+        # format and update the total steps taken display
+        steps_taken = f"{steps_taken:,}"
+        self.steps_display.set(str(steps_taken))
+        # clear the steps entry field
+        self.steps_var.set("")
 
 
 
