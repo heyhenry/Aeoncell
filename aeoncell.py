@@ -429,8 +429,10 @@ class DashboardPage(ctk.CTkFrame):
         self.today = self.controller.today
         self.steps_var = ctk.StringVar()
         self.steps_display = ctk.StringVar(value="0")
+        self.hydration_var = ctk.StringVar()
+        self.hydration_display = ctk.StringVar(value="0.00")
 
-        # check and see if an entry exists for today
+        # check and see if a walking entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
         if 1 in self.controller.db_cursor.fetchone():
             # an existing entry exists, retrieve the value of total steps taken
@@ -440,6 +442,15 @@ class DashboardPage(ctk.CTkFrame):
             steps_taken = f"{steps_taken:,}"
             self.steps_display.set(str(steps_taken))
 
+        # check and see if a hydration entry exists for today
+        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
+        if 1 in self.controller.db_cursor.fetchone():
+            self.controller.db_cursor.execute("SELECT consumption_ml FROM hydration_tracker WHERE date = ?", (self.today,))
+            liquids_consumed = self.controller.db_cursor.fetchone()[0]
+            liquids_consumed = f"{liquids_consumed:,.2f}"
+            self.hydration_display.set(str(liquids_consumed))
+            self.hydration_var.set("")
+        
         self.grid_rowconfigure(0, weight=1)
 
         self.grid_columnconfigure(0, weight=0)
@@ -448,6 +459,7 @@ class DashboardPage(ctk.CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
+        #region [Parent Frames]
         navbar = Navbar(self, self.controller)
         content = ctk.CTkScrollableFrame(self, corner_radius=0)
         
@@ -503,6 +515,7 @@ class DashboardPage(ctk.CTkFrame):
         recent_exercises_section.grid_rowconfigure(4, weight=1)
         recent_exercises_section.grid_columnconfigure(0, weight=1)
         recent_exercises_section.grid_columnconfigure(3, weight=1)
+        #endregion
 
         #region [ Introduction Section ]
         hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", font=("", 32))
@@ -660,7 +673,7 @@ class DashboardPage(ctk.CTkFrame):
         sleep_add_hours.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
         # hydration section
-        total_litres_drunk = ctk.CTkLabel(hydration_section, text="1.5 Litres", font=("", 24))
+        total_ml_drunk = ctk.CTkLabel(hydration_section, textvariable=self.hydration_display, font=("", 24))
         hydration_icon_reset_frame = ctk.CTkFrame(hydration_section, fg_color="transparent")
         hydration_icon = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.icon)
         hydration_reset = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.icon)
@@ -668,18 +681,20 @@ class DashboardPage(ctk.CTkFrame):
         hydration_goal_tally = ctk.CTkLabel(hydration_section, text="1.5 / 3.0", font=("", 14))
         hydration_progressbar = ctk.CTkProgressBar(hydration_section, border_width=3, height=40, width=300)
         hydration_progressbar.set(0.50)
-        hydration_litres_entry = ctk.CTkEntry(hydration_section, width=140, height=60, font=("", 24))
-        hydration_add_ml = ctk.CTkButton(hydration_section, width=140, height=60, text="Add Ml", font=("", 18))
+        self.hydration_ml_entry = ctk.CTkEntry(hydration_section, textvariable=self.hydration_var, width=140, height=60, font=("", 24))
+        hydration_add_ml = ctk.CTkButton(hydration_section, width=140, height=60, text="Add ml", font=("", 18), command=self.process_hydration_entry)
 
-        total_litres_drunk.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
+        total_ml_drunk.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
         hydration_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
         hydration_icon.grid(row=0, column=0, padx=(0, 20))
         hydration_reset.grid(row=0, column=1)
         hydration_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         hydration_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         hydration_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
-        hydration_litres_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
+        self.hydration_ml_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
+
+        self.hydration_ml_entry.bind("<Key>", lambda event: custom_float_only_entry_limited_validation(event, self.hydration_ml_entry, 7))
 
         # walking section
         total_steps_walked = ctk.CTkLabel(walking_section, textvariable=self.steps_display, font=("", 24))
@@ -827,7 +842,39 @@ class DashboardPage(ctk.CTkFrame):
             # clear the steps entry field
             self.steps_var.set("")
 
-    
+    def process_hydration_entry(self):
+        # in ml, round to 2 decimal places
+        liquids_consumed = round(float(self.hydration_var.get()), 2)
+        if liquids_consumed < 0.00:
+            return
+        # ensures to cap daily ml consumption at 9999.99
+        if liquids_consumed > 9999.99:
+            liquids_consumed = 9999.99
+        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
+        if not 1 in self.controller.db_cursor.fetchone():
+            self.controller.db_cursor.execute("INSERT INTO hydration_tracker (date, consumption_ml) VALUES (?, ?)", (self.today, liquids_consumed))
+            self.controller.db_connection.commit()
+            liquids_consumed = f"{liquids_consumed:,.2f}"
+            self.hydration_display.set(str(liquids_consumed))
+            self.hydration_var.set("")
+        else:
+            # find out how much liquids (ml) is currently stored (prior to this new input)
+            self.controller.db_cursor.execute("SELECT consumption_ml FROM hydration_tracker WHERE date = ?", (self.today,))
+            total_liquids_consumed = self.controller.db_cursor.fetchone()[0]
+            total_liquids_consumed += liquids_consumed
+            if total_liquids_consumed > 9999.99:
+                total_liquids_consumed = 9999.99
+                self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
+                self.controller.db_connection.commit()
+                liquids_consumed = f"{liquids_consumed:,.2f}"
+                self.hydration_display.set(str(total_liquids_consumed))
+                self.hydration_var.set("")
+            else:
+                self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
+                self.controller.db_connection.commit()
+                liquids_consumed = f"{liquids_consumed:,.2f}"
+                self.hydration_display.set(str(total_liquids_consumed))
+                self.hydration_var.set("")
 
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -1304,7 +1351,7 @@ class SettingsPage(ctk.CTkFrame):
 
         # monthly related binds
         self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
-        self.monthly_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_hydration_entry))
+        self.monthly_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_limited_validation(event, self.monthly_hydration_entry, 7))
         self.monthly_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_sleep_entry))
         self.monthly_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_walking_entry, None))
 
