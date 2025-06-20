@@ -59,6 +59,9 @@ class Windows(ctk.CTk):
         # else:
         #     self.show_page(RegisterPage)
 
+        # self.auto_create_daily_tracking_entries()
+        # self.protocol("WM_DELETE_WINDOW", self.auto_del_daily_tracking_entries)
+
     # display the selected page to the user
     def show_page(self, selected_page):
         page = self.pages[selected_page]
@@ -89,6 +92,18 @@ class Windows(ctk.CTk):
             self.db_cursor.execute("INSERT INTO sleep_tracker (date) VALUES (?)", (self.today,))
             
         self.db_connection.commit()
+        # create a new steps entry if not created yet
+        self.db_cursor.execute
+
+    # def auto_del_daily_tracking_entries(self):
+    #     self.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ? AND steps_taken IS NULL)", (self.today,))
+    #     if not  in self.db_cursor.fetchone():
+            
+
+
+    #     self.destroy()
+        
+
 
     # retrieve and set username from value found in database
     def set_username(self):
@@ -435,6 +450,9 @@ class DashboardPage(ctk.CTkFrame):
         self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
         self.entry_icon = ctk.CTkImage(light_image=Image.open("img/entry_icon.png"), dark_image=Image.open("img/entry_icon.png"), size=(64, 64))
 
+        # vars
+        self.steps_var = ctk.StringVar()
+
         self.grid_rowconfigure(0, weight=1)
 
         self.grid_columnconfigure(0, weight=0)
@@ -682,8 +700,8 @@ class DashboardPage(ctk.CTkFrame):
         walking_goal_tally = ctk.CTkLabel(walking_section, text="10,000 / 10,000", font=("", 14))
         walking_progressbar = ctk.CTkProgressBar(walking_section, border_width=3, height=40, width=300)
         walking_progressbar.set(0.50)
-        walking_steps_entry = ctk.CTkEntry(walking_section, width=140, height=60, font=("", 24))
-        walking_add_steps = ctk.CTkButton(walking_section, width=140, height=60, text="Add Steps", font=("", 18))
+        walking_steps_entry = ctk.CTkEntry(walking_section, textvariable=self.steps_var, width=140, height=60, font=("", 24))
+        walking_add_steps = ctk.CTkButton(walking_section, width=140, height=60, text="Add Steps", font=("", 18), command=self.process_steps_entry)
 
         total_steps_walked.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
         walking_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
@@ -772,6 +790,37 @@ class DashboardPage(ctk.CTkFrame):
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
     # remember to implement binding for the actionable icons like -> reset icon
+
+    def process_steps_entry(self):
+        today = self.controller.today
+        print(today)
+        steps = self.steps_var.get()
+        # check if any steps were inputted
+        if len(steps) < 1:
+            print("nope invalid input!")
+            # do nothing on button click
+            return 
+        # check if an entry exists for today
+        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (today,))
+        if not 1 in self.controller.db_cursor.fetchone():
+            # if none exists, create a new entry with the initially given steps
+            self.controller.db_cursor.execute("INSERT INTO steps_tracker (date, steps_taken) VALUES (?, ?)", (today, steps))
+            self.controller.db_connection.commit()
+            print("success in creating a new entry")
+        # update the already existing entry
+        else:
+            # find out how many steps have been already taken (prior to this new input)
+            self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (today,))
+            # int var by default from sqlite
+            steps_taken = self.controller.db_cursor.fetchone()[0]
+            # steps_taken + steps (current input)
+            steps_taken += int(steps)
+            # update the entry with the new total steps taken
+            self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (steps_taken, today))
+            self.controller.db_connection.commit()
+            print("success in updating entry")
+
+
 
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
