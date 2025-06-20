@@ -694,7 +694,7 @@ class DashboardPage(ctk.CTkFrame):
         self.hydration_ml_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
-        self.hydration_ml_entry.bind("<Key>", lambda event: custom_float_only_entry_limited_validation(event, self.hydration_ml_entry, 7))
+        self.hydration_ml_entry.bind("<Key>", lambda event: custom_hydration_validation(event, self.hydration_ml_entry))
 
         # walking section
         total_steps_walked = ctk.CTkLabel(walking_section, textvariable=self.steps_display, font=("", 24))
@@ -847,9 +847,6 @@ class DashboardPage(ctk.CTkFrame):
         liquids_consumed = round(float(self.hydration_var.get()), 2)
         if liquids_consumed < 0.00:
             return
-        # ensures to cap daily ml consumption at 9999.99
-        if liquids_consumed > 9999.99:
-            liquids_consumed = 9999.99
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
         if not 1 in self.controller.db_cursor.fetchone():
             self.controller.db_cursor.execute("INSERT INTO hydration_tracker (date, consumption_ml) VALUES (?, ?)", (self.today, liquids_consumed))
