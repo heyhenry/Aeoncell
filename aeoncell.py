@@ -849,6 +849,9 @@ class DashboardPage(ctk.CTkFrame):
             return
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
         if not 1 in self.controller.db_cursor.fetchone():
+            # check if the given value is over 9999.99 ml, if so default to max value
+            if liquids_consumed > 9999.99:
+                liquids_consumed = 9999.99
             self.controller.db_cursor.execute("INSERT INTO hydration_tracker (date, consumption_ml) VALUES (?, ?)", (self.today, liquids_consumed))
             self.controller.db_connection.commit()
             liquids_consumed = f"{liquids_consumed:,.2f}"
