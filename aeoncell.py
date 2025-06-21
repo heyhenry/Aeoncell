@@ -802,7 +802,10 @@ class DashboardPage(ctk.CTkFrame):
     # remember to implement binding for the actionable icons like -> reset icon
 
     def process_steps_entry(self):
-        steps = int(self.steps_var.get())
+        input_value = self.steps_var.get()
+        if len(input_value) == 0:
+            return
+        steps = int(input_value)
         # check if any steps were inputted
         if steps < 1:
             # do nothing on button click
@@ -843,17 +846,24 @@ class DashboardPage(ctk.CTkFrame):
             self.steps_var.set("")
 
     def process_hydration_entry(self):
+        input_value = self.hydration_var.get()
+        # check if user entered nothing
+        if len(input_value) == 0:
+            return
         # in ml, round to 2 decimal places
-        liquids_consumed = round(float(self.hydration_var.get()), 2)
+        liquids_consumed = round(float(input_value), 2)
         if liquids_consumed < 0.00:
             return
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
+        # check if there is an existing entry for today
         if not 1 in self.controller.db_cursor.fetchone():
             # check if the given value is over 9999.99 ml, if so default to max value
             if liquids_consumed > 9999.99:
                 liquids_consumed = 9999.99
+            # create a new hydration entry
             self.controller.db_cursor.execute("INSERT INTO hydration_tracker (date, consumption_ml) VALUES (?, ?)", (self.today, liquids_consumed))
             self.controller.db_connection.commit()
+            # update the app's real time display
             liquids_consumed = f"{liquids_consumed:,.2f}"
             self.hydration_display.set(str(liquids_consumed))
             self.hydration_var.set("")
@@ -864,17 +874,11 @@ class DashboardPage(ctk.CTkFrame):
             total_liquids_consumed += liquids_consumed
             if total_liquids_consumed > 9999.99:
                 total_liquids_consumed = 9999.99
-                self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
-                self.controller.db_connection.commit()
-                liquids_consumed = f"{liquids_consumed:,.2f}"
-                self.hydration_display.set(str(total_liquids_consumed))
-                self.hydration_var.set("")
-            else:
-                self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
-                self.controller.db_connection.commit()
-                liquids_consumed = f"{liquids_consumed:,.2f}"
-                self.hydration_display.set(str(total_liquids_consumed))
-                self.hydration_var.set("")
+            self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
+            self.controller.db_connection.commit()
+            liquids_consumed = f"{liquids_consumed:,.2f}"
+            self.hydration_display.set(str(total_liquids_consumed))
+            self.hydration_var.set("")
 
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
