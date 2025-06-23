@@ -82,7 +82,7 @@ class DatabaseManager:
         CREATE TABLE IF NOT EXISTS sleep_tracker (
             id INTEGER PRIMARY KEY,
             date TEXT NOT NULL,
-            sleep_hrs REAL
+            sleep_mins REAL
         )
         """
         self.db_cursor.execute(create_sleep_table_query)

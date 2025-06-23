@@ -454,7 +454,7 @@ class DashboardPage(ctk.CTkFrame):
         # check and see if a sleep entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM sleep_tracker WHERE date = ?)", (self.today,))
         if 1 in self.controller.db_cursor.fetchone():
-            self.controller.db_cursor.execute("SELECT sleep_hrs FROM sleep_tracker WHERE date = ?", (self.today,))
+            self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
             minutes_slept = self.controller.db_cursor.fetchone()[0]
             self.sleep_display.set(f"{minutes_slept:,.2f}")
         
@@ -905,22 +905,22 @@ class DashboardPage(ctk.CTkFrame):
             # max sleep = 9 hours
             if minutes_slept > 540.00:
                 minutes_slept = 540.00
-            self.controller.db_cursor.execute("INSERT INTO sleep_tracker (date, sleep_hrs) VALUES (?, ?)", (self.today, minutes_slept))
+            self.controller.db_cursor.execute("INSERT INTO sleep_tracker (date, sleep_mins) VALUES (?, ?)", (self.today, minutes_slept))
             self.controller.db_connection.commit()
             self.sleep_display.set(f"{minutes_slept}")
             self.sleep_var.set("")
         else:
-            self.controller.db_cursor.execute("SELECT sleep_hrs FROM sleep_tracker WHERE date = ?", (self.today,))
+            self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
             total_minutes_slept = self.controller.db_cursor.fetchone()[0]
             total_minutes_slept += minutes_slept
             if total_minutes_slept > 540.00:
                 total_minutes_slept = 540.00
-                self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_hrs = ? WHERE date = ?", (total_minutes_slept, self.today))
+                self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_mins = ? WHERE date = ?", (total_minutes_slept, self.today))
                 self.controller.db_connection.commit()
                 self.sleep_display.set(f"{total_minutes_slept:,.2f}")
                 self.sleep_var.set("")
             else:
-                self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_hrs = ? WHERE date = ?", (total_minutes_slept, self.today))
+                self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_mins = ? WHERE date = ?", (total_minutes_slept, self.today))
                 self.controller.db_connection.commit()
                 self.sleep_display.set(f"{total_minutes_slept:,.2f}")
                 self.sleep_var.set("")
