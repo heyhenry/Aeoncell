@@ -669,7 +669,7 @@ class DashboardPage(ctk.CTkFrame):
         sleep_progressbar = ctk.CTkProgressBar(sleep_section, border_width=3, height=40, width=300)
         sleep_progressbar.set(1)
         self.sleep_hours_entry = ctk.CTkEntry(sleep_section, textvariable=self.sleep_var, width=140, height=60, font=("", 24))
-        sleep_add_hours = ctk.CTkButton(sleep_section, width=140, height=60, text="Add Steps", font=("", 18), command=self.process_sleep_entry)
+        sleep_add_hours = ctk.CTkButton(sleep_section, width=140, height=60, text="Add Minutes", font=("", 18), command=self.process_sleep_entry)
 
         total_hours_slept.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
         sleep_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
@@ -693,7 +693,7 @@ class DashboardPage(ctk.CTkFrame):
         hydration_progressbar = ctk.CTkProgressBar(hydration_section, border_width=3, height=40, width=300)
         hydration_progressbar.set(0.50)
         self.hydration_ml_entry = ctk.CTkEntry(hydration_section, textvariable=self.hydration_var, width=140, height=60, font=("", 24))
-        hydration_add_ml = ctk.CTkButton(hydration_section, width=140, height=60, text="Add ml", font=("", 18), command=self.process_hydration_entry)
+        hydration_add_ml = ctk.CTkButton(hydration_section, width=140, height=60, text="Add Mililitres", font=("", 18), command=self.process_hydration_entry)
 
         total_ml_drunk.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
         hydration_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
