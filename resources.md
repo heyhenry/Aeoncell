@@ -51,3 +51,4 @@ Exercise Arm Exercise Boy created by 588ku | pngtree.com (17th June 2025): https
 stormy weather forecast created by Freepik | flaticon.com (17th June 2025):  https://www.flaticon.com/free-icon/storm_1146860?term=weather+forecast&page=1&position=10&origin=tag&related_id=1146860
 Is 'Inputted' a Real Word? And can people give their 'inputs'? (20th June 2025): https://www.merriam-webster.com/grammar/is-inputted-a-word
 How to Check Data Type in Python | Type() Function & More (20th June 2025): https://www.pythonpool.com/check-data-type-python/
+Here's the Ideal Amount of Sleep by Age for Kids and Adults (23rd June 2025): https://www.sleep.com/sleep-health/how-many-hours-of-sleep
