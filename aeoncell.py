@@ -431,6 +431,8 @@ class DashboardPage(ctk.CTkFrame):
         self.steps_display = ctk.StringVar(value="0")
         self.hydration_var = ctk.StringVar()
         self.hydration_display = ctk.StringVar(value="0.00")
+        self.sleep_var = ctk.StringVar()
+        self.sleep_display = ctk.StringVar(value="0.00")
 
         # check and see if a walking entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
@@ -449,7 +451,14 @@ class DashboardPage(ctk.CTkFrame):
             liquids_consumed = self.controller.db_cursor.fetchone()[0]
             liquids_consumed = f"{liquids_consumed:,.2f}"
             self.hydration_display.set(str(liquids_consumed))
-            self.hydration_var.set("")
+
+        # check and see if a sleep entry exists for today
+        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM sleep_tracker WHERE date = ?)", (self.today,))
+        if 1 in self.controller.db_cursor.fetchone():
+            self.controller.db_cursor.execute("SELECT sleep_hrs FROM sleep_tracker WHERE date = ?", (self.today,))
+            minutes_slept = self.controller.db_cursor.fetchone()[0]
+            minutes_slept = f"{minutes_slept:,.2f}"
+            self.sleep_display.set(str(minutes_slept))
         
         self.grid_rowconfigure(0, weight=1)
 
@@ -651,7 +660,7 @@ class DashboardPage(ctk.CTkFrame):
         walking_section.grid(row=1, column=3, padx=20)
 
         # sleep section
-        total_hours_slept = ctk.CTkLabel(sleep_section, text="8.80 Hours", font=("", 24))
+        total_hours_slept = ctk.CTkLabel(sleep_section, textvariable=self.sleep_display, font=("", 24))
         sleep_icon_reset_frame = ctk.CTkFrame(sleep_section, fg_color="transparent")
         sleep_icon = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.icon)
         sleep_reset = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.icon)
@@ -659,8 +668,8 @@ class DashboardPage(ctk.CTkFrame):
         sleep_goal_tally = ctk.CTkLabel(sleep_section, text="8.00 / 8.00", font=("", 14))
         sleep_progressbar = ctk.CTkProgressBar(sleep_section, border_width=3, height=40, width=300)
         sleep_progressbar.set(1)
-        sleep_hours_entry = ctk.CTkEntry(sleep_section, width=140, height=60, font=("", 24))
-        sleep_add_hours = ctk.CTkButton(sleep_section, width=140, height=60, text="Add Steps", font=("", 18))
+        self.sleep_hours_entry = ctk.CTkEntry(sleep_section, textvariable=self.sleep_var, width=140, height=60, font=("", 24))
+        sleep_add_hours = ctk.CTkButton(sleep_section, width=140, height=60, text="Add Steps", font=("", 18), command=self.process_sleep_entry)
 
         total_hours_slept.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
         sleep_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
@@ -669,8 +678,10 @@ class DashboardPage(ctk.CTkFrame):
         sleep_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         sleep_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         sleep_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
-        sleep_hours_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
+        self.sleep_hours_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         sleep_add_hours.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
+
+        self.sleep_hours_entry.bind("<Key>", lambda event: custom_sleep_validation(event, self.sleep_hours_entry))
 
         # hydration section
         total_ml_drunk = ctk.CTkLabel(hydration_section, textvariable=self.hydration_display, font=("", 24))
@@ -854,8 +865,8 @@ class DashboardPage(ctk.CTkFrame):
         liquids_consumed = round(float(input_value), 2)
         if liquids_consumed < 0.00:
             return
-        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
         # check if there is an existing entry for today
+        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
         if not 1 in self.controller.db_cursor.fetchone():
             # check if the given value is over 9999.99 ml, if so default to max value
             if liquids_consumed > 9999.99:
@@ -882,6 +893,39 @@ class DashboardPage(ctk.CTkFrame):
                 self.controller.db_connection.commit()
                 self.hydration_display.set(f"{total_liquids_consumed:,.2f}")
                 self.hydration_var.set("")
+
+    def process_sleep_entry(self):
+        input_value = self.sleep_var.get()
+        if len(input_value) == 0:
+            return
+        minutes_slept = round(float(input_value), 2)
+        if minutes_slept < 0.00:
+            return
+        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM sleep_tracker WHERE date = ?)", (self.today,))
+        if not 1 in self.controller.db_cursor.fetchone():
+            # set max sleep limit (to discourage users who seek to get high scores that enter dangerous territory for their own health)
+            # max sleep = 9 hours
+            if minutes_slept > 540.00:
+                minutes_slept = 540.00
+            self.controller.db_cursor.execute("INSERT INTO sleep_tracker (date, sleep_hrs) VALUES (?, ?)", (self.today, minutes_slept))
+            self.controller.db_connection.commit()
+            self.sleep_display.set(f"{minutes_slept}")
+            self.sleep_var.set("")
+        else:
+            self.controller.db_cursor.execute("SELECT sleep_hrs FROM sleep_tracker WHERE date = ?", (self.today,))
+            total_minutes_slept = self.controller.db_cursor.fetchone()[0]
+            total_minutes_slept += minutes_slept
+            if total_minutes_slept > 540.00:
+                total_minutes_slept = 540.00
+                self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_hrs = ? WHERE date = ?", (total_minutes_slept, self.today))
+                self.controller.db_connection.commit()
+                self.sleep_display.set(f"{total_minutes_slept:,.2f}")
+                self.sleep_var.set("")
+            else:
+                self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_hrs = ? WHERE date = ?", (total_minutes_slept, self.today))
+                self.controller.db_connection.commit()
+                self.sleep_display.set(f"{total_minutes_slept:,.2f}")
+                self.sleep_var.set("")
 
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
