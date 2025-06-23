@@ -449,16 +449,14 @@ class DashboardPage(ctk.CTkFrame):
         if 1 in self.controller.db_cursor.fetchone():
             self.controller.db_cursor.execute("SELECT consumption_ml FROM hydration_tracker WHERE date = ?", (self.today,))
             liquids_consumed = self.controller.db_cursor.fetchone()[0]
-            liquids_consumed = f"{liquids_consumed:,.2f}"
-            self.hydration_display.set(str(liquids_consumed))
+            self.hydration_display.set(f"{liquids_consumed:,.2f}")
 
         # check and see if a sleep entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM sleep_tracker WHERE date = ?)", (self.today,))
         if 1 in self.controller.db_cursor.fetchone():
             self.controller.db_cursor.execute("SELECT sleep_hrs FROM sleep_tracker WHERE date = ?", (self.today,))
             minutes_slept = self.controller.db_cursor.fetchone()[0]
-            minutes_slept = f"{minutes_slept:,.2f}"
-            self.sleep_display.set(str(minutes_slept))
+            self.sleep_display.set(f"{minutes_slept:,.2f}")
         
         self.grid_rowconfigure(0, weight=1)
 
