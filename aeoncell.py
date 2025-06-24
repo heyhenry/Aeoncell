@@ -671,7 +671,7 @@ class DashboardPage(ctk.CTkFrame):
         total_hours_slept = ctk.CTkLabel(sleep_section, textvariable=self.sleep_display, font=("", 24))
         sleep_icon_reset_frame = ctk.CTkFrame(sleep_section, fg_color="transparent")
         self.sleep_icon_display = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.sleep_icon)
-        self.sleep_reset = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.reset_icon)
+        sleep_reset = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.reset_icon)
         sleep_title = ctk.CTkLabel(sleep_section, text="Sleep", font=("", 14))
         sleep_goal_tally = ctk.CTkLabel(sleep_section, text="8.00 / 8.00", font=("", 14))
         sleep_progressbar = ctk.CTkProgressBar(sleep_section, border_width=3, height=40, width=300)
@@ -682,7 +682,7 @@ class DashboardPage(ctk.CTkFrame):
         total_hours_slept.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
         sleep_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
         self.sleep_icon_display.grid(row=0, column=0, padx=(0, 20))
-        self.sleep_reset.grid(row=0, column=1)
+        sleep_reset.grid(row=0, column=1)
         sleep_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         sleep_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         sleep_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
@@ -690,12 +690,13 @@ class DashboardPage(ctk.CTkFrame):
         sleep_add_hours.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
         self.sleep_hours_entry.bind("<Key>", lambda event: custom_sleep_validation(event, self.sleep_hours_entry))
+        sleep_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "sleep"))
 
         # hydration section
         total_ml_drunk = ctk.CTkLabel(hydration_section, textvariable=self.hydration_display, font=("", 24))
         hydration_icon_reset_frame = ctk.CTkFrame(hydration_section, fg_color="transparent")
         self.hydration_icon_display = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.hydration_icon)
-        self.hydration_reset = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.reset_icon)
+        hydration_reset = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.reset_icon)
         hydration_title = ctk.CTkLabel(hydration_section, text="Hydration", font=("", 14))
         hydration_goal_tally = ctk.CTkLabel(hydration_section, text="1.5 / 3.0", font=("", 14))
         hydration_progressbar = ctk.CTkProgressBar(hydration_section, border_width=3, height=40, width=300)
@@ -706,7 +707,7 @@ class DashboardPage(ctk.CTkFrame):
         total_ml_drunk.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
         hydration_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
         self.hydration_icon_display.grid(row=0, column=0, padx=(0, 20))
-        self.hydration_reset.grid(row=0, column=1)
+        hydration_reset.grid(row=0, column=1)
         hydration_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         hydration_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         hydration_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
@@ -714,12 +715,13 @@ class DashboardPage(ctk.CTkFrame):
         hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
         self.hydration_ml_entry.bind("<Key>", lambda event: custom_hydration_validation(event, self.hydration_ml_entry))
+        hydration_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "hydration"))
 
         # walking section
         total_steps_walked = ctk.CTkLabel(walking_section, textvariable=self.steps_display, font=("", 24))
         walking_icon_reset_frame = ctk.CTkFrame(walking_section, fg_color="transparent")
         self.walking_icon_display = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.walking_icon)
-        self.walking_reset = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.reset_icon)
+        walking_reset = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.reset_icon)
         walking_title = ctk.CTkLabel(walking_section, text="Walking", font=("", 14))
         walking_goal_tally = ctk.CTkLabel(walking_section, text="10,000 / 10,000", font=("", 14))
         walking_progressbar = ctk.CTkProgressBar(walking_section, border_width=3, height=40, width=300)
@@ -730,7 +732,7 @@ class DashboardPage(ctk.CTkFrame):
         total_steps_walked.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
         walking_icon_reset_frame.grid(row=0, column=1, padx=(0, 40), pady=(40, 0), sticky="e")
         self.walking_icon_display.grid(row=0, column=0, padx=(0, 20))
-        self.walking_reset.grid(row=0, column=1)
+        walking_reset.grid(row=0, column=1)
         walking_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         walking_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         walking_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
@@ -738,6 +740,8 @@ class DashboardPage(ctk.CTkFrame):
         walking_add_steps.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
         self.walking_steps_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.walking_steps_entry, 5))
+        walking_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "walking"))
+
         #endregion
 
         #region [ Quick Stats Section ]
@@ -934,6 +938,28 @@ class DashboardPage(ctk.CTkFrame):
                 self.controller.db_connection.commit()
                 self.sleep_display.set(f"{total_minutes_slept:,.2f}")
                 self.sleep_var.set("")
+
+    def reset_daily(self, event, selected_daily):
+        if selected_daily == "sleep":
+            # check if the entry exists first
+            self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM sleep_tracker WHERE date = ?)", (self.today,))
+            # if the entry exists, delete entry from the database
+            if 1 in self.controller.db_cursor.fetchone():
+                self.controller.db_cursor.execute("DELETE FROM sleep_tracker WHERE date = ?", (self.today,))
+                self.controller.db_connection.commit()
+                self.sleep_display.set("0.00 minutes")
+        elif selected_daily == "hydration":
+            self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
+            if 1 in self.controller.db_cursor.fetchone():
+                self.controller.db_cursor.execute("DELETE FROM hydration_tracker WHERE date = ?", (self.today,))
+                self.controller.db_connection.commit()
+                self.hydration_display.set("0.00 ml")
+        elif selected_daily == "walking":
+            self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
+            if 1 in self.controller.db_cursor.fetchone():
+                self.controller.db_cursor.execute("DELETE FROM steps_tracker WHERE date = ?", (self.today,))
+                self.controller.db_connection.commit()
+                self.steps_display.set("0 steps")
 
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
