@@ -1287,6 +1287,14 @@ class SettingsPage(ctk.CTkFrame):
         self.daily_sleep_var = ctk.StringVar()
         self.daily_walking_var = ctk.StringVar()
         self.daily_hydration_var = ctk.StringVar()
+
+        # retrieve existing data and set daily variables with them
+        # we can use rowid as the primary key reference because there will only always be a single entry in this table
+        self.controller.db_cursor.execute("SELECT daily_sleep_goal, daily_steps_goal, daily_hydration_goal FROM profile_details WHERE rowid=1")
+        result = self.controller.db_cursor.fetchone()
+        self.daily_sleep_var.set(result[0])
+        self.daily_walking_var.set(result[1])
+        self.daily_hydration_var.set(result[2])
         
         # monthly related vars
         self.monthly_weight_choice_var = ctk.StringVar()
@@ -1606,6 +1614,9 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_image_preview.grid(row=3, column=0, padx=30)
         self.profile_image_message.configure(text="")
         self.profile_section.configure(height=650)
+
+    def update_daily_section(self):
+        pass
 
 if __name__ == "__main__":
     app = Windows()
