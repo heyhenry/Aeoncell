@@ -52,3 +52,7 @@ stormy weather forecast created by Freepik | flaticon.com (17th June 2025):  htt
 Is 'Inputted' a Real Word? And can people give their 'inputs'? (20th June 2025): https://www.merriam-webster.com/grammar/is-inputted-a-word
 How to Check Data Type in Python | Type() Function & More (20th June 2025): https://www.pythonpool.com/check-data-type-python/
 Here's the Ideal Amount of Sleep by Age for Kids and Adults (23rd June 2025): https://www.sleep.com/sleep-health/how-many-hours-of-sleep
+Reset Icon by Freepik | Flaticon.com (24th June 2025): https://www.flaticon.com/free-icon/reset_9899319?term=reset&page=1&position=13&origin=search&related_id=9899319
+Walking Icon by Freepik| Flaticon.com (24th June 2025): https://www.flaticon.com/free-icon/shoes_8910863?term=walking+shoes&page=1&position=27&origin=search&related_id=8910863
+Sleeping Icon by Freepik | Flaticon.com (24th June 2025): https://www.flaticon.com/free-icon/sleeping_2829066?term=sleeping&page=1&position=18&origin=search&related_id=2829066
+Hydration Icon by Freepik | Flaticon.com (24th June 2025): https://www.flaticon.com/free-icon/glass-of-water_8013441?term=drinking+water&page=1&position=33&origin=search&related_id=8013441
