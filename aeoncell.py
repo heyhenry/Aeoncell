@@ -1387,11 +1387,11 @@ class SettingsPage(ctk.CTkFrame):
 
         #region [Daily Section]
         daily_title = ctk.CTkLabel(self.daily_goals_section, text="Daily Goals", font=("", 18))
-        daily_sleep_title = ctk.CTkLabel(self.daily_goals_section, text="Sleep (Hrs):", font=("", 24))
+        daily_sleep_title = ctk.CTkLabel(self.daily_goals_section, text="Sleep (Minutes):", font=("", 24))
         self.daily_sleep_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_sleep_var)
         daily_walking_title = ctk.CTkLabel(self.daily_goals_section, text="Walking (Steps):", font=("", 24))
         self.daily_walking_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_walking_var)
-        daily_hydration_title = ctk.CTkLabel(self.daily_goals_section, text="Hydration (L):", font=("", 24))
+        daily_hydration_title = ctk.CTkLabel(self.daily_goals_section, text="Hydration (Millilitres):", font=("", 24))
         self.daily_hydration_entry = ctk.CTkEntry(self.daily_goals_section, font=("", 24), width=350, textvariable=self.daily_hydration_var)
         self.daily_action_message = ctk.CTkLabel(self.daily_goals_section, text="", font=("", 18))
         daily_update_button = ctk.CTkButton(self.daily_goals_section, text="Update Goals", height=60, width=200, font=("", 24), command=self.process_daily_goals)
@@ -1407,9 +1407,9 @@ class SettingsPage(ctk.CTkFrame):
         daily_update_button.grid(row=6, column=0, columnspan=2)
 
         # daily related binds
-        self.daily_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.daily_sleep_entry))
-        self.daily_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.daily_walking_entry, None))
-        self.daily_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.daily_hydration_entry))
+        self.daily_sleep_entry.bind("<Key>", lambda event: custom_sleep_validation(event, self.daily_sleep_entry))
+        self.daily_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.daily_walking_entry, 5))
+        self.daily_hydration_entry.bind("<Key>", lambda event: custom_hydration_validation(event, self.daily_hydration_entry))
 
         #endregion
 
