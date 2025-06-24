@@ -435,11 +435,11 @@ class DashboardPage(ctk.CTkFrame):
         # variables with placeholder values
         self.today = self.controller.today
         self.steps_var = ctk.StringVar()
-        self.steps_display = ctk.StringVar(value="0")
+        self.steps_display = ctk.StringVar(value="0 steps")
         self.hydration_var = ctk.StringVar()
-        self.hydration_display = ctk.StringVar(value="0.00")
+        self.hydration_display = ctk.StringVar(value="0.00 ml")
         self.sleep_var = ctk.StringVar()
-        self.sleep_display = ctk.StringVar(value="0.00")
+        self.sleep_display = ctk.StringVar(value="0.00 minutes")
 
         #region [Initialising existing data search and display]
         # check and see if a walking entry exists for today
@@ -449,22 +449,21 @@ class DashboardPage(ctk.CTkFrame):
             self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (self.today,))
             steps_taken = self.controller.db_cursor.fetchone()[0]
             # format and set total steps display
-            steps_taken = f"{steps_taken:,}"
-            self.steps_display.set(str(steps_taken))
+            self.steps_display.set(f"{steps_taken:,} steps")
 
         # check and see if a hydration entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
         if 1 in self.controller.db_cursor.fetchone():
             self.controller.db_cursor.execute("SELECT consumption_ml FROM hydration_tracker WHERE date = ?", (self.today,))
             liquids_consumed = self.controller.db_cursor.fetchone()[0]
-            self.hydration_display.set(f"{liquids_consumed:,.2f}")
+            self.hydration_display.set(f"{liquids_consumed:,.2f} ml")
 
         # check and see if a sleep entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM sleep_tracker WHERE date = ?)", (self.today,))
         if 1 in self.controller.db_cursor.fetchone():
             self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
             minutes_slept = self.controller.db_cursor.fetchone()[0]
-            self.sleep_display.set(f"{minutes_slept:,.2f}")
+            self.sleep_display.set(f"{minutes_slept:,.2f} minutes")
         
         #endregion
         
@@ -840,7 +839,7 @@ class DashboardPage(ctk.CTkFrame):
             self.controller.db_cursor.execute("INSERT INTO steps_tracker (date, steps_taken) VALUES (?, ?)", (self.today, steps))
             self.controller.db_connection.commit()
             # format and update the total steps taken display
-            self.steps_display.set(f"{steps:,}")
+            self.steps_display.set(f"{steps:,} steps")
             # clear the steps entry field
             self.steps_var.set("")
         # update the already existing entry
@@ -862,7 +861,7 @@ class DashboardPage(ctk.CTkFrame):
                 self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (steps_taken, self.today))
                 self.controller.db_connection.commit()
             # format and update the total steps taken display
-            self.steps_display.set(f"{steps_taken:,}")
+            self.steps_display.set(f"{steps_taken:,} steps")
             # clear the steps entry field
             self.steps_var.set("")
 
@@ -885,7 +884,7 @@ class DashboardPage(ctk.CTkFrame):
             self.controller.db_cursor.execute("INSERT INTO hydration_tracker (date, consumption_ml) VALUES (?, ?)", (self.today, liquids_consumed))
             self.controller.db_connection.commit()
             # update the app's real time display
-            self.hydration_display.set(f"{liquids_consumed:,.2f}")
+            self.hydration_display.set(f"{liquids_consumed:,.2f} ml")
             self.hydration_var.set("")
         else:
             # find out how much liquids (ml) is currently stored (prior to this new input)
@@ -896,12 +895,12 @@ class DashboardPage(ctk.CTkFrame):
                 total_liquids_consumed = 9999.99
                 self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
                 self.controller.db_connection.commit()
-                self.hydration_display.set(f"{total_liquids_consumed:,.2f}")
+                self.hydration_display.set(f"{total_liquids_consumed:,.2f} ml")
                 self.hydration_var.set("")
             else:
                 self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
                 self.controller.db_connection.commit()
-                self.hydration_display.set(f"{total_liquids_consumed:,.2f}")
+                self.hydration_display.set(f"{total_liquids_consumed:,.2f} ml")
                 self.hydration_var.set("")
 
     def process_sleep_entry(self):
@@ -919,7 +918,7 @@ class DashboardPage(ctk.CTkFrame):
                 minutes_slept = 540.00
             self.controller.db_cursor.execute("INSERT INTO sleep_tracker (date, sleep_mins) VALUES (?, ?)", (self.today, minutes_slept))
             self.controller.db_connection.commit()
-            self.sleep_display.set(f"{minutes_slept}")
+            self.sleep_display.set(f"{minutes_slept} minutes")
             self.sleep_var.set("")
         else:
             self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
@@ -929,7 +928,7 @@ class DashboardPage(ctk.CTkFrame):
                 total_minutes_slept = 540.00
                 self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_mins = ? WHERE date = ?", (total_minutes_slept, self.today))
                 self.controller.db_connection.commit()
-                self.sleep_display.set(f"{total_minutes_slept:,.2f}")
+                self.sleep_display.set(f"{total_minutes_slept:,.2f} minutes")
                 self.sleep_var.set("")
             else:
                 self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_mins = ? WHERE date = ?", (total_minutes_slept, self.today))
