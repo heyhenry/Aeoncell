@@ -100,6 +100,7 @@ class DatabaseManager:
             daily_sleep_goal REAL DEFAULT 0.00,
             daily_steps_goal INTEGER DEFAULT 0,
             daily_hydration_goal REAL DEFAULT 0.00,
+            monthly_weight_choice TEXT DEFAULT '',
             monthly_weight_goal INTEGER DEFAULT 0,
             monthly_hydration_goal REAL DEFAULT 0.00,
             monthly_sleep_goal REAL DEFAULT 0.00,

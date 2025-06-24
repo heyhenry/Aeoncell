@@ -1289,12 +1289,14 @@ class SettingsPage(ctk.CTkFrame):
         self.daily_hydration_var = ctk.StringVar()
 
         # retrieve existing data and set daily variables with them
-        # we can use rowid as the primary key reference because there will only always be a single entry in this table
-        self.controller.db_cursor.execute("SELECT daily_sleep_goal, daily_steps_goal, daily_hydration_goal FROM profile_details WHERE rowid=1")
-        result = self.controller.db_cursor.fetchone()
-        self.daily_sleep_var.set(result[0])
-        self.daily_walking_var.set(result[1])
-        self.daily_hydration_var.set(result[2])
+        # only look to retrieve data if a database has been created (i.e. user has registered)
+        if self.controller.db.check_password_exists():
+            # we can use rowid as the primary key reference because there will only always be a single entry in this table
+            self.controller.db_cursor.execute("SELECT daily_sleep_goal, daily_steps_goal, daily_hydration_goal FROM profile_details WHERE rowid=1")
+            result = self.controller.db_cursor.fetchone()
+            self.daily_sleep_var.set(result[0])
+            self.daily_walking_var.set(result[1])
+            self.daily_hydration_var.set(result[2])
         
         # monthly related vars
         self.monthly_weight_choice_var = ctk.StringVar()
@@ -1302,6 +1304,9 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_hydration_var = ctk.StringVar()
         self.monthly_sleep_var = ctk.StringVar()
         self.monthly_walking_var = ctk.StringVar()
+
+        self.controller.db_cursor.execute("SELECT monthly_sleep_goal, monthly_steps_goal, monthly_hydration_goal FROM profile_details WHERE rowid=1")
+
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -1574,7 +1579,23 @@ class SettingsPage(ctk.CTkFrame):
             self.monthly_walking_var
         ]
         retrieve_current_data = """
-        SELECT * FROM profile_details WHERE rowid=1
+        SELECT 
+            username,
+            first_name,
+            last_name,
+            age,
+            height,
+            current_weight,
+            goal_weight,
+            daily_sleep_goal,
+            daily_steps_goal,
+            daily_hydration_goal,
+            monthly_weight_goal,
+            monthly_hydration_goal,
+            monthly_sleep_goal,
+            monthly_steps_goal
+        FROM profile_details 
+        WHERE rowid=1
         """
         self.controller.db_cursor.execute(retrieve_current_data)
         result = self.controller.db_cursor.fetchone()
