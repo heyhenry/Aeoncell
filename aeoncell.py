@@ -840,8 +840,7 @@ class DashboardPage(ctk.CTkFrame):
             self.controller.db_cursor.execute("INSERT INTO steps_tracker (date, steps_taken) VALUES (?, ?)", (self.today, steps))
             self.controller.db_connection.commit()
             # format and update the total steps taken display
-            steps = f"{steps:,}"
-            self.steps_display.set(str(steps))
+            self.steps_display.set(f"{steps:,}")
             # clear the steps entry field
             self.steps_var.set("")
         # update the already existing entry
@@ -863,8 +862,7 @@ class DashboardPage(ctk.CTkFrame):
                 self.controller.db_cursor.execute("UPDATE steps_tracker SET steps_taken = ? WHERE date = ?", (steps_taken, self.today))
                 self.controller.db_connection.commit()
             # format and update the total steps taken display
-            steps_taken = f"{steps_taken:,}"
-            self.steps_display.set(str(steps_taken))
+            self.steps_display.set(f"{steps_taken:,}")
             # clear the steps entry field
             self.steps_var.set("")
 
@@ -936,7 +934,7 @@ class DashboardPage(ctk.CTkFrame):
             else:
                 self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_mins = ? WHERE date = ?", (total_minutes_slept, self.today))
                 self.controller.db_connection.commit()
-                self.sleep_display.set(f"{total_minutes_slept:,.2f}")
+                self.sleep_display.set(f"{total_minutes_slept:,.2f} minutes")
                 self.sleep_var.set("")
 
     def reset_daily(self, event, selected_daily):
