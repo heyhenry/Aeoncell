@@ -56,7 +56,7 @@ class Windows(ctk.CTk):
             page.grid(row=0, column=0, sticky="nswe")
 
         # center the app upon startup
-        self.center_window(self, 1280, 800)
+        self.center_window(self, 1440, 900)
 
         # self.show_page(DashboardPage)
         # determine initial page display based on user having a password (i.e. guaranteed account registration)
