@@ -694,7 +694,7 @@ class DashboardPage(ctk.CTkFrame):
         sleep_hours_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         sleep_add_hours.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
-        sleep_hours_entry.bind("<Key>", lambda event: custom_sleep_validation(event, sleep_hours_entry))
+        sleep_hours_entry.bind("<Key>", lambda event: custom_float_only_validation(event, sleep_hours_entry, 3))
         sleep_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "sleep"))
 
         # hydration section
@@ -719,7 +719,7 @@ class DashboardPage(ctk.CTkFrame):
         hydration_ml_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
-        hydration_ml_entry.bind("<Key>", lambda event: custom_hydration_validation(event, hydration_ml_entry))
+        hydration_ml_entry.bind("<Key>", lambda event: custom_float_only_validation(event, hydration_ml_entry, 4))
         hydration_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "hydration"))
 
         # walking section
@@ -1433,9 +1433,9 @@ class SettingsPage(ctk.CTkFrame):
         daily_update_button.grid(row=6, column=0, columnspan=2)
 
         # daily related binds
-        self.daily_sleep_entry.bind("<Key>", lambda event: custom_sleep_validation(event, self.daily_sleep_entry))
+        self.daily_sleep_entry.bind("<Key>", lambda event: custom_float_only_validation(event, self.daily_sleep_entry, 3))
         self.daily_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.daily_walking_entry, 5))
-        self.daily_hydration_entry.bind("<Key>", lambda event: custom_hydration_validation(event, self.daily_hydration_entry))
+        self.daily_hydration_entry.bind("<Key>", lambda event: custom_float_only_validation(event, self.daily_hydration_entry, 4))
 
         #endregion
 
@@ -1550,6 +1550,9 @@ class SettingsPage(ctk.CTkFrame):
         steps = self.monthly_walking_var.get()
         hydration = self.monthly_hydration_var.get()
         sleep = self.monthly_sleep_var.get()
+
+
+
         update_monthly_goals_query = """
         UPDATE profile_details
         SET monthly_weight_choice = ?, 
