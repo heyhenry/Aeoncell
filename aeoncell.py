@@ -947,6 +947,7 @@ class DashboardPage(ctk.CTkFrame):
             if 1 in self.controller.db_cursor.fetchone():
                 self.controller.db_cursor.execute("DELETE FROM sleep_tracker WHERE date = ?", (self.today,))
                 self.controller.db_connection.commit()
+                # update the real time display
                 self.sleep_display.set("0.00 minutes")
         elif selected_daily == "hydration":
             self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
