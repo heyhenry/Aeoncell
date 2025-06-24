@@ -1305,8 +1305,15 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_sleep_var = ctk.StringVar()
         self.monthly_walking_var = ctk.StringVar()
 
-        self.controller.db_cursor.execute("SELECT monthly_sleep_goal, monthly_steps_goal, monthly_hydration_goal FROM profile_details WHERE rowid=1")
-
+        # temp for compartmentalising internally.. will fix later and only use 1 checker for all variable data retrievals.
+        if self.controller.db.check_password_exists():
+            self.controller.db_cursor.execute("SELECT monthly_weight_choice, monthly_weight_goal, monthly_sleep_goal, monthly_steps_goal, monthly_hydration_goal FROM profile_details WHERE rowid=1")
+            result = self.controller.db_cursor.fetchone()
+            self.monthly_weight_choice_var.set(result[0])
+            self.monthly_weight_var.set(result[1])
+            self.monthly_hydration_var.set(result[2])
+            self.monthly_sleep_var.set(result[3])
+            self.monthly_walking_var.set(result[4])
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -1529,19 +1536,21 @@ class SettingsPage(ctk.CTkFrame):
 
     # updates the monthly goals set by user
     def process_monthly_goals(self):
+        weight_choice = self.monthly_weight_choice_var.get()
         weight = self.monthly_weight_var.get()
         steps = self.monthly_walking_var.get()
         hydration = self.monthly_hydration_var.get()
         sleep = self.monthly_sleep_var.get()
         update_monthly_goals_query = """
         UPDATE profile_details
-        SET monthly_weight_goal = ?,
+        SET monthly_weight_choice = ?, 
+        monthly_weight_goal = ?,
         monthly_steps_goal = ?,
         monthly_hydration_goal = ?,
         monthly_sleep_goal = ?
         WHERE rowid=1
         """
-        self.controller.db_cursor.execute(update_monthly_goals_query, (weight, steps, hydration, sleep))
+        self.controller.db_cursor.execute(update_monthly_goals_query, (weight_choice, weight, steps, hydration, sleep))
         self.controller.db_connection.commit()
         self.show_action_message(self.monthly_action_message)
 
@@ -1635,15 +1644,6 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_image_preview.grid(row=3, column=0, padx=30)
         self.profile_image_message.configure(text="")
         self.profile_section.configure(height=650)
-
-    def update_daily_section(self):
-        minutes_slept = self.daily_sleep_var.get()
-        steps_taken = self.daily_walking_var.get()
-        liquids_consumed = self.daily_hydration_var.get()
-        
-        # update the daily goals values
-        self.controller.db_cursor.execute("UPDATE profile_details SET daily_sleep_goal = ?, daily_steps_goal = ?, daily_hydration_goal = ? WHERE rowid=1", (minutes_slept, steps_taken, liquids_consumed))
-        self.controller.db_connection.commit()
 
 if __name__ == "__main__":
     app = Windows()
