@@ -39,7 +39,13 @@ class Windows(ctk.CTk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        # set the username's value if possible
+        # if user has successfully registered/exists
+        # check this by seeing if a password has been stored (could also check for username, same end result)
+        if self.db.check_password_exists():
+            # set the global username variable with existing username found in the database
+            self.set_username()
+
+        # if a user has successfully registered, set the global username var's value with the username
         if self.db.check_password_exists():
             self.set_username()
 
@@ -52,12 +58,12 @@ class Windows(ctk.CTk):
         # center the app upon startup
         self.center_window(self, 1280, 800)
 
-        self.show_page(DashboardPage)
+        # self.show_page(DashboardPage)
         # determine initial page display based on user having a password (i.e. guaranteed account registration)
-        # if self.db.check_password_exists():
-        #     self.show_page(LoginPage)
-        # else:
-        #     self.show_page(RegisterPage)
+        if self.db.check_password_exists():
+            self.show_page(LoginPage)
+        else:
+            self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -78,7 +84,6 @@ class Windows(ctk.CTk):
     # set cursor focus to chosen field
     def set_initial_focus(self, widget_name):
         self.after(300, widget_name.focus_set)
-
 
     # retrieve and set username from value found in database
     def set_username(self):
@@ -319,6 +324,7 @@ class RegisterPage(ctk.CTkFrame):
     
         # if validation is successful run the following
         self.controller.db.create_username_and_password(username, password)
+        # update the global username's value
         self.controller.set_username()
         # update the login page's welcome_message widget
         self.controller.pages[LoginPage].welcome_message.configure(text=f"Welcome back, {self.controller.username.get()}!")
