@@ -1616,7 +1616,13 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_section.configure(height=650)
 
     def update_daily_section(self):
-        pass
+        minutes_slept = self.daily_sleep_var.get()
+        steps_taken = self.daily_walking_var.get()
+        liquids_consumed = self.daily_hydration_var.get()
+        
+        # update the daily goals values
+        self.controller.db_cursor.execute("UPDATE profile_details SET daily_sleep_goal = ?, daily_steps_goal = ?, daily_hydration_goal = ? WHERE rowid=1", (minutes_slept, steps_taken, liquids_consumed))
+        self.controller.db_connection.commit()
 
 if __name__ == "__main__":
     app = Windows()
