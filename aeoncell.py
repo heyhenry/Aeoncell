@@ -437,6 +437,7 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_var = ctk.StringVar()
         self.sleep_display = ctk.StringVar(value="0.00")
 
+        #region [Initialising existing data search and display]
         # check and see if a walking entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
         if 1 in self.controller.db_cursor.fetchone():
@@ -460,6 +461,8 @@ class DashboardPage(ctk.CTkFrame):
             self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
             minutes_slept = self.controller.db_cursor.fetchone()[0]
             self.sleep_display.set(f"{minutes_slept:,.2f}")
+        
+        #endregion
         
         self.grid_rowconfigure(0, weight=1)
 
