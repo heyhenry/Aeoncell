@@ -425,6 +425,9 @@ class DashboardPage(ctk.CTkFrame):
         self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
         self.entry_icon = ctk.CTkImage(light_image=Image.open("img/entry_icon.png"), dark_image=Image.open("img/entry_icon.png"), size=(64, 64))
 
+        # image variables
+        self.reset_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/reset.png"), dark_image=Image.open("img/dailies_section/reset.png"), size=(32, 32))
+
         # variables with placeholder values
         self.today = self.controller.today
         self.steps_var = ctk.StringVar()
@@ -661,7 +664,7 @@ class DashboardPage(ctk.CTkFrame):
         total_hours_slept = ctk.CTkLabel(sleep_section, textvariable=self.sleep_display, font=("", 24))
         sleep_icon_reset_frame = ctk.CTkFrame(sleep_section, fg_color="transparent")
         sleep_icon = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.icon)
-        sleep_reset = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.icon)
+        sleep_reset = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.reset_icon)
         sleep_title = ctk.CTkLabel(sleep_section, text="Sleep", font=("", 14))
         sleep_goal_tally = ctk.CTkLabel(sleep_section, text="8.00 / 8.00", font=("", 14))
         sleep_progressbar = ctk.CTkProgressBar(sleep_section, border_width=3, height=40, width=300)
@@ -685,7 +688,7 @@ class DashboardPage(ctk.CTkFrame):
         total_ml_drunk = ctk.CTkLabel(hydration_section, textvariable=self.hydration_display, font=("", 24))
         hydration_icon_reset_frame = ctk.CTkFrame(hydration_section, fg_color="transparent")
         hydration_icon = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.icon)
-        hydration_reset = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.icon)
+        hydration_reset = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.reset_icon)
         hydration_title = ctk.CTkLabel(hydration_section, text="Hydration", font=("", 14))
         hydration_goal_tally = ctk.CTkLabel(hydration_section, text="1.5 / 3.0", font=("", 14))
         hydration_progressbar = ctk.CTkProgressBar(hydration_section, border_width=3, height=40, width=300)
@@ -709,7 +712,7 @@ class DashboardPage(ctk.CTkFrame):
         total_steps_walked = ctk.CTkLabel(walking_section, textvariable=self.steps_display, font=("", 24))
         walking_icon_reset_frame = ctk.CTkFrame(walking_section, fg_color="transparent")
         walking_icon = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.icon)
-        walking_reset = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.icon)
+        walking_reset = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.reset_icon)
         walking_title = ctk.CTkLabel(walking_section, text="Walking", font=("", 14))
         walking_goal_tally = ctk.CTkLabel(walking_section, text="10,000 / 10,000", font=("", 14))
         walking_progressbar = ctk.CTkProgressBar(walking_section, border_width=3, height=40, width=300)
