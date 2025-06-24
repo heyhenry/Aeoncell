@@ -147,31 +147,31 @@ def custom_digit_only_entry_validation(event, widget, digit_limit):
     if not char.isdigit():
         return "break"
     
-def custom_float_only_entry_validation(event, widget):
-    if event.keysym == "BackSpace":
-        return
+# def custom_float_only_entry_validation(event, widget):
+#     if event.keysym == "BackSpace":
+#         return
     
-    char = event.char
+#     char = event.char
 
-    # if the input is not a digit or ".", ignore
-    if not (char.isdigit() or char == "."):
-        return "break"
+#     # if the input is not a digit or ".", ignore
+#     if not (char.isdigit() or char == "."):
+#         return "break"
 
-    # if the user attempts to input a "." as the first char, ignore (ex. 12.2 <-- valid, ex. .2 <-- invalid)
-    if char == "." and widget.index("insert") == 0:
-        return "break"
+#     # if the user attempts to input a "." as the first char, ignore (ex. 12.2 <-- valid, ex. .2 <-- invalid)
+#     if char == "." and widget.index("insert") == 0:
+#         return "break"
     
-    # if there already is a ".", ignore any future "." 
-    if char == "." and "." in widget.get():
-        return "break"
+#     # if there already is a ".", ignore any future "." 
+#     if char == "." and "." in widget.get():
+#         return "break"
     
-    # ignore incoming inputs if there is already 2 digits post the "." placement
-    if "." in widget.get():
-        # when the index of the "."
-        dot_index = widget.get().rfind(".")
-        # using the found index, find out the length of digits after the "."
-        if len(widget.get()[dot_index+1:]) == 2:
-            return "break"
+#     # ignore incoming inputs if there is already 2 digits post the "." placement
+#     if "." in widget.get():
+#         # when the index of the "."
+#         dot_index = widget.get().rfind(".")
+#         # using the found index, find out the length of digits after the "."
+#         if len(widget.get()[dot_index+1:]) == 2:
+#             return "break"
         
 def custom_float_only_entry_limited_validation(event, widget, digit_limit):
     if event.keysym == "BackSpace":
@@ -266,6 +266,46 @@ def custom_sleep_validation(event, widget):
     widget.insert(0, formatted_string)
 
     if i == 4:
+        decimal_point_offset = 1
+    else:
+        decimal_point_offset = 0
+
+    widget.icursor(min(i + 1 + decimal_point_offset, len(formatted_string)))
+
+    return "break"
+
+def custom_float_only_validation(event, widget, digits_before_point):
+    # add 2 digits to account for two decimal points
+    digits = digits_before_point + 2
+    point_index = digits_before_point
+
+    if event.keysym == "BackSpace":
+        return 
+    
+    char = event.char
+    i = widget.index("insert")
+
+    if not char.isdigit():
+        return "break"
+    
+    current = widget.get()
+    digits_only = [c for c in current if c.isdigit()]
+
+    if len(digits_only) >= digits:
+        return "break"
+    
+    digits_only.insert(i - current[:i].count("."), char)
+
+    formatted_string = ""
+    for idx, c in enumerate(digits_only):
+        if idx == point_index:
+            formatted_string += "."
+        formatted_string += c
+    
+    widget.delete(0, ctk.END)
+    widget.insert(0, formatted_string)
+
+    if i == digits_before_point:
         decimal_point_offset = 1
     else:
         decimal_point_offset = 0
