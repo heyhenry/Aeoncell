@@ -56,3 +56,5 @@ Reset Icon by Freepik | Flaticon.com (24th June 2025): https://www.flaticon.com/
 Walking Icon by Freepik| Flaticon.com (24th June 2025): https://www.flaticon.com/free-icon/shoes_8910863?term=walking+shoes&page=1&position=27&origin=search&related_id=8910863
 Sleeping Icon by Freepik | Flaticon.com (24th June 2025): https://www.flaticon.com/free-icon/sleeping_2829066?term=sleeping&page=1&position=18&origin=search&related_id=2829066
 Hydration Icon by Freepik | Flaticon.com (24th June 2025): https://www.flaticon.com/free-icon/glass-of-water_8013441?term=drinking+water&page=1&position=33&origin=search&related_id=8013441
+SQL EXISTS Operator (24th June 2025): https://www.w3schools.com/sql/sql_exists.asp
+SQL DELETE Example (24th June 2025): https://www.w3schools.com/sql/sql_delete.asp
