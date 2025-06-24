@@ -675,7 +675,7 @@ class DashboardPage(ctk.CTkFrame):
         sleep_goal_tally = ctk.CTkLabel(sleep_section, text="8.00 / 8.00", font=("", 14))
         sleep_progressbar = ctk.CTkProgressBar(sleep_section, border_width=3, height=40, width=300)
         sleep_progressbar.set(1)
-        self.sleep_hours_entry = ctk.CTkEntry(sleep_section, textvariable=self.sleep_var, width=140, height=60, font=("", 24))
+        sleep_hours_entry = ctk.CTkEntry(sleep_section, textvariable=self.sleep_var, width=140, height=60, font=("", 24))
         sleep_add_hours = ctk.CTkButton(sleep_section, width=140, height=60, text="Add Minutes", font=("", 18), command=self.process_sleep_entry)
 
         total_hours_slept.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
@@ -685,10 +685,10 @@ class DashboardPage(ctk.CTkFrame):
         sleep_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         sleep_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         sleep_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
-        self.sleep_hours_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
+        sleep_hours_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         sleep_add_hours.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
-        self.sleep_hours_entry.bind("<Key>", lambda event: custom_sleep_validation(event, self.sleep_hours_entry))
+        sleep_hours_entry.bind("<Key>", lambda event: custom_sleep_validation(event, sleep_hours_entry))
         sleep_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "sleep"))
 
         # hydration section
@@ -700,7 +700,7 @@ class DashboardPage(ctk.CTkFrame):
         hydration_goal_tally = ctk.CTkLabel(hydration_section, text="1.5 / 3.0", font=("", 14))
         hydration_progressbar = ctk.CTkProgressBar(hydration_section, border_width=3, height=40, width=300)
         hydration_progressbar.set(0.50)
-        self.hydration_ml_entry = ctk.CTkEntry(hydration_section, textvariable=self.hydration_var, width=140, height=60, font=("", 24))
+        hydration_ml_entry = ctk.CTkEntry(hydration_section, textvariable=self.hydration_var, width=140, height=60, font=("", 24))
         hydration_add_ml = ctk.CTkButton(hydration_section, width=140, height=60, text="Add Mililitres", font=("", 18), command=self.process_hydration_entry)
 
         total_ml_drunk.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
@@ -710,10 +710,10 @@ class DashboardPage(ctk.CTkFrame):
         hydration_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         hydration_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         hydration_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
-        self.hydration_ml_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
+        hydration_ml_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         hydration_add_ml.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
-        self.hydration_ml_entry.bind("<Key>", lambda event: custom_hydration_validation(event, self.hydration_ml_entry))
+        hydration_ml_entry.bind("<Key>", lambda event: custom_hydration_validation(event, hydration_ml_entry))
         hydration_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "hydration"))
 
         # walking section
@@ -725,7 +725,7 @@ class DashboardPage(ctk.CTkFrame):
         walking_goal_tally = ctk.CTkLabel(walking_section, text="10,000 / 10,000", font=("", 14))
         walking_progressbar = ctk.CTkProgressBar(walking_section, border_width=3, height=40, width=300)
         walking_progressbar.set(0.50)
-        self.walking_steps_entry = ctk.CTkEntry(walking_section, textvariable=self.steps_var, width=140, height=60, font=("", 24))
+        walking_steps_entry = ctk.CTkEntry(walking_section, textvariable=self.steps_var, width=140, height=60, font=("", 24))
         walking_add_steps = ctk.CTkButton(walking_section, width=140, height=60, text="Add Steps", font=("", 18), command=self.process_steps_entry)
 
         total_steps_walked.grid(row=0, column=0, padx=(40, 0), pady=(40, 0), sticky="sw")
@@ -735,10 +735,10 @@ class DashboardPage(ctk.CTkFrame):
         walking_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         walking_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
         walking_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
-        self.walking_steps_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
+        walking_steps_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         walking_add_steps.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
-        self.walking_steps_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.walking_steps_entry, 5))
+        walking_steps_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, walking_steps_entry, 5))
         walking_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "walking"))
 
         #endregion
