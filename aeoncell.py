@@ -1468,9 +1468,9 @@ class SettingsPage(ctk.CTkFrame):
 
         # monthly related binds
         self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
-        self.monthly_hydration_entry.bind("<Key>", lambda event: custom_float_only_entry_limited_validation(event, self.monthly_hydration_entry, 7))
-        self.monthly_sleep_entry.bind("<Key>", lambda event: custom_float_only_entry_validation(event, self.monthly_sleep_entry))
-        self.monthly_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_walking_entry, None))
+        self.monthly_hydration_entry.bind("<Key>", lambda event: custom_hydration_validation(event, self.monthly_hydration_entry))
+        self.monthly_sleep_entry.bind("<Key>", lambda event: custom_sleep_validation(event, self.monthly_sleep_entry))
+        self.monthly_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_walking_entry, 5))
 
         #endregion
 
