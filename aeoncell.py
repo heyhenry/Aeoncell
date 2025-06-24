@@ -1520,9 +1520,18 @@ class SettingsPage(ctk.CTkFrame):
 
     # updates the daily goals set by user
     def process_daily_goals(self):
-        sleep = self.daily_sleep_var.get()
-        steps = self.daily_walking_var.get()
-        hydration = self.daily_hydration_var.get()
+        sleep = float(self.daily_sleep_var.get())
+        steps = int(self.daily_walking_var.get())
+        hydration = float(self.daily_hydration_var.get())
+        
+        # limiters in place to help discourage user from aiming for a dangerous lifestyle
+        if sleep > 540.00:
+            sleep = 540.00
+        if steps > 99999:
+            steps = 99999
+        if hydration > 9999.99:
+            hydration = 9999.99
+
         update_daily_goals_query = """
         UPDATE profile_details
         SET daily_sleep_goal = ?,
