@@ -446,6 +446,7 @@ class DashboardPage(ctk.CTkFrame):
         self.profile_height_var = ctk.StringVar()
         self.profile_current_weight_var = ctk.StringVar()
         self.profile_goal_weight_var = ctk.StringVar()
+        self.profile_name_display = ctk.StringVar()
 
         #region [Daily Section]
         # variables with placeholder values
@@ -566,7 +567,7 @@ class DashboardPage(ctk.CTkFrame):
         #region [ Profile Section ]
         profile_info_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_image = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
-        profile_name = ctk.CTkLabel(profile_info_section, text="sdfasdf", font=("", 24))
+        profile_name = ctk.CTkLabel(profile_info_section, textvariable=self.profile_name_display, font=("", 24))
         profile_height_title = ctk.CTkLabel(profile_info_section, text="Height", font=("", 14, "bold"))
         profile_height_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
         profile_height_display = ctk.CTkLabel(profile_height_frame, textvariable=self.profile_height_var, font=("", 18))
@@ -869,6 +870,25 @@ class DashboardPage(ctk.CTkFrame):
                     profile_info[i].set(f"{result[i]} cm")
                 elif i > 3:
                     profile_info[i].set(f"{result[i]} kg")
+                else:
+                    profile_info[i].set(result[i])
+
+            self.determine_name_display()
+        
+
+    # if there is a first name or full name (first & last) given, then display that over username
+    def determine_name_display(self):
+        first_name = self.profile_first_name_var.get()
+        last_name = self.profile_last_name_var.get()
+
+        if len(first_name) > 0 and len(last_name) > 0:
+            self.profile_name_display.set(f"{first_name} {last_name}")
+        elif len(first_name) > 0:
+            self.profile_name_display.set(first_name)
+        elif len(last_name) > 0:
+            self.profile_name_display.set(last_name)
+        else:
+            self.profile_name_display.set(self.controller.username.get())
 
     def process_steps_entry(self):
         input_value = self.steps_var.get()
