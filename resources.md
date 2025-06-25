@@ -61,3 +61,13 @@ SQL DELETE Example (24th June 2025): https://www.w3schools.com/sql/sql_delete.as
 Can't use Image.putalpha() on a png file from PIL lob. OSError: cannot write mode PA as PNG (25th June 2025): https://stackoverflow.com/questions/62780080/cant-use-image-putalpha-on-a-png-file-from-pil-lib-oserror-cannot-write-mod
 What is the difference between image in 'P' and 'L' mode in PIL? (25th June 2025): https://stackoverflow.com/questions/52307290/what-is-the-difference-between-images-in-p-and-l-mode-in-pil/52307690#52307690
 Pillow (PIL FORK) Image.convert (25th June 2025): https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.convert
+datetime py docs | format codes (25th June 2025): https://docs.python.org/3/library/datetime.html#format-codes
+Calendar Icon created by Freepik | Flaticon.com (25th June 2025): https://www.flaticon.com/free-icon/calendar_16090543?term=calendar&page=1&position=15&origin=search&related_id=16090543
+Heart Dumbbell Icon created by Freepik | Flaticon.com (25th June 2025): https://www.flaticon.com/free-icon/heart-rate_6307606?term=exercise&page=1&position=13&origin=search&related_id=6307606 
+Motivation Icon created by Freepik | Flaticon.com (25th June 2025): https://www.flaticon.com/free-icon/motivation_8226086?term=motivation&page=1&position=22&origin=search&related_id=8226086
+50 Motivational Exercise Quotes to Get You Through (or to) Your Next Workout (25th June 2025): https://www.realsimple.com/health/fitness-exercise/exercise-quotes
+125 Best Inspirational Anime Quotes To Motivate You (25th June 2025): https://kidadl.com/facts/quotes/best-inspirational-anime-quotes-to-motivate-you
+This may be a dumb question but, is Vegetas last name Vegeta? Or is he a junior? (25th June 2025): https://www.reddit.com/r/dbz/comments/drvrvu/this_may_be_a_dumb_question_but_is_vegetas_last/
+12 Motivational Hajime No Ippo Quotes (25th June 2025): https://quotetheanime.com/quotes/hajime-no-ippo-quotes/
+Python Random choice() Method (25th June 2025): https://www.w3schools.com/python/ref_random_choice.asp
+tkinter.font - Tkinter font wrapper (25th June 2025): https://docs.python.org/3/library/tkinter.font.html
