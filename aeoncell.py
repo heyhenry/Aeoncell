@@ -567,7 +567,7 @@ class DashboardPage(ctk.CTkFrame):
         #region [ Profile Section ]
         profile_info_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_image = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
-        profile_name = ctk.CTkLabel(profile_info_section, textvariable=self.profile_name_display, font=("", 24))
+        profile_name = ctk.CTkLabel(profile_info_section, textvariable=self.profile_name_display, wraplength=300, font=("", 24))
         profile_height_title = ctk.CTkLabel(profile_info_section, text="Height", font=("", 14, "bold"))
         profile_height_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
         profile_height_display = ctk.CTkLabel(profile_height_frame, textvariable=self.profile_height_var, font=("", 18))
@@ -889,6 +889,7 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_name_display.set(last_name)
         else:
             self.profile_name_display.set(self.controller.username.get())
+
 
     def process_steps_entry(self):
         input_value = self.steps_var.get()
@@ -1463,8 +1464,8 @@ class SettingsPage(ctk.CTkFrame):
 
         # profile related binds
         self.profile_username_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_username_entry, None))
-        self.profile_first_name_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_first_name_entry, None))
-        self.profile_last_name_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_last_name_entry, None))
+        self.profile_first_name_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_first_name_entry, 13))
+        self.profile_last_name_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_last_name_entry, 13))
         self.profile_age_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.profile_age_entry, 3))
         self.profile_height_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.profile_height_entry, 3))
         self.profile_current_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.profile_current_weight_entry, 3))
