@@ -428,13 +428,13 @@ class DashboardPage(ctk.CTkFrame):
 
         # temp
         self.icon = ctk.CTkImage(light_image=Image.open("img/big_flame.png"), dark_image=Image.open("img/big_flame.png"), size=(32, 32))
-        self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(192, 192))
         self.badge = ctk.CTkImage(light_image=Image.open("img/achievements/first_workout_achievement.png"), dark_image=Image.open("img/achievements/first_workout_achievement.png"), size=(64, 64))
         self.mini_banner = ctk.CTkImage(light_image=Image.open("img/laid_dumbbell_man.png"), dark_image=Image.open("img/laid_dumbbell_man.png"), size=(100, 100))
         self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
         self.entry_icon = ctk.CTkImage(light_image=Image.open("img/entry_icon.png"), dark_image=Image.open("img/entry_icon.png"), size=(64, 64))
 
         # image variables
+        self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(192, 192))
         self.reset_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/reset.png"), dark_image=Image.open("img/dailies_section/reset.png"), size=(32, 32))
         self.sleep_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/sleeping.png"), dark_image=Image.open("img/dailies_section/sleeping.png"), size=(32, 32))
         self.hydration_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/hydration.png"), dark_image=Image.open("img/dailies_section/hydration.png"), size=(32, 32))
@@ -566,7 +566,7 @@ class DashboardPage(ctk.CTkFrame):
 
         #region [ Profile Section ]
         profile_info_section = ctk.CTkFrame(profile_section, fg_color="transparent")
-        profile_image = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
+        self.profile_image_display = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
         profile_name = ctk.CTkLabel(profile_info_section, textvariable=self.profile_name_display, wraplength=300, font=("", 24))
         profile_height_title = ctk.CTkLabel(profile_info_section, text="Height", font=("", 14, "bold"))
         profile_height_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
@@ -619,7 +619,7 @@ class DashboardPage(ctk.CTkFrame):
         profile_achievements_section.grid(row=1, column=3, padx=(0, 50), pady=(0, 20))
         
         # profile info section
-        profile_image.grid(row=0, column=0, columnspan=2, pady=(20, 0))
+        self.profile_image_display.grid(row=0, column=0, columnspan=2, pady=(20, 0))
         profile_name.grid(row=1, column=0, columnspan=2, pady=(10, 0))
         
         profile_height_title.grid(row=2, column=0, padx=(0, 10), pady=(20, 0))
@@ -851,6 +851,11 @@ class DashboardPage(ctk.CTkFrame):
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
     # remember to implement binding for the actionable icons like -> reset icon
 
+    def update_profile_image(self):
+        # reloads both the image widget and image attribute by re-reading the file with the new image
+        self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(192, 192))
+        self.profile_image_display.configure(image=self.profile_image)
+
     def retrieve_profile_details(self):
         profile_info = [
             self.profile_first_name_var,
@@ -899,7 +904,6 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_name_display.set(last_name)
         else:
             self.profile_name_display.set(self.controller.username.get())
-
 
     def process_steps_entry(self):
         input_value = self.steps_var.get()
@@ -1724,6 +1728,8 @@ class SettingsPage(ctk.CTkFrame):
             temp_image.save("img/user_profile.png")
             # remove the temporary image save -> 'temp_profile_image.png'
             os.remove("img/temp_profile_image.png")
+        # updates the profile image on the dashboard in simultaneously
+        self.controller.pages[DashboardPage].update_profile_image()
 
     # reset the profile image preview display
     def reset_profile_preview(self):
