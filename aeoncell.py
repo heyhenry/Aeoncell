@@ -560,15 +560,18 @@ class DashboardPage(ctk.CTkFrame):
         motivational_message_display = ctk.CTkLabel(intro_section, textvariable=self.motivational_message, width=750, anchor="w", font=("", 18, "italic"))
         current_date = ctk.CTkLabel(intro_section, textvariable=self.today_full_display, font=("", 24))
         date_icon = ctk.CTkLabel(intro_section, text="", image=self.intro_icon)
-        motivation_button = ctk.CTkLabel(intro_section, text="", image=self.motivation_icon)
+        motivation_icon = ctk.CTkLabel(intro_section, text="", image=self.motivation_icon)
 
         hello_message.grid(row=0, column=0, sticky="w", padx=(50, 0), pady=(20, 0))
         motivational_message_display.grid(row=1, column=0, sticky="w", padx=(50, 0))
         current_date.grid(row=0, rowspan=2, column=1, sticky="e", padx=(100, 0), pady=(20, 0))
         date_icon.grid(row=0, rowspan=2, column=2, sticky="e", padx=(20, 0), pady=(20, 0))
-        motivation_button.grid(row=0, rowspan=2, column=3, sticky="e", padx=(60, 0), pady=(20, 0))
+        motivation_icon.grid(row=0, rowspan=2, column=3, sticky="e", padx=(60, 0), pady=(20, 0))
 
         intro_section.grid_propagate(False)
+
+        motivation_icon.bind("<Button-1>", self.random_motivational_quote)
+
         #endregion
 
         #region [ Profile Section ]
@@ -863,7 +866,7 @@ class DashboardPage(ctk.CTkFrame):
         add_single.grid(row=3, column=2, pady=20)
 
         recent_exercises_section.grid_propagate(False)
-        
+
         #endregion
 
     # Reminder to adjust after finishing all widgets... 
@@ -871,7 +874,7 @@ class DashboardPage(ctk.CTkFrame):
     # remember to implement binding for the actionable icons like -> reset icon
 
     # deliver randomised yet inspiring quotes to the user
-    def random_motivational_quote(self):
+    def random_motivational_quote(self, event=None):
         motivational_quotes = [
             '"Sometimes, carrying on, just carrying on, is the superhuman achievement." - Albert C.',
             '"You can, you should, and if you are brave enough to start, you will." - Stephen K.',
