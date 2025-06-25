@@ -187,12 +187,6 @@ def custom_float_only_validation(event, widget, digits_before_point):
 
     return "break"
 
-
-
-
-
-
-
 # give an image a rounded frame and saved as its own file
 def generate_round_frame_image(filepath, new_filename):
     # create the mask shape
@@ -203,6 +197,11 @@ def generate_round_frame_image(filepath, new_filename):
 
     # choose an image to be altered
     selected_image = Image.open(filepath)
+
+    # check image mode (i.e. incase it's considered 'PA')
+    if selected_image.mode not in ("RGB", "RGBA"):
+        # convert it to compatible mode
+        selected_image = selected_image.convert("RGBA")
 
     # round the selected image
     round_image = ImageOps.fit(selected_image, mask.size, centering=(0.5, 0.5))
