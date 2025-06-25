@@ -967,9 +967,9 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_display.set(f"{minutes_slept:,.2f} mins")
         self.sleep_current_progress.set(f"{minutes_slept:,.2f}")
 
-        self.update_daily_goal_displays()
+        self.update_daily_goal_progression_displays()
 
-    def update_daily_goal_displays(self):
+    def update_daily_goal_progression_displays(self):
         self.controller.db_cursor.execute("SELECT daily_steps_goal, daily_sleep_goal, daily_hydration_goal FROM profile_details WHERE rowid=1")
         steps_goal, sleep_goal, hydration_goal = self.controller.db_cursor.fetchone()
 
@@ -1000,6 +1000,9 @@ class DashboardPage(ctk.CTkFrame):
             self.controller.db_connection.commit()
             # format and update the total steps taken display
             self.steps_display.set(f"{steps:,} steps")
+            # update daily steps progression
+            self.steps_current_progress.set(f"{steps:,}")
+            self.update_daily_goal_progression_displays()
             # clear the steps entry field
             self.steps_var.set("")
         # update the already existing entry
@@ -1022,6 +1025,9 @@ class DashboardPage(ctk.CTkFrame):
                 self.controller.db_connection.commit()
             # format and update the total steps taken display
             self.steps_display.set(f"{steps_taken:,} steps")
+            # update daily steps progression
+            self.steps_current_progress.set(f"{steps_taken:,}")
+            self.update_daily_goal_progression_displays()
             # clear the steps entry field
             self.steps_var.set("")
 
@@ -1045,6 +1051,9 @@ class DashboardPage(ctk.CTkFrame):
             self.controller.db_connection.commit()
             # update the app's real time display
             self.hydration_display.set(f"{liquids_consumed:,.2f} ml")
+            # update daily hydration progression
+            self.hydration_current_progress.set(f"{liquids_consumed:,.2f}")
+            self.update_daily_goal_progression_displays()
             self.hydration_var.set("")
         else:
             # find out how much liquids (ml) is currently stored (prior to this new input)
@@ -1056,11 +1065,17 @@ class DashboardPage(ctk.CTkFrame):
                 self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
                 self.controller.db_connection.commit()
                 self.hydration_display.set(f"{total_liquids_consumed:,.2f} ml")
+                # update daily hydration progression
+                self.hydration_current_progress.set(f"{total_liquids_consumed:,.2f}")
+                self.update_daily_goal_progression_displays()
                 self.hydration_var.set("")
             else:
                 self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
                 self.controller.db_connection.commit()
                 self.hydration_display.set(f"{total_liquids_consumed:,.2f} ml")
+                # update daily hydration progression
+                self.hydration_current_progress.set(f"{total_liquids_consumed:,.2f}")
+                self.update_daily_goal_progression_displays()
                 self.hydration_var.set("")
 
     def process_sleep_entry(self):
@@ -1078,7 +1093,10 @@ class DashboardPage(ctk.CTkFrame):
                 minutes_slept = 540.00
             self.controller.db_cursor.execute("INSERT INTO sleep_tracker (date, sleep_mins) VALUES (?, ?)", (self.today, minutes_slept))
             self.controller.db_connection.commit()
-            self.sleep_display.set(f"{minutes_slept} minutes")
+            self.sleep_display.set(f"{minutes_slept:,.2f} minutes")
+            # update daily sleep progression
+            self.sleep_current_progress.set(f"{minutes_slept:,.2f}")
+            self.update_daily_goal_progression_displays()
             self.sleep_var.set("")
         else:
             self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
@@ -1089,11 +1107,17 @@ class DashboardPage(ctk.CTkFrame):
                 self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_mins = ? WHERE date = ?", (total_minutes_slept, self.today))
                 self.controller.db_connection.commit()
                 self.sleep_display.set(f"{total_minutes_slept:,.2f} minutes")
+                # update daily sleep progression
+                self.sleep_current_progress.set(f"{total_minutes_slept:,.2f}")
+                self.update_daily_goal_progression_displays()
                 self.sleep_var.set("")
             else:
                 self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_mins = ? WHERE date = ?", (total_minutes_slept, self.today))
                 self.controller.db_connection.commit()
                 self.sleep_display.set(f"{total_minutes_slept:,.2f} minutes")
+                # update daily sleep progression
+                self.sleep_current_progress.set(f"{total_minutes_slept:,.2f}")
+                self.update_daily_goal_progression_displays()
                 self.sleep_var.set("")
 
     def reset_daily(self, event, selected_daily):
@@ -1697,7 +1721,7 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_connection.commit()
         self.show_action_message(self.daily_action_message)
         # reinitialise the daily trackers with the updated data
-        self.controller.pages[DashboardPage].update_daily_goal_displays()
+        self.controller.pages[DashboardPage].update_daily_goal_progression_displays()
 
     # updates the monthly goals set by user
     def process_monthly_goals(self):
