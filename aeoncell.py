@@ -60,12 +60,12 @@ class Windows(ctk.CTk):
         # center the app upon startup
         self.center_window(self, 1440, 900)
 
-        # self.show_page(DashboardPage)
+        self.show_page(DashboardPage)
         # determine initial page display based on user having a password (i.e. guaranteed account registration)
-        if self.db.check_password_exists():
-            self.show_page(LoginPage)
-        else:
-            self.show_page(RegisterPage)
+        # if self.db.check_password_exists():
+        #     self.show_page(LoginPage)
+        # else:
+        #     self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -524,7 +524,6 @@ class DashboardPage(ctk.CTkFrame):
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
         recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=800)
 
-        intro_section.grid_propagate(False)
         profile_section.grid_propagate(False)
         subtitle_section.grid_propagate(False)
         dailies_section.grid_propagate(False)
@@ -563,8 +562,8 @@ class DashboardPage(ctk.CTkFrame):
         #endregion
 
         #region [ Introduction Section ]
-        hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", font=("", 32))
-        motivational_message_display = ctk.CTkLabel(intro_section, textvariable=self.motivational_message, font=("", 18, "italic"))
+        hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", width=750, anchor="w", font=("", 32))
+        motivational_message_display = ctk.CTkLabel(intro_section, textvariable=self.motivational_message, width=750, anchor="w", font=("", 18, "italic"))
         current_date = ctk.CTkLabel(intro_section, textvariable=self.today_full_display, font=("", 24))
         date_icon = ctk.CTkLabel(intro_section, text="", image=self.intro_icon)
         motivation_button = ctk.CTkLabel(intro_section, text="", image=self.motivation_icon)
@@ -573,7 +572,9 @@ class DashboardPage(ctk.CTkFrame):
         motivational_message_display.grid(row=1, column=0, sticky="w", padx=(50, 0))
         current_date.grid(row=0, rowspan=2, column=1, sticky="e", padx=(100, 0), pady=(20, 0))
         date_icon.grid(row=0, rowspan=2, column=2, sticky="e", padx=(20, 0), pady=(20, 0))
-        motivation_button.grid(row=0, rowspan=2, column=3, sticky="e", padx=(80, 0), pady=(20, 0))
+        motivation_button.grid(row=0, rowspan=2, column=3, sticky="e", padx=(60, 0), pady=(20, 0))
+
+        intro_section.grid_propagate(False)
         #endregion
 
         #region [ Profile Section ]
