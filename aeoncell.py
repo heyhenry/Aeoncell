@@ -75,6 +75,8 @@ class Windows(ctk.CTk):
             self.set_initial_focus(page.username_entry)
         elif selected_page == LoginPage:
             self.set_initial_focus(page.password_entry)
+        elif selected_page == DashboardPage:
+            page.retrieve_profile_details()
         elif selected_page == SettingsPage:
             page.retrieve_current_info()
 
