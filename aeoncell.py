@@ -441,6 +441,7 @@ class DashboardPage(ctk.CTkFrame):
         today_full = today_full.strftime("%d %B %Y")
         self.today_full_display = ctk.StringVar(value=today_full)
         self.intro_icon = ctk.CTkImage(light_image=Image.open("img/intro_section/calendar.png"), dark_image=Image.open("img/intro_section/calendar.png"), size=(64, 64)) 
+        self.motivation_icon = ctk.CTkImage(light_image=Image.open("img/intro_section/motivational_fist.png"), dark_image=Image.open("img/intro_section/motivational_fist.png"), size=(64, 64)) 
 
         # image variables
         self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(192, 192))
@@ -563,13 +564,13 @@ class DashboardPage(ctk.CTkFrame):
         motivational_message = ctk.CTkLabel(intro_section, text="Keep Moving & Stay Healthy")
         current_date = ctk.CTkLabel(intro_section, textvariable=self.today_full_display, font=("", 24))
         date_icon = ctk.CTkLabel(intro_section, text="", image=self.intro_icon)
-        motivation_button = ctk.CTkButton(intro_section, text="", image=self.icon, width=0, height=0, fg_color="#F0E9FF", hover_color="#F0E9FF")
+        motivation_button = ctk.CTkLabel(intro_section, text="", image=self.motivation_icon)
 
         hello_message.grid(row=0, column=0, sticky="w", padx=(50, 0), pady=(20, 0))
         motivational_message.grid(row=1, column=0, sticky="w", padx=(50, 0))
         current_date.grid(row=0, rowspan=2, column=1, sticky="e", padx=(550, 0), pady=(20, 0))
         date_icon.grid(row=0, rowspan=2, column=2, sticky="e", padx=(20, 0), pady=(20, 0))
-        motivation_button.grid(row=0, rowspan=2, column=3, sticky="e", padx=(20, 0), pady=(20, 0))
+        motivation_button.grid(row=0, rowspan=2, column=3, sticky="e", padx=(80, 0), pady=(20, 0))
         #endregion
 
         #region [ Profile Section ]
