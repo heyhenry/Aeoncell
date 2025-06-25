@@ -506,7 +506,7 @@ class DashboardPage(ctk.CTkFrame):
         content.grid_columnconfigure(2, weight=1)
 
         intro_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=100)
-        profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=450)
+        profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=550)
         subtitle_section = ctk.CTkFrame(content, fg_color="transparent", width=1100, height=80)
         dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
@@ -571,12 +571,15 @@ class DashboardPage(ctk.CTkFrame):
         profile_height_title = ctk.CTkLabel(profile_info_section, text="Height", font=("", 14, "bold"))
         profile_height_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
         profile_height_display = ctk.CTkLabel(profile_height_frame, textvariable=self.profile_height_var, font=("", 18))
-        profile_weight_title = ctk.CTkLabel(profile_info_section, text="Weight", font=("", 14, "bold"))
-        profile_weight_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
-        profile_weight_display = ctk.CTkLabel(profile_weight_frame, textvariable=self.profile_current_weight_var, font=("", 18))
+        profile_current_weight_title = ctk.CTkLabel(profile_info_section, text="Current Weight", font=("", 14, "bold"))
+        profile_current_weight_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
+        profile_current_weight_display = ctk.CTkLabel(profile_current_weight_frame, textvariable=self.profile_current_weight_var, font=("", 18))
         profile_age_title = ctk.CTkLabel(profile_info_section, text="Age", font=("", 14, "bold"))
         profile_age_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
         profile_age_display = ctk.CTkLabel(profile_age_frame, textvariable=self.profile_age_var, font=("", 18))
+        profile_goal_weight_title = ctk.CTkLabel(profile_info_section, text="Goal Weight", font=("", 14, "bold"))
+        profile_goal_weight_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
+        profile_goal_weight_display = ctk.CTkLabel(profile_goal_weight_frame, textvariable=self.profile_goal_weight_var, font=("", 18))
         profile_monthly_section = ctk.CTkFrame(profile_section, border_color="blue", fg_color="transparent")
         profile_monthly_title = ctk.CTkLabel(profile_monthly_section, text="Monthly Progress", font=("", 24))
         profile_monthly_weight_title = ctk.CTkLabel(profile_monthly_section, text="Weight Loss", font=("", 18))
@@ -616,26 +619,34 @@ class DashboardPage(ctk.CTkFrame):
         profile_achievements_section.grid(row=1, column=3, padx=(0, 50), pady=(0, 20))
         
         # profile info section
-        profile_image.grid(row=0, column=0, columnspan=3, pady=(20, 0))
-        profile_name.grid(row=1, column=0, columnspan=3, pady=(10, 0))
+        profile_image.grid(row=0, column=0, columnspan=2, pady=(20, 0))
+        profile_name.grid(row=1, column=0, columnspan=2, pady=(10, 0))
+        
         profile_height_title.grid(row=2, column=0, padx=(0, 10), pady=(20, 0))
         profile_height_frame.grid(row=3, column=0, padx=20, pady=(0, 20))
         profile_height_frame.grid_propagate(False)
         profile_height_frame.grid_rowconfigure(0, weight=1)
         profile_height_frame.grid_columnconfigure(0, weight=1)
         profile_height_display.grid(row=0, column=0, padx=10, pady=10)
-        profile_weight_title.grid(row=2, column=1, padx=(0, 10),  pady=(20, 0))
-        profile_weight_frame.grid(row=3, column=1, pady=(0, 20))
-        profile_weight_frame.grid_propagate(False)
-        profile_weight_frame.grid_rowconfigure(0, weight=1)
-        profile_weight_frame.grid_columnconfigure(0, weight=1)
-        profile_weight_display.grid(row=0, column=0, padx=10, pady=10)
-        profile_age_title.grid(row=2, column=2, padx=(0, 10),  pady=(20, 0))
-        profile_age_frame.grid(row=3, column=2, padx=20, pady=(0, 20))
+        profile_current_weight_title.grid(row=2, column=1, padx=(0, 10),  pady=(20, 0))
+        profile_current_weight_frame.grid(row=3, column=1, pady=(0, 20))
+        profile_current_weight_frame.grid_propagate(False)
+        profile_current_weight_frame.grid_rowconfigure(0, weight=1)
+        profile_current_weight_frame.grid_columnconfigure(0, weight=1)
+        profile_current_weight_display.grid(row=0, column=0, padx=10, pady=10)
+        
+        profile_age_title.grid(row=4, column=0, padx=(0, 10),  pady=(10, 0))
+        profile_age_frame.grid(row=5, column=0, padx=20, pady=(0, 20))
         profile_age_frame.grid_propagate(False)
         profile_age_frame.grid_rowconfigure(0, weight=1)
         profile_age_frame.grid_columnconfigure(0, weight=1)
         profile_age_display.grid(row=0, column=0, padx=10, pady=10)
+        profile_goal_weight_title.grid(row=4, column=1, padx=(0, 10), pady=(10, 0))
+        profile_goal_weight_frame.grid(row=5, column=1, pady=(0, 20))
+        profile_goal_weight_frame.grid_propagate(False)
+        profile_goal_weight_frame.grid_rowconfigure(0, weight=1)
+        profile_goal_weight_frame.grid_columnconfigure(0, weight=1)
+        profile_goal_weight_display.grid(row=0, column=0, padx=10, pady=10)
 
         # profile monthly section
         profile_monthly_title.grid(row=0, column=0, columnspan=2, pady=(20, 0))
@@ -875,7 +886,6 @@ class DashboardPage(ctk.CTkFrame):
 
             self.determine_name_display()
         
-
     # if there is a first name or full name (first & last) given, then display that over username
     def determine_name_display(self):
         first_name = self.profile_first_name_var.get()
