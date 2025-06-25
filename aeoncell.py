@@ -481,60 +481,7 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_goal = ctk.StringVar()
         self.sleep_progress_display = ctk.StringVar() 
 
-        #region [Initialising existing data search and display]
-
-        # [ Walking ]
-        # check if a steps entry exists for today
-        self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (self.today,))
-        result = self.controller.db_cursor.fetchone()
-        # if so, use it to set the initial display upon app startup
-        if result:
-            steps_taken = result[0]
-        else:
-            steps_taken = 0
-        self.steps_display.set(f"{steps_taken:,} steps")
-        self.steps_current_progress.set(steps_taken)
-        
-        # retrieve the saved daily steps goal amount and use it to display the progression data
-        self.controller.db_cursor.execute("SELECT daily_steps_goal FROM profile_details WHERE rowid=1")
-        self.steps_goal.set(self.controller.db_cursor.fetchone()[0])
-        self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {self.steps_goal.get()}")
-        
-        # [ Hydration ]
-        # check if an entry exists for today
-        self.controller.db_cursor.execute("SELECT consumption_ml FROM hydration_tracker WHERE date = ?", (self.today,))
-        result = self.controller.db_cursor.fetchone()
-        # if so, use it to set the initial display upon app startup
-        if result:
-            liquids_consumed = result[0]
-        else:   
-            liquids_consumed = 0.0 
-        self.hydration_display.set(f"{liquids_consumed:,.2f} ml")
-        self.hydration_current_progress.set(f"{liquids_consumed:,.2f}")
-
-        # retrieve the saved daily hydration goal amount and use it to display the progression data
-        self.controller.db_cursor.execute("SELECT daily_hydration_goal FROM profile_details WHERE rowid=1")
-        self.hydration_goal.set(self.controller.db_cursor.fetchone()[0])
-        self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {self.hydration_goal.get()}")
-
-        # [ Sleep ]
-        # check if an entry exists for today
-        self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
-        result = self.controller.db_cursor.fetchone()
-        # if so, use it to set the initial display upon app startup
-        if result:
-            minutes_slept = result[0]
-        else:
-            minutes_slept = 0.0
-        self.sleep_display.set(f"{minutes_slept:,.2f} mins")
-        self.sleep_current_progress.set(f"{minutes_slept:,.2f}")
-        
-        # retrieve the saved daily hydration goal amount and use it to display the progression data
-        self.controller.db_cursor.execute("SELECT daily_sleep_goal FROM profile_details WHERE rowid=1")
-        self.sleep_goal.set(self.controller.db_cursor.fetchone()[0])
-        self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {self.sleep_goal.get()}")
-        
-        #endregion
+        self.daily_section_initialisation()
         #endregion
         
         self.grid_rowconfigure(0, weight=1)
@@ -983,6 +930,59 @@ class DashboardPage(ctk.CTkFrame):
         else:
             self.profile_name_display.set(self.controller.username.get())
 
+    def daily_section_initialisation(self):
+        # [ Walking ]
+        # check if a steps entry exists for today
+        self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (self.today,))
+        result = self.controller.db_cursor.fetchone()
+        # if so, use it to set the initial display upon app startup
+        if result:
+            steps_taken = result[0]
+        else:
+            steps_taken = 0
+        self.steps_display.set(f"{steps_taken:,} steps")
+        self.steps_current_progress.set(steps_taken)
+        
+        # [ Hydration ]
+        # check if an entry exists for today
+        self.controller.db_cursor.execute("SELECT consumption_ml FROM hydration_tracker WHERE date = ?", (self.today,))
+        result = self.controller.db_cursor.fetchone()
+        # if so, use it to set the initial display upon app startup
+        if result:
+            liquids_consumed = result[0]
+        else:   
+            liquids_consumed = 0.0 
+        self.hydration_display.set(f"{liquids_consumed:,.2f} ml")
+        self.hydration_current_progress.set(f"{liquids_consumed:,.2f}")
+
+        # [ Sleep ]
+        # check if an entry exists for today
+        self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
+        result = self.controller.db_cursor.fetchone()
+        # if so, use it to set the initial display upon app startup
+        if result:
+            minutes_slept = result[0]
+        else:
+            minutes_slept = 0.0
+        self.sleep_display.set(f"{minutes_slept:,.2f} mins")
+        self.sleep_current_progress.set(f"{minutes_slept:,.2f}")
+
+        self.update_daily_goal_displays()
+
+    def update_daily_goal_displays(self):
+        self.controller.db_cursor.execute("SELECT daily_steps_goal, daily_sleep_goal, daily_hydration_goal FROM profile_details WHERE rowid=1")
+        steps_goal, sleep_goal, hydration_goal = self.controller.db_cursor.fetchone()
+
+        # set goal variables for later use (for progress bar setting)
+        self.steps_goal.set(steps_goal)
+        self.sleep_goal.set(sleep_goal)
+        self.hydration_goal.set(hydration_goal)
+
+        # set the latest daily progression data
+        self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {steps_goal}")
+        self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {sleep_goal}")
+        self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {hydration_goal}")
+        
     def process_steps_entry(self):
         input_value = self.steps_var.get()
         if len(input_value) == 0:
@@ -1696,6 +1696,8 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_cursor.execute(update_daily_goals_query, (sleep, steps, hydration))
         self.controller.db_connection.commit()
         self.show_action_message(self.daily_action_message)
+        # reinitialise the daily trackers with the updated data
+        self.controller.pages[DashboardPage].update_daily_goal_displays()
 
     # updates the monthly goals set by user
     def process_monthly_goals(self):
