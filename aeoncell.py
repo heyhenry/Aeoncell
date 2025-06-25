@@ -1468,9 +1468,9 @@ class SettingsPage(ctk.CTkFrame):
 
         # monthly related binds
         self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
-        self.monthly_hydration_entry.bind("<Key>", lambda event: custom_hydration_validation(event, self.monthly_hydration_entry))
-        self.monthly_sleep_entry.bind("<Key>", lambda event: custom_sleep_validation(event, self.monthly_sleep_entry))
-        self.monthly_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_walking_entry, 5))
+        self.monthly_hydration_entry.bind("<Key>", lambda event: custom_float_only_validation(event, self.monthly_hydration_entry, 6))
+        self.monthly_sleep_entry.bind("<Key>", lambda event: custom_float_only_validation(event, self.monthly_sleep_entry, 5))
+        self.monthly_walking_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_walking_entry, 7))
 
         #endregion
 
@@ -1546,12 +1546,23 @@ class SettingsPage(ctk.CTkFrame):
     # updates the monthly goals set by user
     def process_monthly_goals(self):
         weight_choice = self.monthly_weight_choice_var.get()
-        weight = self.monthly_weight_var.get()
-        steps = self.monthly_walking_var.get()
-        hydration = self.monthly_hydration_var.get()
-        sleep = self.monthly_sleep_var.get()
+        weight = int(self.monthly_weight_var.get())
+        steps = int(self.monthly_walking_var.get())
+        hydration = float(self.monthly_hydration_var.get())
+        sleep = float(self.monthly_sleep_var.get())
 
-
+        # 10kg weight loss/gain limit per month
+        if weight > 10:
+            weight = 10
+        # 540.00 min per day x 31 days
+        if sleep > 16740.00:
+            sleep = 16740.00
+        # 9999.99 ml per day x 31 days
+        if hydration > 309999.99:
+            hydration = 309999.99
+        # 99999 steps per day x 31 days
+        if steps > 3099999:
+            steps = 3099999
 
         update_monthly_goals_query = """
         UPDATE profile_details
