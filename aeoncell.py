@@ -524,12 +524,6 @@ class DashboardPage(ctk.CTkFrame):
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
         recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=800)
 
-        profile_section.grid_propagate(False)
-        subtitle_section.grid_propagate(False)
-        dailies_section.grid_propagate(False)
-        quick_stats_section.grid_propagate(False)
-        recent_exercises_section.grid_propagate(False)
-
         intro_section.grid(row=1, column=1, pady=20)
         profile_section.grid(row=2, column=1, pady=(0, 20))
         subtitle_section.grid(row=3, column=1, pady=(0, 20))
@@ -690,12 +684,16 @@ class DashboardPage(ctk.CTkFrame):
         fourth_badge_name.grid(row=4, column=1, padx=(0, 10))
         fourth_badge_spot.grid(row=5, column=1, padx=(0, 10))
         fourth_badge_date.grid(row=6, column=1, pady=(0, 20))
+
+        profile_section.grid_propagate(False)
         # endregion
 
         #region [ Subtitle Section ]
         subtitle_display = ctk.CTkLabel(subtitle_section, text="Daily Tracking", font=("", 32))
 
         subtitle_display.grid(row=0, column=0, padx=(10, 0), sticky="sw")
+
+        subtitle_section.grid_propagate(False)
         #endregion
 
         #region [ Dailies Section ] 
@@ -779,6 +777,8 @@ class DashboardPage(ctk.CTkFrame):
         walking_steps_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         walking_add_steps.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
+        dailies_section.grid_propagate(False)
+
         walking_steps_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, walking_steps_entry, 5))
         walking_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "walking"))
 
@@ -826,6 +826,9 @@ class DashboardPage(ctk.CTkFrame):
         weather_location.grid(row=1, column=1, padx=(0, 40))
         weather_current_forecast.grid(row=0, rowspan=2, column=2, pady=(0, 30))
         api_widget.grid(row=1, column=0, padx=40, pady=(0, 70))
+
+        quick_stats_section.grid_propagate(False)
+
         #endregion
 
         #region [ Recent Exercises Section ]
@@ -858,6 +861,9 @@ class DashboardPage(ctk.CTkFrame):
         entries.grid(row=0, column=0)
         add_session.grid(row=3, column=1, pady=20)
         add_single.grid(row=3, column=2, pady=20)
+
+        recent_exercises_section.grid_propagate(False)
+        
         #endregion
 
     # Reminder to adjust after finishing all widgets... 
