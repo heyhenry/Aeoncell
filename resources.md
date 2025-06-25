@@ -58,3 +58,6 @@ Sleeping Icon by Freepik | Flaticon.com (24th June 2025): https://www.flaticon.c
 Hydration Icon by Freepik | Flaticon.com (24th June 2025): https://www.flaticon.com/free-icon/glass-of-water_8013441?term=drinking+water&page=1&position=33&origin=search&related_id=8013441
 SQL EXISTS Operator (24th June 2025): https://www.w3schools.com/sql/sql_exists.asp
 SQL DELETE Example (24th June 2025): https://www.w3schools.com/sql/sql_delete.asp
+Can't use Image.putalpha() on a png file from PIL lob. OSError: cannot write mode PA as PNG (25th June 2025): https://stackoverflow.com/questions/62780080/cant-use-image-putalpha-on-a-png-file-from-pil-lib-oserror-cannot-write-mod
+What is the difference between image in 'P' and 'L' mode in PIL? (25th June 2025): https://stackoverflow.com/questions/52307290/what-is-the-difference-between-images-in-p-and-l-mode-in-pil/52307690#52307690
+Pillow (PIL FORK) Image.convert (25th June 2025): https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.convert
