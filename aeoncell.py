@@ -8,6 +8,7 @@ from PIL import Image
 import os
 from CTkXYFrame import *
 from tkinter import ttk as btk
+import random
 
 ctk.set_appearance_mode("Light")
 ctk.set_default_color_theme("themes/custom_lavender.json")
@@ -77,6 +78,7 @@ class Windows(ctk.CTk):
             self.set_initial_focus(page.password_entry)
         elif selected_page == DashboardPage:
             page.retrieve_profile_details()
+            page.random_motivational_quote()
         elif selected_page == SettingsPage:
             page.retrieve_current_info()
 
@@ -442,6 +444,7 @@ class DashboardPage(ctk.CTkFrame):
         self.today_full_display = ctk.StringVar(value=today_full)
         self.intro_icon = ctk.CTkImage(light_image=Image.open("img/intro_section/calendar.png"), dark_image=Image.open("img/intro_section/calendar.png"), size=(64, 64)) 
         self.motivation_icon = ctk.CTkImage(light_image=Image.open("img/intro_section/motivational_fist.png"), dark_image=Image.open("img/intro_section/motivational_fist.png"), size=(64, 64)) 
+        self.motivational_message = ctk.StringVar()
 
         # image variables
         self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(192, 192))
@@ -561,14 +564,14 @@ class DashboardPage(ctk.CTkFrame):
 
         #region [ Introduction Section ]
         hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", font=("", 32))
-        motivational_message = ctk.CTkLabel(intro_section, text="Keep Moving & Stay Healthy")
+        motivational_message_display = ctk.CTkLabel(intro_section, textvariable=self.motivational_message, font=("", 18, "italic"))
         current_date = ctk.CTkLabel(intro_section, textvariable=self.today_full_display, font=("", 24))
         date_icon = ctk.CTkLabel(intro_section, text="", image=self.intro_icon)
         motivation_button = ctk.CTkLabel(intro_section, text="", image=self.motivation_icon)
 
         hello_message.grid(row=0, column=0, sticky="w", padx=(50, 0), pady=(20, 0))
-        motivational_message.grid(row=1, column=0, sticky="w", padx=(50, 0))
-        current_date.grid(row=0, rowspan=2, column=1, sticky="e", padx=(550, 0), pady=(20, 0))
+        motivational_message_display.grid(row=1, column=0, sticky="w", padx=(50, 0))
+        current_date.grid(row=0, rowspan=2, column=1, sticky="e", padx=(100, 0), pady=(20, 0))
         date_icon.grid(row=0, rowspan=2, column=2, sticky="e", padx=(20, 0), pady=(20, 0))
         motivation_button.grid(row=0, rowspan=2, column=3, sticky="e", padx=(80, 0), pady=(20, 0))
         #endregion
@@ -859,6 +862,21 @@ class DashboardPage(ctk.CTkFrame):
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
     # remember to implement binding for the actionable icons like -> reset icon
+
+    # deliver randomised yet inspiring quotes to the user
+    def random_motivational_quote(self):
+        motivational_quotes = [
+            '"Sometimes, carrying on, just carrying on, is the superhuman achievement." - Albert C.',
+            '"You can, you should, and if you are brave enough to start, you will." - Stephen K.',
+            '"The only person who can stop you from reaching your goals is you." - Jackie J. K.',
+            '"All progress takes place outside the comfort zone." - Michael J. B.',
+            '"Stay Healthy and Keep Moving." - Anon M.',
+            '"Take care of your body, It is the one place you have to live." - Jim R.',
+            '"No matter how hard or impossible it is, never lose sight of your goal." - Monkey D. L.',
+            '"I do not fear this new challenge, rather like a true warrior I will rise to meet it" - Vegeta IV.',
+            '"Hard work. Because nothing is greater short-cut than hard work." - Coach K.'
+        ]
+        self.motivational_message.set(random.choice(motivational_quotes))
 
     def update_profile_image(self):
         # reloads both the image widget and image attribute by re-reading the file with the new image
