@@ -44,6 +44,7 @@ class Windows(ctk.CTk):
         if self.db.check_password_exists():
             # set the global username variable with existing username found in the database
             self.set_username()
+        
 
         # if a user has successfully registered, set the global username var's value with the username
         if self.db.check_password_exists():
@@ -437,7 +438,14 @@ class DashboardPage(ctk.CTkFrame):
         self.hydration_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/hydration.png"), dark_image=Image.open("img/dailies_section/hydration.png"), size=(32, 32))
         self.walking_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/walking.png"), dark_image=Image.open("img/dailies_section/walking.png"), size=(32, 32))
         
+        self.profile_first_name_var = ctk.StringVar()
+        self.profile_last_name_var = ctk.StringVar()
+        self.profile_age_var = ctk.StringVar()
+        self.profile_height_var = ctk.StringVar()
+        self.profile_current_weight_var = ctk.StringVar()
+        self.profile_goal_weight_var = ctk.StringVar()
 
+        #region [Daily Section]
         # variables with placeholder values
         self.today = self.controller.today
         self.steps_var = ctk.StringVar()
@@ -470,7 +478,7 @@ class DashboardPage(ctk.CTkFrame):
             self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
             minutes_slept = self.controller.db_cursor.fetchone()[0]
             self.sleep_display.set(f"{minutes_slept:,.2f} minutes")
-        
+        #endregion
         #endregion
         
         self.grid_rowconfigure(0, weight=1)
@@ -828,6 +836,32 @@ class DashboardPage(ctk.CTkFrame):
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
     # remember to implement binding for the actionable icons like -> reset icon
+
+    def retrieve_profile_details(self):
+        profile_info = [
+            self.profile_first_name_var,
+            self.profile_last_name_var,
+            self.profile_age_var,
+            self.profile_height_var,
+            self.profile_current_weight_var,
+            self.profile_goal_weight_var
+        ]
+        retrieve_profile_data = """
+        SELECT
+            first_name,
+            last_name,
+            age,
+            height,
+            current_weight,
+            goal_weight
+        FROM profile_details
+        WHERE rowid=1
+        """
+        self.controller.db_cursor.execute(retrieve_profile_data)
+        result = self.controller.db_cursor.fetchone()
+        if result:
+            for i in range(len(result)):
+                profile_info[i].set(result[i])
 
     def process_steps_entry(self):
         input_value = self.steps_var.get()
