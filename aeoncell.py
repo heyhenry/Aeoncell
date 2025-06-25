@@ -433,6 +433,12 @@ class DashboardPage(ctk.CTkFrame):
         self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
         self.entry_icon = ctk.CTkImage(light_image=Image.open("img/entry_icon.png"), dark_image=Image.open("img/entry_icon.png"), size=(64, 64))
 
+        self.today = self.controller.today
+        
+        today_full = date.today()
+        today_full = today_full.strftime("%d %B %Y")
+        self.today_full_display = ctk.StringVar(value=today_full)
+
         # image variables
         self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(192, 192))
         self.reset_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/reset.png"), dark_image=Image.open("img/dailies_section/reset.png"), size=(32, 32))
@@ -450,7 +456,6 @@ class DashboardPage(ctk.CTkFrame):
 
         #region [Daily Section]
         # variables with placeholder values
-        self.today = self.controller.today
         self.steps_var = ctk.StringVar()
         self.steps_display = ctk.StringVar(value="0 steps")
         self.hydration_var = ctk.StringVar()
@@ -553,7 +558,7 @@ class DashboardPage(ctk.CTkFrame):
         #region [ Introduction Section ]
         hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", font=("", 32))
         motivational_message = ctk.CTkLabel(intro_section, text="Keep Moving & Stay Healthy")
-        current_date = ctk.CTkLabel(intro_section, text="12 October 2025", font=("", 18))
+        current_date = ctk.CTkLabel(intro_section, textvariable=self.today_full_display, font=("", 18))
         date_icon = ctk.CTkLabel(intro_section, text="", image=self.icon)
         motivation_button = ctk.CTkButton(intro_section, text="", image=self.icon, width=0, height=0, fg_color="#F0E9FF", hover_color="#F0E9FF")
 
