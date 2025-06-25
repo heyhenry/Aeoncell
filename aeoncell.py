@@ -470,13 +470,13 @@ class DashboardPage(ctk.CTkFrame):
         self.steps_progress_display = ctk.StringVar()
 
         self.hydration_var = ctk.StringVar()
-        self.hydration_display = ctk.StringVar(value="0.00 ml")
+        self.hydration_display = ctk.StringVar(value="0.0 ml")
         self.hydration_current_progress = ctk.StringVar()
         self.hydration_goal = ctk.StringVar()
         self.hydration_progress_display = ctk.StringVar()
 
         self.sleep_var = ctk.StringVar()
-        self.sleep_display = ctk.StringVar(value="0.00 minutes")
+        self.sleep_display = ctk.StringVar(value="0.0 minutes")
         self.sleep_current_progress = ctk.StringVar()
         self.sleep_goal = ctk.StringVar()
         self.sleep_progress_display = ctk.StringVar() 
@@ -487,31 +487,53 @@ class DashboardPage(ctk.CTkFrame):
         # check if a steps entry exists for today
         self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (self.today,))
         result = self.controller.db_cursor.fetchone()
+        # if so, use it to set the initial display upon app startup
         if result:
             steps_taken = result[0]
-            self.steps_display.set(f"{steps_taken:,} steps")
-            self.steps_current_progress.set(steps_taken)
+        else:
+            steps_taken = 0
+        self.steps_display.set(f"{steps_taken:,} steps")
+        self.steps_current_progress.set(steps_taken)
         
-        # retrieve the daily steps goal
+        # retrieve the saved daily steps goal amount and use it to display the progression data
         self.controller.db_cursor.execute("SELECT daily_steps_goal FROM profile_details WHERE rowid=1")
         self.steps_goal.set(self.controller.db_cursor.fetchone()[0])
         self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {self.steps_goal.get()}")
         
         # [ Hydration ]
-        # check and see if a hydration entry exists for today
-        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
-        if 1 in self.controller.db_cursor.fetchone():
-            self.controller.db_cursor.execute("SELECT consumption_ml FROM hydration_tracker WHERE date = ?", (self.today,))
-            liquids_consumed = self.controller.db_cursor.fetchone()[0]
-            self.hydration_display.set(f"{liquids_consumed:,.2f} ml")
+        # check if an entry exists for today
+        self.controller.db_cursor.execute("SELECT consumption_ml FROM hydration_tracker WHERE date = ?", (self.today,))
+        result = self.controller.db_cursor.fetchone()
+        # if so, use it to set the initial display upon app startup
+        if result:
+            liquids_consumed = result[0]
+        else:   
+            liquids_consumed = 0.0 
+        self.hydration_display.set(f"{liquids_consumed:,.2f} ml")
+        self.hydration_current_progress.set(f"{liquids_consumed:,.2f}")
 
-        # Sleep
-        # check and see if a sleep entry exists for today
-        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM sleep_tracker WHERE date = ?)", (self.today,))
-        if 1 in self.controller.db_cursor.fetchone():
-            self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
-            minutes_slept = self.controller.db_cursor.fetchone()[0]
-            self.sleep_display.set(f"{minutes_slept:,.2f} minutes")
+        # retrieve the saved daily hydration goal amount and use it to display the progression data
+        self.controller.db_cursor.execute("SELECT daily_hydration_goal FROM profile_details WHERE rowid=1")
+        self.hydration_goal.set(self.controller.db_cursor.fetchone()[0])
+        self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {self.hydration_goal.get()}")
+
+        # [ Sleep ]
+        # check if an entry exists for today
+        self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
+        result = self.controller.db_cursor.fetchone()
+        # if so, use it to set the initial display upon app startup
+        if result:
+            minutes_slept = result[0]
+        else:
+            minutes_slept = 0.0
+        self.sleep_display.set(f"{minutes_slept:,.2f} mins")
+        self.sleep_current_progress.set(f"{minutes_slept:,.2f}")
+        
+        # retrieve the saved daily hydration goal amount and use it to display the progression data
+        self.controller.db_cursor.execute("SELECT daily_sleep_goal FROM profile_details WHERE rowid=1")
+        self.sleep_goal.set(self.controller.db_cursor.fetchone()[0])
+        self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {self.sleep_goal.get()}")
+        
         #endregion
         #endregion
         
@@ -733,7 +755,7 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_icon_display = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.sleep_icon)
         sleep_reset = ctk.CTkLabel(sleep_icon_reset_frame, text="", image=self.reset_icon)
         sleep_title = ctk.CTkLabel(sleep_section, text="Sleep", font=("", 14))
-        sleep_goal_tally = ctk.CTkLabel(sleep_section, text="8.00 / 8.00", font=("", 14))
+        sleep_goal_tally = ctk.CTkLabel(sleep_section, textvariable=self.sleep_progress_display, font=("", 14))
         sleep_progressbar = ctk.CTkProgressBar(sleep_section, border_width=3, height=40, width=300)
         sleep_progressbar.set(1)
         sleep_hours_entry = ctk.CTkEntry(sleep_section, textvariable=self.sleep_var, width=140, height=60, font=("", 24))
@@ -758,7 +780,7 @@ class DashboardPage(ctk.CTkFrame):
         self.hydration_icon_display = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.hydration_icon)
         hydration_reset = ctk.CTkLabel(hydration_icon_reset_frame, text="", image=self.reset_icon)
         hydration_title = ctk.CTkLabel(hydration_section, text="Hydration", font=("", 14))
-        hydration_goal_tally = ctk.CTkLabel(hydration_section, text="1.5 / 3.0", font=("", 14))
+        hydration_goal_tally = ctk.CTkLabel(hydration_section, textvariable=self.hydration_progress_display, font=("", 14))
         hydration_progressbar = ctk.CTkProgressBar(hydration_section, border_width=3, height=40, width=300)
         hydration_progressbar.set(0.50)
         hydration_ml_entry = ctk.CTkEntry(hydration_section, textvariable=self.hydration_var, width=140, height=60, font=("", 24))
