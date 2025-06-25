@@ -465,21 +465,39 @@ class DashboardPage(ctk.CTkFrame):
         # variables with placeholder values
         self.steps_var = ctk.StringVar()
         self.steps_display = ctk.StringVar(value="0 steps")
+        self.steps_current_progress = ctk.StringVar()
+        self.steps_goal = ctk.StringVar()
+        self.steps_progress_display = ctk.StringVar()
+
         self.hydration_var = ctk.StringVar()
         self.hydration_display = ctk.StringVar(value="0.00 ml")
+        self.hydration_current_progress = ctk.StringVar()
+        self.hydration_goal = ctk.StringVar()
+        self.hydration_progress_display = ctk.StringVar()
+
         self.sleep_var = ctk.StringVar()
         self.sleep_display = ctk.StringVar(value="0.00 minutes")
+        self.sleep_current_progress = ctk.StringVar()
+        self.sleep_goal = ctk.StringVar()
+        self.sleep_progress_display = ctk.StringVar() 
 
         #region [Initialising existing data search and display]
-        # check and see if a walking entry exists for today
-        self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
-        if 1 in self.controller.db_cursor.fetchone():
-            # an existing entry exists, retrieve the value of total steps taken
-            self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (self.today,))
-            steps_taken = self.controller.db_cursor.fetchone()[0]
-            # format and set total steps display
-            self.steps_display.set(f"{steps_taken:,} steps")
 
+        # [ Walking ]
+        # check if a steps entry exists for today
+        self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (self.today,))
+        result = self.controller.db_cursor.fetchone()
+        if result:
+            steps_taken = result[0]
+            self.steps_display.set(f"{steps_taken:,} steps")
+            self.steps_current_progress.set(steps_taken)
+        
+        # retrieve the daily steps goal
+        self.controller.db_cursor.execute("SELECT daily_steps_goal FROM profile_details WHERE rowid=1")
+        self.steps_goal.set(self.controller.db_cursor.fetchone()[0])
+        self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {self.steps_goal.get()}")
+        
+        # [ Hydration ]
         # check and see if a hydration entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
         if 1 in self.controller.db_cursor.fetchone():
@@ -487,6 +505,7 @@ class DashboardPage(ctk.CTkFrame):
             liquids_consumed = self.controller.db_cursor.fetchone()[0]
             self.hydration_display.set(f"{liquids_consumed:,.2f} ml")
 
+        # Sleep
         # check and see if a sleep entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM sleep_tracker WHERE date = ?)", (self.today,))
         if 1 in self.controller.db_cursor.fetchone():
@@ -764,7 +783,7 @@ class DashboardPage(ctk.CTkFrame):
         self.walking_icon_display = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.walking_icon)
         walking_reset = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.reset_icon)
         walking_title = ctk.CTkLabel(walking_section, text="Walking", font=("", 14))
-        walking_goal_tally = ctk.CTkLabel(walking_section, text="10,000 / 10,000", font=("", 14))
+        walking_goal_tally = ctk.CTkLabel(walking_section, textvariable=self.steps_progress_display, font=("", 14))
         walking_progressbar = ctk.CTkProgressBar(walking_section, border_width=3, height=40, width=300)
         walking_progressbar.set(0.50)
         walking_steps_entry = ctk.CTkEntry(walking_section, textvariable=self.steps_var, width=140, height=60, font=("", 24))
