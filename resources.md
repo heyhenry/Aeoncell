@@ -71,3 +71,5 @@ This may be a dumb question but, is Vegetas last name Vegeta? Or is he a junior?
 12 Motivational Hajime No Ippo Quotes (25th June 2025): https://quotetheanime.com/quotes/hajime-no-ippo-quotes/
 Python Random choice() Method (25th June 2025): https://www.w3schools.com/python/ref_random_choice.asp
 tkinter.font - Tkinter font wrapper (25th June 2025): https://docs.python.org/3/library/tkinter.font.html
+Enumerate() in Python (26th June 2025): https://www.geeksforgeeks.org/python/enumerate-in-python/
+Mastering Tkinter Treeview Tag Configuration in Python (26th June 2025): https://runebook.dev/en/articles/python/library/tkinter.ttk/tkinter.ttk.Treeview.tag_configure
