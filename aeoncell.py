@@ -753,8 +753,7 @@ class DashboardPage(ctk.CTkFrame):
         walking_reset = ctk.CTkLabel(walking_icon_reset_frame, text="", image=self.reset_icon)
         walking_title = ctk.CTkLabel(walking_section, text="Walking", font=("", 14))
         walking_goal_tally = ctk.CTkLabel(walking_section, textvariable=self.steps_progress_display, font=("", 14))
-        walking_progressbar = ctk.CTkProgressBar(walking_section, border_width=3, height=40, width=300)
-        walking_progressbar.set(0.50)
+        self.walking_progressbar = ctk.CTkProgressBar(walking_section, border_width=3, height=40, width=300, corner_radius=0)
         walking_steps_entry = ctk.CTkEntry(walking_section, textvariable=self.steps_var, width=140, height=60, font=("", 24))
         walking_add_steps = ctk.CTkButton(walking_section, width=140, height=60, text="Add Steps", font=("", 18), command=self.process_steps_entry)
 
@@ -764,14 +763,16 @@ class DashboardPage(ctk.CTkFrame):
         walking_reset.grid(row=0, column=1)
         walking_title.grid(row=1, column=0, columnspan=2, padx=(40, 0), sticky="nw")
         walking_goal_tally.grid(row=2, column=1, padx=(0, 40), sticky="se")
-        walking_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
+        self.walking_progressbar.grid(row=3, column=0, padx=40, columnspan=2)
         walking_steps_entry.grid(row=4, column=0, padx=(40, 0), pady=(20, 40))
         walking_add_steps.grid(row=4, column=1, padx=(0, 40), pady=(20, 40))
 
-        dailies_section.grid_propagate(False)
-
         walking_steps_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, walking_steps_entry, 5))
         walking_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "walking"))
+
+        self.update_steps_progressbar()
+
+        dailies_section.grid_propagate(False)
 
         #endregion
 
@@ -982,7 +983,18 @@ class DashboardPage(ctk.CTkFrame):
         self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {steps_goal}")
         self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {sleep_goal}")
         self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {hydration_goal}")
-        
+
+    def update_steps_progressbar(self):
+        current_progress = int(self.steps_current_progress.get())
+        total_progress = int(self.steps_goal.get())
+        self.walking_progressbar.set(current_progress/total_progress)
+
+    def update_hydration_progressbar(self):
+        pass
+    
+    def update_sleep_progressbar(self):
+        pass
+
     def process_steps_entry(self):
         input_value = self.steps_var.get()
         if len(input_value) == 0:
