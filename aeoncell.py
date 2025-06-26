@@ -1149,21 +1149,33 @@ class DashboardPage(ctk.CTkFrame):
             if 1 in self.controller.db_cursor.fetchone():
                 self.controller.db_cursor.execute("DELETE FROM sleep_tracker WHERE date = ?", (self.today,))
                 self.controller.db_connection.commit()
-                # update the real time display
+                # reset variables and update the counter display
                 self.sleep_display.set("0.00 minutes")
+                self.sleep_current_progress.set(0.0)
+                # update sleep progression display
+                self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {self.sleep_goal.get()}")
+                
         elif selected_daily == "hydration":
             self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
             if 1 in self.controller.db_cursor.fetchone():
                 self.controller.db_cursor.execute("DELETE FROM hydration_tracker WHERE date = ?", (self.today,))
                 self.controller.db_connection.commit()
+                # reset variables and update the counter display
                 self.hydration_display.set("0.00 ml")
+                self.hydration_current_progress.set(0.0)
+                # update hydration progression display
+                self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {self.hydration_goal.get()}")
         elif selected_daily == "walking":
             self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
             if 1 in self.controller.db_cursor.fetchone():
                 self.controller.db_cursor.execute("DELETE FROM steps_tracker WHERE date = ?", (self.today,))
                 self.controller.db_connection.commit()
+                # reset variables and update the counter display
                 self.steps_display.set("0 steps")
-
+                self.steps_current_progress.set(0)
+                # update steps progression display
+                self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {self.steps_goal.get()}")
+        
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
