@@ -79,6 +79,7 @@ class Windows(ctk.CTk):
         elif selected_page == DashboardPage:
             page.retrieve_profile_details()
             page.random_motivational_quote()
+            page.populate_entries_display()
         elif selected_page == SettingsPage:
             page.retrieve_current_info()
 
@@ -826,30 +827,30 @@ class DashboardPage(ctk.CTkFrame):
         recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 24))
         redirect_entry_button = ctk.CTkLabel(recent_exercises_section, text="", image=self.entry_icon)
         entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=3)
-        entries = btk.Treeview(entries_frame, columns=("exercise_type", "exercise_name", "exercise_date", "exercise_time", "exercise_sets", "exercise_reps", "exercise_weight", "exercise_label"), show="headings", height=25, selectmode="browse")
-        entries.heading("exercise_type", text="Entry Type", anchor="w")
-        entries.heading("exercise_name", text="Exercise Name", anchor="w")
-        entries.heading("exercise_date", text="Date", anchor="w")
-        entries.heading("exercise_time", text="Time", anchor="w")
-        entries.heading("exercise_sets", text="Sets", anchor="w")
-        entries.heading("exercise_reps", text="Reps", anchor="w")
-        entries.heading("exercise_weight", text="Weight (kg)", anchor="w")
-        entries.heading("exercise_label", text="Label", anchor="w")
-        entries.column("exercise_type", width=100, minwidth=100, stretch=False)
-        entries.column("exercise_name", width=200, minwidth=200, stretch=False)
-        entries.column("exercise_date", width=100, minwidth=100, stretch=False)
-        entries.column("exercise_time", width=100, minwidth=100, stretch=False)
-        entries.column("exercise_sets", width=100, minwidth=100, stretch=False)
-        entries.column("exercise_reps", width=100, minwidth=100, stretch=False)
-        entries.column("exercise_weight", width=100, minwidth=100, stretch=False)
-        entries.column("exercise_label", width=200, minwidth=200, stretch=False)
+        self.entries = btk.Treeview(entries_frame, columns=("exercise_type", "exercise_name", "exercise_date", "exercise_time", "exercise_sets", "exercise_reps", "exercise_weight", "exercise_label"), show="headings", height=25, selectmode="browse")
+        self.entries.heading("exercise_type", text="Entry Type", anchor="w")
+        self.entries.heading("exercise_name", text="Exercise Name", anchor="w")
+        self.entries.heading("exercise_date", text="Date", anchor="w")
+        self.entries.heading("exercise_time", text="Time", anchor="w")
+        self.entries.heading("exercise_sets", text="Sets", anchor="w")
+        self.entries.heading("exercise_reps", text="Reps", anchor="w")
+        self.entries.heading("exercise_weight", text="Weight (kg)", anchor="w")
+        self.entries.heading("exercise_label", text="Label", anchor="w")
+        self.entries.column("exercise_type", width=100, minwidth=100, stretch=False)
+        self.entries.column("exercise_name", width=200, minwidth=200, stretch=False)
+        self.entries.column("exercise_date", width=100, minwidth=100, stretch=False)
+        self.entries.column("exercise_time", width=100, minwidth=100, stretch=False)
+        self.entries.column("exercise_sets", width=100, minwidth=100, stretch=False)
+        self.entries.column("exercise_reps", width=100, minwidth=100, stretch=False)
+        self.entries.column("exercise_weight", width=100, minwidth=100, stretch=False)
+        self.entries.column("exercise_label", width=200, minwidth=200, stretch=False)
         add_session = ctk.CTkButton(recent_exercises_section, text="Add a Session", width=140, height=60, font=("", 18))
         add_single = ctk.CTkButton(recent_exercises_section, text="Add an Exercise", width=140, height=60, font=("", 18))
 
         recent_exercises_title.grid(row=1, column=1, pady=20, sticky="e")
         redirect_entry_button.grid(row=1, column=2, pady=20)
         entries_frame.grid(row=2, column=1, columnspan=2)
-        entries.grid(row=0, column=0)
+        self.entries.grid(row=0, column=0)
         add_session.grid(row=3, column=1, pady=20)
         add_single.grid(row=3, column=2, pady=20)
 
@@ -1189,7 +1190,26 @@ class DashboardPage(ctk.CTkFrame):
                 # update steps progression display
                 self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {self.steps_goal.get()}")
                 self.update_steps_progressbar()
-        
+
+    def populate_entries_display(self):
+        # update the entries list by first resetting existing data
+        if self.entries.get_children():
+            self.entries.delete(*self.entries.get_children())
+        # retrieve latest data
+        self.controller.db_cursor.execute("SELECT entry_type, exercise_name, date, time, sets_count, reps_count, weight_value, exercise_label FROM exercise_entries ORDER BY id DESC LIMIT 25")
+        result = self.controller.db_cursor.fetchall()
+        if result:
+            for entry_info in result:
+                entry_type = entry_info[0]
+                name = entry_info[1]
+                date = entry_info[2]
+                time = entry_info[3]
+                sets = entry_info[4]
+                reps = entry_info[5]
+                weight = entry_info[6]
+                label = entry_info[7]
+                self.entries.insert("", "end", values=(entry_type, name, date, time, sets, reps, weight, label))
+            
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
