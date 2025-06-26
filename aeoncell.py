@@ -830,7 +830,7 @@ class DashboardPage(ctk.CTkFrame):
         #endregion
 
         #region [ Recent Exercises Section ]
-        recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 24))
+        recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 32))
         redirect_entry_button = ctk.CTkLabel(recent_exercises_section, text="", image=self.entry_icon)
         entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=3)
         self.entries = btk.Treeview(entries_frame, columns=("exercise_type", "exercise_name", "exercise_date", "exercise_time", "exercise_sets", "exercise_reps", "exercise_weight", "exercise_label"), show="headings", height=18, selectmode="browse")
