@@ -454,6 +454,7 @@ class DashboardPage(ctk.CTkFrame):
         self.hydration_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/hydration.png"), dark_image=Image.open("img/dailies_section/hydration.png"), size=(32, 32))
         self.walking_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/walking.png"), dark_image=Image.open("img/dailies_section/walking.png"), size=(32, 32))
         
+        # profile section related variables
         self.profile_first_name_var = ctk.StringVar()
         self.profile_last_name_var = ctk.StringVar()
         self.profile_age_var = ctk.StringVar()
@@ -462,8 +463,7 @@ class DashboardPage(ctk.CTkFrame):
         self.profile_goal_weight_var = ctk.StringVar()
         self.profile_name_display = ctk.StringVar()
 
-        #region [Daily Section]
-        # variables with placeholder values
+        # daily section related variables
         self.steps_var = ctk.StringVar()
         self.steps_display = ctk.StringVar(value="0 steps")
         self.steps_current_progress = ctk.StringVar()
@@ -482,14 +482,20 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_goal = ctk.StringVar()
         self.sleep_progress_display = ctk.StringVar() 
 
-        self.daily_section_initialisation()
-        #endregion
-        
+        # recent exercises section related variables
+        style = btk.Style()
+        # style.configure("Treeview.Heading", font=("", 12, "bold"))
+        # style.configure("Treeview", font=("", 12), rowheight=20)
+        # style.map("Treeview", foreground=[('selected', 'black')], background=[('selected', 'white')])
+        style.configure("Treeview", rowheight=28, font=("", 12))
+        style.configure("Treeview.Heading", font=("", 14, "bold"))
+
         self.grid_rowconfigure(0, weight=1)
 
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
+        self.daily_section_initialisation()
         self.create_widgets()
 
     def create_widgets(self):
@@ -827,7 +833,7 @@ class DashboardPage(ctk.CTkFrame):
         recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 24))
         redirect_entry_button = ctk.CTkLabel(recent_exercises_section, text="", image=self.entry_icon)
         entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=3)
-        self.entries = btk.Treeview(entries_frame, columns=("exercise_type", "exercise_name", "exercise_date", "exercise_time", "exercise_sets", "exercise_reps", "exercise_weight", "exercise_label"), show="headings", height=25, selectmode="browse")
+        self.entries = btk.Treeview(entries_frame, columns=("exercise_type", "exercise_name", "exercise_date", "exercise_time", "exercise_sets", "exercise_reps", "exercise_weight", "exercise_label"), show="headings", height=18, selectmode="browse")
         self.entries.heading("exercise_type", text="Entry Type", anchor="w")
         self.entries.heading("exercise_name", text="Exercise Name", anchor="w")
         self.entries.heading("exercise_date", text="Date", anchor="w")
@@ -836,14 +842,17 @@ class DashboardPage(ctk.CTkFrame):
         self.entries.heading("exercise_reps", text="Reps", anchor="w")
         self.entries.heading("exercise_weight", text="Weight (kg)", anchor="w")
         self.entries.heading("exercise_label", text="Label", anchor="w")
-        self.entries.column("exercise_type", width=100, minwidth=100, stretch=False)
+        self.entries.column("exercise_type", width=150, minwidth=150, stretch=False)
         self.entries.column("exercise_name", width=200, minwidth=200, stretch=False)
         self.entries.column("exercise_date", width=100, minwidth=100, stretch=False)
         self.entries.column("exercise_time", width=100, minwidth=100, stretch=False)
         self.entries.column("exercise_sets", width=100, minwidth=100, stretch=False)
         self.entries.column("exercise_reps", width=100, minwidth=100, stretch=False)
-        self.entries.column("exercise_weight", width=100, minwidth=100, stretch=False)
-        self.entries.column("exercise_label", width=200, minwidth=200, stretch=False)
+        self.entries.column("exercise_weight", width=150, minwidth=150, stretch=False)
+        self.entries.column("exercise_label", width=250, minwidth=250, stretch=False)
+        # create tags for zebra design
+        self.entries.tag_configure('oddrow', background='#f2f2f2')
+        self.entries.tag_configure('evenrow', background='#ffffff')
         add_session = ctk.CTkButton(recent_exercises_section, text="Add a Session", width=140, height=60, font=("", 18))
         add_single = ctk.CTkButton(recent_exercises_section, text="Add an Exercise", width=140, height=60, font=("", 18))
 
@@ -1199,17 +1208,13 @@ class DashboardPage(ctk.CTkFrame):
         self.controller.db_cursor.execute("SELECT entry_type, exercise_name, date, time, sets_count, reps_count, weight_value, exercise_label FROM exercise_entries ORDER BY id DESC LIMIT 25")
         result = self.controller.db_cursor.fetchall()
         if result:
-            for entry_info in result:
-                entry_type = entry_info[0]
-                name = entry_info[1]
-                date = entry_info[2]
-                time = entry_info[3]
-                sets = entry_info[4]
-                reps = entry_info[5]
-                weight = entry_info[6]
-                label = entry_info[7]
-                self.entries.insert("", "end", values=(entry_type, name, date, time, sets, reps, weight, label))
-            
+            for i, entry_info in enumerate(result):
+                if i % 2 == 0:
+                    tag = "evenrow"
+                else:
+                    tag = "oddrow"
+                self.entries.insert("", "end", values=entry_info, tags=(tag,))
+
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
