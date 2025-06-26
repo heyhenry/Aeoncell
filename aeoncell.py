@@ -1166,7 +1166,7 @@ class DashboardPage(ctk.CTkFrame):
                 self.sleep_current_progress.set(0.0)
                 # update sleep progression display
                 self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {self.sleep_goal.get()}")
-                
+                self.update_sleep_progressbar()
         elif selected_daily == "hydration":
             self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
             if 1 in self.controller.db_cursor.fetchone():
@@ -1177,6 +1177,7 @@ class DashboardPage(ctk.CTkFrame):
                 self.hydration_current_progress.set(0.0)
                 # update hydration progression display
                 self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {self.hydration_goal.get()}")
+                self.update_hydration_progressbar()
         elif selected_daily == "walking":
             self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
             if 1 in self.controller.db_cursor.fetchone():
@@ -1187,6 +1188,7 @@ class DashboardPage(ctk.CTkFrame):
                 self.steps_current_progress.set(0)
                 # update steps progression display
                 self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {self.steps_goal.get()}")
+                self.update_steps_progressbar()
         
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
