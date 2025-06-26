@@ -1209,10 +1209,12 @@ class DashboardPage(ctk.CTkFrame):
         result = self.controller.db_cursor.fetchall()
         if result:
             for i, entry_info in enumerate(result):
+                # allocating row colour based on row parity
                 if i % 2 == 0:
                     tag = "evenrow"
                 else:
                     tag = "oddrow"
+                # adding entries to the treeview aka display list
                 self.entries.insert("", "end", values=entry_info, tags=(tag,))
 
 class DiscoverPage(ctk.CTkFrame):
