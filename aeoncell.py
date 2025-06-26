@@ -995,7 +995,7 @@ class DashboardPage(ctk.CTkFrame):
     
     def update_sleep_progressbar(self):
         current_progress = float(self.sleep_current_progress.get())
-        total_progress = float(self.hydration_goal.get())
+        total_progress = float(self.sleep_goal.get())
         self.sleep_progressbar.set(current_progress/total_progress)
 
     def process_steps_entry(self):
