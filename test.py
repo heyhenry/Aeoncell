@@ -12,11 +12,14 @@ def update_progress():
 
 add_progress_var = ctk.StringVar()
 # w/e its starting with
-current_progress_var = ctk.StringVar(value=3000)
-total_progress_var = ctk.StringVar(value=9000)
+current_progress_var = ctk.StringVar(value=0)
+total_progress_var = ctk.StringVar(value=23123)
 
-progression_bar = ctk.CTkProgressBar(root, border_width=3, height=40, width=300)
-progression_bar.set(float(current_progress_var.get())/float(total_progress_var.get()))
+print(float(current_progress_var.get())/float(total_progress_var.get()))
+
+progression_bar = ctk.CTkProgressBar(root, border_width=3, height=40, width=300, corner_radius=0)
+# progression_bar.set(float(current_progress_var.get())/float(total_progress_var.get()))
+progression_bar.set(0.0)
 progression_bar.pack(pady=(20, 40))
 progress_entry = ctk.CTkEntry(root, textvariable=add_progress_var, font=("", 18))
 progress_entry.pack(pady=(0, 10))
