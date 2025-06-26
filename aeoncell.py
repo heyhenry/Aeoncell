@@ -1045,6 +1045,8 @@ class DashboardPage(ctk.CTkFrame):
             self.update_daily_goal_progression_displays()
             # clear the steps entry field
             self.steps_var.set("")
+        # update step's daily progress bar
+        self.update_steps_progressbar()
 
     def process_hydration_entry(self):
         input_value = self.hydration_var.get()
@@ -1092,6 +1094,8 @@ class DashboardPage(ctk.CTkFrame):
                 self.hydration_current_progress.set(f"{total_liquids_consumed:,.2f}")
                 self.update_daily_goal_progression_displays()
                 self.hydration_var.set("")
+        # update hydration's daily progress bar
+        self.update_hydration_progressbar()
 
     def process_sleep_entry(self):
         input_value = self.sleep_var.get()
@@ -1134,6 +1138,8 @@ class DashboardPage(ctk.CTkFrame):
                 self.sleep_current_progress.set(f"{total_minutes_slept:,.2f}")
                 self.update_daily_goal_progression_displays()
                 self.sleep_var.set("")
+        # update sleep's daily progress bar
+        self.update_sleep_progressbar()
 
     def reset_daily(self, event, selected_daily):
         if selected_daily == "sleep":
