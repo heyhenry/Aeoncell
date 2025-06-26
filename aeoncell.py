@@ -476,7 +476,7 @@ class DashboardPage(ctk.CTkFrame):
         self.hydration_progress_display = ctk.StringVar()
 
         self.sleep_var = ctk.StringVar()
-        self.sleep_display = ctk.StringVar(value="0.0 minutes")
+        self.sleep_display = ctk.StringVar(value="0.0 mins")
         self.sleep_current_progress = ctk.StringVar()
         self.sleep_goal = ctk.StringVar()
         self.sleep_progress_display = ctk.StringVar() 
@@ -952,7 +952,7 @@ class DashboardPage(ctk.CTkFrame):
             liquids_consumed = result[0]
         else:   
             liquids_consumed = 0.0 
-        self.hydration_display.set(f"{liquids_consumed:,.2f} ml")
+        self.hydration_display.set(f"{liquids_consumed} ml")
         self.hydration_current_progress.set(liquids_consumed)
 
         # [ Sleep ]
@@ -964,7 +964,7 @@ class DashboardPage(ctk.CTkFrame):
             minutes_slept = result[0]
         else:
             minutes_slept = 0.0
-        self.sleep_display.set(f"{minutes_slept} minutes")
+        self.sleep_display.set(f"{minutes_slept} mins")
         self.sleep_current_progress.set(minutes_slept)
 
         self.update_daily_goal_progression_displays()
@@ -1054,7 +1054,7 @@ class DashboardPage(ctk.CTkFrame):
         if len(input_value) == 0:
             return
         # in ml, round to 2 decimal places
-        liquids_consumed = round(float(input_value), 2)
+        liquids_consumed = float(input_value)
         if liquids_consumed < 0.00:
             return
         # check if there is an existing entry for today
@@ -1063,11 +1063,13 @@ class DashboardPage(ctk.CTkFrame):
             # check if the given value is over 9999.99 ml, if so default to max value
             if liquids_consumed > 9999.99:
                 liquids_consumed = 9999.99
+            # ensure liquids_consumed variable is always set to 2 decimal points
+            liquids_consumed = round(liquids_consumed, 2)
             # create a new hydration entry
             self.controller.db_cursor.execute("INSERT INTO hydration_tracker (date, consumption_ml) VALUES (?, ?)", (self.today, liquids_consumed))
             self.controller.db_connection.commit()
             # update the app's real time display
-            self.hydration_display.set(f"{liquids_consumed:,.2f} ml")
+            self.hydration_display.set(f"{liquids_consumed} ml")
             # update daily hydration progression
             self.hydration_current_progress.set(liquids_consumed)
             self.update_daily_goal_progression_displays()
@@ -1079,17 +1081,21 @@ class DashboardPage(ctk.CTkFrame):
             total_liquids_consumed += liquids_consumed
             if total_liquids_consumed > 9999.99:
                 total_liquids_consumed = 9999.99
+                # ensure liquids_consumed variable is always set to 2 decimal points
+                total_liquids_consumed = round(total_liquids_consumed, 2)
                 self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
                 self.controller.db_connection.commit()
-                self.hydration_display.set(f"{total_liquids_consumed:,.2f} ml")
+                self.hydration_display.set(f"{total_liquids_consumed} ml")
                 # update daily hydration progression
                 self.hydration_current_progress.set(total_liquids_consumed)
                 self.update_daily_goal_progression_displays()
                 self.hydration_var.set("")
             else:
+                # ensure liquids_consumed variable is always set to 2 decimal points
+                total_liquids_consumed = round(total_liquids_consumed, 2)
                 self.controller.db_cursor.execute("UPDATE hydration_tracker SET consumption_ml = ? WHERE date = ?", (total_liquids_consumed, self.today))
                 self.controller.db_connection.commit()
-                self.hydration_display.set(f"{total_liquids_consumed:,.2f} ml")
+                self.hydration_display.set(f"{total_liquids_consumed} ml")
                 # update daily hydration progression
                 self.hydration_current_progress.set(total_liquids_consumed)
                 self.update_daily_goal_progression_displays()
@@ -1101,7 +1107,7 @@ class DashboardPage(ctk.CTkFrame):
         input_value = self.sleep_var.get()
         if len(input_value) == 0:
             return
-        minutes_slept = round(float(input_value), 2)
+        minutes_slept = float(input_value)
         if minutes_slept < 0.00:
             return
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM sleep_tracker WHERE date = ?)", (self.today,))
@@ -1110,9 +1116,11 @@ class DashboardPage(ctk.CTkFrame):
             # max sleep = 9 hours
             if minutes_slept > 540.00:
                 minutes_slept = 540.00
+            # ensure minutes_slept variable is always set to 2 decimal points
+            minutes_slept = round(minutes_slept, 2)
             self.controller.db_cursor.execute("INSERT INTO sleep_tracker (date, sleep_mins) VALUES (?, ?)", (self.today, minutes_slept))
             self.controller.db_connection.commit()
-            self.sleep_display.set(f"{minutes_slept} minutes")
+            self.sleep_display.set(f"{minutes_slept} mins")
             # update daily sleep progression
             self.sleep_current_progress.set(minutes_slept)
             self.update_daily_goal_progression_displays()
@@ -1123,17 +1131,21 @@ class DashboardPage(ctk.CTkFrame):
             total_minutes_slept += minutes_slept
             if total_minutes_slept > 540.00:
                 total_minutes_slept = 540.00
+                # ensure minutes_slept variable is always set to 2 decimal points
+                total_minutes_slept = round(total_minutes_slept, 2)
                 self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_mins = ? WHERE date = ?", (total_minutes_slept, self.today))
                 self.controller.db_connection.commit()
-                self.sleep_display.set(f"{total_minutes_slept} minutes")
+                self.sleep_display.set(f"{total_minutes_slept} mins")
                 # update daily sleep progression
                 self.sleep_current_progress.set(total_minutes_slept)
                 self.update_daily_goal_progression_displays()
                 self.sleep_var.set("")
             else:
+                # ensure minutes_slept variable is always set to 2 decimal points
+                total_minutes_slept = round(total_minutes_slept, 2)
                 self.controller.db_cursor.execute("UPDATE sleep_tracker SET sleep_mins = ? WHERE date = ?", (total_minutes_slept, self.today))
                 self.controller.db_connection.commit()
-                self.sleep_display.set(f"{total_minutes_slept} minutes")
+                self.sleep_display.set(f"{total_minutes_slept} mins")
                 # update daily sleep progression
                 self.sleep_current_progress.set(total_minutes_slept)
                 self.update_daily_goal_progression_displays()
@@ -1150,7 +1162,7 @@ class DashboardPage(ctk.CTkFrame):
                 self.controller.db_cursor.execute("DELETE FROM sleep_tracker WHERE date = ?", (self.today,))
                 self.controller.db_connection.commit()
                 # reset variables and update the counter display
-                self.sleep_display.set("0.00 minutes")
+                self.sleep_display.set("0.0 mins")
                 self.sleep_current_progress.set(0.0)
                 # update sleep progression display
                 self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {self.sleep_goal.get()}")
@@ -1161,7 +1173,7 @@ class DashboardPage(ctk.CTkFrame):
                 self.controller.db_cursor.execute("DELETE FROM hydration_tracker WHERE date = ?", (self.today,))
                 self.controller.db_connection.commit()
                 # reset variables and update the counter display
-                self.hydration_display.set("0.00 ml")
+                self.hydration_display.set("0.0 ml")
                 self.hydration_current_progress.set(0.0)
                 # update hydration progression display
                 self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {self.hydration_goal.get()}")
