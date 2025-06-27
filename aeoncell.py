@@ -546,7 +546,7 @@ class DashboardPage(ctk.CTkFrame):
         recent_exercises_section.grid_rowconfigure(0, weight=1)
         recent_exercises_section.grid_rowconfigure(4, weight=1)
         recent_exercises_section.grid_columnconfigure(0, weight=1)
-        recent_exercises_section.grid_columnconfigure(4, weight=1)
+        recent_exercises_section.grid_columnconfigure(6, weight=1)
         #endregion
 
         #region [ Introduction Section ]
@@ -847,19 +847,21 @@ class DashboardPage(ctk.CTkFrame):
         # create tags for zebra design
         self.entries.tag_configure('oddrow', background='#f2f2f2')
         self.entries.tag_configure('evenrow', background='#ffffff')
-        add_session = ctk.CTkButton(recent_exercises_section, text="Add a Session", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page(SingleEntryPage))
-        add_single = ctk.CTkButton(recent_exercises_section, text="Add an Exercise", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page(SessionEntryPage))
+        entries_buttons_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=0)
+        add_session = ctk.CTkButton(entries_buttons_frame, text="Add a Session", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page(SingleEntryPage))
+        add_single = ctk.CTkButton(entries_buttons_frame, text="Add an Exercise", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page(SessionEntryPage))
 
-        redirect_session_entry_icon.grid(row=1, column=1, pady=20)
-        recent_exercises_title.grid(row=1, column=2, pady=20)
-        redirect_single_entry_icon.grid(row=1, column=3, pady=20)
-        entries_frame.grid(row=2, column=1, columnspan=3, padx=10, pady=(0,10))
+        redirect_session_entry_icon.grid(row=1, column=1, columnspan=2, pady=20)
+        recent_exercises_title.grid(row=1, column=3, pady=20)
+        redirect_single_entry_icon.grid(row=1, column=4, columnspan=2, pady=20)
+        entries_frame.grid(row=2, column=1, columnspan=5, padx=10, pady=(0,10))
         entries_frame.grid_propagate(False)
         entries_frame.grid_rowconfigure(0, weight=1)
         entries_frame.grid_columnconfigure(0, weight=1)
         self.entries.grid(row=0, column=0)
-        add_session.grid(row=3, column=1, pady=20)
-        add_single.grid(row=3, column=3, pady=20)
+        entries_buttons_frame.grid(row=3, column=1, columnspan=5, padx=10)
+        add_session.grid(row=3, column=2, padx=(0, 40), pady=20)
+        add_single.grid(row=3, column=4, padx=(40, 0), pady=20)
 
         recent_exercises_section.grid_propagate(False)
 
