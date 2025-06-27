@@ -846,8 +846,8 @@ class DashboardPage(ctk.CTkFrame):
         # create tags for zebra design
         self.entries.tag_configure('oddrow', background='#f2f2f2')
         self.entries.tag_configure('evenrow', background='#ffffff')
-        add_session = ctk.CTkButton(recent_exercises_section, text="Add a Session", width=140, height=60, font=("", 18))
-        add_single = ctk.CTkButton(recent_exercises_section, text="Add an Exercise", width=140, height=60, font=("", 18))
+        add_session = ctk.CTkButton(recent_exercises_section, text="Add a Session", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page(SingleEntryPage))
+        add_single = ctk.CTkButton(recent_exercises_section, text="Add an Exercise", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page(SessionEntryPage))
 
         recent_exercises_title.grid(row=1, column=1, pady=20, sticky="e")
         redirect_entry_button.grid(row=1, column=2, pady=20)
@@ -859,7 +859,6 @@ class DashboardPage(ctk.CTkFrame):
         add_session.grid(row=3, column=1, pady=20)
         add_single.grid(row=3, column=2, pady=20, sticky="w")
 
-        
         recent_exercises_section.grid_propagate(False)
 
         #endregion
