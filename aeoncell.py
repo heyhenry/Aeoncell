@@ -485,7 +485,7 @@ class DashboardPage(ctk.CTkFrame):
         # recent exercises section related variables
         style = btk.Style()
         style.theme_use("default")
-        style.configure("Treeview", rowheight=28, font=("", 12))
+        style.configure("Treeview", rowheight=28, borderwidth=3, relief="solid", font=("", 12))
         style.configure("Treeview.Heading", background="#d6c6f4", font=("", 14, "bold"))
         style.map('Treeview', background=[('selected', '#b799e3')])
 
@@ -831,7 +831,7 @@ class DashboardPage(ctk.CTkFrame):
         #region [ Recent Exercises Section ]
         recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 32))
         redirect_entry_button = ctk.CTkLabel(recent_exercises_section, text="", image=self.entry_icon)
-        entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="red", border_width=3)
+        entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=0, width=1150, height=550)
         self.entries = btk.Treeview(entries_frame, columns=("exercise", "date", "time", "summary", "label"), show="headings", height=18, selectmode="browse")
         self.entries.heading("exercise", text="Exercise")
         self.entries.heading("date", text="Date")
@@ -851,11 +851,15 @@ class DashboardPage(ctk.CTkFrame):
 
         recent_exercises_title.grid(row=1, column=1, pady=20, sticky="e")
         redirect_entry_button.grid(row=1, column=2, pady=20)
-        entries_frame.grid(row=2, column=1, columnspan=2)
+        entries_frame.grid(row=2, column=1, columnspan=2, padx=10, pady=(0,10))
+        entries_frame.grid_propagate(False)
+        entries_frame.grid_rowconfigure(0, weight=1)
+        entries_frame.grid_columnconfigure(0, weight=1)
         self.entries.grid(row=0, column=0)
         add_session.grid(row=3, column=1, pady=20)
-        add_single.grid(row=3, column=2, pady=20)
+        add_single.grid(row=3, column=2, pady=20, sticky="w")
 
+        
         recent_exercises_section.grid_propagate(False)
 
         #endregion
