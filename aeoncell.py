@@ -434,8 +434,6 @@ class DashboardPage(ctk.CTkFrame):
         self.badge = ctk.CTkImage(light_image=Image.open("img/achievements/first_workout_achievement.png"), dark_image=Image.open("img/achievements/first_workout_achievement.png"), size=(64, 64))
         self.mini_banner = ctk.CTkImage(light_image=Image.open("img/laid_dumbbell_man.png"), dark_image=Image.open("img/laid_dumbbell_man.png"), size=(100, 100))
         self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
-        self.entry_icon = ctk.CTkImage(light_image=Image.open("img/entry_icon.png"), dark_image=Image.open("img/entry_icon.png"), size=(64, 64))
-
         # multi-sectional use
         self.today = self.controller.today
 
@@ -453,7 +451,9 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/sleeping.png"), dark_image=Image.open("img/dailies_section/sleeping.png"), size=(32, 32))
         self.hydration_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/hydration.png"), dark_image=Image.open("img/dailies_section/hydration.png"), size=(32, 32))
         self.walking_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/walking.png"), dark_image=Image.open("img/dailies_section/walking.png"), size=(32, 32))
-        
+        self.single_entry_icon = ctk.CTkImage(light_image=Image.open("img/dumbbell.png"), dark_image=Image.open("img/dumbbell.png"), size=(64, 64))
+        self.session_entry_icon = ctk.CTkImage(light_image=Image.open("img/barbell.png"), dark_image=Image.open("img/dumbbell.png"), size=(64, 64))
+
         # profile section related variables
         self.profile_first_name_var = ctk.StringVar()
         self.profile_last_name_var = ctk.StringVar()
@@ -485,7 +485,7 @@ class DashboardPage(ctk.CTkFrame):
         # recent exercises section related variables
         style = btk.Style()
         style.theme_use("default")
-        style.configure("Treeview", rowheight=28, borderwidth=3, relief="solid", font=("", 12))
+        style.configure("Treeview", rowheight=28, borderwidth=2, font=("", 12))
         style.configure("Treeview.Heading", background="#d6c6f4", font=("", 14, "bold"))
         style.map('Treeview', background=[('selected', '#b799e3')])
 
@@ -546,7 +546,7 @@ class DashboardPage(ctk.CTkFrame):
         recent_exercises_section.grid_rowconfigure(0, weight=1)
         recent_exercises_section.grid_rowconfigure(4, weight=1)
         recent_exercises_section.grid_columnconfigure(0, weight=1)
-        recent_exercises_section.grid_columnconfigure(3, weight=1)
+        recent_exercises_section.grid_columnconfigure(4, weight=1)
         #endregion
 
         #region [ Introduction Section ]
@@ -829,8 +829,9 @@ class DashboardPage(ctk.CTkFrame):
         #endregion
 
         #region [ Recent Exercises Section ]
+        redirect_session_entry_icon = ctk.CTkLabel(recent_exercises_section, text="", image=self.session_entry_icon)
         recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 32))
-        redirect_entry_button = ctk.CTkLabel(recent_exercises_section, text="", image=self.entry_icon)
+        redirect_single_entry_icon = ctk.CTkLabel(recent_exercises_section, text="", image=self.single_entry_icon)
         entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=0, width=1150, height=550)
         self.entries = btk.Treeview(entries_frame, columns=("exercise", "date", "time", "summary", "label"), show="headings", height=18, selectmode="browse")
         self.entries.heading("exercise", text="Exercise")
@@ -849,15 +850,16 @@ class DashboardPage(ctk.CTkFrame):
         add_session = ctk.CTkButton(recent_exercises_section, text="Add a Session", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page(SingleEntryPage))
         add_single = ctk.CTkButton(recent_exercises_section, text="Add an Exercise", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page(SessionEntryPage))
 
-        recent_exercises_title.grid(row=1, column=1, pady=20, sticky="e")
-        redirect_entry_button.grid(row=1, column=2, pady=20)
-        entries_frame.grid(row=2, column=1, columnspan=2, padx=10, pady=(0,10))
+        redirect_session_entry_icon.grid(row=1, column=1, pady=20)
+        recent_exercises_title.grid(row=1, column=2, pady=20)
+        redirect_single_entry_icon.grid(row=1, column=3, pady=20)
+        entries_frame.grid(row=2, column=1, columnspan=3, padx=10, pady=(0,10))
         entries_frame.grid_propagate(False)
         entries_frame.grid_rowconfigure(0, weight=1)
         entries_frame.grid_columnconfigure(0, weight=1)
         self.entries.grid(row=0, column=0)
         add_session.grid(row=3, column=1, pady=20)
-        add_single.grid(row=3, column=2, pady=20, sticky="w")
+        add_single.grid(row=3, column=3, pady=20)
 
         recent_exercises_section.grid_propagate(False)
 
