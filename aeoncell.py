@@ -484,11 +484,10 @@ class DashboardPage(ctk.CTkFrame):
 
         # recent exercises section related variables
         style = btk.Style()
-        # style.configure("Treeview.Heading", font=("", 12, "bold"))
-        # style.configure("Treeview", font=("", 12), rowheight=20)
-        # style.map("Treeview", foreground=[('selected', 'black')], background=[('selected', 'white')])
+        style.theme_use("default")
         style.configure("Treeview", rowheight=28, font=("", 12))
-        style.configure("Treeview.Heading", font=("", 14, "bold"))
+        style.configure("Treeview.Heading", background="#d6c6f4", font=("", 14, "bold"))
+        style.map('Treeview', background=[('selected', '#b799e3')])
 
         self.grid_rowconfigure(0, weight=1)
 
@@ -832,24 +831,18 @@ class DashboardPage(ctk.CTkFrame):
         #region [ Recent Exercises Section ]
         recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 32))
         redirect_entry_button = ctk.CTkLabel(recent_exercises_section, text="", image=self.entry_icon)
-        entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=3)
-        self.entries = btk.Treeview(entries_frame, columns=("exercise_type", "exercise_name", "exercise_date", "exercise_time", "exercise_sets", "exercise_reps", "exercise_weight", "exercise_label"), show="headings", height=18, selectmode="browse")
-        self.entries.heading("exercise_type", text="Entry Type", anchor="w")
-        self.entries.heading("exercise_name", text="Exercise Name", anchor="w")
-        self.entries.heading("exercise_date", text="Date", anchor="w")
-        self.entries.heading("exercise_time", text="Time", anchor="w")
-        self.entries.heading("exercise_sets", text="Sets", anchor="w")
-        self.entries.heading("exercise_reps", text="Reps", anchor="w")
-        self.entries.heading("exercise_weight", text="Weight (kg)", anchor="w")
-        self.entries.heading("exercise_label", text="Label", anchor="w")
-        self.entries.column("exercise_type", width=150, minwidth=150, stretch=False)
-        self.entries.column("exercise_name", width=200, minwidth=200, stretch=False)
-        self.entries.column("exercise_date", width=100, minwidth=100, stretch=False)
-        self.entries.column("exercise_time", width=100, minwidth=100, stretch=False)
-        self.entries.column("exercise_sets", width=100, minwidth=100, stretch=False)
-        self.entries.column("exercise_reps", width=100, minwidth=100, stretch=False)
-        self.entries.column("exercise_weight", width=150, minwidth=150, stretch=False)
-        self.entries.column("exercise_label", width=250, minwidth=250, stretch=False)
+        entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="red", border_width=3)
+        self.entries = btk.Treeview(entries_frame, columns=("exercise", "date", "time", "summary", "label"), show="headings", height=18, selectmode="browse")
+        self.entries.heading("exercise", text="Exercise")
+        self.entries.heading("date", text="Date")
+        self.entries.heading("time", text="Time")
+        self.entries.heading("summary", text="Sets x Reps @ Weight")
+        self.entries.heading("label", text="Label")
+        self.entries.column("exercise", width=330, minwidth=150, anchor="w", stretch=False)
+        self.entries.column("date", width=100, minwidth=100, anchor="center", stretch=False)
+        self.entries.column("time", width=100, minwidth=100, anchor="center", stretch=False)
+        self.entries.column("summary", width=250, minwidth=200, anchor="center", stretch=False)
+        self.entries.column("label", width=330, minwidth=200, anchor="w", stretch=False)
         # create tags for zebra design
         self.entries.tag_configure('oddrow', background='#f2f2f2')
         self.entries.tag_configure('evenrow', background='#ffffff')
@@ -1205,17 +1198,29 @@ class DashboardPage(ctk.CTkFrame):
         if self.entries.get_children():
             self.entries.delete(*self.entries.get_children())
         # retrieve latest data
-        self.controller.db_cursor.execute("SELECT entry_type, exercise_name, date, time, sets_count, reps_count, weight_value, exercise_label FROM exercise_entries ORDER BY id DESC LIMIT 25")
+        self.controller.db_cursor.execute("SELECT exercise_name, date, time, sets_count, reps_count, weight_value, exercise_label FROM exercise_entries ORDER BY id DESC LIMIT 25")
         result = self.controller.db_cursor.fetchall()
         if result:
-            for i, entry_info in enumerate(result):
+            for i, (exercise, date, time, sets, reps, weight, label) in enumerate(result):
+                # truncating values to a single string
+                summary = f"{sets} x {reps} @ {weight}kg"
+                # shortening exercise and label strings for readability and slight minimalism
+                if len(exercise) > 20:
+                    trimmed_exercise = exercise[:20] + "..."
+                else:
+                    trimmed_exercise = exercise
+                if len(label) > 20:
+                    trimmed_label = label[:20] + "..."   
+                else:
+                    trimmed_label = label
+                revised_values = (trimmed_exercise, date, time, summary, trimmed_label)
                 # allocating row colour based on row parity
                 if i % 2 == 0:
                     tag = "evenrow"
                 else:
                     tag = "oddrow"
-                # adding entries to the treeview aka display list
-                self.entries.insert("", "end", values=entry_info, tags=(tag,))
+                # populating the entries list with revised data collected from the exercise_entries database
+                self.entries.insert("", "end", values=revised_values, tags=(tag,))
 
 class DiscoverPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
