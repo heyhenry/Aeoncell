@@ -865,6 +865,8 @@ class DashboardPage(ctk.CTkFrame):
 
         recent_exercises_section.grid_propagate(False)
 
+        redirect_session_entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(SessionEntryPage))
+        redirect_single_entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(SingleEntryPage))
         #endregion
 
     # Reminder to adjust after finishing all widgets... 
