@@ -1260,8 +1260,8 @@ class BaseEntryPage(ctk.CTkFrame):
         self.btn_name = btn_name
         self.type_var = ctk.StringVar(value=self.entry_type)
 
-        self.single_entry_icon = ctk.CTkImage(light_image=Image.open("img/small_flame.png"), dark_image=Image.open("img/small_flame.png"), size=(48, 48))
-        self.session_entry_icon = ctk.CTkImage(light_image=Image.open("img/big_flame.png"), dark_image=Image.open("img/big_flame.png"), size=(48, 48))
+        self.single_entry_icon = ctk.CTkImage(light_image=Image.open("img/dumbbell.png"), dark_image=Image.open("img/dumbbell.png"), size=(48, 48))
+        self.session_entry_icon = ctk.CTkImage(light_image=Image.open("img/barbell.png"), dark_image=Image.open("img/barbell.png"), size=(48, 48))
 
         self.grid_rowconfigure(0, weight=1)
         
