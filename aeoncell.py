@@ -572,18 +572,18 @@ class DashboardPage(ctk.CTkFrame):
         profile_info_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         self.profile_image_display = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
         profile_name = ctk.CTkLabel(profile_info_section, textvariable=self.profile_name_display, wraplength=300, font=("", 24))
-        profile_height_title = ctk.CTkLabel(profile_info_section, text="Height", font=("", 14, "bold"))
-        profile_height_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
-        profile_height_display = ctk.CTkLabel(profile_height_frame, textvariable=self.profile_height_var, font=("", 18))
-        profile_current_weight_title = ctk.CTkLabel(profile_info_section, text="Current Weight", font=("", 14, "bold"))
-        profile_current_weight_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
-        profile_current_weight_display = ctk.CTkLabel(profile_current_weight_frame, textvariable=self.profile_current_weight_var, font=("", 18))
-        profile_age_title = ctk.CTkLabel(profile_info_section, text="Age", font=("", 14, "bold"))
-        profile_age_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
-        profile_age_display = ctk.CTkLabel(profile_age_frame, textvariable=self.profile_age_var, font=("", 18))
-        profile_goal_weight_title = ctk.CTkLabel(profile_info_section, text="Goal Weight", font=("", 14, "bold"))
-        profile_goal_weight_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=100, height=50)
-        profile_goal_weight_display = ctk.CTkLabel(profile_goal_weight_frame, textvariable=self.profile_goal_weight_var, font=("", 18))
+        profile_height_title = ctk.CTkLabel(profile_info_section, text="Height (cm)", font=("", 14, "bold"))
+        profile_height_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=150, height=50)
+        profile_height_display = ctk.CTkLabel(profile_height_frame, textvariable=self.profile_height_var, font=("", 24))
+        profile_current_weight_title = ctk.CTkLabel(profile_info_section, text="Current Weight (kg)", font=("", 14, "bold"))
+        profile_current_weight_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=150, height=50)
+        profile_current_weight_display = ctk.CTkLabel(profile_current_weight_frame, textvariable=self.profile_current_weight_var, font=("", 24))
+        profile_age_title = ctk.CTkLabel(profile_info_section, text="Age (years)", font=("", 14, "bold"))
+        profile_age_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=150, height=50)
+        profile_age_display = ctk.CTkLabel(profile_age_frame, textvariable=self.profile_age_var, font=("", 24))
+        profile_goal_weight_title = ctk.CTkLabel(profile_info_section, text="Goal Weight (kg)", font=("", 14, "bold"))
+        profile_goal_weight_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=150, height=50)
+        profile_goal_weight_display = ctk.CTkLabel(profile_goal_weight_frame, textvariable=self.profile_goal_weight_var, font=("", 24))
         
         profile_monthly_section = ctk.CTkFrame(profile_section, border_color="blue", fg_color="transparent")
         profile_monthly_title = ctk.CTkLabel(profile_monthly_section, text="Monthly Progress", font=("", 32))
@@ -919,15 +919,7 @@ class DashboardPage(ctk.CTkFrame):
         result = self.controller.db_cursor.fetchone()
         if result:
             for i in range(len(result)):
-                if i == 2:
-                    profile_info[i].set(f"{result[i]} yo")
-                elif i == 3:
-                    profile_info[i].set(f"{result[i]} cm")
-                elif i > 3:
-                    profile_info[i].set(f"{result[i]} kg")
-                else:
-                    profile_info[i].set(result[i])
-
+                profile_info[i].set(result[i])
             self.determine_name_display()
         
     # if there is a first name or full name (first & last) given, then display that over username
