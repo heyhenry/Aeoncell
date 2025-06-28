@@ -485,10 +485,10 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_progress_display = ctk.StringVar() 
 
         # quick stats
-        self.exercise_total_var = ctk.StringVar()
-        self.reps_total_var = ctk.StringVar()
-        self.volume_total_var = ctk.StringVar()
-        self.sets_total_var = ctk.StringVar()
+        self.exercise_total_var = ctk.StringVar(value=999)
+        self.reps_total_var = ctk.StringVar(value=999)
+        self.volume_total_var = ctk.StringVar(value=999)
+        self.sets_total_var = ctk.StringVar(value=999999)
 
         # recent exercises section related variables
         style = btk.Style()
@@ -802,47 +802,49 @@ class DashboardPage(ctk.CTkFrame):
         des_banner = ctk.CTkLabel(exercise_summary, text="", image=self.summary_icon) # row0col2-3
         
         des_subtitle_frame = ctk.CTkFrame(exercise_summary) # row1col1-2
-        des_today_icon = ctk.CTkLabel(des_subtitle_frame, text="", image=self.fireball_icon) # row0col0
+        des_today_icon_left = ctk.CTkLabel(des_subtitle_frame, text="", image=self.fireball_icon) # row0col0
         des_today_title = ctk.CTkLabel(des_subtitle_frame, text="Today", font=("", 32, "bold")) #row0col1
+        des_today_icon_right = ctk.CTkLabel(des_subtitle_frame, text="", image=self.fireball_icon)
         
         des_total_exercises_frame = ctk.CTkFrame(exercise_summary) #row2col1
-        des_total_exercise_title = ctk.CTkLabel(des_total_exercises_frame, text="Total Exercises:", font=("", 18)) #row0col0
-        des_total_exercise_sum = ctk.CTkLabel(des_total_exercises_frame, textvariable=self.exercise_total_var) #row0col1
+        des_total_exercise_title = ctk.CTkLabel(des_total_exercises_frame, text="Total Exercises:", font=("", 24)) #row0col0
+        des_total_exercise_sum = ctk.CTkLabel(des_total_exercises_frame, textvariable=self.exercise_total_var, font=("", 24, "bold")) #row0col1
         
         des_total_reps_frame = ctk.CTkFrame(exercise_summary) #row2col2
-        des_total_reps_title = ctk.CTkLabel(des_total_reps_frame, text="Total Reps:", font=("", 18)) #row0col0
-        des_total_reps_sum = ctk.CTkLabel(des_total_reps_frame, textvariable=self.reps_total_var) #row0col1
+        des_total_reps_title = ctk.CTkLabel(des_total_reps_frame, text="Total Reps:", font=("", 24)) #row0col0
+        des_total_reps_sum = ctk.CTkLabel(des_total_reps_frame, textvariable=self.reps_total_var, font=("", 24, "bold")) #row0col1
         
         des_total_volume_frame = ctk.CTkFrame(exercise_summary) #row3col1
-        des_total_volume_title = ctk.CTkLabel(des_total_volume_frame, text="Total Volume:", font=("", 18)) #row0col0
-        des_total_volume_sum = ctk.CTkLabel(des_total_volume_frame, textvariable=self.volume_total_var) #row0col1
+        des_total_volume_title = ctk.CTkLabel(des_total_volume_frame, text="Total Volume:", font=("", 24)) #row0col0
+        des_total_volume_sum = ctk.CTkLabel(des_total_volume_frame, textvariable=self.volume_total_var, font=("", 24, "bold")) #row0col1
         
         des_total_sets_frame = ctk.CTkFrame(exercise_summary) #row3col2
-        des_total_sets_title = ctk.CTkLabel(des_total_sets_frame, text="Total Sets", font=("", 18)) #row0col0
-        des_total_sets_sum = ctk.CTkLabel(des_total_sets_frame, textvariable=self.sets_total_var) #row0col1
+        des_total_sets_title = ctk.CTkLabel(des_total_sets_frame, text="Total Sets", font=("", 24)) #row0col0
+        des_total_sets_sum = ctk.CTkLabel(des_total_sets_frame, textvariable=self.sets_total_var, font=("", 24, "bold")) #row0col1
 
-        des_title.grid(row=0, column=0)
-        des_banner.grid(row=0, column=2, columnspan=2)
+        des_title.grid(row=0, column=0, sticky="w", pady=(40, 20))
+        des_banner.grid(row=0, column=3, sticky="e", pady=(40, 20))
         
-        des_subtitle_frame.grid(row=1, column=1, columnspan=2)
-        des_today_icon.grid(row=0, column=0)
+        des_subtitle_frame.grid(row=1, column=1, columnspan=2, pady=(0, 40))
+        des_today_icon_left.grid(row=0, column=0, padx=(0, 20))
         des_today_title.grid(row=0, column=1)
-        
-        des_total_exercises_frame.grid(row=2, column=1)
-        des_total_exercise_title.grid(row=0, column=0)
-        des_total_exercise_sum.grid(row=0, column=1)
+        des_today_icon_right.grid(row=0, column=2, padx=(20, 0))
 
-        des_total_reps_frame.grid(row=2, column=2)
-        des_total_reps_title.grid(row=0, column=0)
-        des_total_reps_sum.grid(row=0, column=1)
+        des_total_exercises_frame.grid(row=2, column=1, padx=(0, 50), sticky="w")
+        des_total_exercise_title.grid(row=0, column=0, sticky="w")
+        des_total_exercise_sum.grid(row=0, column=1, sticky="e")
 
-        des_total_volume_frame.grid(row=3, column=1)
-        des_total_volume_title.grid(row=0, column=0)
-        des_total_volume_sum.grid(row=0, column=1)
+        des_total_reps_frame.grid(row=2, column=2, padx=(50, 0), sticky="w")
+        des_total_reps_title.grid(row=0, column=0, sticky="w")
+        des_total_reps_sum.grid(row=0, column=1, sticky="e")
 
-        des_total_sets_frame.grid(row=3, column=2)
-        des_total_sets_title.grid(row=0, column=0)
-        des_total_sets_sum.grid(row=0, column=1)
+        des_total_volume_frame.grid(row=3, column=1, padx=(0, 50), sticky="w")
+        des_total_volume_title.grid(row=0, column=0, sticky="w")
+        des_total_volume_sum.grid(row=0, column=1, sticky="e")
+
+        des_total_sets_frame.grid(row=3, column=2, padx=(50, 0), sticky="w")
+        des_total_sets_title.grid(row=0, column=0, sticky="w")
+        des_total_sets_sum.grid(row=0, column=1, sticky="e")
 
         #endregion
 
