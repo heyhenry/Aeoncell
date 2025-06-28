@@ -806,7 +806,7 @@ class DashboardPage(ctk.CTkFrame):
         des_today_title = ctk.CTkLabel(des_subtitle_frame, text="Today", font=("", 32, "bold")) #row0col1
         des_today_icon_right = ctk.CTkLabel(des_subtitle_frame, text="", image=self.fireball_icon)
         
-        des_total_exercises_frame = ctk.CTkFrame(exercise_summary) #row2col1
+        des_total_exercises_frame = ctk.CTkFrame(exercise_summary, width=280, height=30, border_width=1, border_color="red") #row2col1
         des_total_exercise_title = ctk.CTkLabel(des_total_exercises_frame, text="Total Exercises:", font=("", 24)) #row0col0
         des_total_exercise_sum = ctk.CTkLabel(des_total_exercises_frame, textvariable=self.exercise_total_var, font=("", 24, "bold")) #row0col1
         
@@ -831,6 +831,8 @@ class DashboardPage(ctk.CTkFrame):
         des_today_icon_right.grid(row=0, column=2, padx=(20, 0))
 
         des_total_exercises_frame.grid(row=2, column=1, padx=(0, 50), sticky="w")
+        des_total_exercises_frame.grid_propagate(False)
+        des_total_exercises_frame.grid_columnconfigure(1, weight=1)
         des_total_exercise_title.grid(row=0, column=0, sticky="w")
         des_total_exercise_sum.grid(row=0, column=1, sticky="e")
 
