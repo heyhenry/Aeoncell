@@ -451,6 +451,8 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/sleeping.png"), dark_image=Image.open("img/dailies_section/sleeping.png"), size=(32, 32))
         self.hydration_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/hydration.png"), dark_image=Image.open("img/dailies_section/hydration.png"), size=(32, 32))
         self.walking_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/walking.png"), dark_image=Image.open("img/dailies_section/walking.png"), size=(32, 32))
+        self.summary_icon = ctk.CTkImage(light_image=Image.open("img/summary.png"), dark_image=Image.open("img/summary.png"), size=(64, 64))
+        self.fireball_icon = ctk.CTkImage(light_image=Image.open("img/fireball.png"), dark_image=Image.open("img/fireball.png"), size=(64, 64))
         self.session_entry_icon = ctk.CTkImage(light_image=Image.open("img/barbell.png"), dark_image=Image.open("img/barbell.png"), size=(64, 64))
         self.single_entry_icon = ctk.CTkImage(light_image=Image.open("img/dumbbell.png"), dark_image=Image.open("img/dumbbell.png"), size=(64, 64))
 
@@ -481,6 +483,12 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_current_progress = ctk.StringVar()
         self.sleep_goal = ctk.StringVar()
         self.sleep_progress_display = ctk.StringVar() 
+
+        # quick stats
+        self.exercise_total_var = ctk.StringVar()
+        self.reps_total_var = ctk.StringVar()
+        self.volume_total_var = ctk.StringVar()
+        self.sets_total_var = ctk.StringVar()
 
         # recent exercises section related variables
         style = btk.Style()
@@ -524,6 +532,8 @@ class DashboardPage(ctk.CTkFrame):
         dailies_section.grid(row=4, column=1, pady=(0, 20))
         quick_stats_section.grid(row=5, column=1)
         recent_exercises_section.grid(row=6, column=1, pady=20)
+
+        quick_stats_section.grid_propagate(False)
 
         profile_section.grid_rowconfigure(0, weight=1)
         profile_section.grid_rowconfigure(2, weight=1)
@@ -590,19 +600,15 @@ class DashboardPage(ctk.CTkFrame):
         profile_monthly_weight_title = ctk.CTkLabel(profile_monthly_section, text="Weight Loss", font=("", 18))
         profile_monthly_weight_info = ctk.CTkLabel(profile_monthly_section, text="2/5 kilos", font=("", 14))
         profile_monthly_weight_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
-        profile_monthly_weight_progressbar.set(0.30)
         profile_sleep_title = ctk.CTkLabel(profile_monthly_section, text="Sleep", font=("", 18))
         profile_sleep_info = ctk.CTkLabel(profile_monthly_section, text="110/300 hours", font=("", 14))
         profile_sleep_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
-        profile_sleep_progressbar.set(0.35)
         profile_hydration_title = ctk.CTkLabel(profile_monthly_section, text="Hydration", font=("", 18)) 
         profile_hydration_info = ctk.CTkLabel(profile_monthly_section, text="80/250 litres", font=("", 14))
         profile_hydration_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
-        profile_hydration_progressbar.set(0.45)
         profile_walking_title = ctk.CTkLabel(profile_monthly_section, text="Walking", font=("", 18))
         profile_walking_info = ctk.CTkLabel(profile_monthly_section, text="35,000/150,000 steps", font=("", 14))
         profile_walking_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
-        profile_walking_progressbar.set(0.70)
         
         profile_achievements_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_achievements_title = ctk.CTkLabel(profile_achievements_section, text="Recent Achievements", font=("", 32))
@@ -786,47 +792,57 @@ class DashboardPage(ctk.CTkFrame):
         #region [ Quick Stats Section ]
 
         exercise_summary = ctk.CTkFrame(quick_stats_section, border_width=5, border_color="#B19CD9")
-        weather_info = ctk.CTkFrame(quick_stats_section, border_width=5, border_color="#B19CD9")
+        daily_forecast = ctk.CTkFrame(quick_stats_section, border_width=5, border_color="#B19CD9")
 
         exercise_summary.grid(row=1, column=1, padx=(0, 20))
-        weather_info.grid(row=1, column=2)
+        daily_forecast.grid(row=1, column=2)
 
-        exercise_top_frame = ctk.CTkFrame(exercise_summary, fg_color="transparent")
-        exercise_title = ctk.CTkLabel(exercise_top_frame, text="Exercise Summary", font=("", 18))
-        exercise_icon = ctk.CTkLabel(exercise_top_frame, text="", image=self.icon)
-        exercise_today_title = ctk.CTkLabel(exercise_top_frame, text="Today", font=("", 24))
-        exercise_mini_banner = ctk.CTkLabel(exercise_top_frame, text="", image=self.mini_banner)
-        exercise_total = ctk.CTkLabel(exercise_summary, text=f"Total Exercises: {5}", font=("", 24))
-        exercise_reps = ctk.CTkLabel(exercise_summary, text=f"Total Reps: {40}", font=("", 24))
-        exercise_volume = ctk.CTkLabel(exercise_summary, text=f"Total Volume (kg): {160}", font=("", 24))
-        exercise_sets = ctk.CTkLabel(exercise_summary, text=f"Total Sets: {8}", font=("", 24))
+        # exercise summary [prefix: des_ short for dashboard exercise summary]
+        des_title = ctk.CTkLabel(exercise_summary, text="Exercise Summary", font=("", 18)) # row0col0
+        des_banner = ctk.CTkLabel(exercise_summary, text="", image=self.summary_icon) # row0col2-3
+        
+        des_subtitle_frame = ctk.CTkFrame(exercise_summary) # row1col1-2
+        des_today_icon = ctk.CTkLabel(des_subtitle_frame, text="", image=self.fireball_icon) # row0col0
+        des_today_title = ctk.CTkLabel(des_subtitle_frame, text="Today", font=("", 32, "bold")) #row0col1
+        
+        des_total_exercises_frame = ctk.CTkFrame(exercise_summary) #row2col1
+        des_total_exercise_title = ctk.CTkLabel(des_total_exercises_frame, text="Total Exercises:", font=("", 18)) #row0col0
+        des_total_exercise_sum = ctk.CTkLabel(des_total_exercises_frame, textvariable=self.exercise_total_var) #row0col1
+        
+        des_total_reps_frame = ctk.CTkFrame(exercise_summary) #row2col2
+        des_total_reps_title = ctk.CTkLabel(des_total_reps_frame, text="Total Reps:", font=("", 18)) #row0col0
+        des_total_reps_sum = ctk.CTkLabel(des_total_reps_frame, textvariable=self.reps_total_var) #row0col1
+        
+        des_total_volume_frame = ctk.CTkFrame(exercise_summary) #row3col1
+        des_total_volume_title = ctk.CTkLabel(des_total_volume_frame, text="Total Volume:", font=("", 18)) #row0col0
+        des_total_volume_sum = ctk.CTkLabel(des_total_volume_frame, textvariable=self.volume_total_var) #row0col1
+        
+        des_total_sets_frame = ctk.CTkFrame(exercise_summary) #row3col2
+        des_total_sets_title = ctk.CTkLabel(des_total_sets_frame, text="Total Sets", font=("", 18)) #row0col0
+        des_total_sets_sum = ctk.CTkLabel(des_total_sets_frame, textvariable=self.sets_total_var) #row0col1
 
-        exercise_top_frame.grid(row=0, column=0, columnspan=2, padx=20, pady=20, sticky="w")
-        exercise_title.grid(row=0, column=0, columnspan=2, pady=(20, 0), sticky="s")
-        exercise_icon.grid(row=1, column=0, pady=(0, 40))
-        exercise_today_title.grid(row=1, column=1, pady=(0, 40))
-        exercise_mini_banner.grid(row=0, rowspan=2, column=2, padx=(200, 40), pady=20)
-        exercise_total.grid(row=1, column=0, padx=20, pady=(0, 20), sticky="w")
-        exercise_reps.grid(row=1, column=1, padx=20, pady=(0, 20), sticky="w")
-        exercise_volume.grid(row=2, column=0, padx=20, pady=(0, 40), sticky="w")
-        exercise_sets.grid(row=2, column=1, padx=20, pady=(0, 40), sticky="w")
+        des_title.grid(row=0, column=0)
+        des_banner.grid(row=0, column=2, columnspan=2)
+        
+        des_subtitle_frame.grid(row=1, column=1, columnspan=2)
+        des_today_icon.grid(row=0, column=0)
+        des_today_title.grid(row=0, column=1)
+        
+        des_total_exercises_frame.grid(row=2, column=1)
+        des_total_exercise_title.grid(row=0, column=0)
+        des_total_exercise_sum.grid(row=0, column=1)
 
-        weather_top_frame = ctk.CTkFrame(weather_info, fg_color="transparent")
-        weather_title = ctk.CTkLabel(weather_top_frame, text="Weather", font=("", 18))
-        weather_icon = ctk.CTkLabel(weather_top_frame, text="", image=self.icon)
-        weather_location = ctk.CTkLabel(weather_top_frame, text="Perth, Western Australia", font=("", 24))
-        weather_current_forecast = ctk.CTkLabel(weather_top_frame, text="", image=self.weather_forecast)
-        # tbd based on api data
-        api_widget = ctk.CTkFrame(weather_info, height=60, width=350, border_width=3)
+        des_total_reps_frame.grid(row=2, column=2)
+        des_total_reps_title.grid(row=0, column=0)
+        des_total_reps_sum.grid(row=0, column=1)
 
-        weather_top_frame.grid(row=0, column=0, padx=40, pady=(70, 0))
-        weather_title.grid(row=0, column=0, columnspan=2, sticky="w")
-        weather_icon.grid(row=1, column=0, padx=(0, 20))
-        weather_location.grid(row=1, column=1, padx=(0, 40))
-        weather_current_forecast.grid(row=0, rowspan=2, column=2, pady=(0, 30))
-        api_widget.grid(row=1, column=0, padx=40, pady=(0, 70))
+        des_total_volume_frame.grid(row=3, column=1)
+        des_total_volume_title.grid(row=0, column=0)
+        des_total_volume_sum.grid(row=0, column=1)
 
-        quick_stats_section.grid_propagate(False)
+        des_total_sets_frame.grid(row=3, column=2)
+        des_total_sets_title.grid(row=0, column=0)
+        des_total_sets_sum.grid(row=0, column=1)
 
         #endregion
 
