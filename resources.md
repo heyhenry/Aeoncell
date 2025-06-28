@@ -73,3 +73,5 @@ Python Random choice() Method (25th June 2025): https://www.w3schools.com/python
 tkinter.font - Tkinter font wrapper (25th June 2025): https://docs.python.org/3/library/tkinter.font.html
 Enumerate() in Python (26th June 2025): https://www.geeksforgeeks.org/python/enumerate-in-python/
 Mastering Tkinter Treeview Tag Configuration in Python (26th June 2025): https://runebook.dev/en/articles/python/library/tkinter.ttk/tkinter.ttk.Treeview.tag_configure
+Fireball Icon created by Freepik | Flaticon.com (28th June 2025): https://www.flaticon.com/free-icon/fire_1453025?term=fire&page=1&position=10&origin=search&related_id=1453025
+Summary Icon created by Freepil | Flaticon.com (28th June 2025): https://www.flaticon.com/free-icon/cricket_6223380?term=exercise+banner&page=1&position=19&origin=search&related_id=6223380
