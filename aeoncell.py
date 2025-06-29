@@ -9,6 +9,7 @@ import os
 from CTkXYFrame import *
 from tkinter import ttk as btk
 import random
+import requests
 
 ctk.set_appearance_mode("Light")
 ctk.set_default_color_theme("themes/custom_lavender.json")
@@ -26,7 +27,7 @@ class Windows(ctk.CTk):
 
         # weather reference codes (used by open-meteo)
         self.wmo_codes = [
-            (0, "clear"),
+            ((0, 69), "clear"),
             ((1,2,3), "cloudy"),
             ((45, 48), "fog"),
             ((51, 53, 55, 56, 57), "drizzle"),
@@ -503,6 +504,13 @@ class DashboardPage(ctk.CTkFrame):
         self.volume_total_var = ctk.StringVar(value=0)
         self.sets_total_var = ctk.StringVar(value=0)
 
+        self.location_var = ctk.StringVar()
+        self.last_updated_var = ctk.StringVar()
+        self.temp_var = ctk.StringVar()
+        self.weather_type_var = ctk.StringVar()
+        # find a temp image to have as a placeholder incase weather code isnt apart of recognised wmo codes, else display recognised weather code icon
+        self.weather_icon = ctk.CTkImage(light_image=Image.open("img/weather/default_weather.png"), dark_image=Image.open("img/weather/default_weather.png"), size=(32, 32))
+
         # recent exercises section related variables
         style = btk.Style()
         style.theme_use("default")
@@ -517,6 +525,8 @@ class DashboardPage(ctk.CTkFrame):
 
         self.daily_section_initialisation()
         self.update_exercise_summary()
+        self.update_weather_forecast()
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -814,6 +824,7 @@ class DashboardPage(ctk.CTkFrame):
 
         daily_forecast.grid(row=1, column=2)
 
+        #region [Exercise Summary]
         # exercise summary [prefix: des_ short for dashboard exercise summary]
         des_title = ctk.CTkLabel(exercise_summary, text="Exercise Summary", font=("", 18)) # row0col0
         des_banner = ctk.CTkLabel(exercise_summary, text="", image=self.summary_icon) # row0col2-3
@@ -870,6 +881,33 @@ class DashboardPage(ctk.CTkFrame):
         des_total_sets_frame.grid_columnconfigure(1, weight=1)
         des_total_sets_title.grid(row=0, column=0, sticky="w")
         des_total_sets_sum.grid(row=0, column=1, sticky="e")
+        #endregion
+
+        #region [Weather Forecast]
+        # weather forecast [prefix: ddf_ short for dashboard daily forecast]
+        ddf_title = ctk.CTkLabel(daily_forecast, text="Daily Forecast", font=("", 18))
+
+        ddf_location_display = ctk.CTkLabel(daily_forecast, textvariable=self.location_var, font=("", 24))
+        ddf_weather_display = ctk.CTkLabel(daily_forecast, text="", image=self.weather_icon)
+        
+        ddf_temp_weather_frame = ctk.CTkFrame(daily_forecast, border_color="red")
+        ddf_temp_display = ctk.CTkLabel(ddf_temp_weather_frame, textvariable=self.temp_var, font=("", 18))
+        ddf_weather_type_display = ctk.CTkLabel(ddf_temp_weather_frame, textvariable=self.weather_type_var, font=("", 18))
+
+        ddf_last_update_display = ctk.CTkLabel(daily_forecast, textvariable=self.last_updated_var, font=("", 18))
+        
+        ddf_title.grid(row=0, column=0, sticky="w")
+
+        ddf_location_display.grid(row=1, column=1)
+        ddf_weather_display.grid(row=1, column=2)
+
+        ddf_temp_weather_frame.grid(row=2, column=1, columnspan=2, sticky="w")
+        ddf_temp_display.grid(row=0, column=0)
+        ddf_weather_type_display.grid(row=0, column=1)
+
+        ddf_last_update_display.grid(row=3, column=1, columnspan=2, sticky="w")
+
+        #endregion 
 
         #endregion
 
@@ -1256,6 +1294,38 @@ class DashboardPage(ctk.CTkFrame):
             self.sets_total_var.set(sets_sum)
             self.reps_total_var.set(reps_sum)
             self.volume_total_var.set(weights_sum)
+
+    def update_weather_forecast(self):
+        wmo_list = self.controller.wmo_codes
+
+        # get user's approximate location
+        ip_response = requests.get("https://get.geojs.io/v1/ip/geo.json")
+        data = ip_response.json()
+        latitude = data["latitude"]
+        longitude = data["longitude"]
+
+        # get weather forecast based on latitude x longitude
+        weather_response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,weather_code&timezone=auto")
+        weather_data = weather_response.json()
+        current_units = weather_data["current_units"]
+        current_values = weather_data["current"]
+
+        # format retrieved data
+        location = weather_data["timezone"]
+        last_updated_time = f"Last Updated: {current_values["time"][11:]}"
+        temperature = f"{current_values["temperature_2m"]} {current_units["temperature_2m"]}"
+        weather_code = current_values["weather_code"]
+
+        # set display widgets with formatted string
+        self.location_var.set(location)
+        self.last_updated_var.set(last_updated_time)
+        self.temp_var.set(temperature)
+        
+        # determine which weather icon to display based on wmo code reading
+        for i in range(len(wmo_list)):
+            if weather_code in wmo_list[i][0]:
+                self.weather_icon.configure(light_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), dark_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), size=(32, 32))
+                self.weather_type_var.set(wmo_list[i][1])
 
     def populate_entries_display(self):
         # update the entries list by first resetting existing data
