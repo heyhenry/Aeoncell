@@ -56,12 +56,7 @@ class Windows(ctk.CTk):
         # check this by seeing if a password has been stored (could also check for username, same end result)
         if self.db.check_password_exists():
             # set the global username variable with existing username found in the database
-            self.set_username()
-        
-
-        # if a user has successfully registered, set the global username var's value with the username
-        if self.db.check_password_exists():
-            self.set_username()
+            self.update_username()
 
         self.pages = {}
         for P in (RegisterPage, LoginPage, DashboardPage, DiscoverPage, SingleEntryPage, SessionEntryPage, StatsPage, AchievementsPage, SettingsPage):
@@ -106,7 +101,7 @@ class Windows(ctk.CTk):
         self.after(300, widget_name.focus_set)
 
     # retrieve and set username from value found in database
-    def set_username(self):
+    def update_username(self):
         self.db_cursor.execute("SELECT username FROM authentication WHERE rowid=1")
         result = self.db_cursor.fetchone()
         self.username.set(result[0])
@@ -345,7 +340,7 @@ class RegisterPage(ctk.CTkFrame):
         # if validation is successful run the following
         self.controller.db.create_username_and_password(username, password)
         # update the global username's value
-        self.controller.set_username()
+        self.controller.update_username()
         # update the login page's welcome_message widget
         self.controller.pages[LoginPage].welcome_message.configure(text=f"Welcome back, {self.controller.username.get()}!")
         self.controller.show_page(LoginPage)
@@ -1928,6 +1923,10 @@ class SettingsPage(ctk.CTkFrame):
         WHERE rowid=1
         """
         self.controller.db_cursor.execute(update_profile_details_query, (username, first_name, last_name, age, height, current_weight, goal_weight))
+        self.controller.db_connection.commit()
+
+        # update the login's username value
+        self.controller.db_cursor.execute("UPDATE authentication SET username = ?", (username,))
         self.controller.db_connection.commit()
 
         # update the user profile image IF there is a new image selected in the preview
