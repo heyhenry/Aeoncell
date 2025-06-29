@@ -67,12 +67,12 @@ class Windows(ctk.CTk):
         # center the app upon startup
         self.center_window(self, 1440, 900)
 
-        self.show_page(DashboardPage)
+        # self.show_page(DashboardPage)
         # determine initial page display based on user having a password (i.e. guaranteed account registration)
-        # if self.db.check_password_exists():
-        #     self.show_page(LoginPage)
-        # else:
-        #     self.show_page(RegisterPage)
+        if self.db.check_password_exists():
+            self.show_page(LoginPage)
+        else:
+            self.show_page(RegisterPage)
 
     # display the selected page to the user
     def show_page(self, selected_page):
@@ -421,6 +421,8 @@ class LoginPage(ctk.CTkFrame):
         password = self.password_var.get()
         if self.controller.db.verify_password(password):
             self.controller.show_page(DashboardPage)
+            # clear the password entry field
+            self.password_var.set("")
         else:
             self.controller.show_error_message(self.error_message, "Incorrect Password.")
 
