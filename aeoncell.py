@@ -1929,8 +1929,14 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_cursor.execute("UPDATE authentication SET username = ?", (username,))
         self.controller.db_connection.commit()
 
-        # update the user profile image IF there is a new image selected in the preview
+        # update username global variable
+        self.controller.update_username()
+
+        # update the user profile image if there is a new image selected in the preview
         self.update_user_profile_img()
+
+        # update dashboard welcome message
+        self.controller.pages[DashboardPage].welcome_user()
 
         self.show_action_message(self.profile_action_message)
 
