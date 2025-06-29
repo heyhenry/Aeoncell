@@ -573,7 +573,7 @@ class DashboardPage(ctk.CTkFrame):
         motivational_message_display.grid(row=1, column=0, sticky="w", padx=(50, 0))
         current_date.grid(row=0, rowspan=2, column=1, sticky="e", padx=(100, 0), pady=(20, 0))
         date_icon.grid(row=0, rowspan=2, column=2, sticky="e", padx=(20, 0), pady=(20, 0))
-        motivation_icon.grid(row=0, rowspan=2, column=3, sticky="e", padx=(60, 0), pady=(20, 0))
+        motivation_icon.grid(row=0, rowspan=2, column=3, sticky="e", padx=(30, 0), pady=(20, 0))
 
         intro_section.grid_propagate(False)
 
