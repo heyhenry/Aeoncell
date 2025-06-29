@@ -93,3 +93,7 @@ Thunderstorm Weather created by Freepik | Flaticon.com (29th June 2025): https:/
 Invalid / Default Weather created by juicy_fish | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/cloud-computing_4380738?term=error+weather&page=1&position=6&origin=search&related_id=4380738
 General Weather created by Freepik | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/meteorology_5903803?term=weather+forecast&page=1&position=3&origin=search&related_id=5903803
 I want to get the text 
+Timeout for python requests.get entire response (29th June 2025): https://stackoverflow.com/questions/21965484/timeout-for-python-requests-get-entire-response
+python requests httpsconnectionpool read timed out (29th June 2025): https://www.pythonrequests.com/python-requests-httpsconnectionpool-read-timed-out/
+Graceful Degradation: Handling Errors Without Disrupting User Experience (29th June 2025): https://medium.com/@satyendra.jaiswal/graceful-degradation-handling-errors-without-disrupting-user-experience-fd4947a24011
+Understanding Graceful and Ungraceful Error Handling (29th June 2025): https://medium.com/@yasin162001/understanding-graceful-and-ungraceful-error-handling-9c6b3d83b3ed
