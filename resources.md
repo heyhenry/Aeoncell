@@ -77,3 +77,19 @@ Fireball Icon created by Freepik | Flaticon.com (28th June 2025): https://www.fl
 Summary Icon created by Freepil | Flaticon.com (28th June 2025): https://www.flaticon.com/free-icon/cricket_6223380?term=exercise+banner&page=1&position=19&origin=search&related_id=6223380
 understanding the insert method in Tkinter's Entry widget (29th June 2025): https://stackoverflow.com/questions/42473873/understanding-the-insert-method-in-tkinters-entry-widget
 Tuple membership: Efficient Existence Testing in Python (29th June 2025): https://codepointtech.com/tuple-membership-efficient-existence-testing-in-python/
+Big List of Free and Open Public APIs (No Auth Needed): https://mixedanalytics.com/blog/list-actually-free-open-no-auth-needed-apis/
+Effect of 'b' character infront of a string literal in Python (29th June 2025): https://www.geeksforgeeks.org/effect-of-b-character-in-front-of-a-string-literal-in-python/
+Convert bytes to a string in Python 3 (29th June 2025): https://stackoverflow.com/questions/606191/convert-bytes-to-a-string-in-python-3
+Weather Forecase API | open-meteo.com (29th June 2025): https://open-meteo.com/en/docs
+Open-Meteo API Python Client (29th June 2025): https://github.com/open-meteo/python-requests
+Weather variable documentation | open-meteo.com (29th June 2025): https://open-meteo.com/en/docs#weather_variable_documentation
+Clear Weather created by Stasy | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/sun_6974827?term=clear+weather&page=1&position=22&origin=search&related_id=6974827
+Cloudy Weather created by kosonicon | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/cloudy-day_3222808?term=cloudy+weather&page=1&position=21&origin=search&related_id=3222808
+Foggy Weather created by Pixel perfect | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/fog_1197102?term=foggy+weather&page=1&position=20&origin=search&related_id=1197102
+Drizzle Weather created by iconixar | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/cloudy_1163759
+Rainy Weather created by Freepik | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/rain_1332316?term=rainy+weather&page=1&position=21&origin=search&related_id=1332316
+Snowy Weather created by Freepik | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/snow_9755338?term=snowy+weather&page=1&position=6&origin=search&related_id=9755338
+Thunderstorm Weather created by Freepik | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/thunder_9755312?term=thunderstorm+weather&page=1&position=3&origin=search&related_id=9755312
+Invalid / Default Weather created by juicy_fish | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/cloud-computing_4380738?term=error+weather&page=1&position=6&origin=search&related_id=4380738
+General Weather created by Freepik | Flaticon.com (29th June 2025): https://www.flaticon.com/free-icon/meteorology_5903803?term=weather+forecast&page=1&position=3&origin=search&related_id=5903803
+I want to get the text 
