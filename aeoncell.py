@@ -27,7 +27,7 @@ class Windows(ctk.CTk):
 
         # weather reference codes (used by open-meteo)
         self.wmo_codes = [
-            ((0, 69), "clear"),
+            ((0,), "clear"),
             ((1,2,3), "cloudy"),
             ((45, 48), "fog"),
             ((51, 53, 55, 56, 57), "drizzle"),
@@ -467,6 +467,8 @@ class DashboardPage(ctk.CTkFrame):
         self.walking_icon = ctk.CTkImage(light_image=Image.open("img/dailies_section/walking.png"), dark_image=Image.open("img/dailies_section/walking.png"), size=(32, 32))
         self.summary_icon = ctk.CTkImage(light_image=Image.open("img/summary.png"), dark_image=Image.open("img/summary.png"), size=(64, 64))
         self.fireball_icon = ctk.CTkImage(light_image=Image.open("img/fireball.png"), dark_image=Image.open("img/fireball.png"), size=(48, 48))
+        self.weather_section_icon = ctk.CTkImage(light_image=Image.open("img/weather/general_weather.png"), dark_image=Image.open("img/weather/general_weather.png"), size=(64, 64))
+        self.weather_icon = ctk.CTkImage(light_image=Image.open("img/weather/default_weather.png"), dark_image=Image.open("img/weather/default_weather.png"), size=(64, 64))
         self.session_entry_icon = ctk.CTkImage(light_image=Image.open("img/barbell.png"), dark_image=Image.open("img/barbell.png"), size=(64, 64))
         self.single_entry_icon = ctk.CTkImage(light_image=Image.open("img/dumbbell.png"), dark_image=Image.open("img/dumbbell.png"), size=(64, 64))
 
@@ -509,7 +511,7 @@ class DashboardPage(ctk.CTkFrame):
         self.temp_var = ctk.StringVar()
         self.weather_type_var = ctk.StringVar()
         # find a temp image to have as a placeholder incase weather code isnt apart of recognised wmo codes, else display recognised weather code icon
-        self.weather_icon = ctk.CTkImage(light_image=Image.open("img/weather/default_weather.png"), dark_image=Image.open("img/weather/default_weather.png"), size=(32, 32))
+        
 
         # recent exercises section related variables
         style = btk.Style()
@@ -823,6 +825,8 @@ class DashboardPage(ctk.CTkFrame):
         exercise_summary.grid_columnconfigure(3, minsize=40)
 
         daily_forecast.grid(row=1, column=2)
+        daily_forecast.grid_columnconfigure(0, minsize=40)
+        daily_forecast.grid_columnconfigure(3, minsize=40)
 
         #region [Exercise Summary]
         # exercise summary [prefix: des_ short for dashboard exercise summary]
@@ -886,27 +890,30 @@ class DashboardPage(ctk.CTkFrame):
         #region [Weather Forecast]
         # weather forecast [prefix: ddf_ short for dashboard daily forecast]
         ddf_title = ctk.CTkLabel(daily_forecast, text="Daily Forecast", font=("", 18))
+        ddf_weather_general_display = ctk.CTkLabel(daily_forecast, text="", image=self.weather_section_icon)
 
-        ddf_location_display = ctk.CTkLabel(daily_forecast, textvariable=self.location_var, font=("", 24))
+        ddf_location_display = ctk.CTkLabel(daily_forecast, textvariable=self.location_var, font=("", 32, "bold"))
         ddf_weather_display = ctk.CTkLabel(daily_forecast, text="", image=self.weather_icon)
         
-        ddf_temp_weather_frame = ctk.CTkFrame(daily_forecast, border_color="red")
-        ddf_temp_display = ctk.CTkLabel(ddf_temp_weather_frame, textvariable=self.temp_var, font=("", 18))
-        ddf_weather_type_display = ctk.CTkLabel(ddf_temp_weather_frame, textvariable=self.weather_type_var, font=("", 18))
+        ddf_temp_weather_frame = ctk.CTkFrame(daily_forecast, fg_color="transparent", width=200, height=30)
+        ddf_temp_display = ctk.CTkLabel(ddf_temp_weather_frame, textvariable=self.temp_var, font=("", 24))
+        ddf_weather_type_display = ctk.CTkLabel(ddf_temp_weather_frame, textvariable=self.weather_type_var, font=("", 24))
 
         ddf_last_update_display = ctk.CTkLabel(daily_forecast, textvariable=self.last_updated_var, font=("", 18))
         
-        ddf_title.grid(row=0, column=0, sticky="w")
+        ddf_title.grid(row=0, column=0, columnspan=2, sticky="w", padx=(40, 0), pady=(30, 20))
+        ddf_weather_general_display.grid(row=0, column=2, padx=(80, 0), pady=(30, 20))
 
-        ddf_location_display.grid(row=1, column=1)
-        ddf_weather_display.grid(row=1, column=2)
+        ddf_location_display.grid(row=1, column=1, padx=(0, 30), pady=(10, 20), sticky="w")
+        ddf_weather_display.grid(row=1, column=2, pady=(10, 20))
 
         ddf_temp_weather_frame.grid(row=2, column=1, columnspan=2, sticky="w")
-        ddf_temp_display.grid(row=0, column=0)
-        ddf_weather_type_display.grid(row=0, column=1)
+        ddf_temp_weather_frame.grid_propagate(False)
+        ddf_temp_weather_frame.grid_columnconfigure(1, weight=1)
+        ddf_temp_display.grid(row=0, column=0, padx=(0, 30), sticky="w")
+        ddf_weather_type_display.grid(row=0, column=1, sticky="e")
 
-        ddf_last_update_display.grid(row=3, column=1, columnspan=2, sticky="w")
-
+        ddf_last_update_display.grid(row=3, column=1, columnspan=2, sticky="w", pady=(0, 65))
         #endregion 
 
         #endregion
@@ -1324,8 +1331,8 @@ class DashboardPage(ctk.CTkFrame):
         # determine which weather icon to display based on wmo code reading
         for i in range(len(wmo_list)):
             if weather_code in wmo_list[i][0]:
-                self.weather_icon.configure(light_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), dark_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), size=(32, 32))
-                self.weather_type_var.set(wmo_list[i][1])
+                self.weather_icon.configure(light_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), dark_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), size=(64, 64))
+                self.weather_type_var.set(wmo_list[i][1].capitalize())
 
     def populate_entries_display(self):
         # update the entries list by first resetting existing data
