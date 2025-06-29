@@ -75,3 +75,5 @@ Enumerate() in Python (26th June 2025): https://www.geeksforgeeks.org/python/enu
 Mastering Tkinter Treeview Tag Configuration in Python (26th June 2025): https://runebook.dev/en/articles/python/library/tkinter.ttk/tkinter.ttk.Treeview.tag_configure
 Fireball Icon created by Freepik | Flaticon.com (28th June 2025): https://www.flaticon.com/free-icon/fire_1453025?term=fire&page=1&position=10&origin=search&related_id=1453025
 Summary Icon created by Freepil | Flaticon.com (28th June 2025): https://www.flaticon.com/free-icon/cricket_6223380?term=exercise+banner&page=1&position=19&origin=search&related_id=6223380
+understanding the insert method in Tkinter's Entry widget (29th June 2025): https://stackoverflow.com/questions/42473873/understanding-the-insert-method-in-tkinters-entry-widget
+Tuple membership: Efficient Existence Testing in Python (29th June 2025): https://codepointtech.com/tuple-membership-efficient-existence-testing-in-python/
