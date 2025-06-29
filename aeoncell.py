@@ -485,10 +485,10 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_progress_display = ctk.StringVar() 
 
         # quick stats
-        self.exercise_total_var = ctk.StringVar(value=999)
-        self.reps_total_var = ctk.StringVar(value=999)
-        self.volume_total_var = ctk.StringVar(value=999)
-        self.sets_total_var = ctk.StringVar(value=999999)
+        self.exercise_total_var = ctk.StringVar(value=0)
+        self.reps_total_var = ctk.StringVar(value=0)
+        self.volume_total_var = ctk.StringVar(value=0)
+        self.sets_total_var = ctk.StringVar(value=0)
 
         # recent exercises section related variables
         style = btk.Style()
@@ -503,6 +503,7 @@ class DashboardPage(ctk.CTkFrame):
         self.grid_columnconfigure(1, weight=1)
 
         self.daily_section_initialisation()
+        self.update_exercise_summary()
         self.create_widgets()
 
     def create_widgets(self):
@@ -1224,6 +1225,24 @@ class DashboardPage(ctk.CTkFrame):
                 # update steps progression display
                 self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {self.steps_goal.get()}")
                 self.update_steps_progressbar()
+
+    def update_exercise_summary(self):
+        # retrieve data for today's sets, reps and weight values
+        self.controller.db_cursor.execute("SELECT sets_count, reps_count, weight_value FROM exercise_entries WHERE date = ?", (self.today,))
+        result = self.controller.db_cursor.fetchall()
+        # if entries exists, tally the data and display in the exercise summary section
+        if result:
+            self.exercise_total_var.set(len(result))
+            sets_sum = 0
+            reps_sum = 0
+            weights_sum = 0
+            for i in range(len(result)):
+                sets_sum += result[i][0]
+                reps_sum += result[i][1]
+                weights_sum += result[i][2]
+            self.sets_total_var.set(sets_sum)
+            self.reps_total_var.set(reps_sum)
+            self.volume_total_var.set(weights_sum)
 
     def populate_entries_display(self):
         # update the entries list by first resetting existing data
