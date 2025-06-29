@@ -313,8 +313,8 @@ class RegisterPage(ctk.CTkFrame):
         if len(username) < 4:
             self.controller.show_error_message(self.error_message, "Username must be at least 4 chars.")
             return 
-        elif len(username) > 8:
-            self.controller.show_error_message(self.error_message, "Username must be less than 8 chars.")
+        elif len(username) > 11:
+            self.controller.show_error_message(self.error_message, "Username must be less than 11 chars.")
             return 
         elif username.isspace():
             self.controller.show_error_message(self.error_message, "Username cannot be whitespaces.")
@@ -1821,7 +1821,7 @@ class SettingsPage(ctk.CTkFrame):
         profile_update_button.grid(row=12, column=0, columnspan=2)
 
         # profile related binds
-        self.profile_username_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_username_entry, None))
+        self.profile_username_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, self.profile_username_entry, 10))
         self.profile_first_name_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_first_name_entry, 13))
         self.profile_last_name_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_last_name_entry, 13))
         self.profile_age_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.profile_age_entry, 3))
