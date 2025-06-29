@@ -527,7 +527,7 @@ class DashboardPage(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
-        self.welcome_user()
+        self.update_welcome_user()
         self.daily_section_initialisation()
         self.update_exercise_summary()
         self.update_weather_forecast()
@@ -966,7 +966,7 @@ class DashboardPage(ctk.CTkFrame):
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
     # remember to implement binding for the actionable icons like -> reset icon
 
-    def welcome_user(self):
+    def update_welcome_user(self):
         username = self.controller.username.get()
         self.welcome_message.set(f"Welcome Back, {username}")
 
@@ -1944,7 +1944,10 @@ class SettingsPage(ctk.CTkFrame):
         self.update_user_profile_img()
 
         # update dashboard welcome message
-        self.controller.pages[DashboardPage].welcome_user()
+        self.controller.pages[DashboardPage].update_welcome_user()
+
+        # update login message
+        self.controller.pages[LoginPage].update_login_message()
 
         self.show_action_message(self.profile_action_message)
 
