@@ -349,6 +349,7 @@ class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
+        self.username_var = ctk.StringVar()
         self.password_var = ctk.StringVar()
 
         self.masked_password_icon = ctk.CTkImage(light_image=Image.open("img/pw_masked.png"), dark_image=Image.open("img/pw_masked.png"), size=(32, 32))
@@ -358,6 +359,7 @@ class LoginPage(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
+        self.update_login_message()
         self.create_widgets()
 
     def create_widgets(self):
@@ -392,7 +394,7 @@ class LoginPage(ctk.CTkFrame):
         app_name = ctk.CTkLabel(login_form, text="Aeoncell", font=("", 18))
         form_name = ctk.CTkLabel(login_form, text="Login", font=("", 48))
         profile_image = ctk.CTkLabel(login_form, text="", image=self.controller.user_profile_img)
-        self.welcome_message = ctk.CTkLabel(login_form, text=f"Welcome back, {self.controller.username.get()}!", font=("", 24))
+        self.welcome_message = ctk.CTkLabel(login_form, textvariable=self.username_var, font=("", 24))
         password_title = ctk.CTkLabel(login_form, text="Enter Password:", font=("", 24))
         self.password_entry = ctk.CTkEntry(login_form, show="*", textvariable=self.password_var, font=("", 24), width=300)
         self.toggle_password_mask_btn = ctk.CTkButton(login_form, text="", image=self.masked_password_icon, bg_color="transparent", fg_color="transparent", hover_color="#B19CD9", width=0, command=self.toggle_password_masking)
@@ -416,6 +418,10 @@ class LoginPage(ctk.CTkFrame):
 
         # detect and process 'Enter' keybind interaction
         self.password_entry.bind("<Return>", self.process_login)
+
+    def update_login_message(self):
+        username = self.controller.username.get()
+        self.username_var.set(f"Logged in as [{username}]")
 
     def process_login(self, event=None):
         password = self.password_var.get()
