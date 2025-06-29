@@ -24,6 +24,17 @@ class Windows(ctk.CTk):
         self.today = date.today()
         self.today = self.today.strftime("%d-%m-%Y")
 
+        # weather reference codes (used by open-meteo)
+        self.wmo_codes = [
+            (0, "clear"),
+            ((1,2,3), "cloudy"),
+            ((45, 48), "fog"),
+            ((51, 53, 55, 56, 57), "drizzle"),
+            ((61, 63, 65, 66, 67, 80, 81, 82), "rain"),
+            ((71, 73, 75, 77, 85, 86), "snow"),
+            ((95, 96, 99), "thunderstorm")
+        ]
+
         self.username = ctk.StringVar()
         self.user_profile_img = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(120,120))
         self.app_icon_img = ctk.CTkImage(light_image=Image.open("img/capsule_original_recround.png"), dark_image=Image.open("img/capsule_original_recround.png"), size=(64,64))
