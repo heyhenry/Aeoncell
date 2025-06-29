@@ -1410,7 +1410,6 @@ class BaseEntryPage(ctk.CTkFrame):
             self.after_entry_submission()
 
     def process_confirmation(self):
-
         # confirm prompt to leave midway through filling form
         def proceed_confirmation():
             self.clear_entry_fields()
@@ -1420,11 +1419,10 @@ class BaseEntryPage(ctk.CTkFrame):
             confirmation_window.destroy()
             self.controller.show_page(DashboardPage)
 
+        # check if the entry is validly filled or not
         incomplete_entry = False
-        data = self.get_entry_field_data()
-        for key, val in data.items():
-            if key != "type" and len(val) == 0:
-                incomplete_entry = True
+        if not self.validate_entry_fields():
+            incomplete_entry = True
         
         if incomplete_entry:
             confirmation_window = ctk.CTkToplevel(self.entry_form)
@@ -1486,15 +1484,19 @@ class BaseEntryPage(ctk.CTkFrame):
     def validate_entry_fields(self):
         data = self.get_entry_field_data()
         for key, val in data.items():
-            if key != "label" and len(val) < 1:
+            # if any fields aside from label is not filled
+            if key not in ("label", "date") and len(val) < 1:
                 self.controller.show_error_message(self.error_message, "All * fields need to be filled.")
                 return False
-            elif key == "date" and len(val) < 10:
+            # if the date field has less than 10 characters/digits (ensures that there is a valid amount of digits inputted)
+            if key == "date" and len(val) < 10:
                 self.controller.show_error_message(self.error_message, "Date info incomplete. [dd-mm-yyyy]")
                 return False
-            elif key == "time" and len(val) < 5:
+            # if the time field has less than 5 characters/digits (ensures that there is a valid amount of digits inputted)
+            if key == "time" and len(val) < 5:
                 self.controller.show_error_message(self.error_message, "Time info incomplete. [xx:xx]")
-                return False
+                return 
+        # all fields have been filled (excl. label)
         return True
 
     # switch between the different types of entry pages via icon
