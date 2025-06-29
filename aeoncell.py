@@ -452,6 +452,7 @@ class DashboardPage(ctk.CTkFrame):
         self.today = self.controller.today
 
         # intro section
+        self.welcome_message = ctk.StringVar()
         today_full = date.today()
         today_full = today_full.strftime("%d %B %Y")
         self.today_full_display = ctk.StringVar(value=today_full)
@@ -523,6 +524,7 @@ class DashboardPage(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
+        self.welcome_user()
         self.daily_section_initialisation()
         self.update_exercise_summary()
         self.update_weather_forecast()
@@ -584,7 +586,7 @@ class DashboardPage(ctk.CTkFrame):
         #endregion
 
         #region [ Introduction Section ]
-        hello_message = ctk.CTkLabel(intro_section, text=f"Hello, Henry", width=750, anchor="w", font=("", 32))
+        hello_message = ctk.CTkLabel(intro_section, textvariable=self.welcome_message, width=750, anchor="w", font=("", 32))
         motivational_message_display = ctk.CTkLabel(intro_section, textvariable=self.motivational_message, width=750, anchor="w", font=("", 18, "italic"))
         current_date = ctk.CTkLabel(intro_section, textvariable=self.today_full_display, font=("", 24))
         date_icon = ctk.CTkLabel(intro_section, text="", image=self.intro_icon)
@@ -960,6 +962,10 @@ class DashboardPage(ctk.CTkFrame):
     # Reminder to adjust after finishing all widgets... 
     # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
     # remember to implement binding for the actionable icons like -> reset icon
+
+    def welcome_user(self):
+        username = self.controller.username.get()
+        self.welcome_message.set(f"Welcome Back, {username}")
 
     # deliver randomised yet inspiring quotes to the user
     def random_motivational_quote(self, event=None):
