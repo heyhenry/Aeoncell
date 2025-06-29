@@ -506,12 +506,10 @@ class DashboardPage(ctk.CTkFrame):
         self.volume_total_var = ctk.StringVar(value=0)
         self.sets_total_var = ctk.StringVar(value=0)
 
-        self.location_var = ctk.StringVar()
+        self.location_var = ctk.StringVar(value="Forecast Unavailable")
         self.last_updated_var = ctk.StringVar()
         self.temp_var = ctk.StringVar()
         self.weather_type_var = ctk.StringVar()
-        # find a temp image to have as a placeholder incase weather code isnt apart of recognised wmo codes, else display recognised weather code icon
-        
 
         # recent exercises section related variables
         style = btk.Style()
@@ -1311,28 +1309,33 @@ class DashboardPage(ctk.CTkFrame):
         latitude = data["latitude"]
         longitude = data["longitude"]
 
-        # get weather forecast based on latitude x longitude
-        weather_response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,weather_code&timezone=auto")
-        weather_data = weather_response.json()
-        current_units = weather_data["current_units"]
-        current_values = weather_data["current"]
+        # try-except to ensure app still runs even if the weather request times out
+        try:
+            # get weather forecast based on latitude x longitude
+            weather_response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,weather_code&timezone=auto")
+            weather_data = weather_response.json()
+            current_units = weather_data["current_units"]
+            current_values = weather_data["current"]
 
-        # format retrieved data
-        location = weather_data["timezone"]
-        last_updated_time = f"Last Updated: {current_values["time"][11:]}"
-        temperature = f"{current_values["temperature_2m"]} {current_units["temperature_2m"]}"
-        weather_code = current_values["weather_code"]
+            # format retrieved data
+            location = weather_data["timezone"]
+            last_updated_time = f"Last Updated: {current_values["time"][11:]}"
+            temperature = f"{current_values["temperature_2m"]} {current_units["temperature_2m"]}"
+            weather_code = current_values["weather_code"]
 
-        # set display widgets with formatted string
-        self.location_var.set(location)
-        self.last_updated_var.set(last_updated_time)
-        self.temp_var.set(temperature)
-        
-        # determine which weather icon to display based on wmo code reading
-        for i in range(len(wmo_list)):
-            if weather_code in wmo_list[i][0]:
-                self.weather_icon.configure(light_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), dark_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), size=(64, 64))
-                self.weather_type_var.set(wmo_list[i][1].capitalize())
+            # set display widgets with formatted string
+            self.location_var.set(location)
+            self.last_updated_var.set(last_updated_time)
+            self.temp_var.set(temperature)
+            
+            # determine which weather icon to display based on wmo code reading
+            for i in range(len(wmo_list)):
+                if weather_code in wmo_list[i][0]:
+                    self.weather_icon.configure(light_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), dark_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), size=(64, 64))
+                    self.weather_type_var.set(wmo_list[i][1].capitalize())  
+        except requests.exceptions.Timeout:
+            # do nothing and continue app startup
+            pass
 
     def populate_entries_display(self):
         # update the entries list by first resetting existing data
