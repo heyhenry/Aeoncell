@@ -80,6 +80,8 @@ class Windows(ctk.CTk):
             page.retrieve_profile_details()
             page.random_motivational_quote()
             page.populate_entries_display()
+        elif selected_page in (SingleEntryPage, SessionEntryPage):
+            page.reset_date()
         elif selected_page == SettingsPage:
             page.retrieve_current_info()
 
@@ -1301,6 +1303,7 @@ class BaseEntryPage(ctk.CTkFrame):
         self.entry_type = entry_type
         self.btn_name = btn_name
         self.type_var = ctk.StringVar(value=self.entry_type)
+        self.today = self.controller.today
 
         self.single_entry_icon = ctk.CTkImage(light_image=Image.open("img/dumbbell.png"), dark_image=Image.open("img/dumbbell.png"), size=(48, 48))
         self.session_entry_icon = ctk.CTkImage(light_image=Image.open("img/barbell.png"), dark_image=Image.open("img/barbell.png"), size=(48, 48))
@@ -1503,6 +1506,11 @@ class BaseEntryPage(ctk.CTkFrame):
             self.clear_entry_fields()
             self.label_entry.delete(0, ctk.END)
             self.controller.show_page(SingleEntryPage)
+
+    # automatically insert today's date into the date entry field
+    def reset_date(self):
+        self.date_entry.delete(0, "end")
+        self.date_entry.insert(0, self.today)
 
 class SingleEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
