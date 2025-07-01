@@ -25,6 +25,11 @@ class DatabaseManager:
         self.db_cursor.execute("INSERT INTO profile_details (username, password) values (?, ?)", (username, password))
         self.db_connection.commit()
 
+    def update_password(self, password):
+        hashed_password = self.ph.hash(password)
+        self.db_cursor.execute("UPDATE authentication set hashed_password = ?", (hashed_password,))
+        self.db_connection.commit()
+
     def verify_password(self, given_password):
         self.db_cursor.execute("SELECT hashed_password FROM authentication WHERE rowid=1")
         result = self.db_cursor.fetchone()
@@ -98,13 +103,13 @@ class DatabaseManager:
             height INTEGER DEFAULT 0,
             current_weight INTEGER DEFAULT 0,
             goal_weight INTEGER DEFAULT 0,
-            daily_sleep_goal REAL DEFAULT 0.00,
+            daily_sleep_goal REAL DEFAULT 0.0,
             daily_steps_goal INTEGER DEFAULT 0,
-            daily_hydration_goal REAL DEFAULT 0.00,
+            daily_hydration_goal REAL DEFAULT 0.0,
             monthly_weight_choice TEXT DEFAULT '',
             monthly_weight_goal INTEGER DEFAULT 0,
-            monthly_hydration_goal REAL DEFAULT 0.00,
-            monthly_sleep_goal REAL DEFAULT 0.00,
+            monthly_hydration_goal REAL DEFAULT 0.0,
+            monthly_sleep_goal REAL DEFAULT 0.0,
             monthly_steps_goal INTEGER DEFAULT 0
         )
         """
