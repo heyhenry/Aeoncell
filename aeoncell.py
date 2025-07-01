@@ -1919,6 +1919,7 @@ class SettingsPage(ctk.CTkFrame):
     # updates the profile set by user
     def process_profile(self):
         username = self.profile_username_var.get()
+        password = self.profile_password_var.get()
         first_name = self.profile_first_name_var.get()
         last_name = self.profile_last_name_var.get()
         age = self.profile_age_var.get()
@@ -1928,6 +1929,7 @@ class SettingsPage(ctk.CTkFrame):
         update_profile_details_query = """
         UPDATE profile_details
         SET username = ?,
+        password = ?,
         first_name = ?,
         last_name = ?,
         age = ?,
@@ -1936,9 +1938,13 @@ class SettingsPage(ctk.CTkFrame):
         goal_weight = ?
         WHERE rowid=1
         """
-        self.controller.db_cursor.execute(update_profile_details_query, (username, first_name, last_name, age, height, current_weight, goal_weight))
+        self.controller.db_cursor.execute(update_profile_details_query, (username, password, first_name, last_name, age, height, current_weight, goal_weight))
         self.controller.db_connection.commit()
 
+        # check if new password was given, only then update the password in the database (as it requires rehashing)
+        if not self.db.verify_password(password):
+            print("new password detected! password change occurred.")
+            self.db_update_password()
         # update the login's username value
         self.controller.db_cursor.execute("UPDATE authentication SET username = ?", (username,))
         self.controller.db_connection.commit()
