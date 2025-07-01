@@ -37,7 +37,6 @@ class Windows(ctk.CTk):
         ]
 
         self.username = ctk.StringVar()
-        self.user_profile_img = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(120,120))
         self.app_icon_img = ctk.CTkImage(light_image=Image.open("img/capsule_original_recround.png"), dark_image=Image.open("img/capsule_original_recround.png"), size=(64,64))
 
         self.title("Aeoncell")
@@ -352,6 +351,7 @@ class LoginPage(ctk.CTkFrame):
         self.username_var = ctk.StringVar()
         self.password_var = ctk.StringVar()
 
+        self.user_profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(120,120))
         self.masked_password_icon = ctk.CTkImage(light_image=Image.open("img/pw_masked.png"), dark_image=Image.open("img/pw_masked.png"), size=(32, 32))
         self.unmasked_password_icon = ctk.CTkImage(light_image=Image.open("img/pw_unmasked.png"), dark_image=Image.open("img/pw_unmasked.png"), size=(32, 32))
 
@@ -393,7 +393,7 @@ class LoginPage(ctk.CTkFrame):
         # internal widgets for the login form
         app_name = ctk.CTkLabel(login_form, text="Aeoncell", font=("", 18))
         form_name = ctk.CTkLabel(login_form, text="Login", font=("", 48))
-        profile_image = ctk.CTkLabel(login_form, text="", image=self.controller.user_profile_img)
+        self.profile_image = ctk.CTkLabel(login_form, text="", image=self.user_profile_image)
         self.welcome_message = ctk.CTkLabel(login_form, textvariable=self.username_var, font=("", 24))
         password_title = ctk.CTkLabel(login_form, text="Enter Password:", font=("", 24))
         self.password_entry = ctk.CTkEntry(login_form, show="*", textvariable=self.password_var, font=("", 24), width=300)
@@ -403,7 +403,7 @@ class LoginPage(ctk.CTkFrame):
 
         app_name.grid(row=1, column=1, columnspan=2)
         form_name.grid(row=2, column=1, columnspan=2, pady=(10, 20))
-        profile_image.grid(row=3, column=1, columnspan=2, pady=(0, 30))
+        self.profile_image.grid(row=3, column=1, columnspan=2, pady=(0, 30))
         self.welcome_message.grid(row=4, column=1, columnspan=2, pady=(0, 40))
         password_title.grid(row=5, column=1, columnspan=2, sticky="w")
         self.password_entry.grid(row=6, column=1, pady=(0, 10))
@@ -422,6 +422,10 @@ class LoginPage(ctk.CTkFrame):
     def update_login_message(self):
         username = self.controller.username.get()
         self.username_var.set(f"Logged in as [{username}]")
+
+    def update_login_profile_image(self):
+        self.user_profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(120,120))
+        self.profile_image.configure(image=self.user_profile_image)
 
     def process_login(self, event=None):
         password = self.password_var.get()
@@ -985,7 +989,7 @@ class DashboardPage(ctk.CTkFrame):
         ]
         self.motivational_message.set(random.choice(motivational_quotes))
 
-    def update_profile_image(self):
+    def update_dashboard_profile_image(self):
         # reloads both the image widget and image attribute by re-reading the file with the new image
         self.profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(192, 192))
         self.profile_image_display.configure(image=self.profile_image)
@@ -2115,8 +2119,9 @@ class SettingsPage(ctk.CTkFrame):
             temp_image.save("img/user_profile.png")
             # remove the temporary image save -> 'temp_profile_image.png'
             os.remove("img/temp_profile_image.png")
-        # updates the profile image on the dashboard in simultaneously
-        self.controller.pages[DashboardPage].update_profile_image()
+        # updates the profile image on the dashboard and login simultaneously
+        self.controller.pages[DashboardPage].update_dashboard_profile_image()
+        self.controller.pages[LoginPage].update_login_profile_image()
 
     # reset the profile image preview display
     def reset_profile_preview(self):
