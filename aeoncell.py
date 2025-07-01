@@ -1778,7 +1778,7 @@ class SettingsPage(ctk.CTkFrame):
         #region [Parent Frames]
         page_title = ctk.CTkLabel(content, text="Settings", font=("", 24))
         page_message = ctk.CTkLabel(content, text="Update your information here", font=("", 14))
-        self.profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=900, height=650)
+        self.profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=900, height=750)
         self.daily_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=900, height=430)
         self.monthly_goals_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=900, height=450)
 
@@ -1926,11 +1926,11 @@ class SettingsPage(ctk.CTkFrame):
             # newly selected profile image storage
             new_profile_image = ctk.CTkImage(light_image=temp_profile_image, dark_image=temp_profile_image, size=(128, 128))
             # increase section box area size to accomodate new widgets
-            self.profile_section.configure(height=760)
+            self.profile_section.configure(height=860)
             # showcase the selected image
             self.profile_image_preview.configure(image=new_profile_image)
             # display informative message to user about their action
-            self.profile_image_message.configure(text="Image Preview")
+            self.profile_image_message.configure(text="Image Preview", font=("", 18))
 
     # updates the profile set by user
     def process_profile(self):
@@ -2109,8 +2109,6 @@ class SettingsPage(ctk.CTkFrame):
         # updating user's profile image
         # check if a temp profile image exists aka user has selected a new image
         if os.path.isfile("img/temp_profile_image.png"):
-            # log check
-            print('temp profile image found!')
             # open the new profile image that's temporarily stored
             temp_image = Image.open("img/temp_profile_image.png")
             # update the user's profile image by overriding the user_profile.png by just renaming the new desire as 'user_profile.png'
@@ -2133,7 +2131,7 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_image_preview = ctk.CTkLabel(self.profile_section, text="")
         self.profile_image_preview.grid(row=3, column=0, padx=30)
         self.profile_image_message.configure(text="")
-        self.profile_section.configure(height=650)
+        self.profile_section.configure(height=750)
 
 if __name__ == "__main__":
     app = Windows()
