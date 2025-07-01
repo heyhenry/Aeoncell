@@ -1958,9 +1958,9 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_connection.commit()
 
         # check if new password was given, only then update the password in the database (as it requires rehashing)
-        if not self.db.verify_password(password):
+        if not self.controller.db.verify_password(password):
             print("new password detected! password change occurred.")
-            self.db_update_password()
+            self.controller.db.update_password(password)
         # update the login's username value
         self.controller.db_cursor.execute("UPDATE authentication SET username = ?", (username,))
         self.controller.db_connection.commit()
