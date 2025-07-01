@@ -2059,6 +2059,7 @@ class SettingsPage(ctk.CTkFrame):
         # listed profile detail initialised variables in order of sql table
         entry_vars = [
             self.profile_username_var,
+            self.profile_password_var,
             self.profile_first_name_var,
             self.profile_last_name_var,
             self.profile_age_var,
@@ -2076,6 +2077,7 @@ class SettingsPage(ctk.CTkFrame):
         retrieve_current_data = """
         SELECT 
             username,
+            password,
             first_name,
             last_name,
             age,
