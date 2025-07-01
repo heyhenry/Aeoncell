@@ -1071,8 +1071,15 @@ class DashboardPage(ctk.CTkFrame):
         self.update_daily_goal_progression_displays()
 
     def update_daily_goal_progression_displays(self):
+        steps_goal = 0
+        sleep_goal = 0.0
+        hydration_goal = 0.0
+
         self.controller.db_cursor.execute("SELECT daily_steps_goal, daily_sleep_goal, daily_hydration_goal FROM profile_details WHERE rowid=1")
-        steps_goal, sleep_goal, hydration_goal = self.controller.db_cursor.fetchone()
+        result = self.controller.db_cursor.fetchone()
+
+        if result:
+            steps_goal, sleep_goal, hydration_goal = result
 
         # set goal variables for later use (for progress bar setting)
         self.steps_goal.set(steps_goal)
@@ -1087,17 +1094,26 @@ class DashboardPage(ctk.CTkFrame):
     def update_steps_progressbar(self):
         current_progress = int(self.steps_current_progress.get())
         total_progress = int(self.steps_goal.get())
-        self.walking_progressbar.set(current_progress/total_progress)
+        try:
+            self.walking_progressbar.set(current_progress/total_progress)
+        except ZeroDivisionError:
+            self.walking_progressbar.set(0)
 
     def update_hydration_progressbar(self):
         current_progress = float(self.hydration_current_progress.get())
         total_progress = float(self.hydration_goal.get())
-        self.hydration_progressbar.set(current_progress/total_progress)
-    
+        try:
+            self.hydration_progressbar.set(current_progress/total_progress)
+        except ZeroDivisionError:
+            self.hydration_progressbar.set(0)
+
     def update_sleep_progressbar(self):
         current_progress = float(self.sleep_current_progress.get())
         total_progress = float(self.sleep_goal.get())
-        self.sleep_progressbar.set(current_progress/total_progress)
+        try:
+            self.sleep_progressbar.set(current_progress/total_progress)
+        except ZeroDivisionError:
+            self.sleep_progressbar.set(0)
 
     def process_steps_entry(self):
         input_value = self.steps_var.get()
