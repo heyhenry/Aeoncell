@@ -97,3 +97,4 @@ Timeout for python requests.get entire response (29th June 2025): https://stacko
 python requests httpsconnectionpool read timed out (29th June 2025): https://www.pythonrequests.com/python-requests-httpsconnectionpool-read-timed-out/
 Graceful Degradation: Handling Errors Without Disrupting User Experience (29th June 2025): https://medium.com/@satyendra.jaiswal/graceful-degradation-handling-errors-without-disrupting-user-experience-fd4947a24011
 Understanding Graceful and Ungraceful Error Handling (29th June 2025): https://medium.com/@yasin162001/understanding-graceful-and-ungraceful-error-handling-9c6b3d83b3ed
+ZeroDivisionError | Real Python (1st July 2025): https://realpython.com/ref/builtin-exceptions/zerodivisionerror/
