@@ -1310,41 +1310,42 @@ class DashboardPage(ctk.CTkFrame):
             self.volume_total_var.set(weights_sum)
 
     def update_weather_forecast(self):
-        wmo_list = self.controller.wmo_codes
+        pass # temp during multiple startups to test other sections of the app..
+        # wmo_list = self.controller.wmo_codes
 
-        # get user's approximate location
-        ip_response = requests.get("https://get.geojs.io/v1/ip/geo.json")
-        data = ip_response.json()
-        latitude = data["latitude"]
-        longitude = data["longitude"]
+        # # get user's approximate location
+        # ip_response = requests.get("https://get.geojs.io/v1/ip/geo.json")
+        # data = ip_response.json()
+        # latitude = data["latitude"]
+        # longitude = data["longitude"]
 
-        # try-except to ensure app still runs even if the weather request times out
-        try:
-            # get weather forecast based on latitude x longitude
-            weather_response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,weather_code&timezone=auto")
-            weather_data = weather_response.json()
-            current_units = weather_data["current_units"]
-            current_values = weather_data["current"]
+        # # try-except to ensure app still runs even if the weather request times out
+        # try:
+        #     # get weather forecast based on latitude x longitude
+        #     weather_response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,weather_code&timezone=auto")
+        #     weather_data = weather_response.json()
+        #     current_units = weather_data["current_units"]
+        #     current_values = weather_data["current"]
 
-            # format retrieved data
-            location = weather_data["timezone"]
-            last_updated_time = f"Last Updated: {current_values["time"][11:]}"
-            temperature = f"{current_values["temperature_2m"]} {current_units["temperature_2m"]}"
-            weather_code = current_values["weather_code"]
+        #     # format retrieved data
+        #     location = weather_data["timezone"]
+        #     last_updated_time = f"Last Updated: {current_values["time"][11:]}"
+        #     temperature = f"{current_values["temperature_2m"]} {current_units["temperature_2m"]}"
+        #     weather_code = current_values["weather_code"]
 
-            # set display widgets with formatted string
-            self.location_var.set(location)
-            self.last_updated_var.set(last_updated_time)
-            self.temp_var.set(temperature)
+        #     # set display widgets with formatted string
+        #     self.location_var.set(location)
+        #     self.last_updated_var.set(last_updated_time)
+        #     self.temp_var.set(temperature)
             
-            # determine which weather icon to display based on wmo code reading
-            for i in range(len(wmo_list)):
-                if weather_code in wmo_list[i][0]:
-                    self.weather_icon.configure(light_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), dark_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), size=(64, 64))
-                    self.weather_type_var.set(wmo_list[i][1].capitalize())  
-        except requests.exceptions.Timeout:
-            # do nothing and continue app startup
-            pass
+        #     # determine which weather icon to display based on wmo code reading
+        #     for i in range(len(wmo_list)):
+        #         if weather_code in wmo_list[i][0]:
+        #             self.weather_icon.configure(light_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), dark_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), size=(64, 64))
+        #             self.weather_type_var.set(wmo_list[i][1].capitalize())  
+        # except requests.exceptions.Timeout:
+        #     # do nothing and continue app startup
+        #     pass
 
     def populate_entries_display(self):
         # update the entries list by first resetting existing data
@@ -1696,6 +1697,7 @@ class SettingsPage(ctk.CTkFrame):
 
         # profile related vars
         self.profile_username_var = ctk.StringVar()
+        self.profile_password_var = ctk.StringVar()
         self.profile_first_name_var = ctk.StringVar()
         self.profile_last_name_var = ctk.StringVar()
         self.profile_age_var = ctk.StringVar()
@@ -1783,6 +1785,8 @@ class SettingsPage(ctk.CTkFrame):
         self.profile_image_message = ctk.CTkLabel(self.profile_section, text="", font=("", 14))
         profile_username_title = ctk.CTkLabel(self.profile_section, text="Username:", font=("", 18))
         self.profile_username_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_username_var)
+        profile_password_title = ctk.CTkLabel(self.profile_section, text="Password:", font=("", 18))
+        self.profile_password_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_password_var)
         profile_first_name_title = ctk.CTkLabel(self.profile_section, text="First Name:", font=("", 18))
         self.profile_first_name_entry = ctk.CTkEntry(self.profile_section, font=("", 24), width=350, textvariable=self.profile_first_name_var)
         profile_last_name_title = ctk.CTkLabel(self.profile_section, text="Last Name:", font=("", 18))
@@ -1801,24 +1805,26 @@ class SettingsPage(ctk.CTkFrame):
         profile_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
         profile_image_title.grid(row=1, column=0, padx=30, sticky="w")
         profile_browse_image_select.grid(row=2, column=0, padx=30, pady=10)
-        self.profile_image_preview.grid(row=3, column=0, padx=30)
-        self.profile_image_message.grid(row=4, column=0, padx=30)
+        self.profile_image_preview.grid(row=3, rowspan=3, column=0, padx=30)
+        self.profile_image_message.grid(row=6, column=0, padx=30)
         profile_username_title.grid(row=1, column=1, padx=30, sticky="w")
         self.profile_username_entry.grid(row=2, column=1, padx=30)
-        profile_first_name_title.grid(row=5, column=0, padx=30, sticky="w")
-        self.profile_first_name_entry.grid(row=6, column=0, padx=30)
-        profile_last_name_title.grid(row=5, column=1, padx=30, sticky="w")
-        self.profile_last_name_entry.grid(row=6, column=1, padx=30)
-        profile_age_title.grid(row=7, column=0, padx=30, pady=(30, 0), sticky="w")
-        self.profile_age_entry.grid(row=8, column=0, padx=30)
-        profile_height_title.grid(row=7, column=1, padx=30, pady=(30, 0), sticky="w")
-        self.profile_height_entry.grid(row=8, column=1, padx=30)
-        profile_current_weight_title.grid(row=9, column=0, padx=30, pady=(30, 0), sticky="w")
-        self.profile_current_weight_entry.grid(row=10, column=0, padx=30)
-        profile_goal_weight_title.grid(row=9, column=1, padx=30, pady=(30, 0), sticky="w")
-        self.profile_goal_weight_entry.grid(row=10, column=1, padx=30)
-        self.profile_action_message.grid(row=11, column=0, columnspan=2, pady=20)
-        profile_update_button.grid(row=12, column=0, columnspan=2)
+        profile_password_title.grid(row=5, column=1, padx=30, pady=(30, 0), sticky="w")
+        self.profile_password_entry.grid(row=6, column=1, padx=30)
+        profile_first_name_title.grid(row=7, column=0, padx=30, pady=(30, 0), sticky="w")
+        self.profile_first_name_entry.grid(row=8, column=0, padx=30)
+        profile_last_name_title.grid(row=7, column=1, padx=30, pady=(30, 0), sticky="w")
+        self.profile_last_name_entry.grid(row=8, column=1, padx=30)
+        profile_age_title.grid(row=9, column=0, padx=30, pady=(30, 0), sticky="w")
+        self.profile_age_entry.grid(row=10, column=0, padx=30)
+        profile_height_title.grid(row=9, column=1, padx=30, pady=(30, 0), sticky="w")
+        self.profile_height_entry.grid(row=10, column=1, padx=30)
+        profile_current_weight_title.grid(row=11, column=0, padx=30, pady=(30, 0), sticky="w")
+        self.profile_current_weight_entry.grid(row=12, column=0, padx=30)
+        profile_goal_weight_title.grid(row=11, column=1, padx=30, pady=(30, 0), sticky="w")
+        self.profile_goal_weight_entry.grid(row=12, column=1, padx=30)
+        self.profile_action_message.grid(row=13, column=0, columnspan=2, pady=20)
+        profile_update_button.grid(row=14, column=0, columnspan=2)
 
         # profile related binds
         self.profile_username_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, self.profile_username_entry, 10))
