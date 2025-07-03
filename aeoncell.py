@@ -508,6 +508,7 @@ class DashboardPage(ctk.CTkFrame):
         self.profile_current_weight_var = ctk.StringVar()
         self.profile_goal_weight_var = ctk.StringVar()
         self.profile_name_display = ctk.StringVar()
+        self.monthly_weight_choice_display = ctk.StringVar()
 
         # daily section related variables
         self.steps_var = ctk.StringVar()
@@ -650,7 +651,7 @@ class DashboardPage(ctk.CTkFrame):
         
         profile_monthly_section = ctk.CTkFrame(profile_section, border_color="blue", fg_color="transparent")
         profile_monthly_title = ctk.CTkLabel(profile_monthly_section, text="Monthly Progress", font=("", 32))
-        profile_monthly_weight_title = ctk.CTkLabel(profile_monthly_section, text="Weight Loss", font=("", 18))
+        profile_monthly_weight_title = ctk.CTkLabel(profile_monthly_section, textvariable=self.monthly_weight_choice_display, font=("", 18))
         profile_monthly_weight_info = ctk.CTkLabel(profile_monthly_section, text="2/5 kilos", font=("", 14))
         profile_monthly_weight_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
         profile_sleep_title = ctk.CTkLabel(profile_monthly_section, text="Sleep", font=("", 18))
@@ -1936,9 +1937,11 @@ class SettingsPage(ctk.CTkFrame):
         if self.monthly_weight_choice_var.get() == "lose":
             self.gain_weight_button.configure(fg_color="red")
             self.lose_weight_button.configure(fg_color="green")
+            self.controller.pages[DashboardPage].monthly_weight_choice_display.set("Weight Lost")
         else:
-            self.lose_weight_button.configure(fg_color="green")
-            self.gain_weight_button.configure(fg_color="red")
+            self.lose_weight_button.configure(fg_color="red")
+            self.gain_weight_button.configure(fg_color="green")
+            self.controller.pages[DashboardPage].monthly_weight_choice_display.set("Weight Gained")
 
         # monthly related binds
         self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
@@ -2080,6 +2083,11 @@ class SettingsPage(ctk.CTkFrame):
         """
         self.controller.db_cursor.execute(update_monthly_goals_query, (weight_choice, weight, steps, hydration, sleep))
         self.controller.db_connection.commit()
+        # Update the dashboard's profile section for weight choice in real-time
+        if weight_choice == "lose":
+            self.controller.pages[DashboardPage].monthly_weight_choice_display.set("Weight Lost")
+        elif weight_choice == "gain":
+            self.controller.pages[DashboardPage].monthly_weight_choice_display.set("Weight Gained")
         self.show_action_message(self.monthly_action_message)
 
     # display a temporary notification letting the user know of the successful action
@@ -2111,6 +2119,7 @@ class SettingsPage(ctk.CTkFrame):
             self.daily_sleep_var,
             self.daily_walking_var,
             self.daily_hydration_var,
+            self.monthly_weight_choice_var,
             self.monthly_weight_var,
             self.monthly_hydration_var,
             self.monthly_sleep_var,
@@ -2129,6 +2138,7 @@ class SettingsPage(ctk.CTkFrame):
             daily_sleep_goal,
             daily_steps_goal,
             daily_hydration_goal,
+            monthly_weight_choice,
             monthly_weight_goal,
             monthly_hydration_goal,
             monthly_sleep_goal,
@@ -2140,9 +2150,13 @@ class SettingsPage(ctk.CTkFrame):
         result = self.controller.db_cursor.fetchone()
         # only proceed with updating entry fields if there is stored data found
         if result:
-            # loop through and set each variable with its saved data from the database
+            # loop through and set each variable with its saved data from the database except for monthly_weight_choice
             for i in range(len(result)):
-                entry_vars[i].set(result[i])
+                if i != 11:
+                    entry_vars[i].set(result[i])
+
+        # ensure the weight choice button is correctly selected
+        self.select_weight_choice(result[11])
 
         self.reset_profile_preview()
 
