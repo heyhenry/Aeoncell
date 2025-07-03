@@ -2,7 +2,8 @@ import customtkinter as ctk
 from tkinter import filedialog
 from database_manager import DatabaseManager
 import sqlite3
-from datetime import date
+from datetime import date, timedelta, datetime
+import calendar
 from aeoncell_utils import *
 from PIL import Image
 import os
@@ -508,7 +509,13 @@ class DashboardPage(ctk.CTkFrame):
         self.profile_current_weight_var = ctk.StringVar()
         self.profile_goal_weight_var = ctk.StringVar()
         self.profile_name_display = ctk.StringVar()
+
         self.monthly_weight_choice_display = ctk.StringVar()
+        self.monthly_sleep_display = ctk.StringVar()
+        self.monthly_sleep_goal_var = ctk.StringVar()
+        self.monthly_sleep_total_var = ctk.StringVar()  
+
+
 
         # daily section related variables
         self.steps_var = ctk.StringVar()
@@ -1051,6 +1058,17 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_name_display.set(last_name)
         else:
             self.profile_name_display.set(self.controller.username.get())
+
+    # get list of all the dates in the current month
+    def get_all_dates_of_current_month():
+        month = datetime.now().month
+        year = datetime.now().year
+        number_of_days = calendar.monthrange(year, month)[1]
+        first_date = date(year, month, 1)
+        last_date = date(year, month, number_of_days)
+        delta = last_date - first_date
+
+        return [(first_date + timedelta(days=i)).strftime('%d-%m-%Y') for i in range(delta.days + 1)]
 
     def daily_section_initialisation(self):
         # [ Walking ]
