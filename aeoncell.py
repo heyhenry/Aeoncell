@@ -11,7 +11,6 @@ from CTkXYFrame import *
 from tkinter import ttk as btk
 import random
 import requests
-import math
 
 ctk.set_appearance_mode("Light")
 ctk.set_default_color_theme("themes/custom_lavender.json")
@@ -520,8 +519,7 @@ class DashboardPage(ctk.CTkFrame):
         self.monthly_sleep_display = ctk.StringVar()
         self.monthly_sleep_goal_var = ctk.StringVar()
         self.monthly_sleep_current_var = ctk.StringVar()  
-        # all dates for the current month
-        # self.dates_list = self.get_all_dates_of_current_month()
+        # set monthly_sleep_current_var value
         self.update_sum_monthly_sleep_minutes()
 
 
@@ -1069,17 +1067,6 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_name_display.set(last_name)
         else:
             self.profile_name_display.set(self.controller.username.get())
-
-    # get list of all the dates in the current month
-    def get_all_dates_of_current_month(self):
-        month = datetime.now().month
-        year = datetime.now().year
-        number_of_days = calendar.monthrange(year, month)[1]
-        first_date = date(year, month, 1)
-        last_date = date(year, month, number_of_days)
-        delta = last_date - first_date
-
-        return [(first_date + timedelta(days=i)).strftime('%d-%m-%Y') for i in range(delta.days + 1)]
     
     # retrieve, sum and set total sleep value for current month
     def update_sum_monthly_sleep_minutes(self):
@@ -1093,6 +1080,7 @@ class DashboardPage(ctk.CTkFrame):
                 total_sleep += i[0]
         self.monthly_sleep_current_var.set(total_sleep)
 
+    # NOTE TO SELF!! NEED TO STILL IMPLEMENT FOR STEPS AND HYDRATION + ADD THIS AND MAYBE THE UPDATE_MONTHLY_PROGRESSBARS() TO PLACES LIKE SETTINGS AND DAILY TRACKERS FOR REAL TIME UPDATES.
     def update_monthly_goal_progression_displays(self):
         # for now just sleep
         monthly_sleep_goal = 0.0
@@ -1105,7 +1093,7 @@ class DashboardPage(ctk.CTkFrame):
         
         self.monthly_sleep_goal_var.set(monthly_sleep_goal)
 
-        self.monthly_sleep_display.set(f"{self.monthly_sleep_current_var.get()}/{self.monthly_sleep_goal_var.get()}")
+        self.monthly_sleep_display.set(f"{self.monthly_sleep_current_var.get()} / {self.monthly_sleep_goal_var.get()}")
 
     def update_monthly_progressbars(self):
         sleep_current_progress = float(self.monthly_sleep_current_var.get())
