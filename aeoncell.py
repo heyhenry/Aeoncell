@@ -519,9 +519,10 @@ class DashboardPage(ctk.CTkFrame):
         self.monthly_weight_choice_display = ctk.StringVar()
         self.monthly_sleep_display = ctk.StringVar()
         self.monthly_sleep_goal_var = ctk.StringVar()
-        self.monthly_sleep_total_var = ctk.StringVar()  
+        self.monthly_sleep_current_var = ctk.StringVar()  
         # all dates for the current month
-        self.dates_list = self.get_all_dates_of_current_month()
+        # self.dates_list = self.get_all_dates_of_current_month()
+        self.update_sum_monthly_sleep_minutes()
 
 
         # daily section related variables
@@ -567,10 +568,11 @@ class DashboardPage(ctk.CTkFrame):
         self.grid_columnconfigure(1, weight=1)
 
         self.update_welcome_user()
+        self.update_monthly_goal_progression_displays()
         self.daily_section_initialisation()
         self.update_exercise_summary()
         self.update_weather_forecast()
-        self.sum_monthly_sleep_minutes()
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -667,8 +669,8 @@ class DashboardPage(ctk.CTkFrame):
         profile_monthly_title = ctk.CTkLabel(profile_monthly_section, text="Monthly Progress", font=("", 32))
         profile_monthly_weight_info = ctk.CTkLabel(profile_monthly_section, textvariable=self.monthly_weight_choice_display, font=("", 24))
         profile_sleep_title = ctk.CTkLabel(profile_monthly_section, text="Sleep", font=("", 18))
-        profile_sleep_info = ctk.CTkLabel(profile_monthly_section, text="110/300 hours", font=("", 14))
-        profile_sleep_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
+        profile_sleep_info = ctk.CTkLabel(profile_monthly_section, textvariable=self.monthly_sleep_display, font=("", 14))
+        self.profile_sleep_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
         profile_hydration_title = ctk.CTkLabel(profile_monthly_section, text="Hydration", font=("", 18)) 
         profile_hydration_info = ctk.CTkLabel(profile_monthly_section, text="80/250 litres", font=("", 14))
         profile_hydration_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
@@ -731,7 +733,7 @@ class DashboardPage(ctk.CTkFrame):
         profile_monthly_weight_info.grid(row=1, rowspan=2, column=0, pady=(10, 0), sticky="w")
         profile_sleep_title.grid(row=3, column=0, pady=(20, 0), sticky="w")
         profile_sleep_info.grid(row=3, column=1, pady=(20, 0), sticky="e")
-        profile_sleep_progressbar.grid(row=4, column=0, columnspan=2)
+        self.profile_sleep_progressbar.grid(row=4, column=0, columnspan=2)
         profile_hydration_title.grid(row=5, column=0, pady=(20, 0), sticky="w")
         profile_hydration_info.grid(row=5, column=1, pady=(20, 0), sticky="e")
         profile_hydration_progressbar.grid(row=6, column=0, columnspan=2)
@@ -755,6 +757,8 @@ class DashboardPage(ctk.CTkFrame):
         fourth_badge_date.grid(row=6, column=1, pady=(0, 20))
 
         profile_section.grid_propagate(False)
+
+        self.update_monthly_progressbars()
         # endregion
 
         #region [ Subtitle Section ]
@@ -1077,7 +1081,8 @@ class DashboardPage(ctk.CTkFrame):
 
         return [(first_date + timedelta(days=i)).strftime('%d-%m-%Y') for i in range(delta.days + 1)]
     
-    def sum_monthly_sleep_minutes(self):
+    # retrieve, sum and set total sleep value for current month
+    def update_sum_monthly_sleep_minutes(self):
         total_sleep = 0.0
         current_month = self.controller.current_month
         current_year = self.controller.current_year
@@ -1086,7 +1091,29 @@ class DashboardPage(ctk.CTkFrame):
         if results:
             for i in results:
                 total_sleep += i[0]
-        self.monthly_sleep_total_var.set(total_sleep)
+        self.monthly_sleep_current_var.set(total_sleep)
+
+    def update_monthly_goal_progression_displays(self):
+        # for now just sleep
+        monthly_sleep_goal = 0.0
+
+        self.controller.db_cursor.execute("SELECT monthly_sleep_goal FROM profile_details WHERE rowid = 1")
+        results = self.controller.db_cursor.fetchone()
+
+        if results:
+            monthly_sleep_goal = results[0]
+        
+        self.monthly_sleep_goal_var.set(monthly_sleep_goal)
+
+        self.monthly_sleep_display.set(f"{self.monthly_sleep_current_var.get()}/{self.monthly_sleep_goal_var.get()}")
+
+    def update_monthly_progressbars(self):
+        sleep_current_progress = float(self.monthly_sleep_current_var.get())
+        sleep_total_progress = float(self.monthly_sleep_goal_var.get())
+        try:
+            self.profile_sleep_progressbar.set(sleep_current_progress/sleep_total_progress)
+        except ZeroDivisionError:
+            self.profile_sleep_progressbar.set(0)
 
     def daily_section_initialisation(self):
         # [ Walking ]
