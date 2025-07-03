@@ -2021,16 +2021,14 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.pages[DashboardPage].update_daily_goal_progression_displays()
 
     def select_weight_choice(self, selection):
-        print("??")
-        print(selection)
         if selection == "lose":
-            print("lose pressed")
             self.gain_weight_button.configure(fg_color="red")
             self.lose_weight_button.configure(fg_color="green")
+            self.monthly_weight_choice_var.set("lose")
         elif selection == "gain":
-            print('gain pressed')
             self.lose_weight_button.configure(fg_color="red")
             self.gain_weight_button.configure(fg_color="green")
+            self.monthly_weight_choice_var.set("gain")
 
     # updates the monthly goals set by user
     def process_monthly_goals(self):
