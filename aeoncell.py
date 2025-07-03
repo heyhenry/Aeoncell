@@ -18,6 +18,12 @@ class Windows(ctk.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # flag to use as reference determinant of whether to set default profile pic
+        db_exists = True
+
+        if not os.path.exists("aeoncell_database.db"):
+            db_exists = False
+
         self.db = DatabaseManager()
         self.db_connection = sqlite3.connect("aeoncell_database.db")
         self.db_cursor = self.db_connection.cursor()
@@ -66,6 +72,12 @@ class Windows(ctk.CTk):
         # center the app upon startup
         self.center_window(self, 1440, 900)
 
+        # auto set default page on startup and any time db is deleted and re-added on new startup
+        if not db_exists:
+            print(db_exists)
+            print("auto-defaulting-profile-pic")
+            self.set_default_profile_image()
+
         # self.show_page(DashboardPage)
         # determine initial page display based on user having a password (i.e. guaranteed account registration)
         if self.db.check_password_exists():
@@ -113,6 +125,12 @@ class Windows(ctk.CTk):
         x = (self.winfo_screenwidth() // 2) - (win_width // 2)
         y = (self.winfo_screenheight() // 2) - (win_height // 2)
         return widget_frame.geometry(f"{win_width}x{win_height}+{x}+{y}")
+
+    # auto set default profile image on creation of new db (usually only once for users, but in the case they delete the db file..)
+    def set_default_profile_image(self):
+        generate_round_frame_image("img/user_profile_asset.jpg", "user_profile")
+        self.pages[LoginPage].update_login_profile_image()
+        self.pages[DashboardPage].update_dashboard_profile_image()
 
 class Navbar(ctk.CTkFrame):
     def __init__(self, parent, controller):
