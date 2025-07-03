@@ -11,6 +11,7 @@ from CTkXYFrame import *
 from tkinter import ttk as btk
 import random
 import requests
+import math
 
 ctk.set_appearance_mode("Light")
 ctk.set_default_color_theme("themes/custom_lavender.json")
@@ -31,6 +32,11 @@ class Windows(ctk.CTk):
 
         self.today = date.today()
         self.today = self.today.strftime("%d-%m-%Y")
+
+        self.current_month = datetime.now().month
+        if self.current_month < 10:
+            self.current_month = f"0{self.current_month}"
+        self.current_year = datetime.now().year
 
         # weather reference codes (used by open-meteo)
         self.wmo_codes = [
@@ -514,7 +520,8 @@ class DashboardPage(ctk.CTkFrame):
         self.monthly_sleep_display = ctk.StringVar()
         self.monthly_sleep_goal_var = ctk.StringVar()
         self.monthly_sleep_total_var = ctk.StringVar()  
-
+        # all dates for the current month
+        self.dates_list = self.get_all_dates_of_current_month()
 
 
         # daily section related variables
@@ -563,7 +570,7 @@ class DashboardPage(ctk.CTkFrame):
         self.daily_section_initialisation()
         self.update_exercise_summary()
         self.update_weather_forecast()
-
+        self.sum_monthly_sleep_minutes()
         self.create_widgets()
 
     def create_widgets(self):
@@ -1060,7 +1067,7 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_name_display.set(self.controller.username.get())
 
     # get list of all the dates in the current month
-    def get_all_dates_of_current_month():
+    def get_all_dates_of_current_month(self):
         month = datetime.now().month
         year = datetime.now().year
         number_of_days = calendar.monthrange(year, month)[1]
@@ -1069,6 +1076,17 @@ class DashboardPage(ctk.CTkFrame):
         delta = last_date - first_date
 
         return [(first_date + timedelta(days=i)).strftime('%d-%m-%Y') for i in range(delta.days + 1)]
+    
+    def sum_monthly_sleep_minutes(self):
+        total_sleep = 0.0
+        current_month = self.controller.current_month
+        current_year = self.controller.current_year
+        self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date LIKE ?", (f'__-{current_month}-{current_year}',))
+        results = self.controller.db_cursor.fetchall()
+        if results:
+            for i in results:
+                total_sleep += i[0]
+        self.monthly_sleep_total_var.set(total_sleep)
 
     def daily_section_initialisation(self):
         # [ Walking ]
