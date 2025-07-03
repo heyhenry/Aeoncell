@@ -98,3 +98,5 @@ python requests httpsconnectionpool read timed out (29th June 2025): https://www
 Graceful Degradation: Handling Errors Without Disrupting User Experience (29th June 2025): https://medium.com/@satyendra.jaiswal/graceful-degradation-handling-errors-without-disrupting-user-experience-fd4947a24011
 Understanding Graceful and Ungraceful Error Handling (29th June 2025): https://medium.com/@yasin162001/understanding-graceful-and-ungraceful-error-handling-9c6b3d83b3ed
 ZeroDivisionError | Real Python (1st July 2025): https://realpython.com/ref/builtin-exceptions/zerodivisionerror/
+Get all dates of a current month using Python (3rd July 2025): https://stackoverflow.com/questions/56416917/get-all-dates-of-current-month-using-python
+SQLITE LIKE (3rd July 2025): https://www.sqlitetutorial.net/sqlite-like/
