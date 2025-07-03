@@ -651,9 +651,7 @@ class DashboardPage(ctk.CTkFrame):
         
         profile_monthly_section = ctk.CTkFrame(profile_section, border_color="blue", fg_color="transparent")
         profile_monthly_title = ctk.CTkLabel(profile_monthly_section, text="Monthly Progress", font=("", 32))
-        profile_monthly_weight_title = ctk.CTkLabel(profile_monthly_section, textvariable=self.monthly_weight_choice_display, font=("", 18))
-        profile_monthly_weight_info = ctk.CTkLabel(profile_monthly_section, text="2/5 kilos", font=("", 14))
-        profile_monthly_weight_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
+        profile_monthly_weight_info = ctk.CTkLabel(profile_monthly_section, textvariable=self.monthly_weight_choice_display, font=("", 24))
         profile_sleep_title = ctk.CTkLabel(profile_monthly_section, text="Sleep", font=("", 18))
         profile_sleep_info = ctk.CTkLabel(profile_monthly_section, text="110/300 hours", font=("", 14))
         profile_sleep_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
@@ -716,9 +714,7 @@ class DashboardPage(ctk.CTkFrame):
 
         # profile monthly section
         profile_monthly_title.grid(row=0, column=0, columnspan=2, pady=20)
-        profile_monthly_weight_title.grid(row=1, column=0, pady=(10, 0), sticky="w")
-        profile_monthly_weight_info.grid(row=1, column=1, pady=(10, 0), sticky="e")
-        profile_monthly_weight_progressbar.grid(row=2, column=0, columnspan=2)
+        profile_monthly_weight_info.grid(row=1, rowspan=2, column=0, pady=(10, 0), sticky="w")
         profile_sleep_title.grid(row=3, column=0, pady=(20, 0), sticky="w")
         profile_sleep_info.grid(row=3, column=1, pady=(20, 0), sticky="e")
         profile_sleep_progressbar.grid(row=4, column=0, columnspan=2)
@@ -1937,11 +1933,11 @@ class SettingsPage(ctk.CTkFrame):
         if self.monthly_weight_choice_var.get() == "lose":
             self.gain_weight_button.configure(fg_color="red")
             self.lose_weight_button.configure(fg_color="green")
-            self.controller.pages[DashboardPage].monthly_weight_choice_display.set("Weight Lost")
+            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Loss Goal: {self.monthly_weight_var.get()}kg")
         else:
             self.lose_weight_button.configure(fg_color="red")
             self.gain_weight_button.configure(fg_color="green")
-            self.controller.pages[DashboardPage].monthly_weight_choice_display.set("Weight Gained")
+            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Gain Goal: {self.monthly_weight_var.get()}kg")
 
         # monthly related binds
         self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
@@ -2085,9 +2081,9 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_connection.commit()
         # Update the dashboard's profile section for weight choice in real-time
         if weight_choice == "lose":
-            self.controller.pages[DashboardPage].monthly_weight_choice_display.set("Weight Lost")
+            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Loss Goal: {self.monthly_weight_var.get()}kg")
         elif weight_choice == "gain":
-            self.controller.pages[DashboardPage].monthly_weight_choice_display.set("Weight Gained")
+            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Gain Goal: {self.monthly_weight_var.get()}kg")
         self.show_action_message(self.monthly_action_message)
 
     # display a temporary notification letting the user know of the successful action
