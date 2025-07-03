@@ -1743,7 +1743,7 @@ class SettingsPage(ctk.CTkFrame):
             self.daily_hydration_var.set(result[2])
         
         # monthly related vars
-        self.monthly_weight_choice_var = ctk.StringVar()
+        self.monthly_weight_choice_var = ctk.StringVar(value="lose")
         self.monthly_weight_var = ctk.StringVar()
         self.monthly_hydration_var = ctk.StringVar()
         self.monthly_sleep_var = ctk.StringVar()
@@ -1889,8 +1889,8 @@ class SettingsPage(ctk.CTkFrame):
 
         #region [Monthly Section]
         monthly_title = ctk.CTkLabel(self.monthly_goals_section, text="Monthly Goals", font=("", 18))
-        lose_weight_button = ctk.CTkButton(self.monthly_goals_section, text="Lose Weight", height=40, font=("", 18))
-        gain_weight_button = ctk.CTkButton(self.monthly_goals_section, text="Gain Weight", height=40, font=("", 18))
+        self.lose_weight_button = ctk.CTkButton(self.monthly_goals_section, text="Lose Weight", height=40, font=("", 18), command=lambda: self.select_weight_choice("lose"))
+        self.gain_weight_button = ctk.CTkButton(self.monthly_goals_section, text="Gain Weight", height=40, font=("", 18), command=lambda: self.select_weight_choice("gain"))
         self.monthly_weight_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_weight_var)
         monthly_hydration_title = ctk.CTkLabel(self.monthly_goals_section, text="Hydration (L):", font=("", 24))
         self.monthly_hydration_entry = ctk.CTkEntry(self.monthly_goals_section, font=("", 24), width=350, textvariable=self.monthly_hydration_var)
@@ -1902,8 +1902,8 @@ class SettingsPage(ctk.CTkFrame):
         monthly_update_button = ctk.CTkButton(self.monthly_goals_section, text="Update Goals", height=60, width=200, font=("", 24), command=self.process_monthly_goals)
 
         monthly_title.grid(row=0, column=0, sticky="w", padx=30, pady=30)
-        lose_weight_button.grid(row=1, column=0, padx=(30, 0), pady=(0, 10), sticky="nw")
-        gain_weight_button.grid(row=1, column=1, pady=(0, 10), sticky="w")
+        self.lose_weight_button.grid(row=1, column=0, padx=(30, 0), pady=(0, 10), sticky="nw")
+        self.gain_weight_button.grid(row=1, column=1, pady=(0, 10), sticky="w")
         self.monthly_weight_entry.grid(row=2, column=0, columnspan=2, padx=30)
         monthly_hydration_title.grid(row=1, column=2, padx=30, pady=(0, 10), sticky="w")
         self.monthly_hydration_entry.grid(row=2, column=2, padx=30)
@@ -1913,6 +1913,14 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_walking_entry.grid(row=4, column=2, padx=30, pady=(5, 0))
         self.monthly_action_message.grid(row=5, column=0, columnspan=3, pady=20)
         monthly_update_button.grid(row=6, column=0, columnspan=3)
+
+        # determine pre-selection for weight choice button based on saved data
+        if self.monthly_weight_choice_var.get() == "lose":
+            self.gain_weight_button.configure(fg_color="red")
+            self.lose_weight_button.configure(fg_color="green")
+        else:
+            self.lose_weight_button.configure(fg_color="green")
+            self.gain_weight_button.configure(fg_color="red")
 
         # monthly related binds
         self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
@@ -2011,6 +2019,18 @@ class SettingsPage(ctk.CTkFrame):
         self.show_action_message(self.daily_action_message)
         # reinitialise the daily trackers with the updated data
         self.controller.pages[DashboardPage].update_daily_goal_progression_displays()
+
+    def select_weight_choice(self, selection):
+        print("??")
+        print(selection)
+        if selection == "lose":
+            print("lose pressed")
+            self.gain_weight_button.configure(fg_color="red")
+            self.lose_weight_button.configure(fg_color="green")
+        elif selection == "gain":
+            print('gain pressed')
+            self.lose_weight_button.configure(fg_color="red")
+            self.gain_weight_button.configure(fg_color="green")
 
     # updates the monthly goals set by user
     def process_monthly_goals(self):
