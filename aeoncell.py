@@ -519,8 +519,16 @@ class DashboardPage(ctk.CTkFrame):
         self.monthly_sleep_display = ctk.StringVar()
         self.monthly_sleep_goal_var = ctk.StringVar()
         self.monthly_sleep_current_var = ctk.StringVar()  
+        self.monthly_walking_display = ctk.StringVar()
+        self.monthly_walking_goal_var = ctk.StringVar()
+        self.monthly_walking_current_var = ctk.StringVar()
+        self.monthly_hydration_display = ctk.StringVar()
+        self.monthly_hydration_goal_var = ctk.StringVar()
+        self.monthly_hydration_current_var = ctk.StringVar()
         # set monthly_sleep_current_var value
         self.update_sum_monthly_sleep_minutes()
+        self.update_sum_monthly_walking_steps()
+        self.update_sum_monthly_hydration_consumption()
 
 
         # daily section related variables
@@ -670,11 +678,11 @@ class DashboardPage(ctk.CTkFrame):
         profile_sleep_info = ctk.CTkLabel(profile_monthly_section, textvariable=self.monthly_sleep_display, font=("", 14))
         self.profile_sleep_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
         profile_hydration_title = ctk.CTkLabel(profile_monthly_section, text="Hydration", font=("", 18)) 
-        profile_hydration_info = ctk.CTkLabel(profile_monthly_section, text="80/250 litres", font=("", 14))
-        profile_hydration_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
+        profile_hydration_info = ctk.CTkLabel(profile_monthly_section, textvariable=self.monthly_hydration_display, font=("", 14))
+        self.profile_hydration_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
         profile_walking_title = ctk.CTkLabel(profile_monthly_section, text="Walking", font=("", 18))
-        profile_walking_info = ctk.CTkLabel(profile_monthly_section, text="35,000/150,000 steps", font=("", 14))
-        profile_walking_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
+        profile_walking_info = ctk.CTkLabel(profile_monthly_section, textvariable=self.monthly_walking_display, font=("", 14))
+        self.profile_walking_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
         
         profile_achievements_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_achievements_title = ctk.CTkLabel(profile_achievements_section, text="Recent Achievements", font=("", 32))
@@ -734,10 +742,10 @@ class DashboardPage(ctk.CTkFrame):
         self.profile_sleep_progressbar.grid(row=4, column=0, columnspan=2)
         profile_hydration_title.grid(row=5, column=0, pady=(20, 0), sticky="w")
         profile_hydration_info.grid(row=5, column=1, pady=(20, 0), sticky="e")
-        profile_hydration_progressbar.grid(row=6, column=0, columnspan=2)
+        self.profile_hydration_progressbar.grid(row=6, column=0, columnspan=2)
         profile_walking_title.grid(row=7, column=0, pady=(20, 0), sticky="w")
         profile_walking_info.grid(row=7, column=1, pady=(20, 0), sticky="e")
-        profile_walking_progressbar.grid(row=8, column=0, columnspan=2)
+        self.profile_walking_progressbar.grid(row=8, column=0, columnspan=2)
 
         # profile achievements section
         profile_achievements_title.grid(row=0, column=0, columnspan=2, padx=20, pady=(10, 60))
@@ -1080,28 +1088,73 @@ class DashboardPage(ctk.CTkFrame):
                 total_sleep += i[0]
         self.monthly_sleep_current_var.set(total_sleep)
 
+    def update_sum_monthly_walking_steps(self):
+        total_steps = 0
+        current_month = self.controller.current_month
+        current_year = self.controller.current_year
+        self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date LIKE ?", (f'__-{current_month}-{current_year}',))
+        results = self.controller.db_cursor.fetchall()
+        if results:
+            for i in results:
+                total_steps += i[0]
+        self.monthly_walking_current_var.set(total_steps)
+
+    def update_sum_monthly_hydration_consumption(self):
+        total_consumption = 0.0
+        current_month = self.controller.current_month
+        current_year = self.controller.current_year
+        self.controller.db_cursor.execute("SELECT consumption_ml FROM hydration_tracker WHERE date LIKE ?", (f'__-{current_month}-{current_year}',))
+        results = self.controller.db_cursor.fetchall()
+        if results:
+            for i in results:
+                total_consumption += i[0]
+        self.monthly_hydration_current_var.set(total_consumption)
+
     # NOTE TO SELF!! NEED TO STILL IMPLEMENT FOR STEPS AND HYDRATION + ADD THIS AND MAYBE THE UPDATE_MONTHLY_PROGRESSBARS() TO PLACES LIKE SETTINGS AND DAILY TRACKERS FOR REAL TIME UPDATES.
     def update_monthly_goal_progression_displays(self):
         # for now just sleep
         monthly_sleep_goal = 0.0
+        monthly_walking_goal = 0
+        monthly_hydration_goal = 0.0
 
-        self.controller.db_cursor.execute("SELECT monthly_sleep_goal FROM profile_details WHERE rowid = 1")
+        self.controller.db_cursor.execute("SELECT monthly_sleep_goal, monthly_steps_goal, monthly_hydration_goal FROM profile_details WHERE rowid = 1")
         results = self.controller.db_cursor.fetchone()
 
         if results:
             monthly_sleep_goal = results[0]
+            monthly_walking_goal = results[1]
+            monthly_hydration_goal = results[2]
         
         self.monthly_sleep_goal_var.set(monthly_sleep_goal)
-
+        self.monthly_walking_goal_var.set(monthly_walking_goal)
+        self.monthly_hydration_goal_var.set(monthly_hydration_goal)
+        
         self.monthly_sleep_display.set(f"{self.monthly_sleep_current_var.get()} / {self.monthly_sleep_goal_var.get()}")
+        self.monthly_walking_display.set(f"{self.monthly_walking_current_var.get()} / {self.monthly_walking_goal_var.get()}")
+        self.monthly_hydration_display.set(f"{self.monthly_hydration_current_var.get()} / {self.monthly_hydration_goal_var.get()}")
 
     def update_monthly_progressbars(self):
         sleep_current_progress = float(self.monthly_sleep_current_var.get())
         sleep_total_progress = float(self.monthly_sleep_goal_var.get())
+        walking_current_progress = int(self.monthly_walking_current_var.get())
+        walking_total_progress = int(self.monthly_walking_goal_var.get())
+        hydration_current_progress = float(self.monthly_hydration_current_var.get())
+        hydration_total_progress = float(self.monthly_hydration_goal_var.get())
+
         try:
             self.profile_sleep_progressbar.set(sleep_current_progress/sleep_total_progress)
         except ZeroDivisionError:
             self.profile_sleep_progressbar.set(0)
+
+        try:
+            self.profile_walking_progressbar.set(walking_current_progress/walking_total_progress)
+        except ZeroDivisionError:
+            self.profile_walking_progressbar.set(0)
+
+        try:
+            self.profile_hydration_progressbar.set(hydration_current_progress/hydration_total_progress)
+        except ZeroDivisionError:
+            self.profile_hydration_progressbar.set(0)
 
     def daily_section_initialisation(self):
         # [ Walking ]
