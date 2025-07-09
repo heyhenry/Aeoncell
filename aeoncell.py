@@ -484,6 +484,9 @@ class DashboardPage(ctk.CTkFrame):
         # multi-sectional use
         self.today = self.controller.today
 
+        # on startup variable is flagged true to indicate startup timestamp
+        self.on_startup = ctk.BooleanVar(value=True)
+
         # intro section
         self.welcome_message = ctk.StringVar()
         today_full = date.today()
@@ -1194,8 +1197,11 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_current_progress.set(minutes_slept)
 
         self.update_daily_goal_progression_displays()
+        self.on_startup.set(False)
 
     def update_daily_goal_progression_displays(self):
+        on_startup = self.on_startup.get()
+        print(f"startup status: {self.on_startup.get()}")
         steps_goal = 0
         sleep_goal = 0.0
         hydration_goal = 0.0
@@ -1203,19 +1209,23 @@ class DashboardPage(ctk.CTkFrame):
         self.controller.db_cursor.execute("SELECT daily_steps_goal, daily_sleep_goal, daily_hydration_goal FROM profile_details WHERE rowid=1")
         result = self.controller.db_cursor.fetchone()
 
+        # set temp variables with the data retrieved from the profile_details database
         if result:
             steps_goal, sleep_goal, hydration_goal = result
 
-        # set the latest daily progression data only if changes occur
-        if self.steps_goal != steps_goal:
-            self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {steps_goal}")
-            self.steps_goal.set(steps_goal)
-        if self.sleep_goal != sleep_goal:
-            self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {sleep_goal}")
-            self.sleep_goal.set(sleep_goal)
-        if self.hydration_goal != hydration_goal:
-            self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {hydration_goal}")
-            self.hydration_goal.set(hydration_goal)
+        # set the latest daily progression data only if changes 
+        self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {steps_goal}")
+        self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {sleep_goal}")
+        self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {hydration_goal}")
+        
+        self.steps_goal.set(steps_goal)
+        self.sleep_goal.set(sleep_goal)
+        self.hydration_goal.set(hydration_goal)
+
+        if not on_startup:
+            self.update_steps_progressbar()
+            self.update_sleep_progressbar()
+            self.update_hydration_progressbar()
 
     def update_steps_progressbar(self):
         current_progress = int(self.steps_current_progress.get())
