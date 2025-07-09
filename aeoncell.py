@@ -138,6 +138,12 @@ class Windows(ctk.CTk):
         self.pages[LoginPage].update_login_profile_image()
         self.pages[DashboardPage].update_dashboard_profile_image()
 
+    def validate_conversion_value(self, value, conversion_type, defaulted_value):
+        try:
+            return conversion_type(value)
+        except (ValueError, TypeError):
+            return defaulted_value
+
 class Navbar(ctk.CTkFrame):
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
@@ -1217,7 +1223,7 @@ class DashboardPage(ctk.CTkFrame):
         self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {steps_goal}")
         self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {sleep_goal}")
         self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {hydration_goal}")
-        
+
         self.steps_goal.set(steps_goal)
         self.sleep_goal.set(sleep_goal)
         self.hydration_goal.set(hydration_goal)
@@ -2136,9 +2142,9 @@ class SettingsPage(ctk.CTkFrame):
 
     # updates the daily goals set by user
     def process_daily_goals(self):
-        sleep = float(self.daily_sleep_var.get())
-        steps = int(self.daily_walking_var.get())
-        hydration = float(self.daily_hydration_var.get())
+        sleep = self.controller.validate_conversion_value(self.daily_sleep_var.get(), float, 0.0)
+        steps = self.controller.validate_conversion_value(self.daily_walking_var.get(), int, 0)
+        hydration = self.controller.validate_conversion_value(self.daily_hydration_var.get(), float, 0.0)
         
         # limiters in place to help discourage user from aiming for a dangerous lifestyle
         if sleep > 540.00:
