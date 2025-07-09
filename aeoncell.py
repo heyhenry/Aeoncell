@@ -1206,15 +1206,16 @@ class DashboardPage(ctk.CTkFrame):
         if result:
             steps_goal, sleep_goal, hydration_goal = result
 
-        # set goal variables for later use (for progress bar setting)
-        self.steps_goal.set(steps_goal)
-        self.sleep_goal.set(sleep_goal)
-        self.hydration_goal.set(hydration_goal)
-
-        # set the latest daily progression data
-        self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {steps_goal}")
-        self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {sleep_goal}")
-        self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {hydration_goal}")
+        # set the latest daily progression data only if changes occur
+        if self.steps_goal != steps_goal:
+            self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {steps_goal}")
+            self.steps_goal.set(steps_goal)
+        if self.sleep_goal != sleep_goal:
+            self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {sleep_goal}")
+            self.sleep_goal.set(sleep_goal)
+        if self.hydration_goal != hydration_goal:
+            self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {hydration_goal}")
+            self.hydration_goal.set(hydration_goal)
 
     def update_steps_progressbar(self):
         current_progress = int(self.steps_current_progress.get())
