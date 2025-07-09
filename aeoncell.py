@@ -2142,6 +2142,7 @@ class SettingsPage(ctk.CTkFrame):
 
     # updates the daily goals set by user
     def process_daily_goals(self):
+        # initialise variables with user's given entry values, if invalid value to type conversion, then use defaulted value.
         sleep = self.controller.validate_conversion_value(self.daily_sleep_var.get(), float, 0.0)
         steps = self.controller.validate_conversion_value(self.daily_walking_var.get(), int, 0)
         hydration = self.controller.validate_conversion_value(self.daily_hydration_var.get(), float, 0.0)
