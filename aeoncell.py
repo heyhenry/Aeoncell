@@ -2181,10 +2181,10 @@ class SettingsPage(ctk.CTkFrame):
     # updates the monthly goals set by user
     def process_monthly_goals(self):
         weight_choice = self.monthly_weight_choice_var.get()
-        weight = int(self.monthly_weight_var.get())
-        steps = int(self.monthly_walking_var.get())
-        hydration = float(self.monthly_hydration_var.get())
-        sleep = float(self.monthly_sleep_var.get())
+        weight = self.controller.validate_conversion_value(self.monthly_weight_var.get(), int, 0)
+        steps = self.controller.validate_conversion_value(self.monthly_walking_var.get(), int, 0)
+        hydration = self.controller.validate_conversion_value(self.monthly_hydration_var.get(), float, 0.0)
+        sleep = self.controller.validate_conversion_value(self.monthly_sleep_var.get(), float, 0.0)
 
         # 10kg weight loss/gain limit per month
         if weight > 10:
