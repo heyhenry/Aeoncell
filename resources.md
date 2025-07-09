@@ -100,3 +100,7 @@ Understanding Graceful and Ungraceful Error Handling (29th June 2025): https://m
 ZeroDivisionError | Real Python (1st July 2025): https://realpython.com/ref/builtin-exceptions/zerodivisionerror/
 Get all dates of a current month using Python (3rd July 2025): https://stackoverflow.com/questions/56416917/get-all-dates-of-current-month-using-python
 SQLITE LIKE (3rd July 2025): https://www.sqlitetutorial.net/sqlite-like/
+Tkinter BooleanVar (9th July 2025): https://www.pythontutorial.net/tkinter/tkinter-booleanvar/
+Type Casting in Programming (10th July 2025): https://www.geeksforgeeks.org/dsa/type-casting-in-programming/
+What's the canonical way to check for type in Python? (10th July 2025): https://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
+How do you set a conditional in python based on datatypes? (10th July 2025): https://stackoverflow.com/questions/14113187/how-do-you-set-a-conditional-in-python-based-on-datatypes
