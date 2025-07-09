@@ -1222,7 +1222,10 @@ class DashboardPage(ctk.CTkFrame):
         try:
             self.walking_progressbar.set(current_progress/total_progress)
         except ZeroDivisionError:
-            self.walking_progressbar.set(0)
+            if current_progress > total_progress:
+                self.walking_progressbar.set(1)
+            else:
+                self.walking_progressbar.set(0)
 
     def update_hydration_progressbar(self):
         current_progress = float(self.hydration_current_progress.get())
@@ -1230,7 +1233,10 @@ class DashboardPage(ctk.CTkFrame):
         try:
             self.hydration_progressbar.set(current_progress/total_progress)
         except ZeroDivisionError:
-            self.hydration_progressbar.set(0)
+            if current_progress > total_progress:
+                self.hydration_progressbar.set(1)
+            else:
+                self.hydration_progressbar.set(0)
 
     def update_sleep_progressbar(self):
         current_progress = float(self.sleep_current_progress.get())
@@ -1238,7 +1244,10 @@ class DashboardPage(ctk.CTkFrame):
         try:
             self.sleep_progressbar.set(current_progress/total_progress)
         except ZeroDivisionError:
-            self.sleep_progressbar.set(0)
+            if current_progress > total_progress:
+                self.sleep_progressbar.set(1)
+            else:
+                self.sleep_progressbar.set(0)
 
     def process_steps_entry(self):
         input_value = self.steps_var.get()
