@@ -104,3 +104,8 @@ Tkinter BooleanVar (9th July 2025): https://www.pythontutorial.net/tkinter/tkint
 Type Casting in Programming (10th July 2025): https://www.geeksforgeeks.org/dsa/type-casting-in-programming/
 What's the canonical way to check for type in Python? (10th July 2025): https://stackoverflow.com/questions/152580/whats-the-canonical-way-to-check-for-type-in-python
 How do you set a conditional in python based on datatypes? (10th July 2025): https://stackoverflow.com/questions/14113187/how-do-you-set-a-conditional-in-python-based-on-datatypes
+What is monkey patching? (11th July 2025): https://stackoverflow.com/questions/5626193/what-is-monkey-patching
+MonkeyPatch (11th July 2025): https://web.archive.org/web/20120730014107/http://wiki.zope.org/zope2/MonkeyPatch
+Monkey Patching in Python (Dynamic Behavior) (11th July 2025): https://www.geeksforgeeks.org/python/monkey-patching-in-python-dynamic-behavior/
+Monkey patching a class in another module in Python (11th July 2025): https://stackoverflow.com/questions/19545982/monkey-patching-a-class-in-another-module-in-python
+4.9.4 Arbitrary Argument Lists (11th July 2025): https://docs.python.org/3/tutorial/controlflow.html#arbitrary-argument-lists
