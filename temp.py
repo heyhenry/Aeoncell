@@ -1,10 +1,24 @@
 import customtkinter as ctk
 
-_original_init = ctk.CTkScrollableFrame.__init__
-def patched_init(self, *args, **kwargs):
-    _original_init(self, *args, **kwargs)
-    self._scrollbar.configure(width=100)
-ctk.CTkScrollableFrame.__init__ = patched_init
+# creating and using an altered version of the CTkScrollableFrame class
+def reinitialise_scrollableframe_widget():
+    # get an instance of the original __init__ method of the CTkScrollableFrame class
+    _original_init = ctk.CTkScrollableFrame.__init__
+    # try-except in place as a failsafe in the case of future changes to the CTkScrollableFrame class
+    try:
+        # function to update attribute found in the CTkScrollableFrame class
+        def patched_init(self, *args, **kwargs):
+            # initialise the class
+            _original_init(self, *args, **kwargs)
+            # update with custom width for the scrollbar attribute
+            self._scrollbar.configure(width=100)
+        # make the CTkScrollableFrame use the altered __init__ method
+        ctk.CTkScrollableFrame.__init__ = patched_init
+    # if the try fails, opt for the defaulted version of CTkScrollableFrame class
+    except Exception:
+        return
+
+reinitialise_scrollableframe_widget()
 
 root = ctk.CTk()
 
