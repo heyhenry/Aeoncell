@@ -1,25 +1,24 @@
-import requests
+class MrRoboto:
+    def __init__(self,
+                    height: int = 100,
+                    weight: int = 1000,
+                    colour: str = "White"):
+        self.height = height
+        self.weight = weight
+        self.colour = colour
 
-# api from geojs.io
-resp = requests.get("https://get.geojs.io/v1/ip/geo.json")
-data = resp.json()
-latitude = data["latitude"]
-longitude = data["longitude"]
-print(f"geojs.io: {latitude}, {longitude}")
+    def print_colour(self):
+        print(self.colour)
 
-response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,precipitation,weather_code&timezone=auto")
-data = response.json()
-current_units = data["current_units"]
-current_values = data["current"]
+test = MrRoboto()
+test.print_colour()
 
-timezone = f"Location: {data["timezone"]}"
-last_updated_time = f" Last Updated: {current_values["time"][11:]}"
-temperature = f"Temp: {current_values["temperature_2m"]} {current_units["temperature_2m"]}"
-precipitation = f"Precip: {current_values["precipitation"]} {current_units["precipitation"]}"
-weather_code = f"WMO: {current_values["weather_code"]}"
+og_init = MrRoboto.__init__
+def updated_colour(self, *args, **kwargs):
+    og_init(self, *args, **kwargs)
+    self.colour = "Blue"
 
-print(timezone)
-print(last_updated_time)
-print(temperature)
-print(precipitation)
-print(weather_code)
+MrRoboto.__init__ = updated_colour
+
+new_test = MrRoboto()
+new_test.print_colour()
