@@ -12,8 +12,33 @@ from tkinter import ttk as btk
 import random
 import requests
 
+#region initialisation logic pre-startup
+
+# creating and using an altered version of the CTkScrollableFrame class
+def reinitialise_scrollableframe_widget():
+    # get an instance of the original __init__ method of the CTkScrollableFrame class
+    _original_init = ctk.CTkScrollableFrame.__init__
+    # try-except in place as a failsafe in the case of future changes to the CTkScrollableFrame class
+    try:
+        # function to update attribute found in the CTkScrollableFrame class
+        def patched_init(self, *args, **kwargs):
+            # initialise the class
+            _original_init(self, *args, **kwargs)
+            # update with custom width for the scrollbar attribute
+            self._scrollbar.configure(width=30)
+        # make the CTkScrollableFrame use the altered __init__ method
+        ctk.CTkScrollableFrame.__init__ = patched_init
+    # if the try fails, opt for the defaulted version of CTkScrollableFrame class
+    except Exception:
+        return
+
+# alter the CTkSrollableFrame widget base class
+reinitialise_scrollableframe_widget()
+
 ctk.set_appearance_mode("Light")
 ctk.set_default_color_theme("themes/custom_lavender.json")
+
+#endregion
 
 class Windows(ctk.CTk):
     def __init__(self, *args, **kwargs):
