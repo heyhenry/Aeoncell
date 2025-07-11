@@ -8,6 +8,20 @@ Main functionalities are operable whilst offline but some complimentary features
 - Register
 - Login
 - Dashboard
+    - Profile Section: 
+        - Profile Image Display
+        - Name Display
+        - Height Display
+        - Current Weight Display
+        - Age Display
+        - Goal Weight Display
+        - Monthly Progress Overview
+            - Weight Loss/Gain Goal Display
+            - Sleep Progression
+            - Hydration Progression
+            - Walking Progression
+        - Recent Achievements Overview
+            - Latest 4 Achievements Display
     - daily step counter
         - ability to update steps
         - ability to reset steps
