@@ -689,6 +689,8 @@ class DashboardPage(ctk.CTkFrame):
         #endregion
 
         #region [ Profile Section ]
+
+        # user info
         profile_info_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         self.profile_image_display = ctk.CTkLabel(profile_info_section, text="", image=self.profile_image)
         profile_name = ctk.CTkLabel(profile_info_section, textvariable=self.profile_name_display, wraplength=300, font=("", 24))
@@ -705,6 +707,7 @@ class DashboardPage(ctk.CTkFrame):
         profile_goal_weight_frame = ctk.CTkFrame(profile_info_section, border_width=3, border_color="#B19CD9", corner_radius=15, width=150, height=50)
         profile_goal_weight_display = ctk.CTkLabel(profile_goal_weight_frame, textvariable=self.profile_goal_weight_var, font=("", 24))
         
+        # monthly progresssion insight
         profile_monthly_section = ctk.CTkFrame(profile_section, border_color="blue", fg_color="transparent")
         profile_monthly_title = ctk.CTkLabel(profile_monthly_section, text="Monthly Progress", font=("", 32))
         profile_monthly_weight_info = ctk.CTkLabel(profile_monthly_section, textvariable=self.monthly_weight_choice_display, font=("", 24))
@@ -718,6 +721,7 @@ class DashboardPage(ctk.CTkFrame):
         profile_walking_info = ctk.CTkLabel(profile_monthly_section, textvariable=self.monthly_walking_display, font=("", 14))
         self.profile_walking_progressbar = ctk.CTkProgressBar(profile_monthly_section, border_width=3, height=40, width=400, corner_radius=0)
         
+        # latest achievement showcase
         profile_achievements_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_achievements_title = ctk.CTkLabel(profile_achievements_section, text="Recent Achievements", font=("", 32))
         first_badge_name = ctk.CTkLabel(profile_achievements_section, text="Running Madman", font=("", 18))
@@ -1110,6 +1114,10 @@ class DashboardPage(ctk.CTkFrame):
         else:
             self.profile_name_display.set(self.controller.username.get())
     
+    # update monthly weight loss/gain goal 
+    def update_monthly_goal_weight(self, new_weight_value):
+        self.monthly_weight_choice_display.set(f"Weight Loss Goal: {new_weight_value} kg")
+
     # retrieve, sum and set total sleep value for current month
     def update_sum_monthly_sleep_minutes(self):
         total_sleep = 0.0
@@ -2240,6 +2248,7 @@ class SettingsPage(ctk.CTkFrame):
             self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Loss Goal: {self.monthly_weight_var.get()}kg")
         elif weight_choice == "gain":
             self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Gain Goal: {self.monthly_weight_var.get()}kg")
+        self.controller.pages[DashboardPage].update_monthly_goal_weight(weight)
         self.show_action_message(self.monthly_action_message)
 
     # display a temporary notification letting the user know of the successful action
