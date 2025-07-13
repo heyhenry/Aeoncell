@@ -1116,8 +1116,8 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_name_display.set(self.controller.username.get())
     
     # update monthly weight loss/gain goal 
-    def update_monthly_goal_weight(self, new_weight_value):
-        self.monthly_weight_choice_display.set(f"Weight Loss Goal: {new_weight_value} kg")
+    def update_monthly_goal_weight(self, goal_type, new_weight_value):
+        self.monthly_weight_choice_display.set(f"Weight {goal_type} Goal: {new_weight_value} kg")
 
     # retrieve, sum and set total sleep value for current month
     def update_sum_monthly_sleep_minutes(self):
@@ -2098,11 +2098,13 @@ class SettingsPage(ctk.CTkFrame):
         if self.monthly_weight_choice_var.get() == "lose":
             self.gain_weight_button.configure(fg_color="red")
             self.lose_weight_button.configure(fg_color="green")
-            self.controller.pages[DashboardPage].update_monthly_goal_weight(weight)
+            # reflect the current setting in the dashboard page
+            self.controller.pages[DashboardPage].update_monthly_goal_weight("Loss", weight)
         else:
             self.lose_weight_button.configure(fg_color="red")
             self.gain_weight_button.configure(fg_color="green")
-            self.controller.pages[DashboardPage].update_monthly_goal_weight(weight)
+            # reflect the current setting in the dashboard page
+            self.controller.pages[DashboardPage].update_monthly_goal_weight("Gain", weight)
 
         # monthly related binds
         self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
@@ -2247,10 +2249,9 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_connection.commit()
         # Update the dashboard's profile section for weight choice in real-time
         if weight_choice == "lose":
-            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Loss Goal: {weight}kg")
+            self.controller.pages[DashboardPage].update_monthly_goal_weight("Loss", weight)
         elif weight_choice == "gain":
-            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Gain Goal: {weight}kg")
-        self.controller.pages[DashboardPage].update_monthly_goal_weight(weight)
+            self.controller.pages[DashboardPage].update_monthly_goal_weight("Gain", weight)
         self.show_action_message(self.monthly_action_message)
 
     # display a temporary notification letting the user know of the successful action
