@@ -163,6 +163,7 @@ class Windows(ctk.CTk):
         self.pages[LoginPage].update_login_profile_image()
         self.pages[DashboardPage].update_dashboard_profile_image()
 
+    # check and use a defaulted value if found value is invalid
     def validate_conversion_value(self, value, conversion_type, defaulted_value):
         try:
             return conversion_type(value)
@@ -2093,14 +2094,15 @@ class SettingsPage(ctk.CTkFrame):
         monthly_update_button.grid(row=6, column=0, columnspan=3)
 
         # determine pre-selection for weight choice button based on saved data
+        weight = self.monthly_weight_var.get()
         if self.monthly_weight_choice_var.get() == "lose":
             self.gain_weight_button.configure(fg_color="red")
             self.lose_weight_button.configure(fg_color="green")
-            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Loss Goal: {self.monthly_weight_var.get()}kg")
+            self.controller.pages[DashboardPage].update_monthly_goal_weight(weight)
         else:
             self.lose_weight_button.configure(fg_color="red")
             self.gain_weight_button.configure(fg_color="green")
-            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Gain Goal: {self.monthly_weight_var.get()}kg")
+            self.controller.pages[DashboardPage].update_monthly_goal_weight(weight)
 
         # monthly related binds
         self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
@@ -2245,9 +2247,9 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_connection.commit()
         # Update the dashboard's profile section for weight choice in real-time
         if weight_choice == "lose":
-            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Loss Goal: {self.monthly_weight_var.get()}kg")
+            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Loss Goal: {weight}kg")
         elif weight_choice == "gain":
-            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Gain Goal: {self.monthly_weight_var.get()}kg")
+            self.controller.pages[DashboardPage].monthly_weight_choice_display.set(f"Weight Gain Goal: {weight}kg")
         self.controller.pages[DashboardPage].update_monthly_goal_weight(weight)
         self.show_action_message(self.monthly_action_message)
 
