@@ -109,3 +109,6 @@ MonkeyPatch (11th July 2025): https://web.archive.org/web/20120730014107/http://
 Monkey Patching in Python (Dynamic Behavior) (11th July 2025): https://www.geeksforgeeks.org/python/monkey-patching-in-python-dynamic-behavior/
 Monkey patching a class in another module in Python (11th July 2025): https://stackoverflow.com/questions/19545982/monkey-patching-a-class-in-another-module-in-python
 4.9.4 Arbitrary Argument Lists (11th July 2025): https://docs.python.org/3/tutorial/controlflow.html#arbitrary-argument-lists
+How to Create a New Branch in Git? (16th July 2025): https://www.geeksforgeeks.org/git/how-to-create-a-new-branch-in-git/
+Python Single Responsibility Principle (16th July 2025): https://www.pythontutorial.net/python-oop/python-single-responsibility-principle/
+'from ... import' vs 'import .' (16th July 2025): https://stackoverflow.com/questions/9439480/from-import-vs-import

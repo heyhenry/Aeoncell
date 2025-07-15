@@ -3,7 +3,7 @@ from tkinter import ttk as btk
 from authmanager import AuthManager
 import sqlite3
 from datetime import date
-from aeoncell_utils import *
+from utils.aeoncell_utils import *
 
 ctk.set_appearance_mode("Light") # other options: "Dark", "System" (Default)
 ctk.set_default_color_theme("green") # other options: "blue" (Default), "dark-blue"
@@ -176,7 +176,7 @@ class DashboardPage(ctk.CTkFrame):
         self.steps_total_display = ctk.StringVar(value="0")
         self.exercise_count_var = ctk.StringVar()
         self.total_volume_var= ctk.StringVar()
-        self.controller.db_cursor.execute("SELECT total_steps FROM steps_tracker WHERE date = ?", (self.controller.today,))
+        self.controller.db_cursor.execute("SELECT total_sttemp.eps FROM steps_tracker WHERE date = ?", (self.controller.today,))
         total_steps = self.controller.db_cursor.fetchone()
         if total_steps:
             total_steps = int(total_steps[0])
