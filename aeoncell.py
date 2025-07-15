@@ -803,7 +803,9 @@ class DashboardPage(ctk.CTkFrame):
 
         profile_section.grid_propagate(False)
 
-        self.update_monthly_progressbars()
+        self.update_monthly_steps_progressbar()
+        self.update_monthly_sleep_progressbar()
+        self.update_monthly_hydration_progressbar()
         # endregion
 
         #region [ Subtitle Section ]
@@ -1176,23 +1178,27 @@ class DashboardPage(ctk.CTkFrame):
         self.monthly_walking_display.set(f"{self.monthly_walking_current_var.get()} / {self.monthly_walking_goal_var.get()}")
         self.monthly_hydration_display.set(f"{self.monthly_hydration_current_var.get()} / {self.monthly_hydration_goal_var.get()}")
 
-    def update_monthly_progressbars(self):
-        sleep_current_progress = float(self.monthly_sleep_current_var.get())
-        sleep_total_progress = float(self.monthly_sleep_goal_var.get())
+    def update_monthly_steps_progressbar(self):
         walking_current_progress = int(self.monthly_walking_current_var.get())
         walking_total_progress = int(self.monthly_walking_goal_var.get())
-        hydration_current_progress = float(self.monthly_hydration_current_var.get())
-        hydration_total_progress = float(self.monthly_hydration_goal_var.get())
+
+        try:
+            self.profile_walking_progressbar.set(walking_current_progress/walking_total_progress)
+        except ZeroDivisionError:
+            self.profile_walking_progressbar.set(0)
+
+    def update_monthly_sleep_progressbar(self):
+        sleep_current_progress = float(self.monthly_sleep_current_var.get())
+        sleep_total_progress = float(self.monthly_sleep_goal_var.get())
 
         try:
             self.profile_sleep_progressbar.set(sleep_current_progress/sleep_total_progress)
         except ZeroDivisionError:
             self.profile_sleep_progressbar.set(0)
 
-        try:
-            self.profile_walking_progressbar.set(walking_current_progress/walking_total_progress)
-        except ZeroDivisionError:
-            self.profile_walking_progressbar.set(0)
+    def update_monthly_hydration_progressbar(self):
+        hydration_current_progress = float(self.monthly_hydration_current_var.get())
+        hydration_total_progress = float(self.monthly_hydration_goal_var.get())
 
         try:
             self.profile_hydration_progressbar.set(hydration_current_progress/hydration_total_progress)
