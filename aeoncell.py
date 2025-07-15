@@ -2201,9 +2201,9 @@ class SettingsPage(ctk.CTkFrame):
         """
         self.controller.db_cursor.execute(update_daily_goals_query, (sleep, steps, hydration))
         self.controller.db_connection.commit()
-        self.show_action_message(self.daily_action_message)
         # reinitialise the daily trackers with the updated data
         self.controller.pages[DashboardPage].update_daily_goal_progression_displays()
+        self.show_action_message(self.daily_action_message)
 
     def select_weight_choice(self, selection):
         if selection == "lose":
@@ -2252,6 +2252,7 @@ class SettingsPage(ctk.CTkFrame):
             self.controller.pages[DashboardPage].update_monthly_goal_weight("Loss", weight)
         elif weight_choice == "gain":
             self.controller.pages[DashboardPage].update_monthly_goal_weight("Gain", weight)
+        self.controller.pages[DashboardPage].update_monthly_goal_progression_displays()
         self.show_action_message(self.monthly_action_message)
 
     # display a temporary notification letting the user know of the successful action
