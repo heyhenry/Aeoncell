@@ -112,6 +112,7 @@ class BaseEntryPage(ctk.CTkFrame):
             self.controller.db_connection.commit()
 
             self.clear_entry_fields()
+            self.reset_date()
             # update the exercise summary section in the dashboard
             self.controller.pages["DashboardPage"].update_exercise_summary()
             self.after_entry_submission()
