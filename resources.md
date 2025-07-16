@@ -122,3 +122,4 @@ Pythonic way to resolve circular import statements? (16th July 2025): https://st
 from __future__ import annotations (16th July 2025): https://stackoverflow.com/questions/5748946/pythonic-way-to-resolve-circular-import-statements
 Python Circular Import: Causes, Fixes, and Best Practices (16th July 2025): https://www.datacamp.com/tutorial/python-circular-import
 Python: Reference to a class from string? (16th July 2025): https://stackoverflow.com/questions/734970/python-reference-to-a-class-from-a-string#answer-734995
+How to merge a branch to main branch in Github? (16th July 2025): https://stackoverflow.com/questions/70460220/how-to-merge-a-branch-to-main-branch-in-github
