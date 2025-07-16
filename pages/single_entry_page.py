@@ -1,4 +1,3 @@
-from __future__ import annotations
 from pages import BaseEntryPage
 
 class SingleEntryPage(BaseEntryPage):
