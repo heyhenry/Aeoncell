@@ -1,7 +1,7 @@
+from __future__ import annotations
 import customtkinter as ctk
 from PIL import Image
-from widgets.navbar import Navbar
-
+from widgets import Navbar
 
 class AchievementsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):

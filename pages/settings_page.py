@@ -1,11 +1,12 @@
+from __future__ import annotations
 import customtkinter as ctk
 from tkinter import filedialog
 from PIL import Image
 import os
-from widgets.navbar import Navbar
-from utils.aeoncell_utils import * # change this to call only functions used in the class
-from pages.dashboard_page import DashboardPage
-from pages.login_page import LoginPage
+from widgets import Navbar
+from utils import *
+from pages import DashboardPage
+from pages import LoginPage
 
 class SettingsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):

@@ -1,10 +1,11 @@
+from __future__ import annotations
 import customtkinter as ctk
 from PIL import Image
-from widgets.navbar import Navbar
-from utils.aeoncell_utils import * # change this to call only functions used in the class
-from pages.dashboard_page import DashboardPage
-from pages.single_entry_page import SingleEntryPage
-from pages.session_entry_page import SessionEntryPage
+from widgets import Navbar
+from utils import *
+from pages import DashboardPage
+from pages import SingleEntryPage
+from pages import SessionEntryPage
 
 class BaseEntryPage(ctk.CTkFrame):
     def __init__(self, parent, controller, entry_type, btn_name):

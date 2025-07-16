@@ -12,15 +12,15 @@ from tkinter import ttk as btk
 import random
 import requests
 
-from pages.register_page import RegisterPage
-from pages.login_page import LoginPage
-from pages.dashboard_page import DashboardPage
-from pages.single_entry_page import SingleEntryPage
-from pages.session_entry_page import SessionEntryPage
-from pages.achievements_page import AchievementsPage
-from pages.stats_page import StatsPage
-from pages.discover_page import DiscoverPage
-from pages.settings_page import SettingsPage
+from pages import RegisterPage
+from pages import LoginPage
+from pages import DashboardPage
+from pages import SingleEntryPage
+from pages import SessionEntryPage
+from pages import AchievementsPage
+from pages import StatsPage
+from pages import DiscoverPage
+from pages import SettingsPage
 
 #region initialisation logic pre-startup
 

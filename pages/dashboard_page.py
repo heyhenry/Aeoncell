@@ -1,13 +1,14 @@
+from __future__ import annotations
 import customtkinter as ctk
 from tkinter import ttk as btk
 from PIL import Image
 from datetime import date, timedelta, datetime
 import random
 import requests
-from widgets.navbar import Navbar
-from utils.aeoncell_utils import * # change this to call only functions used in the class
-from pages.single_entry_page import SingleEntryPage
-from pages.session_entry_page import SessionEntryPage
+from widgets import Navbar
+from utils import *
+from pages import SingleEntryPage
+from pages import SessionEntryPage
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):

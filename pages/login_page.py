@@ -1,6 +1,7 @@
+from __future__ import annotations
 import customtkinter as ctk
 from PIL import Image
-from pages.dashboard_page import DashboardPage
+from pages import DashboardPage
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):

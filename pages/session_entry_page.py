@@ -1,5 +1,6 @@
+from __future__ import annotations
 import customtkinter as ctk
-from pages.base_entry_page import BaseEntryPage
+from pages import BaseEntryPage
 
 
 class SessionEntryPage(BaseEntryPage):

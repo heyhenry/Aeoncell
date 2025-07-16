@@ -1,5 +1,6 @@
-from pages.base_entry_page import BaseEntryPage
-from pages.dashboard_page import DashboardPage
+from __future__ import annotations
+from pages import BaseEntryPage
+from pages import DashboardPage
 
 class SingleEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
