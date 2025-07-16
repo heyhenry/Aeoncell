@@ -105,9 +105,24 @@ class Windows(ctk.CTk):
             self.update_username()
 
         self.pages = {}
-        for P in (RegisterPage, LoginPage, DashboardPage, DiscoverPage, SingleEntryPage, SessionEntryPage, StatsPage, AchievementsPage, SettingsPage):
+
+        # string based reference for pages
+        page_classes = {
+            "RegisterPage": RegisterPage,
+            "LoginPage": LoginPage,
+            "DashboardPage": DashboardPage,
+            "SingleEntryPage": SingleEntryPage,
+            "SessionEntryPage": SessionEntryPage,
+            "StatsPage": StatsPage,
+            "AchievementsPage": AchievementsPage,
+            "DiscoverPage": DiscoverPage,
+            "SettingsPage": SettingsPage
+        }
+
+        # each page's key is string based whilst their value is a class instance
+        for page_name, P in page_classes.items():
             page = P(container, self)
-            self.pages[P] = page
+            self.pages[page_name] = page
             page.grid(row=0, column=0, sticky="nswe")
 
         # center the app upon startup
@@ -122,26 +137,26 @@ class Windows(ctk.CTk):
         # self.show_page(DashboardPage)
         # determine initial page display based on user having a password (i.e. guaranteed account registration)
         if self.db.check_password_exists():
-            self.show_page(LoginPage)
+            self.show_page("LoginPage")
         else:
-            self.show_page(RegisterPage)
+            self.show_page("RegisterPage")
 
     # display the selected page to the user
     def show_page(self, selected_page):
         page = self.pages[selected_page]
 
         # field focus config on startup for pages
-        if selected_page == RegisterPage:
+        if selected_page == "RegisterPage":
             self.set_initial_focus(page.username_entry)
-        elif selected_page == LoginPage:
+        elif selected_page == "LoginPage":
             self.set_initial_focus(page.password_entry)
-        elif selected_page == DashboardPage:
+        elif selected_page == "DashboardPage":
             page.retrieve_profile_details()
             page.random_motivational_quote()
             page.populate_entries_display()
-        elif selected_page in (SingleEntryPage, SessionEntryPage):
+        elif selected_page in ("SingleEntryPage", "SessionEntryPage"):
             page.reset_date()
-        elif selected_page == SettingsPage:
+        elif selected_page == "SettingsPage":
             page.retrieve_current_info()
 
         page.tkraise()
@@ -170,8 +185,8 @@ class Windows(ctk.CTk):
     # auto set default profile image on creation of new db (usually only once for users, but in the case they delete the db file..)
     def set_default_profile_image(self):
         generate_round_frame_image("img/user_profile_asset.jpg", "user_profile")
-        self.pages[LoginPage].update_login_profile_image()
-        self.pages[DashboardPage].update_dashboard_profile_image()
+        self.pages["LoginPage"].update_login_profile_image()
+        self.pages["DashboardPage"].update_dashboard_profile_image()
 
     # check and use a defaulted value if found value is invalid
     def validate_conversion_value(self, value, conversion_type, defaulted_value):
