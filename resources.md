@@ -112,3 +112,13 @@ Monkey patching a class in another module in Python (11th July 2025): https://st
 How to Create a New Branch in Git? (16th July 2025): https://www.geeksforgeeks.org/git/how-to-create-a-new-branch-in-git/
 Python Single Responsibility Principle (16th July 2025): https://www.pythontutorial.net/python-oop/python-single-responsibility-principle/
 'from ... import' vs 'import .' (16th July 2025): https://stackoverflow.com/questions/9439480/from-import-vs-import
+How to Fix a Circular Import in Python (16th July 2025): https://rollbar.com/blog/how-to-fix-circular-import-in-python/#
+How to fix circular imports in Python | 2MinutesPy (16th July 2025): https://www.youtube.com/watch?v=zRwg7w93klA
+What is __init__.py for? (16th July 2025): https://stackoverflow.com/questions/448271/what-is-init-py-for
+5.2.1 Regular packages (16th July 2025): https://docs.python.org/3/reference/import.html#regular-packages
+How to create a Python Package with __init__.py (16th July 2025): https://timothybramlett.com/how-to-create-a-python-package-with-__init__-py/
+How do i write good/correct package __init__.py files (16th July 2025): https://stackoverflow.com/questions/1944569/how-do-i-write-good-correct-package-init-py-files
+Pythonic way to resolve circular import statements? (16th July 2025): https://stackoverflow.com/questions/5748946/pythonic-way-to-resolve-circular-import-statements
+from __future__ import annotations (16th July 2025): https://stackoverflow.com/questions/5748946/pythonic-way-to-resolve-circular-import-statements
+Python Circular Import: Causes, Fixes, and Best Practices (16th July 2025): https://www.datacamp.com/tutorial/python-circular-import
+Python: Reference to a class from string? (16th July 2025): https://stackoverflow.com/questions/734970/python-reference-to-a-class-from-a-string#answer-734995
