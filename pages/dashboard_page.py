@@ -20,9 +20,6 @@ class DashboardPage(ctk.CTkFrame):
         # multi-sectional use
         self.today = self.controller.today
 
-        # on startup variable is flagged true to indicate startup timestamp
-        self.on_startup = ctk.BooleanVar(value=True)
-
         # intro section
         self.welcome_message = ctk.StringVar()
         today_full = date.today()
@@ -64,11 +61,6 @@ class DashboardPage(ctk.CTkFrame):
         self.monthly_hydration_display = ctk.StringVar()
         self.monthly_hydration_goal_var = ctk.StringVar()
         self.monthly_hydration_current_var = ctk.StringVar()
-        # set monthly_sleep_current_var value
-        self.update_sum_monthly_sleep_minutes()
-        self.update_sum_monthly_walking_steps()
-        self.update_sum_monthly_hydration_consumption()
-
 
         # daily section related variables
         self.steps_var = ctk.StringVar()
@@ -112,13 +104,13 @@ class DashboardPage(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
+        self.create_widgets()
+
         self.update_welcome_user()
         self.update_monthly_goal_progression_displays()
         self.daily_section_initialisation()
         self.update_exercise_summary()
         self.update_weather_forecast()
-
-        self.create_widgets()
 
     def create_widgets(self):
         #region [Parent Frames]
@@ -306,10 +298,6 @@ class DashboardPage(ctk.CTkFrame):
         fourth_badge_date.grid(row=6, column=1, pady=(0, 20))
 
         profile_section.grid_propagate(False)
-
-        self.update_monthly_steps_progressbar()
-        self.update_monthly_sleep_progressbar()
-        self.update_monthly_hydration_progressbar()
         # endregion
 
         #region [ Subtitle Section ]
@@ -352,7 +340,6 @@ class DashboardPage(ctk.CTkFrame):
 
         sleep_hours_entry.bind("<Key>", lambda event: custom_float_only_validation(event, sleep_hours_entry, 3))
         sleep_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "sleep"))
-        self.update_sleep_progressbar()
 
         # hydration section
         total_ml_drunk = ctk.CTkLabel(hydration_section, textvariable=self.hydration_display, font=("", 24))
@@ -377,7 +364,6 @@ class DashboardPage(ctk.CTkFrame):
 
         hydration_ml_entry.bind("<Key>", lambda event: custom_float_only_validation(event, hydration_ml_entry, 4))
         hydration_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "hydration"))
-        self.update_hydration_progressbar()
 
         # walking section
         total_steps_walked = ctk.CTkLabel(walking_section, textvariable=self.steps_display, font=("", 24))
@@ -402,7 +388,6 @@ class DashboardPage(ctk.CTkFrame):
 
         walking_steps_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, walking_steps_entry, 5))
         walking_reset.bind("<Button-1>", lambda event: self.reset_daily(event, "walking"))
-        self.update_steps_progressbar()
 
         dailies_section.grid_propagate(False)
 
@@ -661,7 +646,6 @@ class DashboardPage(ctk.CTkFrame):
 
     # NOTE TO SELF!! NEED TO STILL IMPLEMENT FOR STEPS AND HYDRATION + ADD THIS AND MAYBE THE UPDATE_MONTHLY_PROGRESSBARS() TO PLACES LIKE SETTINGS AND DAILY TRACKERS FOR REAL TIME UPDATES.
     def update_monthly_goal_progression_displays(self):
-        on_startup = self.on_startup.get()
         # for now just sleep
         monthly_sleep_goal = 0.0
         monthly_walking_goal = 0
@@ -673,22 +657,27 @@ class DashboardPage(ctk.CTkFrame):
         if results:
             monthly_sleep_goal, monthly_walking_goal, monthly_hydration_goal = results
         
+        # get the latest set value for monthly goals (total goal value)
         self.monthly_sleep_goal_var.set(monthly_sleep_goal)
         self.monthly_walking_goal_var.set(monthly_walking_goal)
         self.monthly_hydration_goal_var.set(monthly_hydration_goal)
-        
+
+        # get latest calculated sum value for current progress on the monthly (current value tallied so far)
+        self.update_sum_monthly_sleep_minutes()
+        self.update_sum_monthly_walking_steps()
+        self.update_sum_monthly_hydration_consumption()
+
+        # update the monthly progress bar's tally info 
         self.monthly_sleep_display.set(f"{self.monthly_sleep_current_var.get()} / {self.monthly_sleep_goal_var.get()}")
         self.monthly_walking_display.set(f"{self.monthly_walking_current_var.get()} / {self.monthly_walking_goal_var.get()}")
         self.monthly_hydration_display.set(f"{self.monthly_hydration_current_var.get()} / {self.monthly_hydration_goal_var.get()}")
 
-        if not on_startup:
-            self.update_monthly_sleep_progressbar()
-            self.update_monthly_steps_progressbar()
-            self.update_monthly_hydration_progressbar()
+        # update the monthly progress bars
+        self.update_monthly_sleep_progressbar()
+        self.update_monthly_steps_progressbar()
+        self.update_monthly_hydration_progressbar()
 
     def update_monthly_steps_progressbar(self):
-        self.update_sum_monthly_walking_steps()
-
         walking_current_progress = int(self.monthly_walking_current_var.get())
         walking_total_progress = int(self.monthly_walking_goal_var.get())
 
@@ -698,8 +687,6 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_walking_progressbar.set(0)
 
     def update_monthly_sleep_progressbar(self):
-        self.update_sum_monthly_sleep_minutes()
-
         sleep_current_progress = float(self.monthly_sleep_current_var.get())
         sleep_total_progress = float(self.monthly_sleep_goal_var.get())
 
@@ -709,8 +696,6 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_sleep_progressbar.set(0)
 
     def update_monthly_hydration_progressbar(self):
-        self.update_sum_monthly_hydration_consumption()
-
         hydration_current_progress = float(self.monthly_hydration_current_var.get())
         hydration_total_progress = float(self.monthly_hydration_goal_var.get())
 
@@ -720,6 +705,7 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_hydration_progressbar.set(0)
 
     def daily_section_initialisation(self):
+        print("daily sec init")
         # [ Walking ]
         # check if a steps entry exists for today
         self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker WHERE date = ?", (self.today,))
@@ -757,11 +743,8 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_current_progress.set(minutes_slept)
 
         self.update_daily_goal_progression_displays()
-        self.on_startup.set(False)
 
     def update_daily_goal_progression_displays(self):
-        on_startup = self.on_startup.get()
-        print(f"startup status: {self.on_startup.get()}")
         steps_goal = 0
         sleep_goal = 0.0
         hydration_goal = 0.0
@@ -782,10 +765,9 @@ class DashboardPage(ctk.CTkFrame):
         self.sleep_goal.set(sleep_goal)
         self.hydration_goal.set(hydration_goal)
 
-        if not on_startup:
-            self.update_steps_progressbar()
-            self.update_sleep_progressbar()
-            self.update_hydration_progressbar()
+        self.update_steps_progressbar()
+        self.update_sleep_progressbar()
+        self.update_hydration_progressbar()
 
     def update_steps_progressbar(self):
         current_progress = int(self.steps_current_progress.get())
@@ -840,7 +822,6 @@ class DashboardPage(ctk.CTkFrame):
             # update daily & monthly steps progression
             self.steps_current_progress.set(steps)
             self.update_daily_goal_progression_displays()
-            self.update_monthly_goal_progression_displays()
             # clear the steps entry field
             self.steps_var.set("")
         # update the already existing entry
@@ -866,9 +847,9 @@ class DashboardPage(ctk.CTkFrame):
             # update daily steps progression
             self.steps_current_progress.set(steps_taken)
             self.update_daily_goal_progression_displays()
-            self.update_monthly_goal_progression_displays()
             # clear the steps entry field
             self.steps_var.set("")
+        self.update_monthly_goal_progression_displays()
 
     def process_hydration_entry(self):
         input_value = self.hydration_var.get()
@@ -895,7 +876,6 @@ class DashboardPage(ctk.CTkFrame):
             # update daily hydration progression
             self.hydration_current_progress.set(liquids_consumed)
             self.update_daily_goal_progression_displays()
-            self.update_monthly_goal_progression_displays()
             self.hydration_var.set("")
         else:
             # find out how much liquids (ml) is currently stored (prior to this new input)
@@ -912,7 +892,6 @@ class DashboardPage(ctk.CTkFrame):
                 # update daily hydration progression
                 self.hydration_current_progress.set(total_liquids_consumed)
                 self.update_daily_goal_progression_displays()
-                self.update_monthly_goal_progression_displays()
                 self.hydration_var.set("")
             else:
                 # ensure liquids_consumed variable is always set to 2 decimal points
@@ -923,8 +902,8 @@ class DashboardPage(ctk.CTkFrame):
                 # update daily hydration progression
                 self.hydration_current_progress.set(total_liquids_consumed)
                 self.update_daily_goal_progression_displays()
-                self.update_monthly_goal_progression_displays()
                 self.hydration_var.set("")
+        self.update_monthly_goal_progression_displays()
 
     def process_sleep_entry(self):
         input_value = self.sleep_var.get()
@@ -947,7 +926,6 @@ class DashboardPage(ctk.CTkFrame):
             # update daily sleep progression
             self.sleep_current_progress.set(minutes_slept)
             self.update_daily_goal_progression_displays()
-            self.update_monthly_goal_progression_displays()
             self.sleep_var.set("")
         else:
             self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.today,))
@@ -963,7 +941,6 @@ class DashboardPage(ctk.CTkFrame):
                 # update daily sleep progression
                 self.sleep_current_progress.set(total_minutes_slept)
                 self.update_daily_goal_progression_displays()
-                self.update_monthly_goal_progression_displays()
                 self.sleep_var.set("")
             else:
                 # ensure minutes_slept variable is always set to 2 decimal points
@@ -974,8 +951,8 @@ class DashboardPage(ctk.CTkFrame):
                 # update daily sleep progression
                 self.sleep_current_progress.set(total_minutes_slept)
                 self.update_daily_goal_progression_displays()
-                self.update_monthly_goal_progression_displays()
                 self.sleep_var.set("")
+        self.update_monthly_goal_progression_displays()
 
     def reset_daily(self, event, selected_daily):
         if selected_daily == "sleep":
@@ -990,7 +967,6 @@ class DashboardPage(ctk.CTkFrame):
                 self.sleep_current_progress.set(0.0)
                 # update sleep progression display
                 self.sleep_progress_display.set(f"{self.sleep_current_progress.get()} / {self.sleep_goal.get()}")
-                self.update_sum_monthly_sleep_minutes()
                 self.update_sleep_progressbar()
         elif selected_daily == "hydration":
             self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
@@ -1002,7 +978,6 @@ class DashboardPage(ctk.CTkFrame):
                 self.hydration_current_progress.set(0.0)
                 # update hydration progression display
                 self.hydration_progress_display.set(f"{self.hydration_current_progress.get()} / {self.hydration_goal.get()}")
-                self.update_sum_monthly_hydration_consumption()
                 self.update_hydration_progressbar()
         elif selected_daily == "walking":
             self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
@@ -1014,7 +989,6 @@ class DashboardPage(ctk.CTkFrame):
                 self.steps_current_progress.set(0)
                 # update steps progression display
                 self.steps_progress_display.set(f"{self.steps_current_progress.get()} / {self.steps_goal.get()}")
-                self.update_sum_monthly_walking_steps()
                 self.update_steps_progressbar()
         self.update_monthly_goal_progression_displays()
 
