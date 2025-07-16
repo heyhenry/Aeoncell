@@ -1034,7 +1034,8 @@ class DashboardPage(ctk.CTkFrame):
                 weights_sum += result[i][2]
             self.sets_total_var.set(sets_sum)
             self.reps_total_var.set(reps_sum)
-            self.volume_total_var.set(weights_sum)
+            volume_sum = (sets_sum * reps_sum) * weights_sum
+            self.volume_total_var.set(volume_sum)
 
     def update_weather_forecast(self):
         pass # temp during multiple startups to test other sections of the app..
