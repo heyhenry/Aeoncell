@@ -1,13 +1,6 @@
 from __future__ import annotations
 import customtkinter as ctk
 from PIL import Image
-from pages import LoginPage
-from pages import DashboardPage
-from pages import SingleEntryPage
-from pages import AchievementsPage
-from pages import StatsPage
-from pages import DiscoverPage
-from pages import SettingsPage
 
 class Navbar(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -64,46 +57,46 @@ class Navbar(ctk.CTkFrame):
 
         self.dashboard_icon.bind("<Enter>", lambda event: self.display_selection(self.dashboard_icon, self.dashboard_title))
         self.dashboard_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.dashboard_icon, self.dashboard_title))
-        self.dashboard_icon.bind("<Button-1>", lambda event: self.controller.show_page(DashboardPage))
+        self.dashboard_icon.bind("<Button-1>", lambda event: self.controller.show_page("DashboardPage"))
         self.dashboard_title.bind("<Enter>", lambda event: self.display_selection(self.dashboard_icon, self.dashboard_title))
         self.dashboard_title.bind("<Leave>", lambda event: self.undisplay_selection(self.dashboard_icon, self.dashboard_title))
-        self.dashboard_title.bind("<Button-1>", lambda event: self.controller.show_page(DashboardPage))
+        self.dashboard_title.bind("<Button-1>", lambda event: self.controller.show_page("DashboardPage"))
         self.discover_icon.bind("<Enter>", lambda event: self.display_selection(self.discover_icon, self.discover_title))
         self.discover_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.discover_icon, self.discover_title))
-        self.discover_icon.bind("<Button-1>", lambda event: self.controller.show_page(DiscoverPage))
+        self.discover_icon.bind("<Button-1>", lambda event: self.controller.show_page("DiscoverPage"))
         self.discover_title.bind("<Enter>", lambda event: self.display_selection(self.discover_icon, self.discover_title))
         self.discover_title.bind("<Leave>", lambda event: self.undisplay_selection(self.discover_icon, self.discover_title))
-        self.discover_title.bind("<Button-1>", lambda event: self.controller.show_page(DiscoverPage))
+        self.discover_title.bind("<Button-1>", lambda event: self.controller.show_page("DiscoverPage"))
         self.entry_icon.bind("<Enter>", lambda event: self.display_selection(self.entry_icon, self.entry_title))
         self.entry_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.entry_icon, self.entry_title))
-        self.entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(SingleEntryPage))
+        self.entry_icon.bind("<Button-1>", lambda event: self.controller.show_page("SingleEntryPage"))
         self.entry_title.bind("<Enter>", lambda event: self.display_selection(self.entry_icon, self.entry_title))
         self.entry_title.bind("<Leave>", lambda event: self.undisplay_selection(self.entry_icon, self.entry_title))
-        self.entry_title.bind("<Button-1>", lambda event: self.controller.show_page(SingleEntryPage))
+        self.entry_title.bind("<Button-1>", lambda event: self.controller.show_page("SingleEntryPage"))
         self.stats_icon.bind("<Enter>", lambda event: self.display_selection(self.stats_icon, self.stats_title))
         self.stats_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.stats_icon, self.stats_title))
-        self.stats_icon.bind("<Button-1>", lambda event: self.controller.show_page(StatsPage))
+        self.stats_icon.bind("<Button-1>", lambda event: self.controller.show_page("StatsPage"))
         self.stats_title.bind("<Enter>", lambda event: self.display_selection(self.stats_icon, self.stats_title))
         self.stats_title.bind("<Leave>", lambda event: self.undisplay_selection(self.stats_icon, self.stats_title))
-        self.stats_title.bind("<Button-1>", lambda event: self.controller.show_page(StatsPage))
+        self.stats_title.bind("<Button-1>", lambda event: self.controller.show_page("StatsPage"))
         self.achievements_icon.bind("<Enter>", lambda event: self.display_selection(self.achievements_icon, self.achievements_title))
         self.achievements_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.achievements_icon, self.achievements_title))
-        self.achievements_icon.bind("<Button-1>", lambda event: self.controller.show_page(AchievementsPage))
+        self.achievements_icon.bind("<Button-1>", lambda event: self.controller.show_page("AchievementsPage"))
         self.achievements_title.bind("<Enter>", lambda event: self.display_selection(self.achievements_icon, self.achievements_title))
         self.achievements_title.bind("<Leave>", lambda event: self.undisplay_selection(self.achievements_icon, self.achievements_title))
-        self.achievements_title.bind("<Button-1>", lambda event: self.controller.show_page(AchievementsPage))
+        self.achievements_title.bind("<Button-1>", lambda event: self.controller.show_page("AchievementsPage"))
         self.settings_icon.bind("<Enter>", lambda event: self.display_selection(self.settings_icon, self.settings_title))
         self.settings_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.settings_icon, self.settings_title))
-        self.settings_icon.bind("<Button-1>", lambda event: self.controller.show_page(SettingsPage))
+        self.settings_icon.bind("<Button-1>", lambda event: self.controller.show_page("SettingsPage"))
         self.settings_title.bind("<Enter>", lambda event: self.display_selection(self.settings_icon, self.settings_title))
         self.settings_title.bind("<Leave>", lambda event: self.undisplay_selection(self.settings_icon, self.settings_title))
-        self.settings_title.bind("<Button-1>", lambda event: self.controller.show_page(SettingsPage))
+        self.settings_title.bind("<Button-1>", lambda event: self.controller.show_page("SettingsPage"))
         self.logout_icon.bind("<Enter>", lambda event: self.display_selection(self.logout_icon, self.logout_title))
         self.logout_icon.bind("<Leave>", lambda event: self.undisplay_selection(self.logout_icon, self.logout_title))
-        self.logout_icon.bind("<Button-1>", lambda event: self.controller.show_page(LoginPage))
+        self.logout_icon.bind("<Button-1>", lambda event: self.controller.show_page("LoginPage"))
         self.logout_title.bind("<Enter>", lambda event: self.display_selection(self.logout_icon, self.logout_title))
         self.logout_title.bind("<Leave>", lambda event: self.undisplay_selection(self.logout_icon, self.logout_title))
-        self.logout_title.bind("<Button-1>", lambda event: self.controller.show_page(LoginPage))
+        self.logout_title.bind("<Button-1>", lambda event: self.controller.show_page("LoginPage"))
 
     def display_selection(self, widget_icon, widget_title, event=None):
         widget_icon.configure(cursor="hand2")

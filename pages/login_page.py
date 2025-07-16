@@ -1,7 +1,6 @@
 from __future__ import annotations
 import customtkinter as ctk
 from PIL import Image
-from pages import DashboardPage
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -89,7 +88,7 @@ class LoginPage(ctk.CTkFrame):
     def process_login(self, event=None):
         password = self.password_var.get()
         if self.controller.db.verify_password(password):
-            self.controller.show_page(DashboardPage)
+            self.controller.show_page("DashboardPage")
             # clear the password entry field
             self.password_var.set("")
         else:

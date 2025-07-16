@@ -1,6 +1,5 @@
 from __future__ import annotations
 from pages import BaseEntryPage
-from pages import DashboardPage
 
 class SingleEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
@@ -13,4 +12,4 @@ class SingleEntryPage(BaseEntryPage):
 
     # ensure user is redirect to the dashboard after completing an singular entry
     def after_entry_submission(self):
-        self.controller.show_page(DashboardPage)
+        self.controller.show_page("DashboardPage")

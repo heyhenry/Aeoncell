@@ -5,8 +5,6 @@ from PIL import Image
 import os
 from widgets import Navbar
 from utils import *
-from pages import DashboardPage
-from pages import LoginPage
 
 class SettingsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -216,12 +214,12 @@ class SettingsPage(ctk.CTkFrame):
             self.gain_weight_button.configure(fg_color="red")
             self.lose_weight_button.configure(fg_color="green")
             # reflect the current setting in the dashboard page
-            self.controller.pages[DashboardPage].update_monthly_goal_weight("Loss", weight)
+            self.controller.pages["DashboardPage"].update_monthly_goal_weight("Loss", weight)
         else:
             self.lose_weight_button.configure(fg_color="red")
             self.gain_weight_button.configure(fg_color="green")
             # reflect the current setting in the dashboard page
-            self.controller.pages[DashboardPage].update_monthly_goal_weight("Gain", weight)
+            self.controller.pages["DashboardPage"].update_monthly_goal_weight("Gain", weight)
 
         # monthly related binds
         self.monthly_weight_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.monthly_weight_entry, 2))
@@ -287,10 +285,10 @@ class SettingsPage(ctk.CTkFrame):
         self.update_user_profile_img()
 
         # update dashboard welcome message
-        self.controller.pages[DashboardPage].update_welcome_user()
+        self.controller.pages["DashboardPage"].update_welcome_user()
 
         # update login message
-        self.controller.pages[LoginPage].update_login_message()
+        self.controller.pages["LoginPage"].update_login_message()
 
         self.show_action_message(self.profile_action_message)
 
@@ -319,7 +317,7 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_cursor.execute(update_daily_goals_query, (sleep, steps, hydration))
         self.controller.db_connection.commit()
         # reinitialise the daily trackers with the updated data
-        self.controller.pages[DashboardPage].update_daily_goal_progression_displays()
+        self.controller.pages["DashboardPage"].update_daily_goal_progression_displays()
         self.show_action_message(self.daily_action_message)
 
     def select_weight_choice(self, selection):
@@ -366,10 +364,10 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_connection.commit()
         # Update the dashboard's profile section for weight choice in real-time
         if weight_choice == "lose":
-            self.controller.pages[DashboardPage].update_monthly_goal_weight("Loss", weight)
+            self.controller.pages["DashboardPage"].update_monthly_goal_weight("Loss", weight)
         elif weight_choice == "gain":
-            self.controller.pages[DashboardPage].update_monthly_goal_weight("Gain", weight)
-        self.controller.pages[DashboardPage].update_monthly_goal_progression_displays()
+            self.controller.pages["DashboardPage"].update_monthly_goal_weight("Gain", weight)
+        self.controller.pages["DashboardPage"].update_monthly_goal_progression_displays()
         self.show_action_message(self.monthly_action_message)
 
     # display a temporary notification letting the user know of the successful action
@@ -454,8 +452,8 @@ class SettingsPage(ctk.CTkFrame):
             # remove the temporary image save -> 'temp_profile_image.png'
             os.remove("img/temp_profile_image.png")
         # updates the profile image on the dashboard and login simultaneously
-        self.controller.pages[DashboardPage].update_dashboard_profile_image()
-        self.controller.pages[LoginPage].update_login_profile_image()
+        self.controller.pages["DashboardPage"].update_dashboard_profile_image()
+        self.controller.pages["LoginPage"].update_login_profile_image()
 
     # reset the profile image preview display
     def reset_profile_preview(self):

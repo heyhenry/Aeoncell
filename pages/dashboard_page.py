@@ -7,8 +7,6 @@ import random
 import requests
 from widgets import Navbar
 from utils import *
-from pages import SingleEntryPage
-from pages import SessionEntryPage
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -534,8 +532,8 @@ class DashboardPage(ctk.CTkFrame):
         self.entries.tag_configure('oddrow', background='#f2f2f2')
         self.entries.tag_configure('evenrow', background='#ffffff')
         entries_buttons_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=0)
-        add_session = ctk.CTkButton(entries_buttons_frame, text="Add a Session", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page(SingleEntryPage))
-        add_single = ctk.CTkButton(entries_buttons_frame, text="Add an Exercise", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page(SessionEntryPage))
+        add_session = ctk.CTkButton(entries_buttons_frame, text="Add a Session", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page("SingleEntryPage"))
+        add_single = ctk.CTkButton(entries_buttons_frame, text="Add an Exercise", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page("SessionEntryPage"))
 
         redirect_session_entry_icon.grid(row=1, column=1, columnspan=2, pady=20)
         recent_exercises_title.grid(row=1, column=3, pady=20)
@@ -551,8 +549,8 @@ class DashboardPage(ctk.CTkFrame):
 
         recent_exercises_section.grid_propagate(False)
 
-        redirect_session_entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(SessionEntryPage))
-        redirect_single_entry_icon.bind("<Button-1>", lambda event: self.controller.show_page(SingleEntryPage))
+        redirect_session_entry_icon.bind("<Button-1>", lambda event: self.controller.show_page("SessionEntryPage"))
+        redirect_single_entry_icon.bind("<Button-1>", lambda event: self.controller.show_page("SingleEntryPage"))
         #endregion
 
     # Reminder to adjust after finishing all widgets... 

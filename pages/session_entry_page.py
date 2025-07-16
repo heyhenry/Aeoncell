@@ -2,7 +2,6 @@ from __future__ import annotations
 import customtkinter as ctk
 from pages import BaseEntryPage
 
-
 class SessionEntryPage(BaseEntryPage):
     def __init__(self, parent, controller):
         BaseEntryPage.__init__(self, parent, controller, "session", "Completed")

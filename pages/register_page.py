@@ -1,7 +1,6 @@
 from __future__ import annotations
 import customtkinter as ctk
 from PIL import Image
-from pages import LoginPage
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -123,7 +122,7 @@ class RegisterPage(ctk.CTkFrame):
         # update the global username's value
         self.controller.update_username()
         # update the username display on the login page
-        self.controller.pages[LoginPage].update_login_message()
+        self.controller.pages["LoginPage"].update_login_message()
         # update the login page's welcome_message widget
-        self.controller.pages[LoginPage].welcome_message.configure(text=f"Welcome back, {self.controller.username.get()}!")
-        self.controller.show_page(LoginPage)
+        self.controller.pages["LoginPage"].welcome_message.configure(text=f"Welcome back, {self.controller.username.get()}!")
+        self.controller.show_page("LoginPage")

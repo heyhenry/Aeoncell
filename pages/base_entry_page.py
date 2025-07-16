@@ -3,9 +3,6 @@ import customtkinter as ctk
 from PIL import Image
 from widgets import Navbar
 from utils import *
-from pages import DashboardPage
-from pages import SingleEntryPage
-from pages import SessionEntryPage
 
 class BaseEntryPage(ctk.CTkFrame):
     def __init__(self, parent, controller, entry_type, btn_name):
@@ -117,7 +114,7 @@ class BaseEntryPage(ctk.CTkFrame):
 
             self.clear_entry_fields()
             # update the exercise summary section in the dashboard
-            self.controller.pages[DashboardPage].update_exercise_summary()
+            self.controller.pages["DashboardPage"].update_exercise_summary()
             self.after_entry_submission()
 
     def process_confirmation(self):
@@ -128,7 +125,7 @@ class BaseEntryPage(ctk.CTkFrame):
             if self.entry_type == "session":
                 self.label_entry.delete(0, ctk.END)
             confirmation_window.destroy()
-            self.controller.show_page(DashboardPage)
+            self.controller.show_page("DashboardPage")
 
         # check if the entry is validly filled or not
         incomplete_entry = False
@@ -163,7 +160,7 @@ class BaseEntryPage(ctk.CTkFrame):
             # catch and clear user pressing the cancel button with a valid entry (filled)
             elif self.entry_type == "single":
                 self.clear_entry_fields()
-            self.controller.show_page(DashboardPage)
+            self.controller.show_page("DashboardPage")
 
     def after_entry_submission(self):
         pass
@@ -214,11 +211,11 @@ class BaseEntryPage(ctk.CTkFrame):
     def toggle_entry_type(self, event=None):
         if self.entry_type == "single":
             self.clear_entry_fields()
-            self.controller.show_page(SessionEntryPage)
+            self.controller.show_page("SessionEntryPage")
         elif self.entry_type == "session":
             self.clear_entry_fields()
             self.label_entry.delete(0, ctk.END)
-            self.controller.show_page(SingleEntryPage)
+            self.controller.show_page("SingleEntryPage")
 
     # automatically insert today's date into the date entry field
     def reset_date(self):
