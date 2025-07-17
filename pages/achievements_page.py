@@ -32,7 +32,7 @@ class AchievementsPage(ctk.CTkFrame):
         #region [Parent Frames]
         page_title = ctk.CTkLabel(content, text="Achievements", font=("", 24))
         page_message = ctk.CTkLabel(content, text="View your achievements here", font=("", 14))
-        achievements_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1200, height=2600)
+        achievements_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1200, height=3250)
 
         achievements_section.grid_propagate(False)
 
@@ -41,7 +41,7 @@ class AchievementsPage(ctk.CTkFrame):
         achievements_section.grid(row=3, column=1, pady=(0, 50))
 
         achievements_section.grid_rowconfigure(0, weight=1)
-        achievements_section.grid_rowconfigure(17, weight=1)
+        achievements_section.grid_rowconfigure(21, weight=1)
 
         achievements_section.grid_columnconfigure(0, weight=1)
         achievements_section.grid_columnconfigure(2, weight=1)
@@ -51,50 +51,63 @@ class AchievementsPage(ctk.CTkFrame):
         #region [Achievement Frames]
         achievements_overview_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=180)
         
-        # First Exercise: Logged first exercise entry
+        # First Day: Log into Aeoncell for the first time
         achievement_slot_1_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Ten Exercises: Logged ten exericse entries
+        # First Drink: Log first hydration entry
         achievement_slot_2_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # 1 Month Club: Active for 30 total days (any entry (daily or exercise))
+        # First Sleep: Log first sleep entry
         achievement_slot_3_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Rep Warrior: Completed 1000 total reps
+        # First Steps: Log first steps entry
         achievement_slot_4_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Set It Off: Completed 500 total sets
+        # First Workout: Log first exercise entry
         achievement_slot_5_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Sleep Maxxed: Slept over 9 hours in one night
+        # New Profile: Change profile pic for the first time
         achievement_slot_6_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Heavy Lifter I: Lifted over 1,000kg in total
+        # Ten Exercises: Log 10 exercise entries
         achievement_slot_7_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Heavy Lifter II: Lifted over 10,000kg in total
+        # Rep Warrior: Complete 1000 total reps
         achievement_slot_8_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Heavy Lifter III: Lifted over 50,000kg in total
+        # Set It off: Complete 500 total sets
         achievement_slot_9_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Step Stacker I: Reached 50,000 total steps
+        # Sleep Maxxed: Sleep over 9 hours in a single night
         achievement_slot_10_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Step Stacker II: Reached 250,000 total steps
+        # Heavy Lifter I: Lift a total of 1000kg
         achievement_slot_11_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Hydrated Human I: Drank 10L in total
+        # Heavy Lifter II: Lift a total of 10,000kg
         achievement_slot_12_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Hydrated Human II: Drank 100L in total
+        # Step Stacker I: Walk a total of 50,000 steps
         achievement_slot_13_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Sleeping Beauty I: Slept 10hrs in total
+        # Step Stacker II: Walk a total of 250,000 steps
         achievement_slot_14_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
-        # Sleeping Beauty II: Slept 100hrs in total
+        # Hydrated Human I: Drink a total of 10L
         achievement_slot_15_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
+
+        # Hydrated Human II: Drink a total of 100L 
+        achievement_slot_16_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
+
+        # Sleeping Beauty I: Sleep a total of 10hrs
+        achievement_slot_17_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
+
+        # Sleeping Beauty II: Sleep a total of 100hrs
+        achievement_slot_18_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
+
+        # 1 Month Club: Log entries for 30 different days
+        achievement_slot_19_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
+
 
         achievements_overview_section.grid(row=1, column=1, pady=(30, 20))
         achievement_slot_1_section.grid(row=2, column=1, pady=(30, 0))
@@ -112,5 +125,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_13_section.grid(row=14, column=1, pady=(30, 0))
         achievement_slot_14_section.grid(row=15, column=1, pady=(30, 0))
         achievement_slot_15_section.grid(row=16, column=1, pady=(30, 0))
+        achievement_slot_16_section.grid(row=17, column=1, pady=(30, 0))
+        achievement_slot_17_section.grid(row=18, column=1, pady=(30, 0))
+        achievement_slot_18_section.grid(row=19, column=1, pady=(30, 0))
+        achievement_slot_19_section.grid(row=20, column=1, pady=(30, 0))
 
         #endregion
