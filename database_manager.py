@@ -13,6 +13,7 @@ class DatabaseManager:
         self.create_steps_table()
         self.create_hydration_table()
         self.create_sleep_table()
+        self.create_achievements_table()
         self.db_connection.commit()
 
     def create_authentication_table(self):
@@ -114,3 +115,14 @@ class DatabaseManager:
         )
         """
         self.db_cursor.execute(create_profile_table_query)
+
+    def create_achievements_table(self):
+        create_achievements_table_query = """
+        CREATE TABLE IF NOT EXISTS achievements_details (
+            achievement_name TEXT NOT NULL,
+            achievement_current_progress TEXT,
+            achievement_total_progress TEXT,
+            achievement_unlock_date TEXT
+        )
+        """
+        self.db_cursor.execute(create_achievements_table_query)
