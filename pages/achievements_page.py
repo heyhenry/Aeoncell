@@ -11,7 +11,8 @@ class AchievementsPage(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
-        self.achievements_banner = ctk.CTkImage(light_image=Image.open("img/achievements/achievements_banner.png"), dark_image=Image.open("img/achievements/achievements_banner.png"), size=(300, 100))
+        self.achievements_triple_stars = ctk.CTkImage(light_image=Image.open("img/achievements/triple_stars.png"), dark_image=Image.open("img/achievements/triple_stars.png"), size=(128, 96))
+        self.achievements_banner = ctk.CTkImage(light_image=Image.open("img/achievements/achievement_banner.png"), dark_image=Image.open("img/achievements/achievement_banner.png"), size=(96, 96))
 
         self.create_widgets()
 
@@ -34,7 +35,7 @@ class AchievementsPage(ctk.CTkFrame):
         #region [Parent Frames]
         page_title = ctk.CTkLabel(content, text="Achievements", font=("", 24))
         page_message = ctk.CTkLabel(content, text="View your achievements here", font=("", 14))
-        achievements_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1200, height=3250)
+        achievements_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1200, height=3200)
 
         achievements_section.grid_propagate(False)
         achievements_section.grid_rowconfigure(0, weight=1)
@@ -57,16 +58,24 @@ class AchievementsPage(ctk.CTkFrame):
         achievements_overview_section.grid_columnconfigure(3, weight=1)
         achievements_overview_section.grid(row=1, column=1, pady=(30, 20))
         
-        achievements_banner_imagery = ctk.CTkLabel(achievements_overview_section, text="", image=self.achievements_banner)
+        achievements_banner_subsection = ctk.CTkFrame(achievements_overview_section, fg_color="transparent")
         achievements_overview_subsection = ctk.CTkFrame(achievements_overview_section, fg_color="transparent")
 
-        achievements_banner_imagery.grid(row=1, column=1, padx=(0, 60))
+        achievements_banner_subsection.grid(row=1, column=1, padx=(0, 60))
         achievements_overview_subsection.grid(row=1, column=2)
+
+        achievements_left_sub_banner = ctk.CTkLabel(achievements_banner_subsection, text="", image=self.achievements_banner)
+        achievements_triple_stars = ctk.CTkLabel(achievements_banner_subsection, text="", image=self.achievements_triple_stars)
+        achievements_right_sub_banner = ctk.CTkLabel(achievements_banner_subsection, text="", image=self.achievements_banner)
+
+        achievements_left_sub_banner.grid(row=0, column=0)
+        achievements_triple_stars.grid(row=0, column=1, padx=20)
+        achievements_right_sub_banner.grid(row=0, column=2)
 
         achievements_overview_progress_info = ctk.CTkLabel(achievements_overview_subsection, text="3 of 12 (40%) achievements earned:", font=("", 24))
         achievements_overview_progressbar = ctk.CTkProgressBar(achievements_overview_subsection, border_width=3, height=40, width=600, corner_radius=0)
 
-        achievements_overview_progress_info.grid(row=0, column=0)
+        achievements_overview_progress_info.grid(row=0, column=0, pady=(0, 10))
         achievements_overview_progressbar.grid(row=1, column=0)                
 
         # First Day: Log into Aeoncell for the first time
