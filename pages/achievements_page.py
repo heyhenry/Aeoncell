@@ -11,6 +11,8 @@ class AchievementsPage(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
+        self.achievements_banner = ctk.CTkImage(light_image=Image.open("img/achievements/achievements_banner.png"), dark_image=Image.open("img/achievements/achievements_banner.png"), size=(300, 100))
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -35,22 +37,38 @@ class AchievementsPage(ctk.CTkFrame):
         achievements_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1200, height=3250)
 
         achievements_section.grid_propagate(False)
+        achievements_section.grid_rowconfigure(0, weight=1)
+        achievements_section.grid_rowconfigure(21, weight=1)
+        achievements_section.grid_columnconfigure(0, weight=1)
+        achievements_section.grid_columnconfigure(2, weight=1)
 
         page_title.grid(row=1, column=1, pady=(30, 0), sticky="w", padx=(0, 1000))
         page_message.grid(row=2, column=1, pady=(0, 50), sticky="w")
         achievements_section.grid(row=3, column=1, pady=(0, 50))
-
-        achievements_section.grid_rowconfigure(0, weight=1)
-        achievements_section.grid_rowconfigure(21, weight=1)
-
-        achievements_section.grid_columnconfigure(0, weight=1)
-        achievements_section.grid_columnconfigure(2, weight=1)
-
         #endregion
 
         #region [Achievement Frames]
-        achievements_overview_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=180)
+        achievements_overview_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
         
+        achievements_overview_section.grid_propagate(False)
+        achievements_overview_section.grid_rowconfigure(0, weight=1)
+        achievements_overview_section.grid_rowconfigure(2, weight=1)
+        achievements_overview_section.grid_columnconfigure(0, weight=1)
+        achievements_overview_section.grid_columnconfigure(3, weight=1)
+        achievements_overview_section.grid(row=1, column=1, pady=(30, 20))
+        
+        achievements_banner_imagery = ctk.CTkLabel(achievements_overview_section, text="", image=self.achievements_banner)
+        achievements_overview_subsection = ctk.CTkFrame(achievements_overview_section, fg_color="transparent")
+
+        achievements_banner_imagery.grid(row=1, column=1, padx=(0, 60))
+        achievements_overview_subsection.grid(row=1, column=2)
+
+        achievements_overview_progress_info = ctk.CTkLabel(achievements_overview_subsection, text="3 of 12 (40%) achievements earned:", font=("", 24))
+        achievements_overview_progressbar = ctk.CTkProgressBar(achievements_overview_subsection, border_width=3, height=40, width=600, corner_radius=0)
+
+        achievements_overview_progress_info.grid(row=0, column=0)
+        achievements_overview_progressbar.grid(row=1, column=0)                
+
         # First Day: Log into Aeoncell for the first time
         achievement_slot_1_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
@@ -108,8 +126,6 @@ class AchievementsPage(ctk.CTkFrame):
         # 1 Month Club: Log entries for 30 different days
         achievement_slot_19_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
 
-
-        achievements_overview_section.grid(row=1, column=1, pady=(30, 20))
         achievement_slot_1_section.grid(row=2, column=1, pady=(30, 0))
         achievement_slot_2_section.grid(row=3, column=1, pady=(30, 0))
         achievement_slot_3_section.grid(row=4, column=1, pady=(30, 0))
