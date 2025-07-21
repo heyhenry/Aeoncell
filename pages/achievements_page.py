@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 from widgets import Navbar
+from datetime import datetime
 
 class AchievementsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -17,6 +18,8 @@ class AchievementsPage(ctk.CTkFrame):
         self.achievements_banner = ctk.CTkImage(light_image=Image.open("img/achievements/achievement_banner.png"), dark_image=Image.open("img/achievements/achievement_banner.png"), size=(96, 96))
         self.achievement_one_icon = ctk.CTkImage(light_image=Image.open("output.png"), dark_image=Image.open("output.png"), size=(96, 96))
         #endregion
+
+        self.achievement_1_unlock_date = ctk.StringVar()
 
         self.create_widgets()
 
@@ -225,3 +228,7 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_18_section.grid(row=19, column=1, pady=(30, 0))
         achievement_slot_19_section.grid(row=20, column=1, pady=(30, 0))    
         #endregion
+
+    def set_achievement_unlock_date(self, achievement_datetime_var):
+        current_datetime = datetime.now().strftime("%d %b, %Y, %I:%M %p")
+        achievement_datetime_var.set(f"Unlocked {current_datetime}")
