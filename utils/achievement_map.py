@@ -1,0 +1,21 @@
+achievement_lookup = {
+   1: "first_day",
+   2: "first_drink",
+   3: "first_sleep",
+   4: "first_steps",
+   5: "first_workout",
+   6: "heavy_lifter_I",
+   7: "heavy_lifter_II",
+   8: "hydrated_human_I",
+   9: "hydrated_human_II",
+   10: "new_profile",
+   11: "rep_warrior",
+   12: "set_it_off",
+   13: "sleep_maxxed",
+   14: "sleeping_beauty_I",
+   15: "sleeping_beauty_II",
+   16: "step_stacker_I",
+   17: "step_stacker_II",
+   18: "ten_exercises",
+   19: "1_month_club"
+}
