@@ -51,35 +51,46 @@ def create_rounded_background_achievement_icon(
     canvas.save(output_path)
 
 # list of achievement filenames incl. filepath
-img_filnames = [
-    "img/achievements/1_month_club.png",
-    "img/achievements/first_day.png",
-    "img/achievements/first_drink.png",
-    "img/achievements/first_sleep.png",
-    "img/achievements/first_steps.png",
-    "img/achievements/first_workout.png",
-    "img/achievements/heavy_lifter_I.png",
-    "img/achievements/heavy_lifter_II.png",
-    "img/achievements/hydrated_human_I.png",
-    "img/achievements/hydrated_human_II.png",
-    "img/achievements/new_profile.png",
-    "img/achievements/rep_warrior.png",
-    "img/achievements/set_it_off.png",
-    "img/achievements/sleep_maxxed.png",
-    "img/achievements/sleeping_beauty_I.png",
-    "img/achievements/sleeping_beauty_II.png",
-    "img/achievements/step_stacker_I.png",
-    "img/achievements/step_stacker_II.png",
-    "img/achievements/ten_exercises.png",
+img_filenames = [
+    "img/achievements/original_icons/1_month_club.png",
+    "img/achievements/original_icons/first_day.png",
+    "img/achievements/original_icons/first_drink.png",
+    "img/achievements/original_icons/first_sleep.png",
+    "img/achievements/original_icons/first_steps.png",
+    "img/achievements/original_icons/first_workout.png",
+    "img/achievements/original_icons/heavy_lifter_I.png",
+    "img/achievements/original_icons/heavy_lifter_II.png",
+    "img/achievements/original_icons/hydrated_human_I.png",
+    "img/achievements/original_icons/hydrated_human_II.png",
+    "img/achievements/original_icons/new_profile.png",
+    "img/achievements/original_icons/rep_warrior.png",
+    "img/achievements/original_icons/set_it_off.png",
+    "img/achievements/original_icons/sleep_maxxed.png",
+    "img/achievements/original_icons/sleeping_beauty_I.png",
+    "img/achievements/original_icons/sleeping_beauty_II.png",
+    "img/achievements/original_icons/step_stacker_I.png",
+    "img/achievements/original_icons/step_stacker_II.png",
+    "img/achievements/original_icons/ten_exercises.png",
 ]
 
 # loop through and created altered 'steam' achievement style icons
-for filename in img_filnames:
+# for filename in img_filnames:
+#     filepath_prefix_index = filename.rfind("/")
+#     filename_index = filename.rfind("g")
+#     create_rounded_background_achievement_icon(
+#         input_path=filename,
+#         output_path=f"{filename[:filepath_prefix_index]}{filename[filepath_prefix_index+1:filename_index+1]}",
+#         bg_glow_color="#F5F0FF00",
+#         border_color="#9370DB",
+#         inner_glow=True
+#     )
+
+for filename in img_filenames:
     filepath_prefix_index = filename.rfind("/")
     filename_index = filename.rfind("g")
     create_rounded_background_achievement_icon(
         input_path=filename,
-        output_path=f"{filename[:filepath_prefix_index]}/altered/{filename[filepath_prefix_index+1:filename_index+1]}",
+        output_path=f"img/achievements/locked_version/{filename[filepath_prefix_index+1:filename_index+1]}",
         bg_glow_color="#F5F0FF00",
         border_color="#9370DB",
         inner_glow=True
