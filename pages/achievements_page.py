@@ -16,7 +16,7 @@ class AchievementsPage(ctk.CTkFrame):
         #region Images
         self.achievements_triple_stars = ctk.CTkImage(light_image=Image.open("img/achievements/triple_stars.png"), dark_image=Image.open("img/achievements/triple_stars.png"), size=(128, 96))
         self.achievements_banner = ctk.CTkImage(light_image=Image.open("img/achievements/achievement_banner.png"), dark_image=Image.open("img/achievements/achievement_banner.png"), size=(96, 96))
-        self.achievement_one_icon = ctk.CTkImage(light_image=Image.open("output.png"), dark_image=Image.open("output.png"), size=(96, 96))
+        self.achievement_one_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
         #endregion
 
         self.achievement_1_unlock_date = ctk.StringVar()
@@ -232,3 +232,9 @@ class AchievementsPage(ctk.CTkFrame):
     def set_achievement_unlock_date(self, achievement_datetime_var):
         current_datetime = datetime.now().strftime("%d %b, %Y, %I:%M %p")
         achievement_datetime_var.set(f"Unlocked {current_datetime}")
+
+    def update_achievement_status(self, achievement_id, achievement_icon_var, achievement_datetime_var):
+        pass
+
+    def check_for_unlocked_achievements(self):
+        pass

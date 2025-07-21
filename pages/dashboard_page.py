@@ -14,7 +14,7 @@ class DashboardPage(ctk.CTkFrame):
 
         # temp
         self.icon = ctk.CTkImage(light_image=Image.open("img/big_flame.png"), dark_image=Image.open("img/big_flame.png"), size=(32, 32))
-        self.badge = ctk.CTkImage(light_image=Image.open("img/achievements/first_workout_achievement.png"), dark_image=Image.open("img/achievements/first_workout_achievement.png"), size=(64, 64))
+        self.badge = ctk.CTkImage(light_image=Image.open("img/achievements/first_workout.png"), dark_image=Image.open("img/achievements/first_workout.png"), size=(64, 64))
         self.mini_banner = ctk.CTkImage(light_image=Image.open("img/laid_dumbbell_man.png"), dark_image=Image.open("img/laid_dumbbell_man.png"), size=(100, 100))
         self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
         # multi-sectional use
