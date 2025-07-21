@@ -128,7 +128,8 @@ class DatabaseManager:
             achievement_name TEXT NOT NULL,
             achievement_current_progress TEXT,
             achievement_total_progress TEXT,
-            achievement_unlock_date TEXT
+            achievement_unlock_date TEXT,
+            achievement_status TEXT
         )
         """
         self.db_cursor.execute(create_achievements_table_query)
