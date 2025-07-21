@@ -119,6 +119,7 @@ class DatabaseManager:
     def create_achievements_table(self):
         create_achievements_table_query = """
         CREATE TABLE IF NOT EXISTS achievements_details (
+            achievement_id INTEGER PRIMARY KEY,
             achievement_name TEXT NOT NULL,
             achievement_current_progress TEXT,
             achievement_total_progress TEXT,
