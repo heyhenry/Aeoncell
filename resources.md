@@ -123,3 +123,18 @@ from __future__ import annotations (16th July 2025): https://stackoverflow.com/q
 Python Circular Import: Causes, Fixes, and Best Practices (16th July 2025): https://www.datacamp.com/tutorial/python-circular-import
 Python: Reference to a class from string? (16th July 2025): https://stackoverflow.com/questions/734970/python-reference-to-a-class-from-a-string#answer-734995
 How to merge a branch to main branch in Github? (16th July 2025): https://stackoverflow.com/questions/70460220/how-to-merge-a-branch-to-main-branch-in-github
+Python PIL | Image.convert() Method (17th July 2025): https://www.geeksforgeeks.org/python/python-pil-image-convert-method/
+Rep Warrior created by Freepik | flaticon.com (17th July 2025): https://www.flaticon.com/free-icon/fitness_2964514?term=workout&page=1&position=20&origin=search&related_id=2964514
+Heavy Lifter I created by Freepik | flaticon.com (17th July 2025): https://www.flaticon.com/free-icon/exercise_1390992?term=exercise&page=1&position=41&origin=search&related_id=1390992
+Set It Off created by Freepik | flaticon.com (17th July 2025): https://www.flaticon.com/free-icon/barbell_2936886?term=exercise&page=2&position=19&origin=search&related_id=2936886
+Step Stacker I created by Freepik | flaticon.com (17th July 2025): https://www.flaticon.com/free-icon/runner_2964546?term=exercise&page=3&position=5&origin=search&related_id=2964546
+Step Stacker II created by Freepik | flaticon.com (17th July 2025): https://www.flaticon.com/free-icon/running_11257953?term=exercise&page=3&position=96&origin=search&related_id=11257953
+1 Month Club created by Freepik | flaticon.com (17th July 2025): https://www.flaticon.com/free-icon/meditation_11258014?term=exercise&page=4&position=39&origin=search&related_id=11258014
+Heavy Lifter II created by Bahu Icons | flaticon.com (17th July 2025): https://www.flaticon.com/free-icon/lifting-weight_17109927?term=lifting+weight&page=2&position=8&origin=search&related_id=17109927
+Sleeping Beauty I created by Freepik | flaticon.com (17th July 2025): https://www.flaticon.com/free-icon/sleep_564272?term=sleeping&page=5&position=95&origin=search&related_id=564272
+Sleeping Beauty II created by Freepik | flaticon.com (17th July 2025): https://www.flaticon.com/free-icon/sleeping-mask_11213354?term=sleeping&page=8&position=28&origin=search&related_id=11213354
+Sleep Maxxed created by Freepik | flaticon.com (17th July 2025): https://www.flaticon.com/free-icon/sleep_8491013?term=deep+sleep&page=3&position=75&origin=search&related_id=8491013
+How to Get Current Date and Time using Python (21st July 2025): www.geeksforgeeks.org/python/get-current-date-and-time-using-python/
+SQLite | Frequently Asked Questions (21st July 2025): https://sqlite.org/faq.html#q11
+Way to pass multiple parameters to a function in python (21st July 2025): https://stackoverflow.com/questions/13552907/way-to-pass-multiple-parameters-to-a-function-in-python
+*args and **kwargs in Python (21st July 2025): https://www.geeksforgeeks.org/python/args-kwargs-python/
