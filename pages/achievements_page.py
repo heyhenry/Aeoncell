@@ -144,8 +144,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_2_info_section.grid(row=1, column=2)
         achievement_slot_2_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_2_name = ctk.CTkLabel(achievement_slot_2_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_2_desc = ctk.CTkLabel(achievement_slot_2_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_2_name = ctk.CTkLabel(achievement_slot_2_info_section, text="First Drink", font=("", 24, "bold"))
+        achievement_2_desc = ctk.CTkLabel(achievement_slot_2_info_section, text="Log first hydration entry.", font=("", 18))
 
         achievement_2_name.grid(row=0, column=0, sticky="w")
         achievement_2_desc.grid(row=1, column=0, sticky="w")
@@ -169,8 +169,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_3_info_section.grid(row=1, column=2)
         achievement_slot_3_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_3_name = ctk.CTkLabel(achievement_slot_3_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_3_desc = ctk.CTkLabel(achievement_slot_3_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_3_name = ctk.CTkLabel(achievement_slot_3_info_section, text="First Sleep", font=("", 24, "bold"))
+        achievement_3_desc = ctk.CTkLabel(achievement_slot_3_info_section, text="Log first sleep entry.", font=("", 18))
 
         achievement_3_name.grid(row=0, column=0, sticky="w")
         achievement_3_desc.grid(row=1, column=0, sticky="w")
@@ -194,8 +194,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_4_info_section.grid(row=1, column=2)
         achievement_slot_4_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_4_name = ctk.CTkLabel(achievement_slot_4_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_4_desc = ctk.CTkLabel(achievement_slot_4_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_4_name = ctk.CTkLabel(achievement_slot_4_info_section, text="First Steps", font=("", 24, "bold"))
+        achievement_4_desc = ctk.CTkLabel(achievement_slot_4_info_section, text="Log first steps entry.", font=("", 18))
 
         achievement_4_name.grid(row=0, column=0, sticky="w")
         achievement_4_desc.grid(row=1, column=0, sticky="w")        
@@ -219,8 +219,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_5_info_section.grid(row=1, column=2)
         achievement_slot_5_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_5_name = ctk.CTkLabel(achievement_slot_5_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_5_desc = ctk.CTkLabel(achievement_slot_5_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_5_name = ctk.CTkLabel(achievement_slot_5_info_section, text="First Workout", font=("", 24, "bold"))
+        achievement_5_desc = ctk.CTkLabel(achievement_slot_5_info_section, text="Log first exercise entry.", font=("", 18))
 
         achievement_5_name.grid(row=0, column=0, sticky="w")
         achievement_5_desc.grid(row=1, column=0, sticky="w")        
@@ -244,8 +244,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_6_info_section.grid(row=1, column=2)
         achievement_slot_6_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_6_name = ctk.CTkLabel(achievement_slot_6_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_6_desc = ctk.CTkLabel(achievement_slot_6_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_6_name = ctk.CTkLabel(achievement_slot_6_info_section, text="New Profile", font=("", 24, "bold"))
+        achievement_6_desc = ctk.CTkLabel(achievement_slot_6_info_section, text="Change profile pic for the first time.", font=("", 18))
 
         achievement_6_name.grid(row=0, column=0, sticky="w")
         achievement_6_desc.grid(row=1, column=0, sticky="w")        
@@ -270,8 +270,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_7_info_section.grid(row=1, column=2)
         achievement_slot_7_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_7_name = ctk.CTkLabel(achievement_slot_7_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_7_desc = ctk.CTkLabel(achievement_slot_7_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_7_name = ctk.CTkLabel(achievement_slot_7_info_section, text="Ten Exercises", font=("", 24, "bold"))
+        achievement_7_desc = ctk.CTkLabel(achievement_slot_7_info_section, text="Log 10 exercise entries.", font=("", 18))
 
         achievement_7_name.grid(row=0, column=0, sticky="w")
         achievement_7_desc.grid(row=1, column=0, sticky="w")        
@@ -295,8 +295,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_8_info_section.grid(row=1, column=2)
         achievement_slot_8_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_8_name = ctk.CTkLabel(achievement_slot_8_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_8_desc = ctk.CTkLabel(achievement_slot_8_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_8_name = ctk.CTkLabel(achievement_slot_8_info_section, text="Rep Warrior", font=("", 24, "bold"))
+        achievement_8_desc = ctk.CTkLabel(achievement_slot_8_info_section, text="Complete 1000 total reps.", font=("", 18))
 
         achievement_8_name.grid(row=0, column=0, sticky="w")
         achievement_8_desc.grid(row=1, column=0, sticky="w")        
@@ -320,8 +320,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_9_info_section.grid(row=1, column=2)
         achievement_slot_9_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_9_name = ctk.CTkLabel(achievement_slot_9_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_9_desc = ctk.CTkLabel(achievement_slot_9_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_9_name = ctk.CTkLabel(achievement_slot_9_info_section, text="Set It Off", font=("", 24, "bold"))
+        achievement_9_desc = ctk.CTkLabel(achievement_slot_9_info_section, text="Complete 500 total sets.", font=("", 18))
 
         achievement_9_name.grid(row=0, column=0, sticky="w")
         achievement_9_desc.grid(row=1, column=0, sticky="w")        
@@ -345,8 +345,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_10_info_section.grid(row=1, column=2)
         achievement_slot_10_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_10_name = ctk.CTkLabel(achievement_slot_10_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_10_desc = ctk.CTkLabel(achievement_slot_10_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_10_name = ctk.CTkLabel(achievement_slot_10_info_section, text="Sleep Maxxed", font=("", 24, "bold"))
+        achievement_10_desc = ctk.CTkLabel(achievement_slot_10_info_section, text="Sleep over 9 hours in a single night.", font=("", 18))
 
         achievement_10_name.grid(row=0, column=0, sticky="w")
         achievement_10_desc.grid(row=1, column=0, sticky="w")        
@@ -370,8 +370,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_11_info_section.grid(row=1, column=2)
         achievement_slot_11_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_11_name = ctk.CTkLabel(achievement_slot_11_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_11_desc = ctk.CTkLabel(achievement_slot_11_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_11_name = ctk.CTkLabel(achievement_slot_11_info_section, text="Heavy Lifter I", font=("", 24, "bold"))
+        achievement_11_desc = ctk.CTkLabel(achievement_slot_11_info_section, text="Lift a total of 1000kg.", font=("", 18))
 
         achievement_11_name.grid(row=0, column=0, sticky="w")
         achievement_11_desc.grid(row=1, column=0, sticky="w")        
@@ -395,8 +395,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_12_info_section.grid(row=1, column=2)
         achievement_slot_12_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_12_name = ctk.CTkLabel(achievement_slot_12_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_12_desc = ctk.CTkLabel(achievement_slot_12_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_12_name = ctk.CTkLabel(achievement_slot_12_info_section, text="Heavy Lifter II", font=("", 24, "bold"))
+        achievement_12_desc = ctk.CTkLabel(achievement_slot_12_info_section, text="Lift a total of 10,000kg", font=("", 18))
 
         achievement_12_name.grid(row=0, column=0, sticky="w")
         achievement_12_desc.grid(row=1, column=0, sticky="w")        
@@ -420,8 +420,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_13_info_section.grid(row=1, column=2)
         achievement_slot_13_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_13_name = ctk.CTkLabel(achievement_slot_13_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_13_desc = ctk.CTkLabel(achievement_slot_13_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_13_name = ctk.CTkLabel(achievement_slot_13_info_section, text="Step Stacker I", font=("", 24, "bold"))
+        achievement_13_desc = ctk.CTkLabel(achievement_slot_13_info_section, text="Walk a total of 50,000 steps.", font=("", 18))
 
         achievement_13_name.grid(row=0, column=0, sticky="w")
         achievement_13_desc.grid(row=1, column=0, sticky="w")        
@@ -445,8 +445,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_14_info_section.grid(row=1, column=2)
         achievement_slot_14_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_14_name = ctk.CTkLabel(achievement_slot_14_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_14_desc = ctk.CTkLabel(achievement_slot_14_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_14_name = ctk.CTkLabel(achievement_slot_14_info_section, text="Step Stacker II", font=("", 24, "bold"))
+        achievement_14_desc = ctk.CTkLabel(achievement_slot_14_info_section, text="Walk a total of 250,000 steps.", font=("", 18))
 
         achievement_14_name.grid(row=0, column=0, sticky="w")
         achievement_14_desc.grid(row=1, column=0, sticky="w")        
@@ -470,8 +470,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_15_info_section.grid(row=1, column=2)
         achievement_slot_15_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_15_name = ctk.CTkLabel(achievement_slot_15_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_15_desc = ctk.CTkLabel(achievement_slot_15_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_15_name = ctk.CTkLabel(achievement_slot_15_info_section, text="Hydrated Human I", font=("", 24, "bold"))
+        achievement_15_desc = ctk.CTkLabel(achievement_slot_15_info_section, text="Drink a total of 10L.", font=("", 18))
 
         achievement_15_name.grid(row=0, column=0, sticky="w")
         achievement_15_desc.grid(row=1, column=0, sticky="w")        
@@ -495,8 +495,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_16_info_section.grid(row=1, column=2)
         achievement_slot_16_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_16_name = ctk.CTkLabel(achievement_slot_16_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_16_desc = ctk.CTkLabel(achievement_slot_16_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_16_name = ctk.CTkLabel(achievement_slot_16_info_section, text="Hydrated Human II", font=("", 24, "bold"))
+        achievement_16_desc = ctk.CTkLabel(achievement_slot_16_info_section, text="Drink a total of 100L.", font=("", 18))
 
         achievement_16_name.grid(row=0, column=0, sticky="w")
         achievement_16_desc.grid(row=1, column=0, sticky="w")        
@@ -520,8 +520,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_17_info_section.grid(row=1, column=2)
         achievement_slot_17_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_17_name = ctk.CTkLabel(achievement_slot_17_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_17_desc = ctk.CTkLabel(achievement_slot_17_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_17_name = ctk.CTkLabel(achievement_slot_17_info_section, text="Sleeping Beauty I", font=("", 24, "bold"))
+        achievement_17_desc = ctk.CTkLabel(achievement_slot_17_info_section, text="Sleep a total of 10hrs.", font=("", 18))
 
         achievement_17_name.grid(row=0, column=0, sticky="w")
         achievement_17_desc.grid(row=1, column=0, sticky="w")        
@@ -545,8 +545,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_18_info_section.grid(row=1, column=2)
         achievement_slot_18_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_18_name = ctk.CTkLabel(achievement_slot_18_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_18_desc = ctk.CTkLabel(achievement_slot_18_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_18_name = ctk.CTkLabel(achievement_slot_18_info_section, text="Sleeping Beauty II", font=("", 24, "bold"))
+        achievement_18_desc = ctk.CTkLabel(achievement_slot_18_info_section, text="Sleep a total of 100hrs.", font=("", 18))
 
         achievement_18_name.grid(row=0, column=0, sticky="w")
         achievement_18_desc.grid(row=1, column=0, sticky="w")        
@@ -570,8 +570,8 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_19_info_section.grid(row=1, column=2)
         achievement_slot_19_unlock_date.grid(row=1, column=3, padx=(0, 20), sticky="e")
 
-        achievement_19_name = ctk.CTkLabel(achievement_slot_19_info_section, text="First Day", font=("", 24, "bold"))
-        achievement_19_desc = ctk.CTkLabel(achievement_slot_19_info_section, text="Log into Aeoncell for the first time.", font=("", 18))
+        achievement_19_name = ctk.CTkLabel(achievement_slot_19_info_section, text="1 Month Club", font=("", 24, "bold"))
+        achievement_19_desc = ctk.CTkLabel(achievement_slot_19_info_section, text="Log entries for 30 different days.", font=("", 18))
 
         achievement_19_name.grid(row=0, column=0, sticky="w")
         achievement_19_desc.grid(row=1, column=0, sticky="w")        
