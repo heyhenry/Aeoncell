@@ -7,7 +7,6 @@ import calendar
 from utils.aeoncell_utils import *
 from PIL import Image
 import os
-from CTkXYFrame import *
 from tkinter import ttk as btk
 import random
 import requests
@@ -134,7 +133,7 @@ class Windows(ctk.CTk):
             print("auto-defaulting-profile-pic")
             self.set_default_profile_image()
 
-        # self.show_page(DashboardPage)
+        # self.show_page("AchievementsPage")
         # determine initial page display based on user having a password (i.e. guaranteed account registration)
         if self.db.check_password_exists():
             self.show_page("LoginPage")

@@ -3,6 +3,7 @@ from PIL import Image
 from widgets import Navbar
 from datetime import datetime
 from utils import achievement_map
+from .images import achievement_images
 
 class AchievementsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -13,30 +14,47 @@ class AchievementsPage(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
-        # ===================== [Images] ====================
-        #region Images
-        self.achievements_triple_stars = ctk.CTkImage(light_image=Image.open("img/achievements/triple_stars.png"), dark_image=Image.open("img/achievements/triple_stars.png"), size=(128, 96))
-        self.achievements_banner = ctk.CTkImage(light_image=Image.open("img/achievements/achievement_banner.png"), dark_image=Image.open("img/achievements/achievement_banner.png"), size=(96, 96))
-        self.achievement_1_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_2_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96)) 
-        self.achievement_3_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_4_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_5_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_6_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_7_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_8_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_9_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_10_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_11_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_12_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_13_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_14_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_15_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_16_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_17_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_18_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        self.achievement_19_icon = ctk.CTkImage(light_image=Image.open("img/achievements/altered/first_day.png"), dark_image=Image.open("img/achievements/altered/first_day.png"), size=(96, 96))
-        #endregion
+        # ==================== [Variables] ====================
+        #region Variables
+        self.achievement_1_icon = achievement_images.loading_achievement_icon
+        self.achievement_2_icon = achievement_images.loading_achievement_icon
+        self.achievement_3_icon = achievement_images.loading_achievement_icon
+        self.achievement_4_icon = achievement_images.loading_achievement_icon
+        self.achievement_5_icon = achievement_images.loading_achievement_icon
+        self.achievement_6_icon = achievement_images.loading_achievement_icon
+        self.achievement_7_icon = achievement_images.loading_achievement_icon
+        self.achievement_8_icon = achievement_images.loading_achievement_icon
+        self.achievement_9_icon = achievement_images.loading_achievement_icon
+        self.achievement_10_icon = achievement_images.loading_achievement_icon
+        self.achievement_11_icon = achievement_images.loading_achievement_icon
+        self.achievement_12_icon = achievement_images.loading_achievement_icon
+        self.achievement_13_icon = achievement_images.loading_achievement_icon
+        self.achievement_14_icon = achievement_images.loading_achievement_icon
+        self.achievement_15_icon = achievement_images.loading_achievement_icon
+        self.achievement_16_icon = achievement_images.loading_achievement_icon
+        self.achievement_17_icon = achievement_images.loading_achievement_icon
+        self.achievement_18_icon = achievement_images.loading_achievement_icon
+        self.achievement_19_icon = achievement_images.loading_achievement_icon
+
+        self.achievement_1_unlock_date = ctk.StringVar()
+        self.achievement_2_unlock_date = ctk.StringVar()
+        self.achievement_3_unlock_date = ctk.StringVar()
+        self.achievement_4_unlock_date = ctk.StringVar()
+        self.achievement_5_unlock_date = ctk.StringVar()
+        self.achievement_6_unlock_date = ctk.StringVar()
+        self.achievement_7_unlock_date = ctk.StringVar()
+        self.achievement_8_unlock_date = ctk.StringVar()
+        self.achievement_9_unlock_date = ctk.StringVar()
+        self.achievement_10_unlock_date = ctk.StringVar()
+        self.achievement_11_unlock_date = ctk.StringVar()
+        self.achievement_12_unlock_date = ctk.StringVar()
+        self.achievement_13_unlock_date = ctk.StringVar()
+        self.achievement_14_unlock_date = ctk.StringVar()
+        self.achievement_15_unlock_date = ctk.StringVar()
+        self.achievement_16_unlock_date = ctk.StringVar()
+        self.achievement_17_unlock_date = ctk.StringVar()
+        self.achievement_18_unlock_date = ctk.StringVar()
+        self.achievement_19_unlock_date = ctk.StringVar()
 
         self.achievement_icons = {
             1: self.achievement_1_icon,
@@ -59,7 +77,8 @@ class AchievementsPage(ctk.CTkFrame):
             18: self.achievement_18_icon,
             19: self.achievement_19_icon,
         }
-        self.achievement_1_unlock_date = ctk.StringVar()
+
+        #endregion
 
         self.create_widgets()
 
@@ -115,9 +134,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievements_banner_subsection.grid(row=1, column=1, padx=(0, 60))
         achievements_overview_subsection.grid(row=1, column=2)
 
-        achievements_left_sub_banner = ctk.CTkLabel(achievements_banner_subsection, text="", image=self.achievements_banner)
-        achievements_triple_stars = ctk.CTkLabel(achievements_banner_subsection, text="", image=self.achievements_triple_stars)
-        achievements_right_sub_banner = ctk.CTkLabel(achievements_banner_subsection, text="", image=self.achievements_banner)
+        achievements_left_sub_banner = ctk.CTkLabel(achievements_banner_subsection, text="", image=achievement_images.achievements_banner)
+        achievements_triple_stars = ctk.CTkLabel(achievements_banner_subsection, text="", image=achievement_images.achievements_triple_stars)
+        achievements_right_sub_banner = ctk.CTkLabel(achievements_banner_subsection, text="", image=achievement_images.achievements_banner)
 
         achievements_left_sub_banner.grid(row=0, column=0)
         achievements_triple_stars.grid(row=0, column=1, padx=20)
@@ -273,3 +292,13 @@ class AchievementsPage(ctk.CTkFrame):
         current_datetime = datetime.now().strftime("%d %b, %Y, %I:%M %p")
         achievement_datetime_var.set(f"Unlocked {current_datetime}")
 
+    # def update_achievement_status(self, *args):
+    #     for achievement_id in args:
+    #         self.achievement_icons[achievement_id].
+
+    # def update_achievement_status(self, achievement_id, achievement_icon_var, achievement_datetime_var):
+    #     self.set_achievement_unlock_date()
+
+    # def check_for_unlocked_achievements(self, *args):
+    #     for achievement_id in args:
+            
