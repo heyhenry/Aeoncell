@@ -599,13 +599,14 @@ class AchievementsPage(ctk.CTkFrame):
         for i in results:
             self.achievement_unlock_date[i[0]].set(i[1])
 
-    def set_achievement_unlock_date_and_icon(self, achievement_id):
+    def update_achievement_unlock_date_and_icon(self, achievement_id):
         print("unlock triggered")
         current_datetime = datetime.now().strftime("%d %b, %Y, %I:%M %p")
-        formatted_unlocked_date =f"Unlocked {current_datetime}"
+        formatted_unlocked_date = f"Unlocked {current_datetime}"
         self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_unlock_date = ? WHERE achievement_id = ?", (formatted_unlocked_date, achievement_id))
         self.achievement_unlock_date[achievement_id].set(formatted_unlocked_date)
         self.achievement_icons[achievement_id] = achievement_images.unlocked_achievements[achievement_id]
+        self.achievement_icon_slots[achievement_id].configure(image=self.achievement_icons[achievement_id])
 
     # achievements and their conditions to be unlocked
     def check_first_day(self):
@@ -613,7 +614,7 @@ class AchievementsPage(ctk.CTkFrame):
         result = self.controller.db_cursor.fetchone()
         if result:
             if result[0] == "locked":
-                self.set_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DAY)
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DAY)
                 self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_DAY))
                 self.controller.db_connection.commit()
 
