@@ -27,6 +27,8 @@ class AchievementsPage(ctk.CTkFrame):
             i : ctk.StringVar()
             for i in range(1, 20)
         }
+
+        self.achievement_icon_slots = {}
         #endregion
 
         self.create_widgets()
@@ -573,6 +575,13 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_19_name.grid(row=0, column=0, sticky="w")
         achievement_19_desc.grid(row=1, column=0, sticky="w")        
         #endregion   
+
+        # update self.achievement_icon_slots dict
+        self.achievement_icon_slots.update({
+            i : getattr(self, f"achievement_slot_{i}_icon")
+            for i in range(1, 20)
+        })
+
         #endregion
 
     # temp function to see better visual representation of working widgets..
