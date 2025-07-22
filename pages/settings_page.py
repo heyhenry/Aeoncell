@@ -27,7 +27,7 @@ class SettingsPage(ctk.CTkFrame):
 
         # retrieve existing data and set daily variables with them
         # only look to retrieve data if a database has been created (i.e. user has registered)
-        if self.controller.db.check_password_exists():
+        if self.controller.db.check_account_exists():
             # we can use rowid as the primary key reference because there will only always be a single entry in this table
             self.controller.db_cursor.execute("SELECT daily_sleep_goal, daily_steps_goal, daily_hydration_goal FROM profile_details WHERE rowid=1")
             result = self.controller.db_cursor.fetchone()
@@ -43,7 +43,7 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_walking_var = ctk.StringVar()
 
         # temp for compartmentalising internally.. will fix later and only use 1 checker for all variable data retrievals.
-        if self.controller.db.check_password_exists():
+        if self.controller.db.check_account_exists():
             self.controller.db_cursor.execute("SELECT monthly_weight_choice, monthly_weight_goal, monthly_sleep_goal, monthly_steps_goal, monthly_hydration_goal FROM profile_details WHERE rowid=1")
             result = self.controller.db_cursor.fetchone()
             self.monthly_weight_choice_var.set(result[0])
@@ -85,7 +85,7 @@ class SettingsPage(ctk.CTkFrame):
         self.daily_goals_section.grid_propagate(False)
         self.monthly_goals_section.grid_propagate(False)
         
-        page_title.grid(row=1, column=1, pady=(30, 0), sticky="w", padx=(0, 1000))
+        page_title.grid(row=1, column=1, padx=(0, 1000), pady=(30, 0), sticky="w")
         page_message.grid(row=2, column=1, sticky="w", pady=(0, 50))
         self.profile_section.grid(row=3, column=1, pady=(0, 50))
         self.daily_goals_section.grid(row=4, column=1, pady=(0, 50))

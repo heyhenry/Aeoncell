@@ -47,7 +47,8 @@ class DatabaseManager:
         except argon2.exceptions.VerifyMismatchError:
             return False
         
-    def check_password_exists(self):
+    def check_account_exists(self):
+        # checks account exists by whether there is a value saved in the password field of the authentication table
         self.db_cursor.execute("SELECT hashed_password FROM authentication WHERE rowid = 1")
         if self.db_cursor.fetchone():
             return True

@@ -99,7 +99,7 @@ class Windows(ctk.CTk):
 
         # if user has successfully registered/exists
         # check this by seeing if a password has been stored (could also check for username, same end result)
-        if self.db.check_password_exists():
+        if self.db.check_account_exists():
             # set the global username variable with existing username found in the database
             self.update_username()
 
@@ -135,7 +135,7 @@ class Windows(ctk.CTk):
 
         # self.show_page("AchievementsPage")
         # determine initial page display based on user having a password (i.e. guaranteed account registration)
-        if self.db.check_password_exists():
+        if self.db.check_account_exists():
             self.show_page("LoginPage")
         else:
             self.show_page("RegisterPage")
