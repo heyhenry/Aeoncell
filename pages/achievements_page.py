@@ -16,68 +16,17 @@ class AchievementsPage(ctk.CTkFrame):
 
         # ==================== [Variables] ====================
         #region Variables
-        self.achievement_1_icon = achievement_images.loading_achievement_icon
-        self.achievement_2_icon = achievement_images.loading_achievement_icon
-        self.achievement_3_icon = achievement_images.loading_achievement_icon
-        self.achievement_4_icon = achievement_images.loading_achievement_icon
-        self.achievement_5_icon = achievement_images.loading_achievement_icon
-        self.achievement_6_icon = achievement_images.loading_achievement_icon
-        self.achievement_7_icon = achievement_images.loading_achievement_icon
-        self.achievement_8_icon = achievement_images.loading_achievement_icon
-        self.achievement_9_icon = achievement_images.loading_achievement_icon
-        self.achievement_10_icon = achievement_images.loading_achievement_icon
-        self.achievement_11_icon = achievement_images.loading_achievement_icon
-        self.achievement_12_icon = achievement_images.loading_achievement_icon
-        self.achievement_13_icon = achievement_images.loading_achievement_icon
-        self.achievement_14_icon = achievement_images.loading_achievement_icon
-        self.achievement_15_icon = achievement_images.loading_achievement_icon
-        self.achievement_16_icon = achievement_images.loading_achievement_icon
-        self.achievement_17_icon = achievement_images.loading_achievement_icon
-        self.achievement_18_icon = achievement_images.loading_achievement_icon
-        self.achievement_19_icon = achievement_images.loading_achievement_icon
-
-        self.achievement_1_unlock_date = ctk.StringVar()
-        self.achievement_2_unlock_date = ctk.StringVar()
-        self.achievement_3_unlock_date = ctk.StringVar()
-        self.achievement_4_unlock_date = ctk.StringVar()
-        self.achievement_5_unlock_date = ctk.StringVar()
-        self.achievement_6_unlock_date = ctk.StringVar()
-        self.achievement_7_unlock_date = ctk.StringVar()
-        self.achievement_8_unlock_date = ctk.StringVar()
-        self.achievement_9_unlock_date = ctk.StringVar()
-        self.achievement_10_unlock_date = ctk.StringVar()
-        self.achievement_11_unlock_date = ctk.StringVar()
-        self.achievement_12_unlock_date = ctk.StringVar()
-        self.achievement_13_unlock_date = ctk.StringVar()
-        self.achievement_14_unlock_date = ctk.StringVar()
-        self.achievement_15_unlock_date = ctk.StringVar()
-        self.achievement_16_unlock_date = ctk.StringVar()
-        self.achievement_17_unlock_date = ctk.StringVar()
-        self.achievement_18_unlock_date = ctk.StringVar()
-        self.achievement_19_unlock_date = ctk.StringVar()
-
+        
+        # intialise all achievement icon variables with the loading achievement icon
         self.achievement_icons = {
-            1: self.achievement_1_icon,
-            2: self.achievement_2_icon,
-            3: self.achievement_3_icon,
-            4: self.achievement_4_icon,
-            5: self.achievement_5_icon,
-            6: self.achievement_6_icon,
-            7: self.achievement_7_icon,
-            8: self.achievement_8_icon,
-            9: self.achievement_9_icon,
-            10: self.achievement_10_icon,
-            11: self.achievement_11_icon,
-            12: self.achievement_12_icon,
-            13: self.achievement_13_icon,
-            14: self.achievement_14_icon,
-            15: self.achievement_15_icon,
-            16: self.achievement_16_icon,
-            17: self.achievement_17_icon,
-            18: self.achievement_18_icon,
-            19: self.achievement_19_icon,
+            i : achievement_images.loading_achievement_icon
+            for i in range(1, 20)
         }
-
+        # initialise all achievement unlock date variables with an empty string var
+        self.achievement_unlock_date = {
+            i : ctk.StringVar()
+            for i in range(1, 20)
+        }
         #endregion
 
         self.create_widgets()
