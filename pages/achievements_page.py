@@ -4,6 +4,7 @@ from widgets import Navbar
 from datetime import datetime
 from utils import achievement_map
 from .images import achievement_images
+from .constants.achievement_constants import *
 
 class AchievementsPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -592,9 +593,20 @@ class AchievementsPage(ctk.CTkFrame):
             self.achievement_icons[i] = achievement_images.locked_achievements[i]
 
     def set_achievement_unlock_date_and_icon(self, achievement_id):
+        print("unlock triggered")
         current_datetime = datetime.now().strftime("%d %b, %Y, %I:%M %p")
         self.achievement_unlock_date[achievement_id].set(f"Unlocked {current_datetime}")
         self.achievement_icons[achievement_id] = achievement_images.unlocked_achievements[achievement_id]
+
+    # achievements and their conditions to be unlocked
+    def check_first_day(self):
+        self.controller.db_cursor.execute("SELECT achievement_status FROM achievements_details WHERE achievement_id = ?", (ACHIEVEMENT_FIRST_DAY,))
+        result = self.controller.db_cursor.fetchone()
+        if result:
+            if result[0] == "locked":
+                self.set_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DAY)
+                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_DAY))
+                self.controller.db_connection.commit()
 
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
