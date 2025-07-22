@@ -138,9 +138,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_2_section.grid_columnconfigure(3, weight=1)
         achievement_slot_2_section.grid(row=3, column=1, pady=(30, 0))
 
-        self.achievement_slot_2_icon = ctk.CTkLabel(achievement_slot_2_section, text="", image=self.achievement_icons[2])
+        self.achievement_slot_2_icon = ctk.CTkLabel(achievement_slot_2_section, text="", image=self.achievement_icons[ACHIEVEMENT_FIRST_DRINK])
         achievement_slot_2_info_section = ctk.CTkFrame(achievement_slot_2_section, fg_color="transparent")
-        achievement_slot_2_unlock_date = ctk.CTkLabel(achievement_slot_2_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_2_unlock_date = ctk.CTkLabel(achievement_slot_2_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_FIRST_DRINK], font=("", 18))
 
         self.achievement_slot_2_icon.grid(row=1, column=1, padx=20)
         achievement_slot_2_info_section.grid(row=1, column=2)
@@ -163,9 +163,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_3_section.grid_columnconfigure(3, weight=1)
         achievement_slot_3_section.grid(row=4, column=1, pady=(30, 0))
 
-        self.achievement_slot_3_icon = ctk.CTkLabel(achievement_slot_3_section, text="", image=self.achievement_icons[3])
+        self.achievement_slot_3_icon = ctk.CTkLabel(achievement_slot_3_section, text="", image=self.achievement_icons[ACHIEVEMENT_FIRST_SLEEP])
         achievement_slot_3_info_section = ctk.CTkFrame(achievement_slot_3_section, fg_color="transparent")
-        achievement_slot_3_unlock_date = ctk.CTkLabel(achievement_slot_3_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_3_unlock_date = ctk.CTkLabel(achievement_slot_3_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_FIRST_SLEEP], font=("", 18))
 
         self.achievement_slot_3_icon.grid(row=1, column=1, padx=20)
         achievement_slot_3_info_section.grid(row=1, column=2)
@@ -188,9 +188,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_4_section.grid_columnconfigure(3, weight=1)
         achievement_slot_4_section.grid(row=5, column=1, pady=(30, 0))
 
-        self.achievement_slot_4_icon = ctk.CTkLabel(achievement_slot_4_section, text="", image=self.achievement_icons[4])
+        self.achievement_slot_4_icon = ctk.CTkLabel(achievement_slot_4_section, text="", image=self.achievement_icons[ACHIEVEMENT_FIRST_STEPS])
         achievement_slot_4_info_section = ctk.CTkFrame(achievement_slot_4_section, fg_color="transparent")
-        achievement_slot_4_unlock_date = ctk.CTkLabel(achievement_slot_4_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_4_unlock_date = ctk.CTkLabel(achievement_slot_4_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_FIRST_STEPS], font=("", 18))
 
         self.achievement_slot_4_icon.grid(row=1, column=1, padx=20)
         achievement_slot_4_info_section.grid(row=1, column=2)
@@ -213,9 +213,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_5_section.grid_columnconfigure(3, weight=1)
         achievement_slot_5_section.grid(row=6, column=1, pady=(30, 0))
 
-        self.achievement_slot_5_icon = ctk.CTkLabel(achievement_slot_5_section, text="", image=self.achievement_icons[5])
+        self.achievement_slot_5_icon = ctk.CTkLabel(achievement_slot_5_section, text="", image=self.achievement_icons[ACHIEVEMENT_FIRST_WORKOUT])
         achievement_slot_5_info_section = ctk.CTkFrame(achievement_slot_5_section, fg_color="transparent")
-        achievement_slot_5_unlock_date = ctk.CTkLabel(achievement_slot_5_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_5_unlock_date = ctk.CTkLabel(achievement_slot_5_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_FIRST_WORKOUT], font=("", 18))
 
         self.achievement_slot_5_icon.grid(row=1, column=1, padx=20)
         achievement_slot_5_info_section.grid(row=1, column=2)
@@ -238,9 +238,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_6_section.grid_columnconfigure(3, weight=1)
         achievement_slot_6_section.grid(row=7, column=1, pady=(30, 0))
 
-        self.achievement_slot_6_icon = ctk.CTkLabel(achievement_slot_6_section, text="", image=self.achievement_icons[6])
+        self.achievement_slot_6_icon = ctk.CTkLabel(achievement_slot_6_section, text="", image=self.achievement_icons[ACHIEVEMENT_NEW_PROFILE])
         achievement_slot_6_info_section = ctk.CTkFrame(achievement_slot_6_section, fg_color="transparent")
-        achievement_slot_6_unlock_date = ctk.CTkLabel(achievement_slot_6_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_6_unlock_date = ctk.CTkLabel(achievement_slot_6_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_NEW_PROFILE], font=("", 18))
 
         self.achievement_slot_6_icon.grid(row=1, column=1, padx=20)
         achievement_slot_6_info_section.grid(row=1, column=2)
@@ -264,9 +264,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_7_section.grid_columnconfigure(3, weight=1)
         achievement_slot_7_section.grid(row=8, column=1, pady=(30, 0))
 
-        self.achievement_slot_7_icon = ctk.CTkLabel(achievement_slot_7_section, text="", image=self.achievement_icons[7])
+        self.achievement_slot_7_icon = ctk.CTkLabel(achievement_slot_7_section, text="", image=self.achievement_icons[ACHIEVEMENT_TEN_EXERCISES])
         achievement_slot_7_info_section = ctk.CTkFrame(achievement_slot_7_section, fg_color="transparent")
-        achievement_slot_7_unlock_date = ctk.CTkLabel(achievement_slot_7_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_7_unlock_date = ctk.CTkLabel(achievement_slot_7_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_TEN_EXERCISES], font=("", 18))
 
         self.achievement_slot_7_icon.grid(row=1, column=1, padx=20)
         achievement_slot_7_info_section.grid(row=1, column=2)
@@ -289,9 +289,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_8_section.grid_columnconfigure(3, weight=1)
         achievement_slot_8_section.grid(row=9, column=1, pady=(30, 0))
 
-        self.achievement_slot_8_icon = ctk.CTkLabel(achievement_slot_8_section, text="", image=self.achievement_icons[8])
+        self.achievement_slot_8_icon = ctk.CTkLabel(achievement_slot_8_section, text="", image=self.achievement_icons[ACHIEVEMENT_REP_WARRIOR])
         achievement_slot_8_info_section = ctk.CTkFrame(achievement_slot_8_section, fg_color="transparent")
-        achievement_slot_8_unlock_date = ctk.CTkLabel(achievement_slot_8_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_8_unlock_date = ctk.CTkLabel(achievement_slot_8_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_REP_WARRIOR], font=("", 18))
 
         self.achievement_slot_8_icon.grid(row=1, column=1, padx=20)
         achievement_slot_8_info_section.grid(row=1, column=2)
@@ -314,9 +314,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_9_section.grid_columnconfigure(3, weight=1)
         achievement_slot_9_section.grid(row=10, column=1, pady=(30, 0))
 
-        self.achievement_slot_9_icon = ctk.CTkLabel(achievement_slot_9_section, text="", image=self.achievement_icons[9])
+        self.achievement_slot_9_icon = ctk.CTkLabel(achievement_slot_9_section, text="", image=self.achievement_icons[ACHIEVEMENT_SET_IT_OFF])
         achievement_slot_9_info_section = ctk.CTkFrame(achievement_slot_9_section, fg_color="transparent")
-        achievement_slot_9_unlock_date = ctk.CTkLabel(achievement_slot_9_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_9_unlock_date = ctk.CTkLabel(achievement_slot_9_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_SET_IT_OFF], font=("", 18))
 
         self.achievement_slot_9_icon.grid(row=1, column=1, padx=20)
         achievement_slot_9_info_section.grid(row=1, column=2)
@@ -339,9 +339,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_10_section.grid_columnconfigure(3, weight=1)
         achievement_slot_10_section.grid(row=11, column=1, pady=(30, 0))
 
-        self.achievement_slot_10_icon = ctk.CTkLabel(achievement_slot_10_section, text="", image=self.achievement_icons[10])
+        self.achievement_slot_10_icon = ctk.CTkLabel(achievement_slot_10_section, text="", image=self.achievement_icons[ACHIEVEMENT_SLEEP_MAXXED])
         achievement_slot_10_info_section = ctk.CTkFrame(achievement_slot_10_section, fg_color="transparent")
-        achievement_slot_10_unlock_date = ctk.CTkLabel(achievement_slot_10_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_10_unlock_date = ctk.CTkLabel(achievement_slot_10_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_SLEEP_MAXXED], font=("", 18))
 
         self.achievement_slot_10_icon.grid(row=1, column=1, padx=20)
         achievement_slot_10_info_section.grid(row=1, column=2)
@@ -364,9 +364,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_11_section.grid_columnconfigure(3, weight=1)
         achievement_slot_11_section.grid(row=12, column=1, pady=(30, 0))
 
-        self.achievement_slot_11_icon = ctk.CTkLabel(achievement_slot_11_section, text="", image=self.achievement_icons[11])
+        self.achievement_slot_11_icon = ctk.CTkLabel(achievement_slot_11_section, text="", image=self.achievement_icons[ACHIEVEMENT_HEAVY_LIFTER_I])
         achievement_slot_11_info_section = ctk.CTkFrame(achievement_slot_11_section, fg_color="transparent")
-        achievement_slot_11_unlock_date = ctk.CTkLabel(achievement_slot_11_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_11_unlock_date = ctk.CTkLabel(achievement_slot_11_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_HEAVY_LIFTER_I], font=("", 18))
 
         self.achievement_slot_11_icon.grid(row=1, column=1, padx=20)
         achievement_slot_11_info_section.grid(row=1, column=2)
@@ -389,9 +389,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_12_section.grid_columnconfigure(3, weight=1)
         achievement_slot_12_section.grid(row=13, column=1, pady=(30, 0))
 
-        self.achievement_slot_12_icon = ctk.CTkLabel(achievement_slot_12_section, text="", image=self.achievement_icons[12])
+        self.achievement_slot_12_icon = ctk.CTkLabel(achievement_slot_12_section, text="", image=self.achievement_icons[ACHIEVEMENT_HEAVY_LIFTER_II])
         achievement_slot_12_info_section = ctk.CTkFrame(achievement_slot_12_section, fg_color="transparent")
-        achievement_slot_12_unlock_date = ctk.CTkLabel(achievement_slot_12_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_12_unlock_date = ctk.CTkLabel(achievement_slot_12_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_HEAVY_LIFTER_II], font=("", 18))
 
         self.achievement_slot_12_icon.grid(row=1, column=1, padx=20)
         achievement_slot_12_info_section.grid(row=1, column=2)
@@ -414,9 +414,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_13_section.grid_columnconfigure(3, weight=1)
         achievement_slot_13_section.grid(row=14, column=1, pady=(30, 0))
 
-        self.achievement_slot_13_icon = ctk.CTkLabel(achievement_slot_13_section, text="", image=self.achievement_icons[13])
+        self.achievement_slot_13_icon = ctk.CTkLabel(achievement_slot_13_section, text="", image=self.achievement_icons[ACHIEVEMENT_STEP_STACKER_I])
         achievement_slot_13_info_section = ctk.CTkFrame(achievement_slot_13_section, fg_color="transparent")
-        achievement_slot_13_unlock_date = ctk.CTkLabel(achievement_slot_13_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_13_unlock_date = ctk.CTkLabel(achievement_slot_13_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_STEP_STACKER_I], font=("", 18))
 
         self.achievement_slot_13_icon.grid(row=1, column=1, padx=20)
         achievement_slot_13_info_section.grid(row=1, column=2)
@@ -439,9 +439,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_14_section.grid_columnconfigure(3, weight=1)
         achievement_slot_14_section.grid(row=15, column=1, pady=(30, 0))
 
-        self.achievement_slot_14_icon = ctk.CTkLabel(achievement_slot_14_section, text="", image=self.achievement_icons[14])
+        self.achievement_slot_14_icon = ctk.CTkLabel(achievement_slot_14_section, text="", image=self.achievement_icons[ACHIEVEMENT_STEP_STACKER_II])
         achievement_slot_14_info_section = ctk.CTkFrame(achievement_slot_14_section, fg_color="transparent")
-        achievement_slot_14_unlock_date = ctk.CTkLabel(achievement_slot_14_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_14_unlock_date = ctk.CTkLabel(achievement_slot_14_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_STEP_STACKER_II], font=("", 18))
 
         self.achievement_slot_14_icon.grid(row=1, column=1, padx=20)
         achievement_slot_14_info_section.grid(row=1, column=2)
@@ -464,9 +464,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_15_section.grid_columnconfigure(3, weight=1)
         achievement_slot_15_section.grid(row=16, column=1, pady=(30, 0))
 
-        self.achievement_slot_15_icon = ctk.CTkLabel(achievement_slot_15_section, text="", image=self.achievement_icons[15])
+        self.achievement_slot_15_icon = ctk.CTkLabel(achievement_slot_15_section, text="", image=self.achievement_icons[ACHIEVEMENT_HYDRATED_HUMAN_I])
         achievement_slot_15_info_section = ctk.CTkFrame(achievement_slot_15_section, fg_color="transparent")
-        achievement_slot_15_unlock_date = ctk.CTkLabel(achievement_slot_15_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_15_unlock_date = ctk.CTkLabel(achievement_slot_15_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_HYDRATED_HUMAN_I], font=("", 18))
 
         self.achievement_slot_15_icon.grid(row=1, column=1, padx=20)
         achievement_slot_15_info_section.grid(row=1, column=2)
@@ -489,9 +489,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_16_section.grid_columnconfigure(3, weight=1)
         achievement_slot_16_section.grid(row=17, column=1, pady=(30, 0))
 
-        self.achievement_slot_16_icon = ctk.CTkLabel(achievement_slot_16_section, text="", image=self.achievement_icons[16])
+        self.achievement_slot_16_icon = ctk.CTkLabel(achievement_slot_16_section, text="", image=self.achievement_icons[ACHIEVEMENT_HYDRATED_HUMAN_II])
         achievement_slot_16_info_section = ctk.CTkFrame(achievement_slot_16_section, fg_color="transparent")
-        achievement_slot_16_unlock_date = ctk.CTkLabel(achievement_slot_16_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_16_unlock_date = ctk.CTkLabel(achievement_slot_16_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_HYDRATED_HUMAN_II], font=("", 18))
 
         self.achievement_slot_16_icon.grid(row=1, column=1, padx=20)
         achievement_slot_16_info_section.grid(row=1, column=2)
@@ -514,9 +514,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_17_section.grid_columnconfigure(3, weight=1)
         achievement_slot_17_section.grid(row=18, column=1, pady=(30, 0))
 
-        self.achievement_slot_17_icon = ctk.CTkLabel(achievement_slot_17_section, text="", image=self.achievement_icons[17])
+        self.achievement_slot_17_icon = ctk.CTkLabel(achievement_slot_17_section, text="", image=self.achievement_icons[ACHIEVEMENT_SLEEPING_BEAUTY_I])
         achievement_slot_17_info_section = ctk.CTkFrame(achievement_slot_17_section, fg_color="transparent")
-        achievement_slot_17_unlock_date = ctk.CTkLabel(achievement_slot_17_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_17_unlock_date = ctk.CTkLabel(achievement_slot_17_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_SLEEPING_BEAUTY_I], font=("", 18))
 
         self.achievement_slot_17_icon.grid(row=1, column=1, padx=20)
         achievement_slot_17_info_section.grid(row=1, column=2)
@@ -539,9 +539,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_18_section.grid_columnconfigure(3, weight=1)
         achievement_slot_18_section.grid(row=19, column=1, pady=(30, 0))
 
-        self.achievement_slot_18_icon = ctk.CTkLabel(achievement_slot_18_section, text="", image=self.achievement_icons[18])
+        self.achievement_slot_18_icon = ctk.CTkLabel(achievement_slot_18_section, text="", image=self.achievement_icons[ACHIEVEMENT_SLEEPING_BEAUTY_II])
         achievement_slot_18_info_section = ctk.CTkFrame(achievement_slot_18_section, fg_color="transparent")
-        achievement_slot_18_unlock_date = ctk.CTkLabel(achievement_slot_18_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_18_unlock_date = ctk.CTkLabel(achievement_slot_18_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_SLEEPING_BEAUTY_II], font=("", 18))
 
         self.achievement_slot_18_icon.grid(row=1, column=1, padx=20)
         achievement_slot_18_info_section.grid(row=1, column=2)
@@ -564,9 +564,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_19_section.grid_columnconfigure(3, weight=1)
         achievement_slot_19_section.grid(row=20, column=1, pady=(30, 0))
 
-        self.achievement_slot_19_icon = ctk.CTkLabel(achievement_slot_19_section, text="", image=self.achievement_icons[19])
+        self.achievement_slot_19_icon = ctk.CTkLabel(achievement_slot_19_section, text="", image=self.achievement_icons[ACHIEVEMENT_1_MONTH_CLUB])
         achievement_slot_19_info_section = ctk.CTkFrame(achievement_slot_19_section, fg_color="transparent")
-        achievement_slot_19_unlock_date = ctk.CTkLabel(achievement_slot_19_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_19_unlock_date = ctk.CTkLabel(achievement_slot_19_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_1_MONTH_CLUB], font=("", 18))
 
         self.achievement_slot_19_icon.grid(row=1, column=1, padx=20)
         achievement_slot_19_info_section.grid(row=1, column=2)
