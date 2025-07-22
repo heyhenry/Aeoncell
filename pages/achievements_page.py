@@ -591,9 +591,10 @@ class AchievementsPage(ctk.CTkFrame):
         for i in range(1, len(self.achievement_icons)+1):
             self.achievement_icons[i] = achievement_images.locked_achievements[i]
 
-    def set_achievement_unlock_date(self, achievement_datetime_var):
+    def set_achievement_unlock_date_and_icon(self, achievement_id):
         current_datetime = datetime.now().strftime("%d %b, %Y, %I:%M %p")
-        achievement_datetime_var.set(f"Unlocked {current_datetime}")
+        self.achievement_unlock_date[achievement_id].set(f"Unlocked {current_datetime}")
+        self.achievement_icons[achievement_id] = achievement_images.unlocked_achievements[achievement_id]
 
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
