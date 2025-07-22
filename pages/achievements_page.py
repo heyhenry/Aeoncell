@@ -32,7 +32,6 @@ class AchievementsPage(ctk.CTkFrame):
         self.achievement_icon_slots = {}
         #endregion
 
-        # self.update_achievement_icons_on_startup()
         self.set_achievement_icons_on_startup()
         self.set_unlock_dates_on_startup()
         self.create_widgets()
@@ -587,12 +586,6 @@ class AchievementsPage(ctk.CTkFrame):
         })
 
         #endregion
-
-    # temp function to see better visual representation of working widgets..
-    def update_achievement_icons_on_startup(self):
-        # set all achievement icons to their locked version
-        for i in range(1, len(self.achievement_icons)+1):
-            self.achievement_icons[i] = achievement_images.locked_achievements[i]
 
     def set_unlock_dates_on_startup(self):
         self.controller.db_cursor.execute("SELECT achievement_id, achievement_unlock_date FROM achievements_details")
