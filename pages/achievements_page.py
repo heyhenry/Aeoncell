@@ -31,6 +31,7 @@ class AchievementsPage(ctk.CTkFrame):
         self.achievement_icon_slots = {}
         #endregion
 
+        self.update_achievement_icons_on_startup()
         self.create_widgets()
 
     def create_widgets(self):
@@ -585,30 +586,10 @@ class AchievementsPage(ctk.CTkFrame):
         #endregion
 
     # temp function to see better visual representation of working widgets..
-    # def update_achievement_icons_on_startup(self):
-    #     achievement_icon_slots = {
-    #         1: self.achievement_slot_1_icon,
-    #         2: self.achievement_slot_2_icon,
-    #         3: self.achievement_slot_3_icon,
-    #         4: self.achievement_slot_4_icon,
-    #         5: self.achievement_slot_5_icon,
-    #         6: self.achievement_slot_6_icon,
-    #         7: self.achievement_slot_7_icon,
-    #         8: self.achievement_slot_8_icon,
-    #         9: self.achievement_slot_9_icon,
-    #         10: self.achievement_slot_10_icon,
-    #         11: self.achievement_slot_11_icon,
-    #         12: self.achievement_slot_12_icon,
-    #         13: self.achievement_slot_13_icon,
-    #         14: self.achievement_slot_14_icon,
-    #         15: self.achievement_slot_15_icon,
-    #         16: self.achievement_slot_16_icon,
-    #         17: self.achievement_slot_17_icon,
-    #         18: self.achievement_slot_18_icon,
-    #         19: self.achievement_slot_19_icon
-    #     }
-    #     for i in range(1, len(self.achievement_icons)+1):
-    #         pass    
+    def update_achievement_icons_on_startup(self):
+        # set all achievement icons to their locked version
+        for i in range(1, len(self.achievement_icons)+1):
+            self.achievement_icons[i] = achievement_images.locked_achievements[i]
 
     def set_achievement_unlock_date(self, achievement_datetime_var):
         current_datetime = datetime.now().strftime("%d %b, %Y, %I:%M %p")
@@ -623,4 +604,6 @@ class AchievementsPage(ctk.CTkFrame):
 
     # def check_for_unlocked_achievements(self, *args):
     #     for achievement_id in args:
+
+
             
