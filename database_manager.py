@@ -126,8 +126,6 @@ class DatabaseManager:
         CREATE TABLE IF NOT EXISTS achievements_details (
             achievement_id INTEGER PRIMARY KEY,
             achievement_name TEXT NOT NULL,
-            achievement_current_progress TEXT DEFAULT '',
-            achievement_total_progress TEXT DEFAULT '',
             achievement_unlock_date TEXT DEFAULT '',
             achievement_status TEXT DEFAULT "locked"
         )
