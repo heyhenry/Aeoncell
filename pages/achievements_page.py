@@ -112,9 +112,9 @@ class AchievementsPage(ctk.CTkFrame):
         achievement_slot_1_section.grid_columnconfigure(3, weight=1)
         achievement_slot_1_section.grid(row=2, column=1, pady=(30, 0))
 
-        self.achievement_slot_1_icon = ctk.CTkLabel(achievement_slot_1_section, text="", image=self.achievement_icons[1])
+        self.achievement_slot_1_icon = ctk.CTkLabel(achievement_slot_1_section, text="", image=self.achievement_icons[ACHIEVEMENT_FIRST_DAY])
         achievement_slot_1_info_section = ctk.CTkFrame(achievement_slot_1_section, fg_color="transparent")
-        achievement_slot_1_unlock_date = ctk.CTkLabel(achievement_slot_1_section, text="Unlocked 16 Jun 2025 @ 12:01 PM", font=("", 18))
+        achievement_slot_1_unlock_date = ctk.CTkLabel(achievement_slot_1_section, textvariable=self.achievement_unlock_date[ACHIEVEMENT_FIRST_DAY], font=("", 18))
 
         self.achievement_slot_1_icon.grid(row=1, column=1, padx=20)
         achievement_slot_1_info_section.grid(row=1, column=2)
@@ -595,7 +595,9 @@ class AchievementsPage(ctk.CTkFrame):
     def set_achievement_unlock_date_and_icon(self, achievement_id):
         print("unlock triggered")
         current_datetime = datetime.now().strftime("%d %b, %Y, %I:%M %p")
-        self.achievement_unlock_date[achievement_id].set(f"Unlocked {current_datetime}")
+        formatted_unlocked_date =f"Unlocked {current_datetime}"
+        self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_unlock_date = ? WHERE achievement_id = ?", (formatted_unlocked_date, achievement_id))
+        self.achievement_unlock_date[achievement_id].set(formatted_unlocked_date)
         self.achievement_icons[achievement_id] = achievement_images.unlocked_achievements[achievement_id]
 
     # achievements and their conditions to be unlocked
