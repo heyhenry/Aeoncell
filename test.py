@@ -4,9 +4,19 @@ class Person():
         self.age = age
         self.height = height
         self.name = name
-    
-person_a = Person("Male", 26, "175cm", "Henry")
+   
+person_1_info = Person("Male", 26, "175cm", "Henry")
+person_2_info = Person("Male", 26, "175cm", "Jake")
+person_3_info = Person("Male", 26, "175cm", "Ray")
+person_4_info = Person("Male", 26, "175cm", "Henson")
 
-attr_name = "gender"
-asked_info = getattr(person_a, attr_name)
-print(asked_info)
+people = {
+    1: person_1_info,
+    2: person_2_info,
+    3: person_3_info,
+    4: person_4_info
+}
+
+for i in range(1, 5):
+    print(getattr(people[i], "name"))
+
