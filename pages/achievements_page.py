@@ -653,6 +653,14 @@ class AchievementsPage(ctk.CTkFrame):
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_STEPS)
                 self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_STEPS))
 
+    def check_first_workout(self):
+        if self.is_achievement_locked(ACHIEVEMENT_FIRST_WORKOUT):
+            self.controller.db_cursor.execute("SELECT 1 FROM exercise_entries LIMIT 1")
+            has_entries = self.controller.db_cursor.fetchone()
+            if not has_entries:
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_WORKOUT)
+                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_WORKOUT))
+
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
     #         self.achievement_icons[achievement_id].
