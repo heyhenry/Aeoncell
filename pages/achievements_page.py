@@ -644,6 +644,7 @@ class AchievementsPage(ctk.CTkFrame):
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_SLEEP)
                 self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_SLEEP))
+                self.controller.db_connection.commit()
 
     def check_first_steps(self):
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_STEPS):
@@ -652,6 +653,7 @@ class AchievementsPage(ctk.CTkFrame):
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_STEPS)
                 self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_STEPS))
+                self.controller.db_connection.commit()
 
     def check_first_workout(self):
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_WORKOUT):
@@ -660,6 +662,7 @@ class AchievementsPage(ctk.CTkFrame):
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_WORKOUT)
                 self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_WORKOUT))
+                self.controller.db_connection.commit()
 
     def check_new_profile(self):
         if self.is_achievement_locked(ACHIEVEMENT_NEW_PROFILE):
