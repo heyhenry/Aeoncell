@@ -759,6 +759,16 @@ class AchievementsPage(ctk.CTkFrame):
             if sum_of_consumption >= 10000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HYDRATED_HUMAN_I)
 
+    def check_hydrated_human_II(self):
+        if self.is_achievement_locked(ACHIEVEMENT_HYDRATED_HUMAN_II):
+            self.controller.db_cursor.execute("SELECT consumption_ml FROM hydration_tracker")
+            results = self.controller.db_cursor.fetchall()
+            sum_of_consumption = 0.0
+            for i in results:
+                sum_of_consumption += i[0]
+            if sum_of_consumption >= 100000:
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HYDRATED_HUMAN_II)
+
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
     #         self.achievement_icons[achievement_id].
