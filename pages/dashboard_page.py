@@ -911,6 +911,8 @@ class DashboardPage(ctk.CTkFrame):
                 self.hydration_current_progress.set(total_liquids_consumed)
                 self.update_daily_goal_progression_displays()
                 self.hydration_var.set("")
+        # during processing an entry, check if conditions meet to unlock the 'hydrated human I" achievement
+        self.controller.pages["AchievementsPage"].check_hydrated_human_I()
         self.update_monthly_goal_progression_displays()
 
     def process_sleep_entry(self):
