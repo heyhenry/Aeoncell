@@ -138,3 +138,11 @@ How to Get Current Date and Time using Python (21st July 2025): www.geeksforgeek
 SQLite | Frequently Asked Questions (21st July 2025): https://sqlite.org/faq.html#q11
 Way to pass multiple parameters to a function in python (21st July 2025): https://stackoverflow.com/questions/13552907/way-to-pass-multiple-parameters-to-a-function-in-python
 *args and **kwargs in Python (21st July 2025): https://www.geeksforgeeks.org/python/args-kwargs-python/
+How to Initialize a Dictionary in Python Using For Loop (22nd July 2025): https://www.geeksforgeeks.org/python/how-to-initialize-a-dictionary-in-python-using-for-loop/
+Python | getattr() method (22nd July 2025): https://www.geeksforgeeks.org/python/python-getattr-method/
+What is & How to use getattr() in Python? (22nd July 2025): https://stackoverflow.com/questions/4075190/what-is-how-to-use-getattr-in-python
+Updating a dictionary in Python (22nd July 2025): https://stackoverflow.com/questions/29694826/updating-a-dictionary-in-python
+SQLite Limit (23rd July 2025): https://www.sqlitetutorial.net/sqlite-limit/
+SQL - How to return Boolean value if values exists in table (23rd July 2025): https://stackoverflow.com/questions/56296476/sql-how-to-return-boolean-value-if-values-exists-in-table
+EXISTS (SELECT 1 ...) vs EXISTS (SELECT * ...) One or the other? (23rd July 2025): https://dba.stackexchange.com/questions/159413/exists-select-1-vs-exists-select-one-or-the-other
+
