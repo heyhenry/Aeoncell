@@ -814,6 +814,8 @@ class DashboardPage(ctk.CTkFrame):
         # check if an entry exists for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM steps_tracker WHERE date = ?)", (self.today,))
         if not 1 in self.controller.db_cursor.fetchone():
+            # during processing an entry, check if conditions meet to unlock the 'first steps" achievement
+            self.controller.pages["AchievementsPage"].check_first_steps()
             # if none exists, create a new entry with the initially given steps
             self.controller.db_cursor.execute("INSERT INTO steps_tracker (date, steps_taken) VALUES (?, ?)", (self.today, steps))
             self.controller.db_connection.commit()
