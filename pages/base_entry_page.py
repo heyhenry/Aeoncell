@@ -118,6 +118,8 @@ class BaseEntryPage(ctk.CTkFrame):
 
             # during processing an entry, check if conditions meet to unlock the 'rep warrior' achievement
             self.controller.pages["AchievementsPage"].check_rep_warrior()
+            # during processing an entry, check if conditions meet to unlock the 'set it off' achievement
+            self.controller.pages["AchievementsPage"].check_set_it_off()
 
             self.clear_entry_fields()
             self.reset_date()

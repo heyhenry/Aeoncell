@@ -683,11 +683,11 @@ class AchievementsPage(ctk.CTkFrame):
 
     def check_rep_warrior(self):
         if self.is_achievement_locked(ACHIEVEMENT_REP_WARRIOR):
-            # retrieve rep counts from the existing exercise entries
+            # retrieve rep count from existing exercise entries
             self.controller.db_cursor.execute("SELECT reps_count FROM exercise_entries")
             rep_values = self.controller.db_cursor.fetchall()
             total_reps = 0
-            # get the sum of reps retrieved the existing exercise entries
+            # get the sum of reps retrieved from existing exercise entries
             for i in rep_values:
                 total_reps += i[0]
             # unlock the achievement 'rep warrior' if there is greater or equal than 1000 reps from the sum total
@@ -696,6 +696,21 @@ class AchievementsPage(ctk.CTkFrame):
                 self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_REP_WARRIOR))
                 self.controller.db_connection.commit()
             
+    def check_set_it_off(self):
+        if self.is_achievement_locked(ACHIEVEMENT_SET_IT_OFF):
+            # retrieve set count from existing exercise entries
+            self.controller.db_cursor.execute("SELECT sets_count FROM exercise_entries")
+            set_values = self.controller.db_cursor.fetchall()
+            total_sets = 0
+            # get the sum of sets retrieved from existing exercise entries
+            for i in set_values:
+                total_sets += i[0]
+            # unlock the achievement 'set it off' if there is greater or equal than 500 sets from the sum total
+            if total_sets >= 500:
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SET_IT_OFF)
+                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_SET_IT_OFF))
+                self.controller.db_connection.commit()
+
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
     #         self.achievement_icons[achievement_id].
