@@ -611,15 +611,19 @@ class AchievementsPage(ctk.CTkFrame):
         self.achievement_icons[achievement_id] = achievement_images.unlocked_achievements[achievement_id]
         self.achievement_icon_slots[achievement_id].configure(image=self.achievement_icons[achievement_id])
 
-    # achievements and their conditions to be unlocked
-    def check_first_day(self):
-        self.controller.db_cursor.execute("SELECT achievement_status FROM achievements_details WHERE achievement_id = ?", (ACHIEVEMENT_FIRST_DAY,))
+    def is_achievement_locked(self, achievement_id):
+        self.controller.db_cursor.execute("SELECT achievement_status FROM achievements_details WHERE achievement_id = ?", (achievement_id,))
         result = self.controller.db_cursor.fetchone()
         if result:
             if result[0] == "locked":
-                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DAY)
-                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_DAY))
-                self.controller.db_connection.commit()
+                return True
+        return False
+
+    def check_first_day(self):
+        if self.is_achievement_locked(ACHIEVEMENT_FIRST_DAY):
+            self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DAY)
+            self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_DAY))
+            self.controller.db_connection.commit()
 
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
