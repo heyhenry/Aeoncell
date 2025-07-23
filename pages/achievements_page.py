@@ -604,10 +604,15 @@ class AchievementsPage(ctk.CTkFrame):
 
     def update_achievement_unlock_date_and_icon(self, achievement_id):
         print("An Achievement has been Unlocked!")
+        # get the current date and time
         current_datetime = datetime.now().strftime("%d %b, %Y, %I:%M %p")
         formatted_unlocked_date = f"Unlocked {current_datetime}"
-        self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_unlock_date = ? WHERE achievement_id = ?", (formatted_unlocked_date, achievement_id))
+        # update the table with the formatted unlock date and time string
+        self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_unlock_date = ?, achievement_status = ? WHERE achievement_id = ?", (formatted_unlocked_date, "unlocked", achievement_id))
+        self.controller.db_connection.commit()
+        # update the display to showcase the unlock data and time string in the Achievements page
         self.achievement_unlock_date[achievement_id].set(formatted_unlocked_date)
+        # update the achievement's icon to the unlocked version in lieu of the locked version
         self.achievement_icons[achievement_id] = achievement_images.unlocked_achievements[achievement_id]
         self.achievement_icon_slots[achievement_id].configure(image=self.achievement_icons[achievement_id])
 
@@ -622,8 +627,6 @@ class AchievementsPage(ctk.CTkFrame):
     def check_first_day(self):
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_DAY):
             self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DAY)
-            self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_DAY))
-            self.controller.db_connection.commit()
 
     def check_first_drink(self):
         # check to see if the achievement has already been unlocked
@@ -634,8 +637,6 @@ class AchievementsPage(ctk.CTkFrame):
             has_entries = self.controller.db_cursor.fetchone()
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DRINK)
-                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_DRINK))
-                self.controller.db_connection.commit()
 
     def check_first_sleep(self):
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_SLEEP):
@@ -643,8 +644,6 @@ class AchievementsPage(ctk.CTkFrame):
             has_entries = self.controller.db_cursor.fetchone()
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_SLEEP)
-                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_SLEEP))
-                self.controller.db_connection.commit()
 
     def check_first_steps(self):
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_STEPS):
@@ -652,8 +651,6 @@ class AchievementsPage(ctk.CTkFrame):
             has_entries = self.controller.db_cursor.fetchone()
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_STEPS)
-                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_STEPS))
-                self.controller.db_connection.commit()
 
     def check_first_workout(self):
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_WORKOUT):
@@ -661,14 +658,10 @@ class AchievementsPage(ctk.CTkFrame):
             has_entries = self.controller.db_cursor.fetchone()
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_WORKOUT)
-                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_WORKOUT))
-                self.controller.db_connection.commit()
 
     def check_new_profile(self):
         if self.is_achievement_locked(ACHIEVEMENT_NEW_PROFILE):
             self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_NEW_PROFILE)
-            self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_NEW_PROFILE))
-            self.controller.db_connection.commit()
 
     def check_ten_exercises(self):
         # check if achievement has already been unlocked
@@ -678,8 +671,6 @@ class AchievementsPage(ctk.CTkFrame):
             entry_counter = self.controller.db_cursor.fetchall()
             if len(entry_counter) == 9:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_TEN_EXERCISES)
-                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_TEN_EXERCISES))
-                self.controller.db_connection.commit()
 
     def check_rep_warrior(self):
         if self.is_achievement_locked(ACHIEVEMENT_REP_WARRIOR):
@@ -693,8 +684,6 @@ class AchievementsPage(ctk.CTkFrame):
             # unlock the achievement 'rep warrior' if there is greater or equal than 1000 reps from the sum total
             if total_reps >= 1000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_REP_WARRIOR)
-                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_REP_WARRIOR))
-                self.controller.db_connection.commit()
             
     def check_set_it_off(self):
         if self.is_achievement_locked(ACHIEVEMENT_SET_IT_OFF):
@@ -708,8 +697,6 @@ class AchievementsPage(ctk.CTkFrame):
             # unlock the achievement 'set it off' if there is greater or equal than 500 sets from the sum total
             if total_sets >= 500:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SET_IT_OFF)
-                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_SET_IT_OFF))
-                self.controller.db_connection.commit()
 
     def check_sleep_maxxed(self):
         if self.is_achievement_locked(ACHIEVEMENT_SLEEP_MAXXED):
@@ -719,8 +706,6 @@ class AchievementsPage(ctk.CTkFrame):
             # unlock the achievement 'sleep maxxed' if the entry has a total of 540 minutes (9 hours) of sleep recorded
             if minutes_slept[0] == 540.0:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SLEEP_MAXXED)
-                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_SLEEP_MAXXED))
-                self.controller.db_connection.commit()
 
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
