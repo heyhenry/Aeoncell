@@ -603,7 +603,7 @@ class AchievementsPage(ctk.CTkFrame):
                 self.achievement_icons[i[0]] = achievement_images.unlocked_achievements[i[0]]
 
     def update_achievement_unlock_date_and_icon(self, achievement_id):
-        print("unlock triggered")
+        print("An Achievement has been Unlocked!")
         current_datetime = datetime.now().strftime("%d %b, %Y, %I:%M %p")
         formatted_unlocked_date = f"Unlocked {current_datetime}"
         self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_unlock_date = ? WHERE achievement_id = ?", (formatted_unlocked_date, achievement_id))
@@ -624,6 +624,17 @@ class AchievementsPage(ctk.CTkFrame):
             self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DAY)
             self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_DAY))
             self.controller.db_connection.commit()
+
+    def check_first_drink(self):
+        if self.is_achievement_locked(ACHIEVEMENT_FIRST_DRINK):
+            # check to see if acheivement conditions have been met
+            # unlock condition: the table has to be empty of entries before current entry is being processed
+            self.controller.db_cursor.execute("SELECT 1 FROM hydration_tracker LIMIT 1")
+            has_entries = self.controller.db_cursor.fetchone()
+            if not has_entries:
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DRINK)
+                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_DRINK))
+                self.controller.db_connection.commit()
 
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
