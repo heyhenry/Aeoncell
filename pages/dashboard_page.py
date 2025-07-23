@@ -1006,14 +1006,17 @@ class DashboardPage(ctk.CTkFrame):
         results = self.controller.db_cursor.fetchall()
         # if entries exists, tally the data and display in the exercise summary section
         if results:
+            # get count of total exercises
             self.exercise_total_var.set(len(results))
             sets_sum = 0
             reps_sum = 0
             volume_sum = 0
+            # calculate the sets, reps and volume totals
             for i in results:
                 sets_sum += i[0]
                 reps_sum += i[0] * i[1]
                 volume_sum += (i[0] * i[1]) * i[2]
+            # update display widgets for respective sets, reps and volume totals
             self.sets_total_var.set(sets_sum)
             self.reps_total_var.set(reps_sum)
             self.volume_total_var.set(volume_sum)
