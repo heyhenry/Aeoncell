@@ -729,7 +729,15 @@ class AchievementsPage(ctk.CTkFrame):
             if volume_sum >= 10000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HEAVY_LIFTER_II)
 
-    def step_stacke
+    def check_step_stacker_I(self):
+        if self.is_achievement_locked(ACHIEVEMENT_STEP_STACKER_I):
+            self.controller.db_cursor.execute("SELECT steps_taken FROM steps_tracker")
+            results = self.controller.db_cursor.fetchall()
+            sum_of_steps = 0
+            for i in results:
+                sum_of_steps += i[0]
+            if sum_of_steps >= 50000:
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_STEP_STACKER_I)
 
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
