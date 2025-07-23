@@ -108,6 +108,8 @@ class BaseEntryPage(ctk.CTkFrame):
         if self.validate_entry_fields():
             # during processing an entry, check if conditions meet to unlock the 'first workout" achievement
             self.controller.pages["AchievementsPage"].check_first_workout()
+            # during processing an entry, check if conditions meet to unlock the 'ten exercises' achievement
+            self.controller.pages["AchievementsPage"].check_ten_exercises()
             data = self.get_entry_field_data()
             
             self.controller.db_cursor.execute("INSERT INTO exercise_entries (entry_type, exercise_label, date, time, exercise_name, sets_count, reps_count, weight_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (data["type"], data["label"], data["date"], data["time"], data["exercise_name"], data["sets"], data["reps"], data["weight"]))

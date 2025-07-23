@@ -670,6 +670,17 @@ class AchievementsPage(ctk.CTkFrame):
             self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_NEW_PROFILE))
             self.controller.db_connection.commit()
 
+    def check_ten_exercises(self):
+        # check if achievement has already been unlocked
+        if self.is_achievement_locked(ACHIEVEMENT_TEN_EXERCISES):
+            # checks to see if the user has 9 entries prior to the currently processed entry (being the 10th one)
+            self.controller.db_cursor.execute("SELECT exercise_name FROM exercise_entries LIMIT 9")
+            entry_counter = self.controller.db_cursor.fetchall()
+            if len(entry_counter) == 9:
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_TEN_EXERCISES)
+                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_TEN_EXERCISES))
+                self.controller.db_connection.commit()
+
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
     #         self.achievement_icons[achievement_id].
