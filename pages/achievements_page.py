@@ -707,6 +707,28 @@ class AchievementsPage(ctk.CTkFrame):
             if minutes_slept[0] == 540.0:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SLEEP_MAXXED)
 
+    def heavy_lifter_I(self):
+        if self.is_achievement_locked(ACHIEVEMENT_HEAVY_LIFTER_I):
+            self.controller.db_cursor.execute("SELECT sets_count, reps_count, weight_value FROM exercise_entries")
+            results = self.controller.db_cursor.fetchall()
+            volume_sum = 0
+            for i in results:
+                volume_sum += (i[0] * i[1]) * i[2]
+            print(f"heavy lifter I: {volume_sum}")
+            if volume_sum >= 1000:
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HEAVY_LIFTER_I)
+
+    def heavy_lifter_II(self):
+        if self.is_achievement_locked(ACHIEVEMENT_HEAVY_LIFTER_II):
+            self.controller.db_cursor.execute("SELECT sets_count, reps_count, weight_value FROM exercise_entries")
+            results = self.controller.db_cursor.fetchall()
+            volume_sum = 0
+            for i in results:
+                volume_sum += (i[0] * i[1]) * i[2]
+            print(f"heavy lifter I: {volume_sum}")
+            if volume_sum >= 10000:
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HEAVY_LIFTER_II)
+
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
     #         self.achievement_icons[achievement_id].
