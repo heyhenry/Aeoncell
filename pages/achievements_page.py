@@ -675,12 +675,13 @@ class AchievementsPage(ctk.CTkFrame):
     def check_rep_warrior(self):
         if self.is_achievement_locked(ACHIEVEMENT_REP_WARRIOR):
             # retrieve rep count from existing exercise entries
-            self.controller.db_cursor.execute("SELECT reps_count FROM exercise_entries")
+            self.controller.db_cursor.execute("SELECT sets_count, reps_count FROM exercise_entries")
             rep_values = self.controller.db_cursor.fetchall()
             total_reps = 0
             # get the sum of reps retrieved from existing exercise entries
             for i in rep_values:
-                total_reps += i[0]
+                total_reps += i[0] * i[1]
+            print(total_reps)
             # unlock the achievement 'rep warrior' if there is greater or equal than 1000 reps from the sum total
             if total_reps >= 1000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_REP_WARRIOR)
@@ -712,9 +713,9 @@ class AchievementsPage(ctk.CTkFrame):
             self.controller.db_cursor.execute("SELECT sets_count, reps_count, weight_value FROM exercise_entries")
             results = self.controller.db_cursor.fetchall()
             volume_sum = 0
+            # calcualate total weight volume (sets * reps * weights)
             for i in results:
                 volume_sum += (i[0] * i[1]) * i[2]
-            print(f"heavy lifter I: {volume_sum}")
             if volume_sum >= 1000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HEAVY_LIFTER_I)
 
@@ -725,9 +726,9 @@ class AchievementsPage(ctk.CTkFrame):
             volume_sum = 0
             for i in results:
                 volume_sum += (i[0] * i[1]) * i[2]
-            print(f"heavy lifter I: {volume_sum}")
             if volume_sum >= 10000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HEAVY_LIFTER_II)
+
 
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
