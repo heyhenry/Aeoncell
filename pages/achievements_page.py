@@ -626,6 +626,7 @@ class AchievementsPage(ctk.CTkFrame):
             self.controller.db_connection.commit()
 
     def check_first_drink(self):
+        # check to see if the achievement has already been unlocked
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_DRINK):
             # check to see if acheivement conditions have been met
             # unlock condition: the table has to be empty of entries before current entry is being processed
@@ -635,6 +636,14 @@ class AchievementsPage(ctk.CTkFrame):
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DRINK)
                 self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_DRINK))
                 self.controller.db_connection.commit()
+
+    def check_first_sleep(self):
+        if self.is_achievement_locked(ACHIEVEMENT_FIRST_SLEEP):
+            self.controller.db_cursor.execute("SELECT 1 FROM sleep_tracker LIMIT 1")
+            has_entries = self.controller.db_cursor.fetchone()
+            if not has_entries:
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_SLEEP)
+                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_SLEEP))
 
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:

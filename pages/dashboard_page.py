@@ -916,6 +916,8 @@ class DashboardPage(ctk.CTkFrame):
             return
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM sleep_tracker WHERE date = ?)", (self.today,))
         if not 1 in self.controller.db_cursor.fetchone():
+            # during processing an entry, check if conditions meet to unlock the 'first sleep" achievement
+            self.controller.pages["AchievementsPage"].check_first_sleep()
             # set max sleep limit (to discourage users who seek to get high scores that enter dangerous territory for their own health)
             # max sleep = 9 hours
             if minutes_slept > 540.00:
