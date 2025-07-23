@@ -330,7 +330,7 @@ class AchievementsPage(ctk.CTkFrame):
         #endregion
 
         #region AchievementTenSection
-        # Sleep Maxxed: Sleep over 9 hours in a single night
+        # Sleep Maxxed: Sleep 9 hours in a single night
         achievement_slot_10_section = ctk.CTkFrame(achievements_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1100, height=120)
         
         achievement_slot_10_section.grid_propagate(False)
@@ -709,6 +709,20 @@ class AchievementsPage(ctk.CTkFrame):
             if total_sets >= 500:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SET_IT_OFF)
                 self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_SET_IT_OFF))
+                self.controller.db_connection.commit()
+
+    def check_sleep_maxxed(self):
+        print('func triggered')
+        if self.is_achievement_locked(ACHIEVEMENT_SLEEP_MAXXED):
+            print('achievement not locked triggered')
+            # retrieve minutes slept from the today's entry
+            self.controller.db_cursor.execute("SELECT sleep_mins FROM sleep_tracker WHERE date = ?", (self.controller.today,))
+            minutes_slept = self.controller.db_cursor.fetchone()
+            # unlock the achievement 'sleep maxxed' if the entry has a total of 540 minutes (9 hours) of sleep recorded
+            if minutes_slept[0] == 540.0:
+                print('update achievement to unlock status')
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SLEEP_MAXXED)
+                self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_SLEEP_MAXXED))
                 self.controller.db_connection.commit()
 
     # def update_achievement_status(self, *args):

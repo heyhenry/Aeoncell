@@ -958,6 +958,8 @@ class DashboardPage(ctk.CTkFrame):
                 self.sleep_current_progress.set(total_minutes_slept)
                 self.update_daily_goal_progression_displays()
                 self.sleep_var.set("")
+        # during processing an entry, check if conditions meet to unlock the 'sleep maxxed' achievement
+        self.controller.pages["AchievementsPage"].check_sleep_maxxed()
         self.update_monthly_goal_progression_displays()
 
     def reset_daily(self, event, selected_daily):
