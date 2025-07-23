@@ -124,6 +124,8 @@ class BaseEntryPage(ctk.CTkFrame):
             self.controller.pages["AchievementsPage"].check_heavy_lifter_I()
             # during processing an entry, check if conditions meet to unlock the 'heavy lifter II' achievement
             self.controller.pages["AchievementsPage"].check_heavy_lifter_II()
+            # during processing an entry, check if conditions meet to unlock the '1 month club' achievement
+            self.controller.pages["AchievementsPage"].check_1_month_club()
 
             self.clear_entry_fields()
             self.reset_date()

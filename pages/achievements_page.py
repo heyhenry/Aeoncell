@@ -789,6 +789,30 @@ class AchievementsPage(ctk.CTkFrame):
             if sum_of_minutes_slept >= 6000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SLEEPING_BEAUTY_II)
 
+    def check_1_month_club(self):
+        if self.is_achievement_locked(ACHIEVEMENT_1_MONTH_CLUB):
+            # get sum of all entries
+            total_entries = 0
+            # retrieve exercise entries
+            self.controller.db_cursor.execute("SELECT date FROM exercise_entries")
+            exercise_entries = self.controller.db_cursor.fetchall()
+            total_entries += len(exercise_entries)
+            # retrieve hydration entries
+            self.controller.db_cursor.execute("SELECT date FROM hydration_tracker")
+            hydration_entries = self.controller.db_cursor.fetchall()
+            total_entries += len(hydration_entries)
+            # retrieve sleep entries
+            self.controller.db_cursor.execute("SELECT date FROM sleep_tracker")
+            sleep_entries = self.controller.db_cursor.fetchall()
+            total_entries += len(sleep_entries)
+            # retrieve steps entries
+            self.controller.db_cursor.execute("SELECT date FROM steps_tracker")
+            steps_entries = self.controller.db_cursor.fetchall()
+            total_entries += len(steps_entries)
+            # if sum of all entries equals 30 then achievement '1 month club' meets its criteria and is unlocked 
+            if total_entries == 30:
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_1_MONTH_CLUB)
+
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
     #         self.achievement_icons[achievement_id].

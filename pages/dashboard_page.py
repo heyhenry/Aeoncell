@@ -855,6 +855,8 @@ class DashboardPage(ctk.CTkFrame):
         self.controller.pages["AchievementsPage"].check_step_stacker_I()
         # during processing an entry, check if conditions meet to unlock the 'step stacker II" achievement
         self.controller.pages["AchievementsPage"].check_step_stacker_II()
+        # during processing an entry, check if conditions meet to unlock the '1 month club' achievement
+        self.controller.pages["AchievementsPage"].check_1_month_club()
         self.update_monthly_goal_progression_displays()
 
     def process_hydration_entry(self):
@@ -915,6 +917,8 @@ class DashboardPage(ctk.CTkFrame):
         self.controller.pages["AchievementsPage"].check_hydrated_human_I()
         # during processing an entry, check if conditions meet to unlock the 'hydrated human II" achievement
         self.controller.pages["AchievementsPage"].check_hydrated_human_II()
+        # during processing an entry, check if conditions meet to unlock the '1 month club' achievement
+        self.controller.pages["AchievementsPage"].check_1_month_club()
         self.update_monthly_goal_progression_displays()
 
     def process_sleep_entry(self):
@@ -972,6 +976,8 @@ class DashboardPage(ctk.CTkFrame):
         self.controller.pages["AchievementsPage"].check_sleeping_beauty_I()
         # during processing an entry, check if conditions meet to unlock the 'sleeping beauty II' acheivement
         self.controller.pages["AchievementsPage"].check_sleeping_beauty_II()
+        # during processing an entry, check if conditions meet to unlock the '1 month club' achievement
+        self.controller.pages["AchievementsPage"].check_1_month_club()
         self.update_monthly_goal_progression_displays()
 
     def reset_daily(self, event, selected_daily):
