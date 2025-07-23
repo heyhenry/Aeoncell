@@ -17,6 +17,7 @@ class LoginPage(ctk.CTkFrame):
         self.grid_columnconfigure(1, weight=1)
 
         self.update_login_message()
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -87,6 +88,8 @@ class LoginPage(ctk.CTkFrame):
     def process_login(self, event=None):
         password = self.password_var.get()
         if self.controller.db.verify_password(password):
+            # during login, check if conditions meet to unlock the 'first day' achievement
+            self.controller.pages["AchievementsPage"].check_first_day()
             self.controller.show_page("DashboardPage")
             # clear the password entry field
             self.password_var.set("")

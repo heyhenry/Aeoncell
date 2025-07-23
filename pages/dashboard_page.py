@@ -14,7 +14,7 @@ class DashboardPage(ctk.CTkFrame):
 
         # temp
         self.icon = ctk.CTkImage(light_image=Image.open("img/big_flame.png"), dark_image=Image.open("img/big_flame.png"), size=(32, 32))
-        self.badge = ctk.CTkImage(light_image=Image.open("img/achievements/first_workout.png"), dark_image=Image.open("img/achievements/first_workout.png"), size=(64, 64))
+        self.badge = ctk.CTkImage(light_image=Image.open("img/achievements/original_icons/first_workout.png"), dark_image=Image.open("img/achievements/original_icons/first_workout.png"), size=(64, 64))
         self.mini_banner = ctk.CTkImage(light_image=Image.open("img/laid_dumbbell_man.png"), dark_image=Image.open("img/laid_dumbbell_man.png"), size=(100, 100))
         self.weather_forecast = ctk.CTkImage(light_image=Image.open("img/forecast_storm.png"), dark_image=Image.open("img/forecast_storm.png"), size=(64, 64))
         # multi-sectional use
@@ -863,6 +863,8 @@ class DashboardPage(ctk.CTkFrame):
         # check if there is an existing entry for today
         self.controller.db_cursor.execute("SELECT exists (SELECT 1 FROM hydration_tracker WHERE date = ?)", (self.today,))
         if not 1 in self.controller.db_cursor.fetchone():
+            # during processing an entry, check if conditions meet to unlock the 'first drink" achievement
+            self.controller.pages["AchievementsPage"].check_first_drink()
             # check if the given value is over 9999.99 ml, if so default to max value
             if liquids_consumed > 9999.99:
                 liquids_consumed = 9999.99
