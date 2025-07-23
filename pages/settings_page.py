@@ -441,6 +441,8 @@ class SettingsPage(ctk.CTkFrame):
 
     # update the user's profile image
     def update_user_profile_img(self):
+        # during updating user's profile image, check if conditions meet to unlock the 'new profile" achievement
+        self.controller.pages["AchievementsPage"].check_new_profile()
         # updating user's profile image
         # check if a temp profile image exists aka user has selected a new image
         if os.path.isfile("img/temp_profile_image.png"):

@@ -661,6 +661,12 @@ class AchievementsPage(ctk.CTkFrame):
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_WORKOUT)
                 self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_FIRST_WORKOUT))
 
+    def check_new_profile(self):
+        if self.is_achievement_locked(ACHIEVEMENT_NEW_PROFILE):
+            self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_NEW_PROFILE)
+            self.controller.db_cursor.execute("UPDATE achievements_details SET achievement_status = ? WHERE achievement_id = ?", ("unlocked", ACHIEVEMENT_NEW_PROFILE))
+            self.controller.db_connection.commit()
+
     # def update_achievement_status(self, *args):
     #     for achievement_id in args:
     #         self.achievement_icons[achievement_id].
