@@ -811,17 +811,4 @@ class AchievementsPage(ctk.CTkFrame):
             total_entries += len(steps_entries)
             # if sum of all entries equals 30 then achievement '1 month club' meets its criteria and is unlocked 
             if total_entries == 30:
-                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_1_MONTH_CLUB)
-
-    # def update_achievement_status(self, *args):
-    #     for achievement_id in args:
-    #         self.achievement_icons[achievement_id].
-
-    # def update_achievement_status(self, achievement_id, achievement_icon_var, achievement_datetime_var):
-    #     self.set_achievement_unlock_date()
-
-    # def check_for_unlocked_achievements(self, *args):
-    #     for achievement_id in args:
-
-
-            
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_1_MONTH_CLUB)  
