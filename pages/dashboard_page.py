@@ -1003,21 +1003,21 @@ class DashboardPage(ctk.CTkFrame):
     def update_exercise_summary(self):
         # retrieve data for today's sets, reps and weight values
         self.controller.db_cursor.execute("SELECT sets_count, reps_count, weight_value FROM exercise_entries WHERE date = ?", (self.today,))
-        result = self.controller.db_cursor.fetchall()
+        results = self.controller.db_cursor.fetchall()
         # if entries exists, tally the data and display in the exercise summary section
-        if result:
-            self.exercise_total_var.set(len(result))
+        if results:
+            self.exercise_total_var.set(len(results))
             sets_sum = 0
             reps_sum = 0
-            weights_sum = 0
-            for i in range(len(result)):
-                sets_sum += result[i][0]
-                reps_sum += result[i][1]
-                weights_sum += result[i][2]
+            volume_sum = 0
+            for i in results:
+                sets_sum += i[0]
+                reps_sum += i[0] * i[1]
+                volume_sum += (i[0] * i[1]) * i[2]
             self.sets_total_var.set(sets_sum)
             self.reps_total_var.set(reps_sum)
-            volume_sum = (sets_sum * reps_sum) * weights_sum
             self.volume_total_var.set(volume_sum)
+            
 
     def update_weather_forecast(self):
         pass # temp during multiple startups to test other sections of the app..
