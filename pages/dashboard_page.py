@@ -851,8 +851,10 @@ class DashboardPage(ctk.CTkFrame):
             self.update_daily_goal_progression_displays()
             # clear the steps entry field
             self.steps_var.set("")
-        # during processing an entry, check if conditions meet to unlock the 'first steps" achievement
+        # during processing an entry, check if conditions meet to unlock the 'step stacker I" achievement
         self.controller.pages["AchievementsPage"].check_step_stacker_I()
+        # during processing an entry, check if conditions meet to unlock the 'step stacker II" achievement
+        self.controller.pages["AchievementsPage"].check_step_stacker_II()
         self.update_monthly_goal_progression_displays()
 
     def process_hydration_entry(self):
