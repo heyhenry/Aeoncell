@@ -968,6 +968,10 @@ class DashboardPage(ctk.CTkFrame):
                 self.sleep_var.set("")
         # during processing an entry, check if conditions meet to unlock the 'sleep maxxed' achievement
         self.controller.pages["AchievementsPage"].check_sleep_maxxed()
+        # during processing an entry, check if conditions meet to unlock the 'sleeping beauty I' acheivement
+        self.controller.pages["AchievementsPage"].check_sleeping_beauty_I()
+        # during processing an entry, check if conditions meet to unlock the 'sleeping beauty II' acheivement
+        self.controller.pages["AchievementsPage"].check_sleeping_beauty_II()
         self.update_monthly_goal_progression_displays()
 
     def reset_daily(self, event, selected_daily):
