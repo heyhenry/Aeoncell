@@ -1,8 +1,6 @@
 import customtkinter as ctk
-from PIL import Image
 from widgets import Navbar
 from datetime import datetime
-from utils import achievement_map
 from .images import achievement_images
 from .constants.achievement_constants import *
 
@@ -32,11 +30,11 @@ class AchievementsPage(ctk.CTkFrame):
         self.achievement_icon_slots = {}
         #endregion
 
-        self.set_achievement_icons_on_startup()
         self.set_unlock_dates_on_startup()
+        self.set_achievement_icons_on_startup()
         self.create_widgets()
         self.update_achievement_overview_on_startup()
-
+    
     def create_widgets(self):
         # ==================== [ROOT FRAMES] ====================
         #region RootFrames
@@ -614,9 +612,15 @@ class AchievementsPage(ctk.CTkFrame):
                 num_of_unlocks += 1
         print(f"no. unlocked: {num_of_unlocks} | num. achievements: {num_of_achievements}")
         # set progressbar of current overall progress of achievements
-        self.achievements_overview_progressbar.set(num_of_unlocks/num_of_achievements)
-        # set text info of overall progress of achievements
-        completion_percentage = round((num_of_unlocks / num_of_achievements) * 100, 2)
+        try:
+            self.achievements_overview_progressbar.set(num_of_unlocks/num_of_achievements)
+        except ZeroDivisionError:
+            self.achievements_overview_progressbar.set(0)
+        # set text info of overall progress of 
+        try:
+            completion_percentage = round((num_of_unlocks / num_of_achievements) * 100, 2)
+        except ZeroDivisionError:
+            completion_percentage = 0
         self.overall_achievements_info.set(f"{num_of_unlocks} of {num_of_achievements} ({completion_percentage}%) achievements earned:")
 
     def update_achievement_unlock_date_and_icon(self, achievement_id):
