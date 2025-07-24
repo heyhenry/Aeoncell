@@ -35,7 +35,7 @@ class AchievementsPage(ctk.CTkFrame):
         self.set_achievement_icons_on_startup()
         self.set_unlock_dates_on_startup()
         self.create_widgets()
-        self.set_achievement_overview_on_startup()
+        self.update_achievement_overview_on_startup()
 
     def create_widgets(self):
         # ==================== [ROOT FRAMES] ====================
@@ -603,7 +603,7 @@ class AchievementsPage(ctk.CTkFrame):
             else:
                 self.achievement_icons[i[0]] = achievement_images.unlocked_achievements[i[0]]
 
-    def set_achievement_overview_on_startup(self):
+    def update_achievement_overview_on_startup(self):
         # find out the current overall achievement progress
         self.controller.db_cursor.execute("SELECT achievement_status FROM achievements_details")
         achievement_statuses = self.controller.db_cursor.fetchall()
@@ -644,6 +644,7 @@ class AchievementsPage(ctk.CTkFrame):
     def check_first_day(self):
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_DAY):
             self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DAY)
+            self.update_achievement_overview_on_startup()
 
     def check_first_drink(self):
         # check to see if the achievement has already been unlocked
@@ -654,6 +655,7 @@ class AchievementsPage(ctk.CTkFrame):
             has_entries = self.controller.db_cursor.fetchone()
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_DRINK)
+                self.update_achievement_overview_on_startup()
 
     def check_first_sleep(self):
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_SLEEP):
@@ -661,6 +663,7 @@ class AchievementsPage(ctk.CTkFrame):
             has_entries = self.controller.db_cursor.fetchone()
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_SLEEP)
+                self.update_achievement_overview_on_startup()
 
     def check_first_steps(self):
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_STEPS):
@@ -668,6 +671,7 @@ class AchievementsPage(ctk.CTkFrame):
             has_entries = self.controller.db_cursor.fetchone()
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_STEPS)
+                self.update_achievement_overview_on_startup()
 
     def check_first_workout(self):
         if self.is_achievement_locked(ACHIEVEMENT_FIRST_WORKOUT):
@@ -675,10 +679,12 @@ class AchievementsPage(ctk.CTkFrame):
             has_entries = self.controller.db_cursor.fetchone()
             if not has_entries:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_FIRST_WORKOUT)
+                self.update_achievement_overview_on_startup()
 
     def check_new_profile(self):
         if self.is_achievement_locked(ACHIEVEMENT_NEW_PROFILE):
             self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_NEW_PROFILE)
+            self.update_achievement_overview_on_startup()
 
     def check_ten_exercises(self):
         # check if achievement has already been unlocked
@@ -688,6 +694,7 @@ class AchievementsPage(ctk.CTkFrame):
             entry_counter = self.controller.db_cursor.fetchall()
             if len(entry_counter) == 9:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_TEN_EXERCISES)
+                self.update_achievement_overview_on_startup()
 
     def check_rep_warrior(self):
         if self.is_achievement_locked(ACHIEVEMENT_REP_WARRIOR):
@@ -702,6 +709,7 @@ class AchievementsPage(ctk.CTkFrame):
             # unlock the achievement 'rep warrior' if there is greater or equal than 1000 reps from the sum total
             if total_reps >= 1000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_REP_WARRIOR)
+                self.update_achievement_overview_on_startup()
             
     def check_set_it_off(self):
         if self.is_achievement_locked(ACHIEVEMENT_SET_IT_OFF):
@@ -715,6 +723,7 @@ class AchievementsPage(ctk.CTkFrame):
             # unlock the achievement 'set it off' if there is greater or equal than 500 sets from the sum total
             if total_sets >= 500:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SET_IT_OFF)
+                self.update_achievement_overview_on_startup()
 
     def check_sleep_maxxed(self):
         if self.is_achievement_locked(ACHIEVEMENT_SLEEP_MAXXED):
@@ -724,6 +733,7 @@ class AchievementsPage(ctk.CTkFrame):
             # unlock the achievement 'sleep maxxed' if the entry has a total of 540 minutes (9 hours) of sleep recorded
             if minutes_slept[0] == 540.0:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SLEEP_MAXXED)
+                self.update_achievement_overview_on_startup()
 
     def check_heavy_lifter_I(self):
         if self.is_achievement_locked(ACHIEVEMENT_HEAVY_LIFTER_I):
@@ -735,6 +745,7 @@ class AchievementsPage(ctk.CTkFrame):
                 volume_sum += (i[0] * i[1]) * i[2]
             if volume_sum >= 1000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HEAVY_LIFTER_I)
+                self.update_achievement_overview_on_startup()
 
     def check_heavy_lifter_II(self):
         if self.is_achievement_locked(ACHIEVEMENT_HEAVY_LIFTER_II):
@@ -745,6 +756,7 @@ class AchievementsPage(ctk.CTkFrame):
                 volume_sum += (i[0] * i[1]) * i[2]
             if volume_sum >= 10000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HEAVY_LIFTER_II)
+                self.update_achievement_overview_on_startup()
 
     def check_step_stacker_I(self):
         if self.is_achievement_locked(ACHIEVEMENT_STEP_STACKER_I):
@@ -755,6 +767,7 @@ class AchievementsPage(ctk.CTkFrame):
                 sum_of_steps += i[0]
             if sum_of_steps >= 50000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_STEP_STACKER_I)
+                self.update_achievement_overview_on_startup()
 
     def check_step_stacker_II(self):
         if self.is_achievement_locked(ACHIEVEMENT_STEP_STACKER_II):
@@ -765,6 +778,7 @@ class AchievementsPage(ctk.CTkFrame):
                 sum_of_steps += i[0]
             if sum_of_steps >= 250000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_STEP_STACKER_II)
+                self.update_achievement_overview_on_startup()
 
     def check_hydrated_human_I(self):
         if self.is_achievement_locked(ACHIEVEMENT_HYDRATED_HUMAN_I):
@@ -775,6 +789,7 @@ class AchievementsPage(ctk.CTkFrame):
                 sum_of_consumption += i[0]
             if sum_of_consumption >= 10000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HYDRATED_HUMAN_I)
+                self.update_achievement_overview_on_startup()
 
     def check_hydrated_human_II(self):
         if self.is_achievement_locked(ACHIEVEMENT_HYDRATED_HUMAN_II):
@@ -785,6 +800,7 @@ class AchievementsPage(ctk.CTkFrame):
                 sum_of_consumption += i[0]
             if sum_of_consumption >= 100000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_HYDRATED_HUMAN_II)
+                self.update_achievement_overview_on_startup()
 
     def check_sleeping_beauty_I(self):
         if self.is_achievement_locked(ACHIEVEMENT_SLEEPING_BEAUTY_I):
@@ -795,6 +811,7 @@ class AchievementsPage(ctk.CTkFrame):
                 sum_of_minutes_slept += i[0]
             if sum_of_minutes_slept >= 600:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SLEEPING_BEAUTY_I)
+                self.update_achievement_overview_on_startup()
 
     def check_sleeping_beauty_II(self):
         if self.is_achievement_locked(ACHIEVEMENT_SLEEPING_BEAUTY_II):
@@ -805,6 +822,7 @@ class AchievementsPage(ctk.CTkFrame):
                 sum_of_minutes_slept += i[0]
             if sum_of_minutes_slept >= 6000:
                 self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_SLEEPING_BEAUTY_II)
+                self.update_achievement_overview_on_startup()
 
     def check_1_month_club(self):
         if self.is_achievement_locked(ACHIEVEMENT_1_MONTH_CLUB):
@@ -828,4 +846,5 @@ class AchievementsPage(ctk.CTkFrame):
             total_entries += len(steps_entries)
             # if sum of all entries equals 30 then achievement '1 month club' meets its criteria and is unlocked 
             if total_entries == 30:
-                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_1_MONTH_CLUB)  
+                self.update_achievement_unlock_date_and_icon(ACHIEVEMENT_1_MONTH_CLUB)
+                self.update_achievement_overview_on_startup()
