@@ -19,6 +19,7 @@ class AchievementsPage(ctk.CTkFrame):
         #region Variables
         
         # intialise all achievement icon variables with the loading achievement icon
+        self.overall_achievements_info = ctk.StringVar()
         self.achievement_icons = {
             i : achievement_images.loading_achievement_icon
             for i in range(1, 20)
@@ -28,13 +29,13 @@ class AchievementsPage(ctk.CTkFrame):
             i : ctk.StringVar()
             for i in range(1, 20)
         }
-
         self.achievement_icon_slots = {}
         #endregion
 
         self.set_achievement_icons_on_startup()
         self.set_unlock_dates_on_startup()
         self.create_widgets()
+        self.set_achievement_overview_on_startup()
 
     def create_widgets(self):
         # ==================== [ROOT FRAMES] ====================
@@ -96,11 +97,11 @@ class AchievementsPage(ctk.CTkFrame):
         achievements_triple_stars.grid(row=0, column=1, padx=20)
         achievements_right_sub_banner.grid(row=0, column=2)
 
-        achievements_overview_progress_info = ctk.CTkLabel(achievements_overview_subsection, text="3 of 12 (40%) achievements earned:", font=("", 24))
-        achievements_overview_progressbar = ctk.CTkProgressBar(achievements_overview_subsection, border_width=3, height=40, width=600, corner_radius=0)
+        achievements_overview_progress_info = ctk.CTkLabel(achievements_overview_subsection, textvariable=self.overall_achievements_info, font=("", 24))
+        self.achievements_overview_progressbar = ctk.CTkProgressBar(achievements_overview_subsection, border_width=3, height=40, width=600, corner_radius=0)
 
         achievements_overview_progress_info.grid(row=0, column=0, pady=(0, 10))
-        achievements_overview_progressbar.grid(row=1, column=0)                
+        self.achievements_overview_progressbar.grid(row=1, column=0)                
         #endregion
 
         #region AchievementOneSection
@@ -601,6 +602,22 @@ class AchievementsPage(ctk.CTkFrame):
                 self.achievement_icons[i[0]] = achievement_images.locked_achievements[i[0]]
             else:
                 self.achievement_icons[i[0]] = achievement_images.unlocked_achievements[i[0]]
+
+    def set_achievement_overview_on_startup(self):
+        # find out the current overall achievement progress
+        self.controller.db_cursor.execute("SELECT achievement_status FROM achievements_details")
+        achievement_statuses = self.controller.db_cursor.fetchall()
+        num_of_unlocks = 0
+        num_of_achievements = len(achievement_statuses)
+        for status in achievement_statuses:
+            if status[0] == "unlocked":
+                num_of_unlocks += 1
+        print(f"no. unlocked: {num_of_unlocks} | num. achievements: {num_of_achievements}")
+        # set progressbar of current overall progress of achievements
+        self.achievements_overview_progressbar.set(num_of_unlocks/num_of_achievements)
+        # set text info of overall progress of achievements
+        completion_percentage = round((num_of_unlocks / num_of_achievements) * 100, 2)
+        self.overall_achievements_info.set(f"{num_of_unlocks} of {num_of_achievements} ({completion_percentage}%) achievements earned:")
 
     def update_achievement_unlock_date_and_icon(self, achievement_id):
         print("An Achievement has been Unlocked!")
