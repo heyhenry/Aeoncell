@@ -128,7 +128,12 @@ class DatabaseManager:
         )
         """
         self.db_cursor.execute(create_achievements_table_query)
-        # create and populate the initial achievements details
-        for i in achievement_map.achievement_lookup.values():
-            # loop through and add all predetermined achievements
-            self.db_cursor.execute("INSERT INTO achievements_details (achievement_name) values (?)", (i,))
+        
+        # check if data exists to determine if default value creation is required
+        self.db_cursor.execute("SELECT 1 FROM achievements_details")
+        data_exists = self.db_cursor.fetchone()
+        if not data_exists:
+            # create and populate the initial achievements details
+            for i in achievement_map.achievement_lookup.values():
+                # loop through and add all predetermined achievements
+                self.db_cursor.execute("INSERT INTO achievements_details (achievement_name) values (?)", (i,))
