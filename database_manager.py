@@ -25,10 +25,6 @@ class DatabaseManager:
         self.db_cursor.execute("INSERT INTO authentication (username, hashed_password) values (?, ?)", (username, hashed_password))
         # create the initial profile details and store the given username and password
         self.db_cursor.execute("INSERT INTO profile_details (username, password) values (?, ?)", (username, password))
-        # create the initial achievements details
-        for i in achievement_map.achievement_lookup.values():
-            # loop through and add all predetermined achievements
-            self.db_cursor.execute("INSERT INTO achievements_details (achievement_name) values (?)", (i,))
         self.db_connection.commit()
 
     def update_password(self, password):
@@ -132,3 +128,7 @@ class DatabaseManager:
         )
         """
         self.db_cursor.execute(create_achievements_table_query)
+        # create and populate the initial achievements details
+        for i in achievement_map.achievement_lookup.values():
+            # loop through and add all predetermined achievements
+            self.db_cursor.execute("INSERT INTO achievements_details (achievement_name) values (?)", (i,))
