@@ -128,12 +128,15 @@ class DatabaseManager:
         )
         """
         self.db_cursor.execute(create_achievements_table_query)
+        # populate the achievement details with achievements on creation
+        self.populate_achievements_details()
         
+    def populate_achievements_details(self):
         # check if data exists to determine if default value creation is required
         self.db_cursor.execute("SELECT 1 FROM achievements_details")
         data_exists = self.db_cursor.fetchone()
         if not data_exists:
-            # create and populate the initial achievements details
+            # create and populate the initial achievements details on creation only
             for i in achievement_map.achievement_lookup.values():
                 # loop through and add all predetermined achievements
                 self.db_cursor.execute("INSERT INTO achievements_details (achievement_name) values (?)", (i[0],))
