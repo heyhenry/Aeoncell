@@ -145,4 +145,6 @@ Updating a dictionary in Python (22nd July 2025): https://stackoverflow.com/ques
 SQLite Limit (23rd July 2025): https://www.sqlitetutorial.net/sqlite-limit/
 SQL - How to return Boolean value if values exists in table (23rd July 2025): https://stackoverflow.com/questions/56296476/sql-how-to-return-boolean-value-if-values-exists-in-table
 EXISTS (SELECT 1 ...) vs EXISTS (SELECT * ...) One or the other? (23rd July 2025): https://dba.stackexchange.com/questions/159413/exists-select-1-vs-exists-select-one-or-the-other
+SQLite Order By (25th July 2025): https://www.sqlitetutorial.net/sqlite-order-by/
+Python String replace() Method (25th July 2025): https://www.w3schools.com/python/ref_string_replace.asp
 
