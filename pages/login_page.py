@@ -79,7 +79,7 @@ class LoginPage(ctk.CTkFrame):
 
     def update_login_message(self):
         username = self.controller.username.get()
-        self.username_var.set(f"Logged in as [{username}]")
+        self.username_var.set(f"Logged in as: \n[{username}]")
 
     def update_login_profile_image(self):
         self.user_profile_image = ctk.CTkImage(light_image=Image.open("img/user_profile.png"), dark_image=Image.open("img/user_profile.png"), size=(120,120))
