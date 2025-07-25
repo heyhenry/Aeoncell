@@ -121,6 +121,7 @@ class DashboardPage(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
+        self.update_latest_achievements_display()
         self.create_widgets()
 
         self.update_welcome_user()
@@ -720,6 +721,17 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_hydration_progressbar.set(hydration_current_progress/hydration_total_progress)
         except ZeroDivisionError:
             self.profile_hydration_progressbar.set(0)
+
+    def update_latest_achievements_display(self):
+        print('triggered?')
+        self.controller.db_cursor.execute("SELECT achievement_id, achievement_unlock_date FROM achievements_details ORDER BY achievement_unlock_date DESC LIMIT 4")
+        results = self.controller.db_cursor.fetchall()
+        for i in range(len(results)):
+            if results[i][1] == "":
+                continue
+            self.profile_achievement_names[i+1].set(achievement_map.achievement_lookup[results[i][0]][1])
+            self.profile_achievement_badges[i+1] = achievement_images.unlocked_achievements[results[i][0]]
+            self.profile_achievement_unlock_dates[i+1].set(results[i][1])
 
     def daily_section_initialisation(self):
         print("daily sec init")
