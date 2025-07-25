@@ -670,7 +670,6 @@ class DashboardPage(ctk.CTkFrame):
                 total_consumption += i[0]
         self.monthly_hydration_current_var.set(total_consumption)
 
-    # NOTE TO SELF!! NEED TO STILL IMPLEMENT FOR STEPS AND HYDRATION + ADD THIS AND MAYBE THE UPDATE_MONTHLY_PROGRESSBARS() TO PLACES LIKE SETTINGS AND DAILY TRACKERS FOR REAL TIME UPDATES.
     def update_monthly_goal_progression_displays(self):
         # for now just sleep
         monthly_sleep_goal = 0.0
@@ -1094,7 +1093,6 @@ class DashboardPage(ctk.CTkFrame):
             self.reps_total_var.set(reps_sum)
             self.volume_total_var.set(volume_sum)
             
-
     def update_weather_forecast(self):
         pass # temp during multiple startups to test other sections of the app..
         # wmo_list = self.controller.wmo_codes
