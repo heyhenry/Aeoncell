@@ -84,7 +84,7 @@ class RegisterPage(ctk.CTkFrame):
         self.username_entry.bind("<Return>", self.process_registration)
         self.password_entry.bind("<Return>", self.process_registration)
         self.confirm_password_entry.bind("<Return>", self.process_registration)
-        self.username_entry.bind("<Key>", lambda event: aeoncell_utils.custom_entry_limit_chars(event, self.username_entry, 11))
+        self.username_entry.bind("<Key>", lambda event: aeoncell_utils.custom_entry_limit_chars(event, self.username_entry, 13))
 
     def process_registration(self, event=None):
         username = self.username_var.get()
