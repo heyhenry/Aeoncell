@@ -24,7 +24,7 @@ class DatabaseManager:
         hashed_password = self.ph.hash(password)
         self.db_cursor.execute("INSERT INTO authentication (username, hashed_password) values (?, ?)", (username, hashed_password))
         # create the initial profile details and store the given username and password
-        self.db_cursor.execute("INSERT INTO profile_details (username, password) values (?, ?)", (username, password))
+        self.db_cursor.execute("UPDATE profile_details SET username = ?, password = ? WHERE rowid = 1", (username, password))
         self.db_connection.commit()
 
     def update_password(self, password):
