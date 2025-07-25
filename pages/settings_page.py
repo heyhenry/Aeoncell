@@ -142,7 +142,7 @@ class SettingsPage(ctk.CTkFrame):
         profile_update_button.grid(row=14, column=0, columnspan=2)
 
         # profile related binds
-        self.profile_username_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, self.profile_username_entry, 10))
+        self.profile_username_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, self.profile_username_entry, 13))
         self.profile_first_name_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_first_name_entry, 13))
         self.profile_last_name_entry.bind("<Key>", lambda event: custom_word_only_entry_validation(event, self.profile_last_name_entry, 13))
         self.profile_age_entry.bind("<Key>", lambda event: custom_digit_only_entry_validation(event, self.profile_age_entry, 3))
