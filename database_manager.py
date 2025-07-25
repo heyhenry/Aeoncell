@@ -117,6 +117,13 @@ class DatabaseManager:
         )
         """
         self.db_cursor.execute(create_profile_table_query)
+        self.create_initial_profile_details()
+
+    def create_initial_profile_details(self):
+        self.db_cursor.execute("SELECT 1 FROM profile_details")
+        data_exists = self.db_cursor.fetchone()
+        if not data_exists:
+            self.db_cursor.execute("INSERT INTO profile_details (username, password) VALUES ('', '')")
 
     def create_achievements_table(self):
         create_achievements_table_query = """
