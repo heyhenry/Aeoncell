@@ -5,50 +5,80 @@ def create_rounded_background_achievement_icon(
     output_path,
     icon_size=(512, 512),
     bg_glow_color="#B19CD9",
-    border_color="#9370DB", 
-    inner_glow=True
+    border_color="#9370DB",
+    inner_glow=True,
+    icon_scale=0.8,
+    corner_radius=30,
+    border_width=3, 
+    outer_border_color="#E0E0E0" 
 ):
-    # Open and resize icon
+    # open and resize icon
     original = Image.open(input_path).convert("RGBA")
-    icon = original.resize(icon_size,Image.Resampling.LANCZOS)
+    scaled_icon_size = (int(icon_size[0] * icon_scale), (int(icon_size[1] * icon_scale)))
+    icon = original.resize(scaled_icon_size, Image.Resampling.LANCZOS)
     
-    # Create canvas with shadow
-    canvas_size = (icon_size[0] + 40, icon_size[1] + 40)  # Extra space for effects
+    # create canvas with shadow
+    canvas_size = (icon_size[0] + 40, icon_size[1] + 40)
     canvas = Image.new("RGBA", canvas_size, (0, 0, 0, 0))
     
-    # Create glow effect (behind icon)
+    # create rounded background mask
+    background_mask = Image.new("L", canvas_size, 0)
+    draw = ImageDraw.Draw(background_mask)
+    draw.rounded_rectangle(
+        [(0, 0), canvas_size],
+        radius=corner_radius,
+        fill=255
+    )
+    
+    # create outer border (neutral color)
+    outer_border = Image.new("RGBA", canvas_size, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(outer_border)
+    draw.rounded_rectangle(
+        [(0, 0), canvas_size],
+        radius=corner_radius,
+        outline=outer_border_color,
+        width=border_width
+    )
+    canvas.alpha_composite(outer_border)
+    
+    # create glow effect with rounded corners
     if inner_glow:
         glow = Image.new("RGBA", canvas_size, (0, 0, 0, 0))
         draw = ImageDraw.Draw(glow)
-        draw.ellipse(
-            [(20, 20), (icon_size[0] + 20, icon_size[1] + 20)],
+        draw.rounded_rectangle(
+            [(border_width+5, border_width+5), (canvas_size[0]-(border_width+5), canvas_size[1]-(border_width+5))],
+            radius=corner_radius-5,
             fill=bg_glow_color
         )
         glow = glow.filter(ImageFilter.GaussianBlur(15))
         canvas.alpha_composite(glow)
     
-    # Create border (rounded square)
+    # create main border
     border = Image.new("RGBA", canvas_size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(border)
     draw.rounded_rectangle(
-        [(10, 10), (icon_size[0] + 30, icon_size[1] + 30)],
-        radius=15,
+        [(border_width+5, border_width+5), (canvas_size[0]-(border_width+5), canvas_size[1]-(border_width+5))],
+        radius=corner_radius-5,
         fill=border_color,
         outline=None,
         width=0
     )
     canvas.alpha_composite(border)
     
-    # Add icon (centered)
+    # add icon (centered)
     canvas.alpha_composite(
         icon,
         dest=(
-            (canvas_size[0] - icon_size[0]) // 2,
-            (canvas_size[1] - icon_size[1]) // 2
+            (canvas_size[0] - scaled_icon_size[0]) // 2,
+            (canvas_size[1] - scaled_icon_size[1]) // 2
         )
     )
     
-    canvas.save(output_path)
+    # apply rounded corners to final composition
+    rounded_canvas = Image.new("RGBA", canvas_size, (0, 0, 0, 0))
+    rounded_canvas.paste(canvas, (0, 0), background_mask)
+    
+    rounded_canvas.save(output_path)
 
 # list of achievement filenames incl. filepath
 img_filenames = [
@@ -73,25 +103,15 @@ img_filenames = [
     "img/achievements/original_icons/ten_exercises.png",
 ]
 
-# loop through and created altered 'steam' achievement style icons
-# for filename in img_filnames:
-#     filepath_prefix_index = filename.rfind("/")
-#     filename_index = filename.rfind("g")
-#     create_rounded_background_achievement_icon(
-#         input_path=filename,
-#         output_path=f"{filename[:filepath_prefix_index]}{filename[filepath_prefix_index+1:filename_index+1]}",
-#         bg_glow_color="#F5F0FF00",
-#         border_color="#9370DB",
-#         inner_glow=True
-#     )
-
 for filename in img_filenames:
     filepath_prefix_index = filename.rfind("/")
     filename_index = filename.rfind("g")
     create_rounded_background_achievement_icon(
         input_path=filename,
-        output_path=f"img/achievements/locked_version/{filename[filepath_prefix_index+1:filename_index+1]}",
+        output_path=f"img/achievements/unlocked_version/{filename[filepath_prefix_index+1:filename_index+1]}",
         bg_glow_color="#F5F0FF00",
         border_color="#9370DB",
-        inner_glow=True
+        inner_glow=True,
+        icon_scale=0.8,
+        corner_radius=30
     )
