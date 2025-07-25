@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from PIL import Image
+from utils import aeoncell_utils
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -83,6 +84,7 @@ class RegisterPage(ctk.CTkFrame):
         self.username_entry.bind("<Return>", self.process_registration)
         self.password_entry.bind("<Return>", self.process_registration)
         self.confirm_password_entry.bind("<Return>", self.process_registration)
+        self.username_entry.bind("<Key>", lambda event: aeoncell_utils.custom_entry_limit_chars(event, self.username_entry, 11))
 
     def process_registration(self, event=None):
         username = self.username_var.get()
@@ -91,9 +93,6 @@ class RegisterPage(ctk.CTkFrame):
         # validate username
         if len(username) < 4:
             self.controller.show_error_message(self.error_message, "Username must be at least 4 chars.")
-            return 
-        elif len(username) > 11:
-            self.controller.show_error_message(self.error_message, "Username must be less than 11 chars.")
             return 
         elif username.isspace():
             self.controller.show_error_message(self.error_message, "Username cannot be whitespaces.")
