@@ -6,6 +6,8 @@ import random
 import requests
 from widgets import Navbar
 from utils import *
+from pages.images import achievement_images
+
 
 class DashboardPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
@@ -61,6 +63,21 @@ class DashboardPage(ctk.CTkFrame):
         self.monthly_hydration_display = ctk.StringVar()
         self.monthly_hydration_goal_var = ctk.StringVar()
         self.monthly_hydration_current_var = ctk.StringVar()
+
+        self.profile_achievement_names = {
+            i : ctk.StringVar(value="Achievement Pending..")
+            for i in range(1, 5)
+        }
+
+        self.profile_achievement_badges = {
+            i : achievement_images.loading_achievement_icon
+            for i in range(1, 5)
+        }
+
+        self.profile_achievement_unlock_dates = {
+            i : ctk.StringVar(value="No Unlocked.")
+            for i in range(1, 5)
+        }
 
         # daily section related variables
         self.steps_var = ctk.StringVar()
@@ -221,18 +238,18 @@ class DashboardPage(ctk.CTkFrame):
         # latest achievement showcase
         profile_achievements_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_achievements_title = ctk.CTkLabel(profile_achievements_section, text="Recent Achievements", font=("", 32))
-        first_badge_name = ctk.CTkLabel(profile_achievements_section, text="Running Madman", font=("", 18))
-        first_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.badge)
-        first_badge_date = ctk.CTkLabel(profile_achievements_section, text="Unlocked:\n16/06/2025", font=("", 12, "bold"))
-        second_badge_name = ctk.CTkLabel(profile_achievements_section, text="First Workout", font=("", 18))
-        second_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.badge)
-        second_badge_date = ctk.CTkLabel(profile_achievements_section, text="Unlocked:\n16/06/2025", font=("", 12, "bold"))
-        third_badge_name = ctk.CTkLabel(profile_achievements_section, text="First Exercise", font=("", 18))
-        third_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.badge)
-        third_badge_date = ctk.CTkLabel(profile_achievements_section, text="Unlocked:\n16/06/2025", font=("", 12, "bold"))
-        fourth_badge_name = ctk.CTkLabel(profile_achievements_section, text="Ten Exercises", font=("", 18))
-        fourth_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.badge)
-        fourth_badge_date = ctk.CTkLabel(profile_achievements_section, text="Unlocked:\n16/06/2025", font=("", 12, "bold"))
+        first_badge_name = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_names[1], font=("", 18))
+        first_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[1])
+        first_badge_date = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_unlock_dates[1], font=("", 12, "bold"))
+        second_badge_name = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_names[2], font=("", 18))
+        second_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[2])
+        second_badge_date = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_unlock_dates[2], font=("", 12, "bold"))
+        third_badge_name = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_names[3], font=("", 18))
+        third_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[3])
+        third_badge_date = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_unlock_dates[3], font=("", 12, "bold"))
+        fourth_badge_name = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_names[4], font=("", 18))
+        fourth_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[4])
+        fourth_badge_date = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_unlock_dates[4], font=("", 12, "bold"))
 
         # main frames inside profile section
         profile_info_section.grid(row=1, column=1, padx=(10, 60), pady=(0, 20))
