@@ -696,40 +696,40 @@ class DashboardPage(ctk.CTkFrame):
         self.update_monthly_hydration_progressbar()
 
     def update_monthly_steps_progressbar(self):
-        walking_current_progress = int(self.monthly_walking_current_var.get())
-        walking_total_progress = int(self.monthly_walking_goal_var.get())
+        current_progress = int(self.monthly_walking_current_var.get())
+        total_progress = int(self.monthly_walking_goal_var.get())
 
-        if walking_total_progress == 0.0:
-            if walking_current_progress > 0.0:
-                self.profile_sleep_progressbar.set(1)
-        elif walking_current_progress >= walking_total_progress:
-            self.profile_sleep_progressbar(1)
-        else:
-            self.profile_sleep_progressbar.set(walking_current_progress/walking_total_progress)
+        try:
+            self.profile_walking_progressbar.set(current_progress/total_progress)
+        except ZeroDivisionError:
+            if current_progress > total_progress:
+                self.profile_walking_progressbar.set(1)
+            else:
+                self.profile_walking_progressbar.set(0)
 
     def update_monthly_sleep_progressbar(self):
-        sleep_current_progress = float(self.monthly_sleep_current_var.get())
-        sleep_total_progress = float(self.monthly_sleep_goal_var.get())
+        current_progress = float(self.monthly_sleep_current_var.get())
+        total_progress = float(self.monthly_sleep_goal_var.get())
 
-        if sleep_total_progress == 0.0:
-            if sleep_current_progress > 0.0:
+        try:
+            self.profile_sleep_progressbar.set(current_progress/total_progress)
+        except ZeroDivisionError:
+            if current_progress > total_progress:
                 self.profile_sleep_progressbar.set(1)
-        elif sleep_current_progress >= sleep_total_progress:
-            self.profile_sleep_progressbar(1)
-        else:
-            self.profile_sleep_progressbar.set(sleep_current_progress/sleep_total_progress)
+            else:
+                self.profile_sleep_progressbar.set(0)
 
     def update_monthly_hydration_progressbar(self):
-        hydration_current_progress = float(self.monthly_hydration_current_var.get())
-        hydration_total_progress = float(self.monthly_hydration_goal_var.get())
+        current_progress = float(self.monthly_hydration_current_var.get())
+        total_progress = float(self.monthly_hydration_goal_var.get())
 
-        if hydration_total_progress == 0.0:
-            if hydration_current_progress > 0.0:
-                self.profile_sleep_progressbar.set(1)
-        elif hydration_current_progress >= hydration_total_progress:
-            self.profile_sleep_progressbar(1)
-        else:
-            self.profile_sleep_progressbar.set(hydration_current_progress/hydration_total_progress)
+        try:
+            self.profile_hydration_progressbar.set(current_progress/total_progress)
+        except ZeroDivisionError:
+            if current_progress > total_progress:
+                self.profile_hydration_progressbar.set(1)
+            else:
+                self.profile_hydration_progressbar.set(0)
 
     def update_latest_achievements_display(self):
         self.controller.db_cursor.execute("SELECT achievement_id, achievement_unlock_date FROM achievements_details ORDER BY achievement_unlock_date DESC LIMIT 4")
