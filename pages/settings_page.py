@@ -25,15 +25,12 @@ class SettingsPage(ctk.CTkFrame):
         self.daily_walking_var = ctk.StringVar()
         self.daily_hydration_var = ctk.StringVar()
 
-        # retrieve existing data and set daily variables with them
-        # only look to retrieve data if a database has been created (i.e. user has registered)
-        if self.controller.db.check_account_exists():
-            # we can use rowid as the primary key reference because there will only always be a single entry in this table
-            self.controller.db_cursor.execute("SELECT daily_sleep_goal, daily_steps_goal, daily_hydration_goal FROM profile_details WHERE rowid=1")
-            result = self.controller.db_cursor.fetchone()
-            self.daily_sleep_var.set(result[0])
-            self.daily_walking_var.set(result[1])
-            self.daily_hydration_var.set(result[2])
+        # pull initial defaulted daily goals data from profile_details table 
+        self.controller.db_cursor.execute("SELECT daily_sleep_goal, daily_steps_goal, daily_hydration_goal FROM profile_details WHERE rowid=1")
+        result = self.controller.db_cursor.fetchone()
+        self.daily_sleep_var.set(result[0])
+        self.daily_walking_var.set(result[1])
+        self.daily_hydration_var.set(result[2])
         
         # monthly related vars
         self.monthly_weight_choice_var = ctk.StringVar(value="lose")
@@ -42,10 +39,9 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_sleep_var = ctk.StringVar()
         self.monthly_walking_var = ctk.StringVar()
 
-        # pull initial defaulted data from profile_details table
+        # pull initial defaulted monthly goals data from profile_details table
         self.controller.db_cursor.execute("SELECT monthly_weight_choice, monthly_weight_goal, monthly_sleep_goal, monthly_steps_goal, monthly_hydration_goal FROM profile_details WHERE rowid=1")
         result = self.controller.db_cursor.fetchone()
-        print(f"from settings fetch profile deets: {result}")
         self.monthly_weight_choice_var.set(result[0])
         self.monthly_weight_var.set(result[1])
         self.monthly_hydration_var.set(result[2])
