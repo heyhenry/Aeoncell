@@ -723,15 +723,21 @@ class DashboardPage(ctk.CTkFrame):
             self.profile_hydration_progressbar.set(0)
 
     def update_latest_achievements_display(self):
-        print('triggered?')
         self.controller.db_cursor.execute("SELECT achievement_id, achievement_unlock_date FROM achievements_details ORDER BY achievement_unlock_date DESC LIMIT 4")
         results = self.controller.db_cursor.fetchall()
+        # set the latest achievement's info to the 4 achievement slots displayed within the profile section
         for i in range(len(results)):
+            # in the case of less than 4 achievements being retrieved, skip over locked achievements
             if results[i][1] == "":
                 continue
             self.profile_achievement_names[i+1].set(achievement_map.achievement_lookup[results[i][0]][1])
             self.profile_achievement_badges[i+1] = achievement_images.unlocked_achievements[results[i][0]]
-            self.profile_achievement_unlock_dates[i+1].set(results[i][1])
+            # reformat the unlock_date string to exclude time and comma
+            reformatted_date_str = results[i][1]
+            time_start_index = reformatted_date_str.rfind(",")
+            reformatted_date_str = reformatted_date_str[:time_start_index]
+            reformatted_date_str.replace(",","")
+            self.profile_achievement_unlock_dates[i+1].set(reformatted_date_str)
 
     def daily_section_initialisation(self):
         print("daily sec init")
