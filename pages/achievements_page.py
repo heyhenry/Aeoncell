@@ -583,7 +583,7 @@ class AchievementsPage(ctk.CTkFrame):
             i : getattr(self, f"achievement_slot_{i}_icon")
             for i in range(1, 20)
         })
-
+        # print(self.achievement_icon_slots)
         #endregion
 
     def set_unlock_dates_on_startup(self):
@@ -636,6 +636,7 @@ class AchievementsPage(ctk.CTkFrame):
         # update the achievement's icon to the unlocked version in lieu of the locked version
         self.achievement_icons[achievement_id] = achievement_images.unlocked_achievements[achievement_id]
         self.achievement_icon_slots[achievement_id].configure(image=self.achievement_icons[achievement_id])
+        self.controller.pages["DashboardPage"].update_latest_achievements_display()
 
     def is_achievement_locked(self, achievement_id):
         self.controller.db_cursor.execute("SELECT achievement_status FROM achievements_details WHERE achievement_id = ?", (achievement_id,))

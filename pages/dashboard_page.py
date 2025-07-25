@@ -79,6 +79,8 @@ class DashboardPage(ctk.CTkFrame):
             for i in range(1, 5)
         }
 
+        self.profile_achievement_badge_spots = {}
+
         # daily section related variables
         self.steps_var = ctk.StringVar()
         self.steps_display = ctk.StringVar(value="0 steps")
@@ -121,9 +123,9 @@ class DashboardPage(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
 
-        self.update_latest_achievements_display()
+        
         self.create_widgets()
-
+        self.update_latest_achievements_display()
         self.update_welcome_user()
         self.update_monthly_goal_progression_displays()
         self.daily_section_initialisation()
@@ -240,16 +242,16 @@ class DashboardPage(ctk.CTkFrame):
         profile_achievements_section = ctk.CTkFrame(profile_section, fg_color="transparent")
         profile_achievements_title = ctk.CTkLabel(profile_achievements_section, text="Recent Achievements", font=("", 32))
         first_badge_name = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_names[1], font=("", 18))
-        first_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[1])
+        self.badge_1_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[1])
         first_badge_date = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_unlock_dates[1], font=("", 12, "bold"))
         second_badge_name = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_names[2], font=("", 18))
-        second_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[2])
+        self.badge_2_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[2])
         second_badge_date = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_unlock_dates[2], font=("", 12, "bold"))
         third_badge_name = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_names[3], font=("", 18))
-        third_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[3])
+        self.badge_3_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[3])
         third_badge_date = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_unlock_dates[3], font=("", 12, "bold"))
         fourth_badge_name = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_names[4], font=("", 18))
-        fourth_badge_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[4])
+        self.badge_4_spot = ctk.CTkLabel(profile_achievements_section, text="", image=self.profile_achievement_badges[4])
         fourth_badge_date = ctk.CTkLabel(profile_achievements_section, textvariable=self.profile_achievement_unlock_dates[4], font=("", 12, "bold"))
 
         # main frames inside profile section
@@ -303,16 +305,16 @@ class DashboardPage(ctk.CTkFrame):
         # profile achievements section
         profile_achievements_title.grid(row=0, column=0, columnspan=2, padx=20, pady=(10, 60))
         first_badge_name.grid(row=1, column=0, padx=10)
-        first_badge_spot.grid(row=2, column=0, padx=10)
+        self.badge_1_spot.grid(row=2, column=0, padx=10)
         first_badge_date.grid(row=3, column=0, pady=(0, 40))
         second_badge_name.grid(row=1, column=1, padx=(0, 10))
-        second_badge_spot.grid(row=2, column=1, padx=(0, 10))
+        self.badge_2_spot.grid(row=2, column=1, padx=(0, 10))
         second_badge_date.grid(row=3, column=1, pady=(0, 40))
         third_badge_name.grid(row=4, column=0, padx=10)
-        third_badge_spot.grid(row=5, column=0, padx=10)
+        self.badge_3_spot.grid(row=5, column=0, padx=10)
         third_badge_date.grid(row=6, column=0, pady=(0, 20))
         fourth_badge_name.grid(row=4, column=1, padx=(0, 10))
-        fourth_badge_spot.grid(row=5, column=1, padx=(0, 10))
+        self.badge_4_spot.grid(row=5, column=1, padx=(0, 10))
         fourth_badge_date.grid(row=6, column=1, pady=(0, 20))
 
         profile_section.grid_propagate(False)
@@ -324,6 +326,12 @@ class DashboardPage(ctk.CTkFrame):
         subtitle_display.grid(row=0, column=0, padx=(10, 0), sticky="sw")
 
         subtitle_section.grid_propagate(False)
+
+        # update self.profile_achievement_badge_spots dict
+        self.profile_achievement_badge_spots.update({
+            i : getattr(self, f"badge_{i}_spot")
+            for i in range(1, 5)
+        })
         #endregion
 
         #region [ Dailies Section ] 
@@ -740,7 +748,10 @@ class DashboardPage(ctk.CTkFrame):
             if results[i][1] == "":
                 continue
             self.profile_achievement_names[i+1].set(achievement_map.achievement_lookup[results[i][0]][1])
+            
             self.profile_achievement_badges[i+1] = achievement_images.unlocked_achievements[results[i][0]]
+            self.profile_achievement_badge_spots[i+1].configure(image=achievement_images.unlocked_achievements[results[i][0]])
+
             # reformat the unlock_date string to exclude time and comma
             reformatted_date_str = results[i][1]
             time_start_index = reformatted_date_str.rfind(",")
