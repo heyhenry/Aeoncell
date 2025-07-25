@@ -136,4 +136,4 @@ class DatabaseManager:
             # create and populate the initial achievements details
             for i in achievement_map.achievement_lookup.values():
                 # loop through and add all predetermined achievements
-                self.db_cursor.execute("INSERT INTO achievements_details (achievement_name) values (?)", (i,))
+                self.db_cursor.execute("INSERT INTO achievements_details (achievement_name) values (?)", (i[0],))
