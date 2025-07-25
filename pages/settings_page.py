@@ -254,6 +254,12 @@ class SettingsPage(ctk.CTkFrame):
         height = self.profile_height_var.get()
         current_weight = self.profile_current_weight_var.get()
         goal_weight = self.profile_goal_weight_var.get()
+
+        # checks and validates the username and password fields (potentially others in the future but probably not required due to custom entry validation)
+        # will not proceed with the processing of profile details if validation fails
+        if self.validate_profile_entry_fields():
+            return
+
         update_profile_details_query = """
         UPDATE profile_details
         SET username = ?,
@@ -289,7 +295,7 @@ class SettingsPage(ctk.CTkFrame):
         # update login message
         self.controller.pages["LoginPage"].update_login_message()
 
-        self.show_action_message(self.profile_action_message)
+        self.show_success_message(self.profile_action_message)
 
     # updates the daily goals set by user
     def process_daily_goals(self):
@@ -317,7 +323,7 @@ class SettingsPage(ctk.CTkFrame):
         self.controller.db_connection.commit()
         # reinitialise the daily trackers with the updated data
         self.controller.pages["DashboardPage"].update_daily_goal_progression_displays()
-        self.show_action_message(self.daily_action_message)
+        self.show_success_message(self.daily_action_message)
 
     def select_weight_choice(self, selection):
         if selection == "lose":
@@ -367,10 +373,10 @@ class SettingsPage(ctk.CTkFrame):
         elif weight_choice == "gain":
             self.controller.pages["DashboardPage"].update_monthly_goal_weight("Gain", weight)
         self.controller.pages["DashboardPage"].update_monthly_goal_progression_displays()
-        self.show_action_message(self.monthly_action_message)
+        self.show_success_message(self.monthly_action_message)
 
     # display a temporary notification letting the user know of the successful action
-    def show_action_message(self, section_widget):
+    def show_success_message(self, section_widget):
         # list out the possible messages based on given widget
         section_messages = {
             self.profile_action_message: "Profile Successfully Updated.",
@@ -380,8 +386,36 @@ class SettingsPage(ctk.CTkFrame):
         # updated the widgets text
         section_widget.configure(text=section_messages[section_widget], text_color="#2E7D32")
         # reset to an empty string after a delayed time
-        section_widget.after(800, lambda: section_widget.configure(text=""))
+        section_widget.after(1000, lambda: section_widget.configure(text=""))
            
+    def validate_profile_entry_fields(self):
+        username = self.profile_username_var.get()
+        password = self.profile_password_var.get()
+
+        # validate username
+        if len(username) < 4:
+            self.controller.show_error_message(self.profile_action_message, "Username must be at least 4 chars.")
+            return True
+        elif username.isspace():
+            self.controller.show_error_message(self.profile_action_message, "Username cannot be whitespaces.")
+            return True
+        elif " " in username:
+            self.controller.show_error_message(self.profile_action_message, "Username cannot contain spaces.")
+            return True
+
+        # validate password
+        if len(password) < 8:
+            self.controller.show_error_message(self.profile_action_message, "Password must be at least 8 chars.")
+            return True
+        elif password.isspace():
+            self.controller.show_error_message(self.profile_action_message, "Password cannot be whitespaces.")
+            return True
+        elif " " in password:
+            self.controller.show_error_message(self.profile_action_message, "Password cannot contain spaces.")
+            return True
+        
+        return False
+ 
     # retrieve the current saved data related to each section (if there is any)
     # and populate entry with it
     def retrieve_current_info(self):
