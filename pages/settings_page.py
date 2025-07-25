@@ -42,15 +42,15 @@ class SettingsPage(ctk.CTkFrame):
         self.monthly_sleep_var = ctk.StringVar()
         self.monthly_walking_var = ctk.StringVar()
 
-        # temp for compartmentalising internally.. will fix later and only use 1 checker for all variable data retrievals.
-        if self.controller.db.check_account_exists():
-            self.controller.db_cursor.execute("SELECT monthly_weight_choice, monthly_weight_goal, monthly_sleep_goal, monthly_steps_goal, monthly_hydration_goal FROM profile_details WHERE rowid=1")
-            result = self.controller.db_cursor.fetchone()
-            self.monthly_weight_choice_var.set(result[0])
-            self.monthly_weight_var.set(result[1])
-            self.monthly_hydration_var.set(result[2])
-            self.monthly_sleep_var.set(result[3])
-            self.monthly_walking_var.set(result[4])
+        # pull initial defaulted data from profile_details table
+        self.controller.db_cursor.execute("SELECT monthly_weight_choice, monthly_weight_goal, monthly_sleep_goal, monthly_steps_goal, monthly_hydration_goal FROM profile_details WHERE rowid=1")
+        result = self.controller.db_cursor.fetchone()
+        print(f"from settings fetch profile deets: {result}")
+        self.monthly_weight_choice_var.set(result[0])
+        self.monthly_weight_var.set(result[1])
+        self.monthly_hydration_var.set(result[2])
+        self.monthly_sleep_var.set(result[3])
+        self.monthly_walking_var.set(result[4])
 
         self.grid_rowconfigure(0, weight=1)
 
