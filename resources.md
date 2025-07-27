@@ -147,4 +147,9 @@ SQL - How to return Boolean value if values exists in table (23rd July 2025): ht
 EXISTS (SELECT 1 ...) vs EXISTS (SELECT * ...) One or the other? (23rd July 2025): https://dba.stackexchange.com/questions/159413/exists-select-1-vs-exists-select-one-or-the-other
 SQLite Order By (25th July 2025): https://www.sqlitetutorial.net/sqlite-order-by/
 Python String replace() Method (25th July 2025): https://www.w3schools.com/python/ref_string_replace.asp
-
+tkinter ttk iterating through treeview (27th July 2025): https://stackoverflow.com/questions/39756379/tkinter-ttk-iterating-through-treeview
+Own Github Repo | Vaultic (27th July 2025): https://github.com/heyhenry/Vaultic/blob/main/vaultic.py#L383
+get data from treeview in tkinter (27th July 2025): https://stackoverflow.com/questions/23829409/get-data-from-treeview-in-tkinter
+Returning Tkinter Treeview iid (27th July 2025): https://stackoverflow.com/questions/43043996/returning-tkinter-treeview-iid
+Bin Icon by kliwir art | Flaticon.com (27th July 2025): https://www.flaticon.com/free-icon/bin_9790368?term=delete&page=1&position=7&origin=search&related_id=9790368
+SQLite DELETE (27th July 2025): https://www.sqlitetutorial.net/sqlite-delete/
