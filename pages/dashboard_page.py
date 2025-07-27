@@ -1225,8 +1225,8 @@ class DashboardPage(ctk.CTkFrame):
             weight_entry = ctk.CTkEntry(edit_entry_window, width=300, textvariable=self.exercise_weight_var, font=("", 24))
             label_title = ctk.CTkLabel(edit_entry_window, text="Label:", font=("", 24))
             label_entry = ctk.CTkEntry(edit_entry_window, width=300, textvariable=self.exercise_label_var, font=("", 24))
-            error_message = ctk.CTkLabel(edit_entry_window, text="Error: An error has occurred.", text_color="red", font=("", 18))
-            update_entry_btn = ctk.CTkButton(edit_entry_window, text="Update", height=48, font=("", 24))
+            self.edit_entry_error_message = ctk.CTkLabel(edit_entry_window, text="Error: An error has occurred.", text_color="red", font=("", 18))
+            update_entry_btn = ctk.CTkButton(edit_entry_window, text="Update", height=48, font=("", 24), command=lambda:self.process_updated_exercise_entry(selection))
             cancel_edit_btn = ctk.CTkButton(edit_entry_window, text="Cancel", height=48, font=("", 24))
 
             icon.grid(row=1, column=2, sticky="e")
@@ -1247,10 +1247,53 @@ class DashboardPage(ctk.CTkFrame):
             weight_entry.grid(row=10, column=1, padx=(0, 20), pady=(0, 20))
             label_title.grid(row=9, column=2, sticky="w")
             label_entry.grid(row=10, column=2, pady=(0, 20))
-            error_message.grid(row=11, column=1, columnspan=2, pady=(0, 10))
+            self.edit_entry_error_message.grid(row=11, column=1, columnspan=2, pady=(0, 10))
             update_entry_btn.grid(row=12, column=1)
             cancel_edit_btn.grid(row=12, column=2)
-
-            print(f"Height: {edit_entry_window.winfo_height()} x Width: {edit_entry_window.winfo_width()}")
             
+    def get_entry_field_data(self):
+        return {
+            "type": self.entry_type_var.get(),
+            "name": self.exercise_name_var.get(),
+            "date": self.exercise_date_var.get(),
+            "time": self.exercise_time_var.get(),
+            "sets": self.exercise_sets_var.get(),
+            "reps": self.exercise_reps_var.get(),
+            "weight": self.exercise_weight_var.get(),
+            "label": self.exercise_label_var.get()
+        }
+    
+    def validate_entry_fields(self):
+        data = self.get_entry_field_data()
+        for key, val in data.items():
+            if key != "label" and len(val) < 1:
+                self.controller.show_error_message(self.edit_entry_error_message, "All * fields need to be filled.")
+                return False
+            if key == "date" and len(val) < 10:
+                self.controller.show_error_message(self.edit_entry_error_message, "Date info incomplete. [dd-mm-yyyy]")
+                return False
+            if key == "time" and len(val) < 5:
+                self.controller.show_error_message(self.edit_entry_error_message, "Time info incomplete. [xx:xx]")
+                return False
+        return True
+        
+    def process_updated_exercise_entry(self, entry_iid):
+        if self.validate_entry_fields():
+            data = self.get_entry_field_data()
+            update_exercise_entry_query = """
+            UPDATE exercise_entries
+            SET entry_type = ?,
+                exercise_name = ?,
+                date = ?,
+                time = ?,
+                sets_count = ?,
+                reps_count = ?,
+                weight_value = ?,
+                exercise_label = ?
+            WHERE id = ?
+            """
+            self.controller.db_cursor.execute(update_exercise_entry_query, (data["type"], data["name"], data["date"], data["time"], data["sets"], data["reps"], data["weight"], data["label"], entry_iid))
+            self.controller.db_connection.commit()
 
+            self.update_exercise_summary()
+            self.update_exercise_entries_display()
