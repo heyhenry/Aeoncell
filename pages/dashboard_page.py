@@ -1226,7 +1226,7 @@ class DashboardPage(ctk.CTkFrame):
             label_title = ctk.CTkLabel(edit_entry_window, text="Label:", font=("", 24))
             label_entry = ctk.CTkEntry(edit_entry_window, width=300, textvariable=self.exercise_label_var, font=("", 24))
             self.edit_entry_error_message = ctk.CTkLabel(edit_entry_window, text="Error: An error has occurred.", text_color="red", font=("", 18))
-            update_entry_btn = ctk.CTkButton(edit_entry_window, text="Update", height=48, font=("", 24), command=lambda:self.process_updated_exercise_entry(selection))
+            update_entry_btn = ctk.CTkButton(edit_entry_window, text="Update", height=48, font=("", 24), command=lambda:self.process_updated_exercise_entry(selection, edit_entry_window))
             cancel_edit_btn = ctk.CTkButton(edit_entry_window, text="Cancel", height=48, font=("", 24))
 
             icon.grid(row=1, column=2, sticky="e")
@@ -1285,7 +1285,7 @@ class DashboardPage(ctk.CTkFrame):
                 return False
         return True
         
-    def process_updated_exercise_entry(self, entry_iid):
+    def process_updated_exercise_entry(self, entry_iid, popup_widget_name):
         if self.validate_entry_fields():
             data = self.get_entry_field_data()
             update_exercise_entry_query = """
@@ -1305,3 +1305,5 @@ class DashboardPage(ctk.CTkFrame):
 
             self.update_exercise_summary()
             self.update_exercise_entries_display()
+
+            popup_widget_name.destroy()
