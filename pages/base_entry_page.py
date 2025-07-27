@@ -131,6 +131,7 @@ class BaseEntryPage(ctk.CTkFrame):
             self.reset_date()
             # update the exercise summary section in the dashboard
             self.controller.pages["DashboardPage"].update_exercise_summary()
+            self.controller.pages["DashboardPage"].update_exercise_entries_display()
             self.after_entry_submission()
 
     def process_confirmation(self):

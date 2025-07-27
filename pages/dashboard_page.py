@@ -131,6 +131,8 @@ class DashboardPage(ctk.CTkFrame):
         self.daily_section_initialisation()
         self.update_exercise_summary()
         self.update_weather_forecast()
+        self.update_exercise_entries_display()
+        self.test()
 
     def create_widgets(self):
         #region [Parent Frames]
@@ -151,14 +153,14 @@ class DashboardPage(ctk.CTkFrame):
         subtitle_section = ctk.CTkFrame(content, fg_color="transparent", width=1100, height=80)
         dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
-        recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=800)
+        self.recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=800)
 
         intro_section.grid(row=1, column=1, pady=20)
         profile_section.grid(row=2, column=1, pady=(0, 20))
         subtitle_section.grid(row=3, column=1, pady=(0, 20))
         dailies_section.grid(row=4, column=1, pady=(0, 20))
         quick_stats_section.grid(row=5, column=1)
-        recent_exercises_section.grid(row=6, column=1, pady=20)
+        self.recent_exercises_section.grid(row=6, column=1, pady=20)
 
         quick_stats_section.grid_propagate(False)
 
@@ -180,10 +182,10 @@ class DashboardPage(ctk.CTkFrame):
         quick_stats_section.grid_columnconfigure(0, weight=1)
         quick_stats_section.grid_columnconfigure(3, weight=1)
 
-        recent_exercises_section.grid_rowconfigure(0, weight=1)
-        recent_exercises_section.grid_rowconfigure(4, weight=1)
-        recent_exercises_section.grid_columnconfigure(0, weight=1)
-        recent_exercises_section.grid_columnconfigure(6, weight=1)
+        self.recent_exercises_section.grid_rowconfigure(0, weight=1)
+        self.recent_exercises_section.grid_rowconfigure(4, weight=1)
+        self.recent_exercises_section.grid_columnconfigure(0, weight=1)
+        self.recent_exercises_section.grid_columnconfigure(6, weight=1)
         #endregion
 
         #region [ Introduction Section ]
@@ -523,10 +525,10 @@ class DashboardPage(ctk.CTkFrame):
         #endregion
 
         #region [ Recent Exercises Section ]
-        redirect_session_entry_icon = ctk.CTkLabel(recent_exercises_section, text="", image=self.session_entry_icon)
-        recent_exercises_title = ctk.CTkLabel(recent_exercises_section, text="Latest Exercise Entries", font=("", 32))
-        redirect_single_entry_icon = ctk.CTkLabel(recent_exercises_section, text="", image=self.single_entry_icon)
-        entries_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=0, width=1150, height=550)
+        redirect_session_entry_icon = ctk.CTkLabel(self.recent_exercises_section, text="", image=self.session_entry_icon)
+        recent_exercises_title = ctk.CTkLabel(self.recent_exercises_section, text="Latest Exercise Entries", font=("", 32))
+        redirect_single_entry_icon = ctk.CTkLabel(self.recent_exercises_section, text="", image=self.single_entry_icon)
+        entries_frame = ctk.CTkFrame(self.recent_exercises_section, fg_color="transparent", border_width=0, width=1150, height=550)
         self.entries = btk.Treeview(entries_frame, columns=("exercise", "date", "time", "summary", "label"), show="headings", height=18, selectmode="browse")
         self.entries.heading("exercise", text="Exercise")
         self.entries.heading("date", text="Date")
@@ -541,7 +543,7 @@ class DashboardPage(ctk.CTkFrame):
         # create tags for zebra design
         self.entries.tag_configure('oddrow', background='#f2f2f2')
         self.entries.tag_configure('evenrow', background='#ffffff')
-        entries_buttons_frame = ctk.CTkFrame(recent_exercises_section, fg_color="transparent", border_width=0)
+        entries_buttons_frame = ctk.CTkFrame(self.recent_exercises_section, fg_color="transparent", border_width=0)
         add_session = ctk.CTkButton(entries_buttons_frame, text="Add a Session", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page("SessionEntryPage"))
         add_single = ctk.CTkButton(entries_buttons_frame, text="Add an Exercise", width=140, height=60, font=("", 18), command=lambda: self.controller.show_page("SingleEntryPage"))
 
@@ -557,8 +559,9 @@ class DashboardPage(ctk.CTkFrame):
         add_session.grid(row=3, column=2, padx=(0, 40), pady=20)
         add_single.grid(row=3, column=4, padx=(40, 0), pady=20)
 
-        recent_exercises_section.grid_propagate(False)
+        self.recent_exercises_section.grid_propagate(False)
 
+        # self.entries.bind("<<TreeviewSelect>>", self.get_exercise_entry_id)
         redirect_session_entry_icon.bind("<Button-1>", lambda event: self.controller.show_page("SessionEntryPage"))
         redirect_single_entry_icon.bind("<Button-1>", lambda event: self.controller.show_page("SingleEntryPage"))
         #endregion
@@ -1131,7 +1134,7 @@ class DashboardPage(ctk.CTkFrame):
         #     # do nothing and continue app startup
         #     pass
 
-    def populate_entries_display(self):
+    def update_exercise_entries_display(self):
         # update the entries list by first resetting existing data
         if self.entries.get_children():
             self.entries.delete(*self.entries.get_children())
@@ -1159,6 +1162,8 @@ class DashboardPage(ctk.CTkFrame):
                     tag = "oddrow"
                 # populating the entries list with revised data collected from the exercise_entries database
                 self.entries.insert("", "end", values=revised_values, tags=(tag,))
+        print(len(self.entries.get_children()))
 
-    def edit_exercise_entry(self):
-        pass
+    def test(self):
+        print("test log")
+        print(len(self.entries.get_children()))
