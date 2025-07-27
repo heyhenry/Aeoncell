@@ -1250,6 +1250,14 @@ class DashboardPage(ctk.CTkFrame):
             self.edit_entry_error_message.grid(row=11, column=1, columnspan=2, pady=(0, 10))
             update_entry_btn.grid(row=12, column=1)
             cancel_edit_btn.grid(row=12, column=2)
+
+            exercise_name_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, exercise_name_entry, 30))
+            date_entry.bind("<Key>", lambda event: custom_date_entry_validation(event, date_entry))
+            time_entry.bind("<Key>", lambda event: custom_time_entry_validation(event, time_entry))
+            label_entry.bind("<Key>", lambda event: custom_entry_limit_chars(event, label_entry, 100))
+            sets_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, sets_entry, 3))
+            reps_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, reps_entry, 3))
+            weight_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, weight_entry, 3))
             
     def get_entry_field_data(self):
         return {
