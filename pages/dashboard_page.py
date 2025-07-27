@@ -1258,6 +1258,7 @@ class DashboardPage(ctk.CTkFrame):
             sets_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, sets_entry, 3))
             reps_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, reps_entry, 3))
             weight_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, weight_entry, 3))
+            icon.bind("<Button-1>", lambda event: self.delete_exercise_entry(event, selection, edit_entry_window))
             
     def get_entry_field_data(self):
         return {
@@ -1307,3 +1308,16 @@ class DashboardPage(ctk.CTkFrame):
             self.update_exercise_entries_display()
 
             popup_widget_name.destroy()
+
+    def delete_exercise_entry(self, event, entry_iid, popup_widget_name):
+        delete_exercise_entry_query = """
+        DELETE FROM exercise_entries
+        WHERE id = ?
+        """
+        self.controller.db_cursor.execute(delete_exercise_entry_query, (entry_iid,))
+        self.controller.db_connection.commit()
+
+        self.update_exercise_summary()
+        self.update_exercise_entries_display()
+
+        popup_widget_name.destroy()
