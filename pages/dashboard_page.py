@@ -1139,10 +1139,10 @@ class DashboardPage(ctk.CTkFrame):
         if self.entries.get_children():
             self.entries.delete(*self.entries.get_children())
         # retrieve latest data
-        self.controller.db_cursor.execute("SELECT exercise_name, date, time, sets_count, reps_count, weight_value, exercise_label FROM exercise_entries ORDER BY id DESC LIMIT 25")
+        self.controller.db_cursor.execute("SELECT id, exercise_name, date, time, sets_count, reps_count, weight_value, exercise_label FROM exercise_entries ORDER BY id DESC LIMIT 25")
         result = self.controller.db_cursor.fetchall()
         if result:
-            for i, (exercise, date, time, sets, reps, weight, label) in enumerate(result):
+            for i, (id, exercise, date, time, sets, reps, weight, label) in enumerate(result):
                 # truncating values to a single string
                 summary = f"{sets} x {reps} @ {weight}kg"
                 # shortening exercise and label strings for readability and slight minimalism
@@ -1161,9 +1161,12 @@ class DashboardPage(ctk.CTkFrame):
                 else:
                     tag = "oddrow"
                 # populating the entries list with revised data collected from the exercise_entries database
-                self.entries.insert("", "end", values=revised_values, tags=(tag,))
-        print(len(self.entries.get_children()))
+                self.entries.insert("", "end",iid=id, values=revised_values, tags=(tag,))
 
     def test(self):
-        print("test log")
-        print(len(self.entries.get_children()))
+        lst = self.entries.get_children()
+        for i in lst:
+            item_data = self.entries.item(i)
+            values = item_data["values"]
+            print(f"IID: {i} | Data: {values}")
+
