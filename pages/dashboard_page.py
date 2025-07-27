@@ -1227,7 +1227,7 @@ class DashboardPage(ctk.CTkFrame):
             label_entry = ctk.CTkEntry(edit_entry_window, width=300, textvariable=self.exercise_label_var, font=("", 24))
             self.edit_entry_error_message = ctk.CTkLabel(edit_entry_window, text="Error: An error has occurred.", text_color="red", font=("", 18))
             update_entry_btn = ctk.CTkButton(edit_entry_window, text="Update", height=48, font=("", 24), command=lambda:self.process_updated_exercise_entry(selection, edit_entry_window))
-            cancel_edit_btn = ctk.CTkButton(edit_entry_window, text="Cancel", height=48, font=("", 24))
+            cancel_edit_btn = ctk.CTkButton(edit_entry_window, text="Cancel", height=48, font=("", 24), command=edit_entry_window.destroy)
 
             icon.grid(row=1, column=2, sticky="e")
             title.grid(row=2, column=1, columnspan=2, pady=(0, 20))
