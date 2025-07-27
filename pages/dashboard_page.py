@@ -1159,3 +1159,6 @@ class DashboardPage(ctk.CTkFrame):
                     tag = "oddrow"
                 # populating the entries list with revised data collected from the exercise_entries database
                 self.entries.insert("", "end", values=revised_values, tags=(tag,))
+
+    def edit_exercise_entry(self):
+        pass
