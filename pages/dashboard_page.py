@@ -1173,6 +1173,8 @@ class DashboardPage(ctk.CTkFrame):
 
     def edit_exercise_entry(self, event):
         
+        self.delete_entry_icon = ctk.CTkImage(light_image=Image.open("img/delete_bin.png"), dark_image=Image.open("img/delete_bin.png"), size=(64, 64))
+
         # get selected entry item's iid
         selection = self.entries.focus()
         
@@ -1183,7 +1185,7 @@ class DashboardPage(ctk.CTkFrame):
             results = self.controller.db_cursor.fetchone()
             
             # set the values for each entry field via their associated variables
-            self.entry_type_var = ctk.StringVar(value=results[1])
+            self.entry_type_var = ctk.StringVar(value=results[1].capitalize())
             self.exercise_name_var = ctk.StringVar(value=results[5])
             self.exercise_date_var = ctk.StringVar(value=results[3])
             self.exercise_time_var = ctk.StringVar(value=results[4])
@@ -1196,20 +1198,21 @@ class DashboardPage(ctk.CTkFrame):
             edit_entry_window = ctk.CTkToplevel(self.recent_exercises_section)
             edit_entry_window.attributes("-topmost", "true")
             edit_entry_window.title("Edit Exercise Entry")
+            edit_entry_window.geometry("900x600")
 
-            # edit_entry_window.grid_propagate(False)
+            edit_entry_window.grid_propagate(False)
 
             edit_entry_window.grid_rowconfigure(0, weight=1)
             edit_entry_window.grid_rowconfigure(13, weight=1)
             edit_entry_window.grid_columnconfigure(0, weight=1)
             edit_entry_window.grid_columnconfigure(3, weight=1)
 
-            icon = ctk.CTkLabel(edit_entry_window, text="", image=self.single_entry_icon)
+            icon = ctk.CTkLabel(edit_entry_window, text="", image=self.delete_entry_icon)
             title = ctk.CTkLabel(edit_entry_window, text="Edit Exercise Entry", font=("", 32, "bold"))
             type_title = ctk.CTkLabel(edit_entry_window, text="Type*:", font=("", 24))
-            type_entry = ctk.CTkEntry(edit_entry_window, textvariable=self.entry_type_var)
+            type_entry = ctk.CTkEntry(edit_entry_window, width=300, textvariable=self.entry_type_var, font=("", 24))
             exercise_name_title = ctk.CTkLabel(edit_entry_window, text="Exercise Name:", font=("", 24))
-            exercise_name_entry = ctk.CTkEntry(edit_entry_window, textvariable=self.exercise_name_var, font=("", 24))
+            exercise_name_entry = ctk.CTkEntry(edit_entry_window, width=300, textvariable=self.exercise_name_var, font=("", 24))
             date_title = ctk.CTkLabel(edit_entry_window, text="Date (dd-mm-yyy)*:", font=("", 24))
             date_entry = ctk.CTkEntry(edit_entry_window, width=300, textvariable=self.exercise_date_var, font=("", 24))
             time_title = ctk.CTkLabel(edit_entry_window, text="Time (hh:mm)*:", font=("", 24))
@@ -1222,29 +1225,32 @@ class DashboardPage(ctk.CTkFrame):
             weight_entry = ctk.CTkEntry(edit_entry_window, width=300, textvariable=self.exercise_weight_var, font=("", 24))
             label_title = ctk.CTkLabel(edit_entry_window, text="Label:", font=("", 24))
             label_entry = ctk.CTkEntry(edit_entry_window, width=300, textvariable=self.exercise_label_var, font=("", 24))
-            error_message = ctk.CTkLabel(edit_entry_window, text="", text_color="red", font=("", 18))
+            error_message = ctk.CTkLabel(edit_entry_window, text="Error: An error has occurred.", text_color="red", font=("", 18))
             update_entry_btn = ctk.CTkButton(edit_entry_window, text="Update", height=48, font=("", 24))
             cancel_edit_btn = ctk.CTkButton(edit_entry_window, text="Cancel", height=48, font=("", 24))
 
             icon.grid(row=1, column=2, sticky="e")
-            title.grid(row=2, column=1, columnspan=2)
-            type_title.grid(row=3, column=1)
-            type_entry.grid(row=4, column=1)
-            exercise_name_title.grid(row=3, column=2)
-            exercise_name_entry.grid(row=4, column=2)
-            date_title.grid(row=5, column=1)
-            date_entry.grid(row=6, column=1)
-            time_title.grid(row=5, column=2)
-            time_entry.grid(row=6, column=2)
-            sets_title.grid(row=7, column=1)
-            sets_entry.grid(row=8, column=1)
-            reps_title.grid(row=7, column=2)
-            reps_entry.grid(row=8, column=2)
-            weight_title.grid(row=9, column=1)
-            weight_entry.grid(row=10, column=1)
-            label_title.grid(row=9, column=2)
-            label_entry.grid(row=10, column=2)
-            error_message.grid(row=11, columnspan=2)
+            title.grid(row=2, column=1, columnspan=2, pady=(0, 20))
+            type_title.grid(row=3, column=1, sticky="w")
+            type_entry.grid(row=4, column=1, padx=(0, 20), pady=(0, 20))
+            exercise_name_title.grid(row=3, column=2, sticky="w")
+            exercise_name_entry.grid(row=4, column=2, pady=(0, 20))
+            date_title.grid(row=5, column=1, sticky="w")
+            date_entry.grid(row=6, column=1, padx=(0, 20), pady=(0, 20))
+            time_title.grid(row=5, column=2, sticky="w")
+            time_entry.grid(row=6, column=2, pady=(0, 20))
+            sets_title.grid(row=7, column=1, sticky="w")
+            sets_entry.grid(row=8, column=1, padx=(0, 20), pady=(0, 20))
+            reps_title.grid(row=7, column=2, sticky="w")
+            reps_entry.grid(row=8, column=2, pady=(0, 20))
+            weight_title.grid(row=9, column=1, sticky="w")
+            weight_entry.grid(row=10, column=1, padx=(0, 20), pady=(0, 20))
+            label_title.grid(row=9, column=2, sticky="w")
+            label_entry.grid(row=10, column=2, pady=(0, 20))
+            error_message.grid(row=11, column=1, columnspan=2, pady=(0, 10))
             update_entry_btn.grid(row=12, column=1)
             cancel_edit_btn.grid(row=12, column=2)
+
+            print(f"Height: {edit_entry_window.winfo_height()} x Width: {edit_entry_window.winfo_width()}")
+            
 
