@@ -1,88 +1,74 @@
 import sqlite3
-from utils import achievement_map
 import customtkinter as ctk
-from pages.images import achievement_images
+import matplotlib.pyplot as plt
+from matplotlib.widgets import Slider
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 
 db_connection = sqlite3.connect("aeoncell_database.db")
 db_cursor = db_connection.cursor()
 
+get_all_dates_and_steps = """
+SELECT date, steps_taken FROM steps_tracker
+"""
+db_cursor.execute(get_all_dates_and_steps)
+results = db_cursor.fetchall()
 
-
+dates = []
+steps = []
+for i in range(len(results)):
+    dates.append(results[i][0])
+    steps.append(results[i][1])
 
 root = ctk.CTk()
 
-achievement_names = {
-    i : ctk.StringVar(value="Name Pending")
-    for i in range(1, 5)
-}
-achievement_badges = {
-    i : achievement_images.loading_achievement_icon
-    for i in range(1, 5)
-}
-achievement_unlock_dates = {
-    i : ctk.StringVar(value="Date Pending")
-    for i in range(1, 5)
-}
+content_frame = ctk.CTkFrame(root, border_width=3, border_color="red")
+content_frame.grid(row=0, column=0)
+content_frame.grid_rowconfigure(0, weight=1)
+content_frame.grid_columnconfigure(0, weight=1)
 
-def update_latest_achievements_display():
-    db_cursor.execute("SELECT achievement_id, achievement_unlock_date FROM achievements_details ORDER BY achievement_unlock_date DESC LIMIT 4")
-    results = db_cursor.fetchall()
+# create graph figure
+fig, ax = plt.subplots(figsize=(12, 8))
 
-    for i in range(len(results)):
-        if results[i][1] == "":
-            continue
-        achievement_names[i+1].set(achievement_map.achievement_lookup[results[i][0]][1])
-        achievement_badges[i+1] = achievement_images.unlocked_achievements[results[i][0]]
-        achievement_unlock_dates[i+1].set(results[i][1])
+# adjust the margins for the bottom of the figure to ensure space for the slider
+plt.subplots_adjust(bottom=0.3)
 
-    # for i in range(1, 5):
-    #     print(f"==========[Badge Slot {i}]==========")
-    #     print(f"Achievement Name: {achievement_names[i]}")
-    #     print(f"Achievement Badge: {achievement_badges[i]}")
-    #     print(f"Achievement Unlock Date: {achievement_unlock_dates[i]}")
-    #     print("=====================================\n")
+# plot data to figure
+ax.plot(dates, steps, marker='o')
+ax.axhline(y=10000, color='r', linestyle='--')
+# 45 degree rotatation of the x axis values (dates) to fit better due to its length
+plt.xticks(rotation=45)
 
-update_latest_achievements_display()
+# adjust slider location
+ax_slider = plt.axes([0.2, 0.05, 0.6, 0.03])
+# create the slider
+slider = Slider(ax_slider, 'Day', 0, len(dates)-1, valinit=0, valstep=1)
 
-badge_1_frame = ctk.CTkFrame(root)
-badge_1_name = ctk.CTkLabel(badge_1_frame, textvariable=achievement_names[1])
-badge_1_icon = ctk.CTkLabel(badge_1_frame, text="", image=achievement_badges[1])
-badge_1_date = ctk.CTkLabel(badge_1_frame, textvariable=achievement_unlock_dates[1])
+# create tkinter compatible canvas to host the figure
+canvas = FigureCanvasTkAgg(fig, master=content_frame)
+canvas.draw()
+canvas.get_tk_widget().pack()
 
-badge_1_frame.grid(row=0, column=0)
-badge_1_name.grid(row=0, column=0)
-badge_1_icon.grid(row=1, column=0)
-badge_1_date.grid(row=2, column=0)
+# update the displayed data based on user slider actions
+def update(val):
+    i = int(slider.val)
+    n = len(dates)
 
-badge_2_frame = ctk.CTkFrame(root)
-badge_2_name = ctk.CTkLabel(badge_2_frame, textvariable=achievement_names[2])
-badge_2_icon = ctk.CTkLabel(badge_2_frame, text="", image=achievement_badges[2])
-badge_2_date = ctk.CTkLabel(badge_2_frame, textvariable=achievement_unlock_dates[2])
+    start = max(0, i-3)
+    end = min(n-1, i+4)
 
-badge_2_frame.grid(row=0, column=1)
-badge_2_name.grid(row=0, column=0)
-badge_2_icon.grid(row=1, column=0)
-badge_2_date.grid(row=2, column=0)
+    ax.set_xlim(dates[start], dates[end])
+    fig.canvas.draw_idle()
 
-badge_3_frame = ctk.CTkFrame(root)
-badge_3_name = ctk.CTkLabel(badge_3_frame, textvariable=achievement_names[3])
-badge_3_icon = ctk.CTkLabel(badge_3_frame, text="", image=achievement_badges[3])
-badge_3_date = ctk.CTkLabel(badge_3_frame, textvariable=achievement_unlock_dates[3])
+# trigger the update() upon slider action being made
+slider.on_changed(update)
 
-badge_3_frame.grid(row=1, column=0)
-badge_3_name.grid(row=0, column=0)
-badge_3_icon.grid(row=1, column=0)
-badge_3_date.grid(row=2, column=0)
+# cleanup to deal with ghost callbacks
+def cleanup():
+    slider.disconnect_events()
+    root.quit()
 
-badge_4_frame = ctk.CTkFrame(root)
-badge_4_name = ctk.CTkLabel(badge_4_frame, textvariable=achievement_names[4])
-badge_4_icon = ctk.CTkLabel(badge_4_frame, text="", image=achievement_badges[4])
-badge_4_date = ctk.CTkLabel(badge_4_frame, textvariable=achievement_unlock_dates[4])
-
-badge_4_frame.grid(row=1, column=1)
-badge_4_name.grid(row=0, column=0)
-badge_4_icon.grid(row=1, column=0)
-badge_4_date.grid(row=2, column=0)
+# embed cleanup function upon app window close for a clean exit (no lingering terminals)
+root.protocol("WM_DELETE_WINDOW", cleanup)
 
 root.mainloop()
-
