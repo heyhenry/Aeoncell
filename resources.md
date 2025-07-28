@@ -153,3 +153,9 @@ get data from treeview in tkinter (27th July 2025): https://stackoverflow.com/qu
 Returning Tkinter Treeview iid (27th July 2025): https://stackoverflow.com/questions/43043996/returning-tkinter-treeview-iid
 Bin Icon by kliwir art | Flaticon.com (27th July 2025): https://www.flaticon.com/free-icon/bin_9790368?term=delete&page=1&position=7&origin=search&related_id=9790368
 SQLite DELETE (27th July 2025): https://www.sqlitetutorial.net/sqlite-delete/
+Python - matplotlib - differences between subplot() and subplots() (28th July 2025): https://stackoverflow.com/questions/52214776/python-matplotlib-differences-between-subplot-and-subplots
+matplotlib | Slider Demo (28th July 2025): https://matplotlib.org/3.1.1/gallery/widgets/slider_demo.html
+Matplotlib - Slider Widget (28th July 2025): https://www.geeksforgeeks.org/python/matplotlib-slider-widget/
+How to embed Matplotlib charts in Tkinter GUI (28th July 2025): https://www.geeksforgeeks.org/python/how-to-embed-matplotlib-charts-in-tkinter-gui/
+Matplotlib Subplot (28th July 2025): https://www.w3schools.com/python/matplotlib_subplot.asp
+Python Tkinter application doesn't quit properly (28th July 2025): https://stackoverflow.com/questions/5916187/python-tkinter-application-doesnt-quit-properly
