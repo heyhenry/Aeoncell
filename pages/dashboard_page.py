@@ -1259,6 +1259,8 @@ class DashboardPage(ctk.CTkFrame):
             reps_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, reps_entry, 3))
             weight_entry.bind("<Key>", lambda event: custom_digit_limit_entry_validation(event, weight_entry, 3))
             icon.bind("<Button-1>", lambda event: self.delete_exercise_entry(event, selection, edit_entry_window))
+
+            self.controller.center_window(edit_entry_window, 900, 600)
             
     def get_entry_field_data(self):
         return {
