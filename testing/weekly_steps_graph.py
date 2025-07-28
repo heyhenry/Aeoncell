@@ -69,6 +69,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 db_connection = sqlite3.connect("aeoncell_database.db")
 db_cursor = db_connection.cursor()
 
+#region [To Get Steps Data]
 current_month = datetime.now().month
 current_year = datetime.now().year
 
@@ -133,35 +134,47 @@ def split_by_week(steps_dictionary):
 
     return (dates, values)
 
+get_daily_steps_goal = """
+SELECT daily_steps_goal FROM profile_details
+"""
+db_cursor.execute(get_daily_steps_goal)
+daily_steps_goal = db_cursor.fetchone()[0]
+
 results = split_by_week(steps_dict)
 
-# root = ctk.CTk()
+#endregion
 
-# # create the content frame
-# content_frame = ctk.CTkFrame(root, border_width=3, border_color="red")
-# content_frame.grid(row=0, column=0, sticky="nswe")
-# content_frame.grid_rowconfigure(0, weight=1)
-# content_frame.grid_columnconfigure(0, weight=1)
+def get_current_week_data(data):
+    today = date.today()
+    today = today.strftime("%d-%m-%Y")
+    for week in range(len(data[0])):
+        if today in data[0][week]:
+            return (data[0][week], data[1][week])
 
-# fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8))
+weekly_data = get_current_week_data(results)
 
-# # ax1
-# ax1.plot(dates_a[0], steps_a[0], marker='o')
-# ax1.axhline(y=daily_goal, color='r', linestyle='--')
-# plt.xticks(rotation=45)
+root = ctk.CTk()
 
-# # ax2
-# ax2.plot(dates_b[0], steps_b[0], marker='o')
-# ax2.axhline(y=daily_goal, color='b', linestyle='--')
-# plt.xticks(rotation=45)
+# create the content frame
+content_frame = ctk.CTkFrame(root, border_width=3, border_color="red")
+content_frame.grid(row=0, column=0, sticky="nswe")
+content_frame.grid_rowconfigure(0, weight=1)
+content_frame.grid_columnconfigure(0, weight=1)
 
-# canvas = FigureCanvasTkAgg(fig, master=content_frame)
-# canvas.draw()
-# canvas.get_tk_widget().pack(fill="both", expand=True)
+fig, ax = plt.subplots(figsize=(12, 8))
 
-# root.protocol("WM_DELETE_WINDOW", root.quit)
+# ax
+ax.plot(weekly_data[0], weekly_data[1], marker='o')
+ax.axhline(y=daily_steps_goal, color='r', linestyle='--')
+plt.xticks(rotation=45)
 
-# root.mainloop()
+canvas = FigureCanvasTkAgg(fig, master=content_frame)
+canvas.draw()
+canvas.get_tk_widget().pack(fill="both", expand=True)
+
+root.protocol("WM_DELETE_WINDOW", root.quit)
+
+root.mainloop()
 
 
 
