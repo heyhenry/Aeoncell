@@ -145,7 +145,8 @@ class StatsPage(ctk.CTkFrame):
         return (dates, values)
     
     def get_current_week(self, data_dict):
-        today = self.controller.today
+        # today = self.controller.today
+        today = "01-07-2025"
         for week in range(len(data_dict[0])):
             if today in data_dict[0][week]:
                 return (data_dict[0][week], data_dict[1][week])
