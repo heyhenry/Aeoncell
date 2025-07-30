@@ -159,3 +159,6 @@ Matplotlib - Slider Widget (28th July 2025): https://www.geeksforgeeks.org/pytho
 How to embed Matplotlib charts in Tkinter GUI (28th July 2025): https://www.geeksforgeeks.org/python/how-to-embed-matplotlib-charts-in-tkinter-gui/
 Matplotlib Subplot (28th July 2025): https://www.w3schools.com/python/matplotlib_subplot.asp
 Python Tkinter application doesn't quit properly (28th July 2025): https://stackoverflow.com/questions/5916187/python-tkinter-application-doesnt-quit-properly
+Tight layout guide (30th July 2025): https://matplotlib.org/stable/users/explain/axes/tight_layout_guide.
+Plotting categorical variables (31st July 2025): https://matplotlib.org/stable/gallery/lines_bars_and_markers/categorical_variables.html#sphx-glr-gallery-lines-bars-and-markers-categorical-variables-py
+Python Sqlite3 - Using f strings for update database function (31st July 2025): https://stackoverflow.com/questions/51312952/python-sqlite3-using-f-strings-for-update-database-function
