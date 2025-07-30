@@ -158,19 +158,21 @@ class StatsPage(ctk.CTkFrame):
             "sleep": "daily_sleep_goal",
             "steps": "daily_steps_goal" 
         }
-        self.controller.db_cursor.execute("SELECT ? FROM profile_details", (table_dict[entry_type],))
-        daily_goal_value = self.controller.db_cursor.fetchone()[0]
-
+        self.controller.db_cursor.execute(f"SELECT {table_dict[entry_type]} FROM profile_details")
+        results = self.controller.db_cursor.fetchone()
+        daily_goal_value = results[0]
         return daily_goal_value
     
     def create_daily_plots(self, parent_frame, dates, values, daily_goal):
+        # daily_goal = int(daily_goal)
+
         daily_plot_frame = ctk.CTkFrame(parent_frame)
         
-        fig, ax = plt.subplots(figsize=(12, 8))
+        fig, ax = plt.subplots(figsize=(6, 5))
         fig.set_tight_layout(True)
         
-        ax.plot(dates, values, marker='o', linestyle='-', color='#1f77b4')
-        ax.axhline(y=daily_goal, color='red', linestyle='--', label='Daily Goal')
+        ax.plot(dates, values, marker='o')
+        ax.axhline(y=daily_goal, color='r', linestyle='--')
         ax.set_ylabel('Values')
         ax.set_title('Weekly Daily*steps for now* Progress')
         plt.xticks(rotation=45)
