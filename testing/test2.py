@@ -128,6 +128,35 @@ def create_per_week_daily_tracker_chart(parent_frame, entry_type, dates, values,
 
     return daily_plot_frame
 
+def create_per_week_daily_tracker_bar_chart(parent_frame, entry_type, dates, values, daily_goal):
+    table_dict = {
+        "Hydration": 2000.0,
+        "Sleep": 108.0,
+        "Steps": 2000
+    }
+    largest_stored_value = max(values)
+    
+    daily_plot_frame = ctk.CTkFrame(parent_frame)
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+    fig.set_tight_layout(True)
+
+    ax.bar(dates, values, width=1, edgecolor="white", linewidth=0.7)
+    ax.axhline(y=daily_goal, color="r", linestyle="--", label=f"Daily {entry_type} Goal")
+    ax.set_ylim(0, (largest_stored_value+table_dict[entry_type]))
+    ax.set_ylabel(entry_type, fontsize=14, labelpad=30)
+    ax.set_xlabel(f"Dates (Per Week of Current Month)", fontsize=14, labelpad=30)
+    ax.set_title(f"Daily {entry_type} Per Week", fontsize=20, pad=30)
+    plt.xticks(rotation=45)
+    fig.tight_layout(pad=5.0)
+    ax.legend()
+
+    canvas = FigureCanvasTkAgg(fig, master=daily_plot_frame)
+    canvas.draw()
+    canvas.get_tk_widget().pack(fill="both", expand=True)
+
+    return daily_plot_frame
+
 root = ctk.CTk()
 root.geometry("1400x900")
 root.grid_rowconfigure(0, weight=1)
@@ -159,7 +188,7 @@ grouped_steps_data = split_data_by_week(steps_data_dict)
 steps_current_week_data = get_current_week(grouped_steps_data)
 steps_daily_goal_value = get_daily_goal("steps")
 
-weekly_steps_chart = create_per_week_daily_tracker_chart(daily_steps_per_week_section, "Steps", steps_current_week_data[0], steps_current_week_data[1], steps_daily_goal_value)
+weekly_steps_chart = create_per_week_daily_tracker_bar_chart(daily_steps_per_week_section, "Steps", steps_current_week_data[0], steps_current_week_data[1], steps_daily_goal_value)
 weekly_steps_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
 
 root.protocol("WM_DELETE_WINDOW", root.quit)
