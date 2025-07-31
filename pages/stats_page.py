@@ -193,6 +193,11 @@ class StatsPage(ctk.CTkFrame):
         return daily_goal_value
     
     def create_daily_plots(self, parent_frame, entry_type, dates, values, daily_goal):
+        table_dict = {
+            "Hydration": 2000,
+            "Sleep": 108.0,
+            "Steps": 2000
+        }
         largest_value = max(values)
 
         daily_plot_frame = ctk.CTkFrame(parent_frame)
@@ -202,7 +207,7 @@ class StatsPage(ctk.CTkFrame):
 
         ax.plot(dates, values, marker="o")
         ax.axhline(y=daily_goal, color="r", linestyle="--", label=f"Daily {entry_type} Goal")
-        ax.set_ylim(0, largest_value+2000)
+        ax.set_ylim(0, largest_value+table_dict[entry_type])
         ax.set_ylabel(entry_type, fontsize=14, labelpad=30)
         ax.set_xlabel("Dates (Per Week of Current Month)", fontsize=14, labelpad=30)
         ax.set_title(f"Daily {entry_type} Per Week", fontsize=20, pad=30)
