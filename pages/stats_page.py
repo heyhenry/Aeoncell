@@ -38,7 +38,7 @@ class StatsPage(ctk.CTkFrame):
 
         statistics_section.grid_propagate(False)
         statistics_section.grid_rowconfigure(0, weight=1)
-        statistics_section.grid_rowconfigure(2, weight=1)
+        statistics_section.grid_rowconfigure(4, weight=1)
         statistics_section.grid_columnconfigure(0, weight=1)
         statistics_section.grid_columnconfigure(2, weight=1)
 
@@ -52,7 +52,7 @@ class StatsPage(ctk.CTkFrame):
         daily_steps_per_week_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
         daily_steps_per_week_section.grid_rowconfigure(0, weight=1)
         daily_steps_per_week_section.grid_columnconfigure(0, weight=1)
-        daily_steps_per_week_section.grid(row=0, column=0)
+        daily_steps_per_week_section.grid(row=1, column=1, pady=10)
 
         # temp value storage
         steps_data_dict = self.create_data_dict("steps")
@@ -60,14 +60,42 @@ class StatsPage(ctk.CTkFrame):
         steps_weekly_data = self.get_current_week(steps_data)
         steps_daily_goal = self.get_daily_goal("steps")
 
-        weekly_steps_graph = self.create_daily_plots(daily_steps_per_week_section, steps_weekly_data[0], steps_weekly_data[1], steps_daily_goal)
+        weekly_steps_graph = self.create_daily_plots(daily_steps_per_week_section, "Steps", steps_weekly_data[0], steps_weekly_data[1], steps_daily_goal)
         weekly_steps_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+        #endregion
 
-        #endregion
         #region [DailyHydrationPerWeek]
+        daily_hydration_per_week_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+        daily_hydration_per_week_section.grid_rowconfigure(0, weight=1)
+        daily_hydration_per_week_section.grid_columnconfigure(0, weight=1)
+        daily_hydration_per_week_section.grid(row=2, column=1, pady=10)
+
+        # temp value storage
+        hydration_data_dict = self.create_data_dict("hydration")
+        hydration_data = self.split_data_by_week(hydration_data_dict)
+        hydration_weekly_data = self.get_current_week(hydration_data)
+        hydration_daily_goal = self.get_daily_goal("hydration")
+
+        weekly_hydration_graph = self.create_daily_plots(daily_hydration_per_week_section, "Hydration", hydration_weekly_data[0], hydration_weekly_data[1], hydration_daily_goal)
+        weekly_hydration_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion
+
         #region [DailySleepPerWeek]
+        daily_sleep_per_week_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+        daily_sleep_per_week_section.grid_rowconfigure(0, weight=1)
+        daily_sleep_per_week_section.grid_columnconfigure(0, weight=1)
+        daily_sleep_per_week_section.grid(row=3, column=1, pady=10)
+
+        # temp value storage
+        sleep_data_dict = self.create_data_dict("sleep")
+        sleep_data = self.split_data_by_week(sleep_data_dict)
+        sleep_weekly_data = self.get_current_week(sleep_data)
+        sleep_daily_goal = self.get_daily_goal("sleep")
+
+        weekly_sleep_graph = self.create_daily_plots(daily_sleep_per_week_section, "Sleep", sleep_weekly_data[0], sleep_weekly_data[1], sleep_daily_goal)
+        weekly_sleep_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion
+
         #region [DailyExerciseVolumePerWeek]
         #endregion
         #region [DailyRepsTotalPerWeek] & [DailySetsTotalPerWeek]
@@ -164,7 +192,7 @@ class StatsPage(ctk.CTkFrame):
         daily_goal_value = results[0]
         return daily_goal_value
     
-    def create_daily_plots(self, parent_frame, dates, values, daily_goal):
+    def create_daily_plots(self, parent_frame, entry_type, dates, values, daily_goal):
         largest_value = max(values)
 
         daily_plot_frame = ctk.CTkFrame(parent_frame)
@@ -173,11 +201,11 @@ class StatsPage(ctk.CTkFrame):
         fig.set_tight_layout(True)
 
         ax.plot(dates, values, marker="o")
-        ax.axhline(y=daily_goal, color="r", linestyle="--", label="Daily Step Goal")
+        ax.axhline(y=daily_goal, color="r", linestyle="--", label=f"Daily {entry_type} Goal")
         ax.set_ylim(0, largest_value+2000)
-        ax.set_ylabel("Steps", fontsize=14, labelpad=30)
+        ax.set_ylabel(entry_type, fontsize=14, labelpad=30)
         ax.set_xlabel("Dates (Per Week of Current Month)", fontsize=14, labelpad=30)
-        ax.set_title("Daily Steps Per Week", fontsize=20, pad=30)
+        ax.set_title(f"Daily {entry_type} Per Week", fontsize=20, pad=30)
         plt.xticks(rotation=45)
         fig.tight_layout(pad=5.0)
         ax.legend()
