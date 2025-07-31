@@ -61,7 +61,7 @@ class StatsPage(ctk.CTkFrame):
         steps_daily_goal = self.get_daily_goal("steps")
 
         weekly_steps_graph = self.create_daily_plots(daily_steps_per_week_section, steps_weekly_data[0], steps_weekly_data[1], steps_daily_goal)
-        weekly_steps_graph.grid(row=0, column=0, sticky="nswe")
+        weekly_steps_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
 
         #endregion
         #region [DailyHydrationPerWeek]
@@ -169,16 +169,18 @@ class StatsPage(ctk.CTkFrame):
 
         daily_plot_frame = ctk.CTkFrame(parent_frame)
         
-        fig, ax = plt.subplots(figsize=(6, 5))
+        fig, ax = plt.subplots(figsize=(10, 8))
         fig.set_tight_layout(True)
 
-        ax.plot(dates, values, marker='o')
-        ax.axhline(y=daily_goal, color='r', linestyle='--')
+        ax.plot(dates, values, marker="o")
+        ax.axhline(y=daily_goal, color="r", linestyle="--", label="Daily Step Goal")
         ax.set_ylim(0, largest_value+2000)
-        ax.set_ylabel('Steps')
-        ax.set_xlabel('Dates')
-        ax.set_title('Daily Steps Per Week')
+        ax.set_ylabel("Steps", fontsize=14, labelpad=30)
+        ax.set_xlabel("Dates (Per Week of Current Month)", fontsize=14, labelpad=30)
+        ax.set_title("Daily Steps Per Week", fontsize=20, pad=30)
         plt.xticks(rotation=45)
+        fig.tight_layout(pad=5.0)
+        ax.legend()
 
         canvas = FigureCanvasTkAgg(fig, master=daily_plot_frame)
         canvas.draw()
