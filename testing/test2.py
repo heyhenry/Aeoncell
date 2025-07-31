@@ -99,34 +99,52 @@ def get_daily_goal(entry_type):
 
     return daily_goal_value
 
-def create_per_week_daily_tracker_chart(parent_frame, entry_type, dates, values, daily_goal):
+def create_per_month_daily_tracker_line_chart(parent_frame, entry_type, dates, values, daily_goal):
     table_dict = {
         "Hydration": 2000.0,
         "Sleep": 108.0,
         "Steps": 2000
     }
     largest_stored_value = max(values)
-    
-    daily_plot_frame = ctk.CTkFrame(parent_frame)
+
+    monthly_plot_frame = ctk.CTkFrame(parent_frame)
 
     fig, ax = plt.subplots(figsize=(10, 8))
     fig.set_tight_layout(True)
+
+    plt.subplots_adjust(bottom=0.6)
 
     ax.plot(dates, values, marker="o")
     ax.axhline(y=daily_goal, color="r", linestyle="--", label=f"Daily {entry_type} Goal")
     ax.set_ylim(0, (largest_stored_value+table_dict[entry_type]))
     ax.set_ylabel(entry_type, fontsize=14, labelpad=30)
-    ax.set_xlabel(f"Dates (Per Week of Current Month)", fontsize=14, labelpad=30)
-    ax.set_title(f"Daily {entry_type} Per Week", fontsize=20, pad=30)
+    ax.set_xlabel("Dates for the Current Month", fontsize=14, labelpad=30)
+    ax.set_title(f"Daily {entry_type} Per Month", fontsize=20, pad=30)
     plt.xticks(rotation=45)
     fig.tight_layout(pad=5.0)
     ax.legend()
 
-    canvas = FigureCanvasTkAgg(fig, master=daily_plot_frame)
+    ax_slider = plt.axes([0.2, 0.05, 0.6, 0.03])
+    slider = Slider(ax_slider, "Day", 0, len(dates)-1, valinit=0, valstep=1)
+
+    canvas = FigureCanvasTkAgg(fig, master=monthly_plot_frame)
     canvas.draw()
     canvas.get_tk_widget().pack(fill="both", expand=True)
+    
+    def update(val):
+        i = int(slider.val)
+        n = len(dates)
 
-    return daily_plot_frame
+        start = max(0, i-3)
+        end = min(n-1, i+3)
+
+        ax.set_xlim(dates[start], dates[end])
+        fig.canvas.draw_idle()
+    
+    slider.on_changed(update)
+    slider.set_val(0)
+
+    return monthly_plot_frame
 
 def create_per_week_daily_tracker_bar_chart(parent_frame, entry_type, dates, values, daily_goal):
     table_dict = {
@@ -169,10 +187,10 @@ scroll_content.grid_columnconfigure(0, weight=1)
 scroll_content.grid_columnconfigure(2, weight=1)
 scroll_content.grid(row=0, column=0, sticky="nswe")
 
-main_content = ctk.CTkFrame(scroll_content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, width=1200, height=3200)
+main_content = ctk.CTkFrame(scroll_content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, width=1200, height=4200)
 main_content.grid_propagate(False)
 main_content.grid_rowconfigure(0, weight=1)
-main_content.grid_rowconfigure(2, weight=1)
+main_content.grid_rowconfigure(4, weight=1)
 main_content.grid_columnconfigure(0, weight=1)
 main_content.grid_columnconfigure(2, weight=1)
 main_content.grid(row=1, column=1, pady=20)
@@ -190,6 +208,50 @@ steps_daily_goal_value = get_daily_goal("steps")
 
 weekly_steps_chart = create_per_week_daily_tracker_bar_chart(daily_steps_per_week_section, "Steps", steps_current_week_data[0], steps_current_week_data[1], steps_daily_goal_value)
 weekly_steps_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+
+# ----- [Daily Hydration Per Week] -----
+daily_hydration_per_week_section = ctk.CTkFrame(main_content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+daily_hydration_per_week_section.grid_rowconfigure(0, weight=1)
+daily_hydration_per_week_section.grid_columnconfigure(0, weight=1)
+daily_hydration_per_week_section.grid(row=2, column=1, pady=10)
+
+hydration_data_dict = create_data_dict("hydration")
+grouped_hydration_data = split_data_by_week(hydration_data_dict)
+hydration_current_week_data = get_current_week(grouped_hydration_data)
+hydration_daily_goal_value = get_daily_goal("hydration")
+
+weekly_hydration_chart = create_per_week_daily_tracker_bar_chart(daily_hydration_per_week_section, "Hydration", hydration_current_week_data[0], hydration_current_week_data[1], hydration_daily_goal_value)
+weekly_hydration_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+
+# ----- [Daily Sleep Per Week] -----
+daily_sleep_per_week_section = ctk.CTkFrame(main_content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+daily_sleep_per_week_section.grid_rowconfigure(0, weight=1)
+daily_sleep_per_week_section.grid_columnconfigure(0, weight=1)
+daily_sleep_per_week_section.grid(row=3, column=1, pady=10)
+
+sleep_data_dict = create_data_dict("sleep")
+grouped_sleep_data = split_data_by_week(sleep_data_dict)
+sleep_current_week_data = get_current_week(grouped_sleep_data)
+sleep_daily_goal_value = get_daily_goal("sleep")
+
+weekly_sleep_chart = create_per_week_daily_tracker_bar_chart(daily_sleep_per_week_section, "Sleep", sleep_current_week_data[0], sleep_current_week_data[1], sleep_daily_goal_value)
+weekly_sleep_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+
+root.protocol("WM_DELETE_WINDOW", root.quit)
+
+# ----- [Daily Steps Per Month] -----
+daily_steps_per_month_section = ctk.CTkFrame(main_content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+daily_steps_per_month_section.grid_rowconfigure(0, weight=1)
+daily_steps_per_month_section.grid_columnconfigure(0, weight=1)
+daily_steps_per_month_section.grid(row=4, column=1, pady=10)
+
+monthly_steps_data_dict = create_data_dict("steps")
+monthly_steps_dates = list(monthly_steps_data_dict.keys())
+monthly_steps_values = list(monthly_steps_data_dict.values())
+monthly_steps_daily_goal_value = get_daily_goal("steps")
+
+monthly_steps_chart = create_per_month_daily_tracker_line_chart(daily_steps_per_month_section, "Steps", monthly_steps_dates, monthly_steps_values, sleep_daily_goal_value)
+monthly_steps_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
 
 root.protocol("WM_DELETE_WINDOW", root.quit)
 
