@@ -162,3 +162,14 @@ Python Tkinter application doesn't quit properly (28th July 2025): https://stack
 Tight layout guide (30th July 2025): https://matplotlib.org/stable/users/explain/axes/tight_layout_guide.
 Plotting categorical variables (31st July 2025): https://matplotlib.org/stable/gallery/lines_bars_and_markers/categorical_variables.html#sphx-glr-gallery-lines-bars-and-markers-categorical-variables-py
 Python Sqlite3 - Using f strings for update database function (31st July 2025): https://stackoverflow.com/questions/51312952/python-sqlite3-using-f-strings-for-update-database-function
+How to avoid negative numbers on axies in matplotlib scatterplot (31st July 2025): https://stackoverflow.com/questions/29275369/how-to-avoid-negative-numbers-on-axis-in-matplotlib-scatterplot
+matplotlib.axes.Axes.set_xlim (31st July 2025): https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_xlim.html
+How To Adjust Position of Axis Labels in Matplotlib (31st July 2025): https://www.geeksforgeeks.org/python/how-to-adjust-position-of-axis-labels-in-matplotlib/
+Title positioning (31st July 2025): https://matplotlib.org/stable/gallery/text_labels_and_annotations/titles_demo.html
+How to set the spacing between subplots in Matplotlib in Python? (31st July 2025): https://www.geeksforgeeks.org/python/how-to-set-the-spacing-between-subplots-in-matplotlib-in-python/
+How do I set the figure title and axes labels font size? (31st July 2025): https://stackoverflow.com/questions/12444716/how-do-i-set-the-figure-title-and-axes-labels-font-size
+Histogram vs Bar Graph - Difference Between Them (31st July 2025): https://www.guru99.com/histogram-vs-bar-chart.html
+bar(x, height) (31st July 2025): https://matplotlib.org/stable/plot_types/basic/bar.html#sphx-glr-plot-types-basic-bar-py
+matplotlib.axes.Axes.Legend (31st July 2025): https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html
+Interactive Sliders in Matplotlib (31st July 2025): https://www.delftstack.com/howto/matplotlib/sliders-in-matplotlib/
+Slider (31st July 2025): https://matplotlib.org/stable/gallery/widgets/slider_demo.html
