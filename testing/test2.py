@@ -9,6 +9,8 @@ from datetime import datetime, date, timedelta
 db_connection = sqlite3.connect("aeoncell_database.db")
 db_cursor = db_connection.cursor()
 
+today = date.today().strftime("%d-%m-%Y")
+print(today)
 current_month = datetime.now().month
 current_year = datetime.now().year
 
@@ -80,7 +82,6 @@ def split_data_by_week(data_dict):
     return (dates, values)
 
 def get_current_week(data_dict):
-    today = "01-07-2025"
     for week in range(len(data_dict[0])):
         if today in data_dict[0][week]:
             return (data_dict[0][week], data_dict[1][week])
@@ -98,7 +99,7 @@ def get_daily_goal(entry_type):
     daily_goal_value = result[0]
 
     return daily_goal_value
-
+ 
 def create_per_month_daily_tracker_line_chart(parent_frame, entry_type, dates, values, daily_goal):
     table_dict = {
         "Hydration": 2000.0,
@@ -175,6 +176,86 @@ def create_per_week_daily_tracker_bar_chart(parent_frame, entry_type, dates, val
 
     return daily_plot_frame
 
+# user entry logs for all 3 daily trackers across a month of dates
+def create_frequency_per_month_daily_tracker_stack_plot(parent_frame):
+
+    def create_dictionary_of_lists_of_daily_trackers_logged():
+
+        dates_of_current_month = all_dates_current_month()
+
+        # key = i (date) : values = (steps, hydration, sleep) 
+        data = {
+            i : [False, False, False]
+            for i in dates_of_current_month
+        }
+
+        db_cursor.execute("SELECT date FROM steps_tracker WHERE date LIKE ?", (f"__-{current_month}-{current_year}",))
+        results = db_cursor.fetchall()
+        steps_results = []
+        for i in results:
+            steps_results.append(i[0])
+
+        db_cursor.execute("SELECT date FROM hydration_tracker WHERE date LIKE ?", (f"__-{current_month}-{current_year}",))
+        results = db_cursor.fetchall()
+        hydration_results = []
+        for i in results:
+            hydration_results.append(i[0])
+
+        db_cursor.execute("SELECT date FROM sleep_tracker WHERE date LIKE ?", (f"__-{current_month}-{current_year}",))
+        results = db_cursor.fetchall()
+        sleep_results = []
+        for i in results:
+            sleep_results.append(i[0])
+
+        for entries in steps_results:
+            if entries in data.keys():
+                data[entries][0] = True
+
+        for entries in hydration_results:
+            if entries in data.keys():
+                data[entries][1] = True
+
+        for entries in sleep_results:
+            if entries in data.keys():
+                data[entries][2] = True
+
+        logged_steps = []
+        logged_hydration = []
+        logged_sleep = []
+
+        for v in data.values():
+            logged_steps.append(v[0])
+            logged_hydration.append(v[1])
+            logged_sleep.append(v[2])
+        
+        return (logged_steps, logged_hydration, logged_sleep)
+    
+    dates_of_current_month = all_dates_current_month()
+    logged_data = create_dictionary_of_lists_of_daily_trackers_logged()
+
+    stack_plot_frame = ctk.CTkFrame(parent_frame)
+
+    plt.style.use("_mpl-gallery")
+
+    ay = logged_data[0]
+    by = logged_data[1]
+    cy = logged_data[2]
+    y = [ay, by, cy]
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+    fig.set_tight_layout(True)
+
+    ax.stackplot(dates_of_current_month, y)
+    # ax.title("User Entry Logs for All Daily Trackers Over the Course of a Month", fontsize=14, pad=30)
+    plt.xticks(rotation=45)
+    fig.tight_layout(pad=5.0)
+
+    canvas = FigureCanvasTkAgg(fig, master=stack_plot_frame)
+    canvas.draw()
+    canvas.get_tk_widget().pack(fill="both", expand=True)
+
+    return stack_plot_frame
+
 root = ctk.CTk()
 root.geometry("1400x900")
 root.grid_rowconfigure(0, weight=1)
@@ -190,7 +271,7 @@ scroll_content.grid(row=0, column=0, sticky="nswe")
 main_content = ctk.CTkFrame(scroll_content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, width=1200, height=4200)
 main_content.grid_propagate(False)
 main_content.grid_rowconfigure(0, weight=1)
-main_content.grid_rowconfigure(4, weight=1)
+main_content.grid_rowconfigure(6, weight=1)
 main_content.grid_columnconfigure(0, weight=1)
 main_content.grid_columnconfigure(2, weight=1)
 main_content.grid(row=1, column=1, pady=20)
@@ -252,6 +333,20 @@ monthly_steps_daily_goal_value = get_daily_goal("steps")
 
 monthly_steps_chart = create_per_month_daily_tracker_line_chart(daily_steps_per_month_section, "Steps", monthly_steps_dates, monthly_steps_values, sleep_daily_goal_value)
 monthly_steps_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+
+# ----- [Log Frequency of Daily Trackers Per Month] -----
+logged_dailies_per_month_section = ctk.CTkFrame(main_content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+logged_dailies_per_month_section.grid_rowconfigure(0, weight=1)
+logged_dailies_per_month_section.grid_columnconfigure(0, weight=1)
+logged_dailies_per_month_section.grid(row=5, column=1, pady=10)
+
+# monthly_steps_data_dict = create_data_dict("steps")
+# monthly_steps_dates = list(monthly_steps_data_dict.keys())
+# monthly_steps_values = list(monthly_steps_data_dict.values())
+# monthly_steps_daily_goal_value = get_daily_goal("steps")
+
+logged_dailies_per_month_chart = create_frequency_per_month_daily_tracker_stack_plot(logged_dailies_per_month_section)
+logged_dailies_per_month_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
 
 root.protocol("WM_DELETE_WINDOW", root.quit)
 
