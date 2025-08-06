@@ -4,6 +4,7 @@ from widgets import Navbar
 from datetime import date, timedelta, datetime
 import calendar
 import matplotlib.pyplot as plt
+from matplotlib.widgets import Slider
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class StatsPage(ctk.CTkFrame):
@@ -14,6 +15,31 @@ class StatsPage(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=0)
         self.grid_columnconfigure(1, weight=1)
+
+        # data for graphs and charts
+        self.current_month = self.controller.current_month
+        self.current_year = self.controller.current_year
+        self.today = self.controller.today
+
+        steps_data_dict = self.create_data_dict("steps")
+        grouped_steps_data = self.split_data_by_week(steps_data_dict)
+        self.steps_current_week_data = self.get_current_week(grouped_steps_data)
+        self.steps_daily_goal_value = self.get_daily_goal("steps")
+
+        hydration_data_dict = self.create_data_dict("hydration")
+        grouped_hydration_data = self.split_data_by_week(hydration_data_dict)
+        self.hydration_current_week_data = self.get_current_week(grouped_hydration_data)
+        self.hydration_daily_goal_value = self.get_daily_goal("hydration")
+
+        sleep_data_dict = self.create_data_dict("sleep")
+        grouped_sleep_data = self.split_data_by_week(sleep_data_dict)
+        self.sleep_current_week_data = self.get_current_week(grouped_sleep_data)
+        self.sleep_daily_goal_value = self.get_daily_goal("sleep")
+
+        monthly_steps_data_dict = self.create_data_dict("steps")
+        self.monthly_steps_dates = list(monthly_steps_data_dict.keys())
+        self.monthly_steps_values = list(monthly_steps_data_dict.values())
+        self.monthly_steps_daily_goal_value = self.get_daily_goal("steps")
 
         self.create_widgets()
 
@@ -26,7 +52,7 @@ class StatsPage(ctk.CTkFrame):
         content.grid(row=0, column=1, sticky="nswe")
 
         content.grid_rowconfigure(0, weight=1)
-        content.grid_rowconfigure(4, weight=1)
+        content.grid_rowconfigure(5, weight=1)
         content.grid_columnconfigure(0, weight=1)
         content.grid_columnconfigure(2, weight=1)
         #endregion
@@ -34,7 +60,7 @@ class StatsPage(ctk.CTkFrame):
         #region [PageFrames]
         page_title = ctk.CTkLabel(content, text="Statistics", font=("", 24))
         page_message = ctk.CTkLabel(content, text="View your statistics here", font=("", 14))
-        statistics_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1200, height=3200)
+        statistics_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1200, height=4200)
 
         statistics_section.grid_propagate(False)
         statistics_section.grid_rowconfigure(0, weight=1)
@@ -48,56 +74,49 @@ class StatsPage(ctk.CTkFrame):
         #endregion
 
         # ==================== [STATISTICS CONTENT] ====================
-        #region [DailyStepsPerWeek]
+        #region [Daily Steps Per Week]
         daily_steps_per_week_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
         daily_steps_per_week_section.grid_rowconfigure(0, weight=1)
         daily_steps_per_week_section.grid_columnconfigure(0, weight=1)
         daily_steps_per_week_section.grid(row=1, column=1, pady=10)
 
-        # temp value storage
-        steps_data_dict = self.create_data_dict("steps")
-        steps_data = self.split_data_by_week(steps_data_dict)
-        steps_weekly_data = self.get_current_week(steps_data)
-        steps_daily_goal = self.get_daily_goal("steps")
-
-        weekly_steps_graph = self.create_daily_plots(daily_steps_per_week_section, "Steps", steps_weekly_data[0], steps_weekly_data[1], steps_daily_goal)
+        weekly_steps_graph = self.create_per_week_daily_tracker_bar_chart(daily_steps_per_week_section, "Steps", self.steps_current_week_data[0], self.steps_current_week_data[1], self.steps_daily_goal_value)
         weekly_steps_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion
 
-        #region [DailyHydrationPerWeek]
+        #region [Daily Hydration Per Week]
         daily_hydration_per_week_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
         daily_hydration_per_week_section.grid_rowconfigure(0, weight=1)
         daily_hydration_per_week_section.grid_columnconfigure(0, weight=1)
         daily_hydration_per_week_section.grid(row=2, column=1, pady=10)
 
-        # temp value storage
-        hydration_data_dict = self.create_data_dict("hydration")
-        hydration_data = self.split_data_by_week(hydration_data_dict)
-        hydration_weekly_data = self.get_current_week(hydration_data)
-        hydration_daily_goal = self.get_daily_goal("hydration")
-
-        weekly_hydration_graph = self.create_daily_plots(daily_hydration_per_week_section, "Hydration", hydration_weekly_data[0], hydration_weekly_data[1], hydration_daily_goal)
+        weekly_hydration_graph = self.create_per_week_daily_tracker_bar_chart(daily_hydration_per_week_section, "Hydration", self.hydration_current_week_data[0], self.hydration_current_week_data[1], self.hydration_daily_goal_value)
         weekly_hydration_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion
 
-        #region [DailySleepPerWeek]
+        #region [Daily Sleep Per Week]
         daily_sleep_per_week_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
         daily_sleep_per_week_section.grid_rowconfigure(0, weight=1)
         daily_sleep_per_week_section.grid_columnconfigure(0, weight=1)
         daily_sleep_per_week_section.grid(row=3, column=1, pady=10)
 
-        # temp value storage
-        sleep_data_dict = self.create_data_dict("sleep")
-        sleep_data = self.split_data_by_week(sleep_data_dict)
-        sleep_weekly_data = self.get_current_week(sleep_data)
-        sleep_daily_goal = self.get_daily_goal("sleep")
-
-        weekly_sleep_graph = self.create_daily_plots(daily_sleep_per_week_section, "Sleep", sleep_weekly_data[0], sleep_weekly_data[1], sleep_daily_goal)
+        weekly_sleep_graph = self.create_per_week_daily_tracker_bar_chart(daily_sleep_per_week_section, "Sleep", self.sleep_current_week_data[0], self.sleep_current_week_data[1], self.sleep_daily_goal_value)
         weekly_sleep_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion
 
-        #region [DailyExerciseVolumePerWeek]
+        #region [Daily Steps Per Month]
+        daily_steps_per_month_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+        daily_steps_per_month_section.grid_rowconfigure(0, weight=1)
+        daily_steps_per_month_section.grid_columnconfigure(0, weight=1)
+        daily_steps_per_month_section.grid(row=4, column=1, pady=10)
+
+        monthly_steps_chart = self.create_per_month_daily_tracker_line_chart(daily_steps_per_month_section, "Steps", self.monthly_steps_dates, self.monthly_steps_values, self.monthly_steps_daily_goal_value)
+        monthly_steps_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion
+
+        #region [DailyExerciseVolumePerWeek]
+        #endregion 
+
         #region [DailyRepsTotalPerWeek] & [DailySetsTotalPerWeek]
         #endregion
 
@@ -141,6 +160,7 @@ class StatsPage(ctk.CTkFrame):
         query = f"SELECT date, {table_dict[entry_type][1]} FROM {table_dict[entry_type][0]} WHERE date LIKE ?"
         self.controller.db_cursor.execute(query, (f'__-{current_month}-{current_year}',))
         found_entries = self.controller.db_cursor.fetchall()
+        
         if found_entries:
             for entry in found_entries:
                 if entry[0] in data_dict:
@@ -173,10 +193,8 @@ class StatsPage(ctk.CTkFrame):
         return (dates, values)
     
     def get_current_week(self, data_dict):
-        # today = self.controller.today
-        today = "01-07-2025"
         for week in range(len(data_dict[0])):
-            if today in data_dict[0][week]:
+            if self.today in data_dict[0][week]:
                 return (data_dict[0][week], data_dict[1][week])
 
     def get_daily_goal(self, entry_type):
@@ -186,29 +204,31 @@ class StatsPage(ctk.CTkFrame):
             "sleep": "daily_sleep_goal",
             "steps": "daily_steps_goal" 
         }
+
         get_daily_goal_query = f"SELECT {table_dict[entry_type]} FROM profile_details"
         self.controller.db_cursor.execute(get_daily_goal_query)
         results = self.controller.db_cursor.fetchone()
         daily_goal_value = results[0]
+
         return daily_goal_value
     
-    def create_daily_plots(self, parent_frame, entry_type, dates, values, daily_goal):
+    def create_per_week_daily_tracker_bar_chart(self, parent_frame, entry_type, dates, values, daily_goal):
         table_dict = {
-            "Hydration": 2000,
+            "Hydration": 2000.0,
             "Sleep": 108.0,
             "Steps": 2000
         }
-        largest_value = max(values)
-
-        daily_plot_frame = ctk.CTkFrame(parent_frame)
+        largest_stored_value = max(values)
         
+        daily_plot_frame = ctk.CTkFrame(parent_frame)
+
         fig, ax = plt.subplots(figsize=(10, 8))
         fig.set_tight_layout(True)
 
-        ax.plot(dates, values, marker="o")
+        ax.bar(dates, values, width=1, edgecolor="white", linewidth=0.7)
         ax.axhline(y=daily_goal, color="r", linestyle="--", label=f"Daily {entry_type} Goal")
-        ax.set_ylim(0, largest_value+table_dict[entry_type])
-        ax.set_ylabel(entry_type, fontsize=14, labelpad=30)
+        ax.set_ylim(0, (largest_stored_value+table_dict[entry_type]))
+        ax.set_xlabel(entry_type, fontsize=14, labelpad=30)
         ax.set_xlabel("Dates (Per Week of Current Month)", fontsize=14, labelpad=30)
         ax.set_title(f"Daily {entry_type} Per Week", fontsize=20, pad=30)
         plt.xticks(rotation=45)
@@ -220,3 +240,54 @@ class StatsPage(ctk.CTkFrame):
         canvas.get_tk_widget().pack(fill="both", expand=True)
 
         return daily_plot_frame
+    
+    def create_per_month_daily_tracker_line_chart(self, parent_frame, entry_type, dates, values, daily_goal):
+        table_dict = {
+            "Hydration": 2000.0,
+            "Sleep": 108.0,
+            "Steps": 2000
+        }
+        largest_stored_value = max(values)
+
+        monthly_plot_frame = ctk.CTkFrame(parent_frame)
+
+        fig, ax = plt.subplots(figsize=(10, 8))
+        fig.set_tight_layout(True)
+
+        plt.subplots_adjust(bottom=0.6)
+
+        ax.plot(dates, values, marker="o")
+        ax.axhline(y=daily_goal, color="r", linestyle="--", label=f"Daily {entry_type} Goal")
+        ax.set_ylim(0, (largest_stored_value+table_dict[entry_type]))
+        ax.set_ylabel(entry_type, fontsize=14, labelpad=30)
+        ax.set_xlabel("Dates for the Current Month", fontsize=14, labelpad=30)
+        ax.set_title(f"Daily {entry_type} Per Month", fontsize=20, pad=30)
+        plt.xticks(rotation=45)
+        fig.tight_layout(pad=5.0)
+        ax.legend()
+
+        ax_slider = plt.axes([0.2, 0.05, 0.6, 0.03])
+        slider = Slider(ax_slider, "Day", 0, len(dates)-1, valinit=0, valstep=1)
+        
+        # reference to fig and slider due to auto garbage collection
+        monthly_plot_frame.fig = fig
+        monthly_plot_frame.slider = slider
+
+        def update(val):
+            i = int(slider.val)
+            n = len(dates)
+
+            start = max(0, i-3)
+            end = min(n-1, i+3)
+
+            ax.set_xlim(dates[start], dates[end])
+            fig.canvas.draw_idle()
+
+        canvas = FigureCanvasTkAgg(fig, master=monthly_plot_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill="both", expand=True)
+
+        slider.on_changed(update)
+        slider.set_val(0)
+
+        return monthly_plot_frame
