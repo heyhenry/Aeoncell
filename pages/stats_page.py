@@ -51,6 +51,9 @@ class StatsPage(ctk.CTkFrame):
         self.monthly_sleep_values = list(monthly_sleep_data_dict.values())
         self.monthly_sleep_daily_goal_value = self.get_daily_goal("sleep")
 
+        exercise_volumes_dict = self.create_exercise_volume_dict()
+        self.monthly_exercise_values = list(exercise_volumes_dict.values())
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -74,7 +77,7 @@ class StatsPage(ctk.CTkFrame):
 
         statistics_section.grid_propagate(False)
         statistics_section.grid_rowconfigure(0, weight=1)
-        statistics_section.grid_rowconfigure(7, weight=1)
+        statistics_section.grid_rowconfigure(8, weight=1)
         statistics_section.grid_columnconfigure(0, weight=1)
         statistics_section.grid_columnconfigure(2, weight=1)
 
@@ -143,15 +146,15 @@ class StatsPage(ctk.CTkFrame):
         monthly_sleep_chart = self.create_per_month_daily_tracker_line_chart(daily_sleep_per_month_section, "Sleep", self.monthly_sleep_dates, self.monthly_sleep_values, self.monthly_sleep_daily_goal_value)
         monthly_sleep_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion    
-        self.create_exercise_volume_dict()
-        #region [DailyExerciseVolumePerMonth]
-        # daily_exercise_per_month_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
-        # daily_exercise_per_month_section.grid_rowconfigure(0, weight=1)
-        # daily_exercise_per_month_section.grid_columnconfigure(0, weight=1)
-        # daily_exercise_per_month_section.grid(row=7, column=1, pady=10)
+
+        #region [Daily Exercise Volume Per Month]
+        daily_exercise_per_month_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+        daily_exercise_per_month_section.grid_rowconfigure(0, weight=1)
+        daily_exercise_per_month_section.grid_columnconfigure(0, weight=1)
+        daily_exercise_per_month_section.grid(row=7, column=1, pady=10)
         
-        # monthly_exercise_volume_chart = 
-        # monthly_exercise_volume_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+        monthly_exercise_volume_chart = self.create_per_month_daily_exercise_tracker_histogram(daily_exercise_per_month_section, self.monthly_exercise_values)
+        monthly_exercise_volume_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion 
 
         #region [DailyRepsTotalPerWeek] & [DailySetsTotalPerWeek]
@@ -361,15 +364,26 @@ class StatsPage(ctk.CTkFrame):
         for key, val in data_dict.items():
             # if the list isn't empty
             if val:
+                # add total sum of all weight volumes for each day to respective date key
                 sum_volume_dict[key] = sum(val)
 
         return sum_volume_dict
 
+    def create_per_month_daily_exercise_tracker_histogram(self, parent_frame, values):
+        monthly_chart_frame = ctk.CTkFrame(parent_frame)
 
-    # def create_per_month_daily_exercise_tracker_histogram(self, parent_frame, dates, values):
-    #     monthly_chart_frame = ctk.CTkFrame(parent_frame)
+        fig, ax = plt.subplots(figsize=(10, 8))
+        fig.set_tight_layout(True)
 
-    #     fig, ax = plt.subplots(figsize=(10, 8))
-    #     fig.set_tight_layout(True)
+        ax.hist(values, bins=5, color="skyblue", edgecolor="black", alpha=0.7)
+        ax.set_title("Volume Distribution of Daily Exercises Per Month", fontsize=20, pad=30)
+        ax.set_xlabel("Volume (kg)", fontsize=14, labelpad=30)
+        ax.set_ylabel("Frequency", fontsize=14, labelpad=30)
+        ax.grid(axis='y', linestyle="--", alpha=0.6)
+        fig.tight_layout(pad=5.0)
 
-        
+        canvas = FigureCanvasTkAgg(fig, master=monthly_chart_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill="both", expand=True)
+
+        return monthly_chart_frame
