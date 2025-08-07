@@ -51,8 +51,9 @@ class StatsPage(ctk.CTkFrame):
         self.monthly_sleep_values = list(monthly_sleep_data_dict.values())
         self.monthly_sleep_daily_goal_value = self.get_daily_goal("sleep")
 
-        exercise_volumes_dict = self.create_exercise_volume_dict()
-        self.monthly_exercise_values = list(exercise_volumes_dict.values())
+        monthly_exercise_daily_volume_dict = self.create_exercise_volume_dict()
+        self.monthly_exercise_daily_volume_dates = list(monthly_exercise_daily_volume_dict.keys())
+        self.monthly_exercise_daily_volume_values = list(monthly_exercise_daily_volume_dict.values())
 
         self.create_widgets()
 
@@ -153,7 +154,7 @@ class StatsPage(ctk.CTkFrame):
         daily_exercise_per_month_section.grid_columnconfigure(0, weight=1)
         daily_exercise_per_month_section.grid(row=7, column=1, pady=10)
         
-        monthly_exercise_volume_chart = self.create_per_month_daily_exercise_tracker_histogram(daily_exercise_per_month_section, self.monthly_exercise_values)
+        monthly_exercise_volume_chart = self.create_per_month_daily_exercise_weight_volume_bar_chart(daily_exercise_per_month_section, self.monthly_exercise_daily_volume_dates, self.monthly_exercise_daily_volume_values)
         monthly_exercise_volume_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion 
 
@@ -368,6 +369,28 @@ class StatsPage(ctk.CTkFrame):
                 sum_volume_dict[key] = sum(val)
 
         return sum_volume_dict
+
+    def create_per_month_daily_exercise_weight_volume_bar_chart(self, parent_frame, dates, values):
+        monthly_chart_frame = ctk.CTkFrame(parent_frame)
+
+        current_month_str = datetime.now().strftime("%B")
+        largest_stored_value = max(values)
+
+        fig, ax = plt.subplots(figsize=(10, 8))
+        fig.set_tight_layout(True)
+
+        ax.bar(dates, values, width=1, edgecolor="white", linewidth=0.7)
+        ax.set_ylim(0, largest_stored_value)
+        ax.set_ylabel("Volume (KG)", fontsize=14, labelpad=30)
+        ax.set_xlabel("Dates (Everday of the Month)", fontsize=14, labelpad=30)
+        ax.set_title(f"Daily Exercise Volume for {current_month_str}", pad=30)
+        plt.xticks(rotation=45)
+
+        canvas = FigureCanvasTkAgg(fig, master=monthly_chart_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill="both", expand=True)
+
+        return monthly_chart_frame
 
     def create_per_month_daily_exercise_tracker_histogram(self, parent_frame, values):
         monthly_chart_frame = ctk.CTkFrame(parent_frame)
