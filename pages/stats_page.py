@@ -41,6 +41,16 @@ class StatsPage(ctk.CTkFrame):
         self.monthly_steps_values = list(monthly_steps_data_dict.values())
         self.monthly_steps_daily_goal_value = self.get_daily_goal("steps")
 
+        monthly_hydration_data_dict = self.create_data_dict("hydration")
+        self.monthly_hydration_dates = list(monthly_hydration_data_dict.keys())
+        self.monthly_hydration_values = list(monthly_hydration_data_dict.values())
+        self.monthly_hydration_daily_goal_value = self.get_daily_goal("hydration")
+
+        monthly_sleep_data_dict = self.create_data_dict("sleep")
+        self.monthly_sleep_dates = list(monthly_sleep_data_dict.keys())
+        self.monthly_sleep_values = list(monthly_sleep_data_dict.values())
+        self.monthly_sleep_daily_goal_value = self.get_daily_goal("sleep")
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -60,11 +70,11 @@ class StatsPage(ctk.CTkFrame):
         #region [PageFrames]
         page_title = ctk.CTkLabel(content, text="Statistics", font=("", 24))
         page_message = ctk.CTkLabel(content, text="View your statistics here", font=("", 14))
-        statistics_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1200, height=4200)
+        statistics_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1200, height=6200)
 
         statistics_section.grid_propagate(False)
         statistics_section.grid_rowconfigure(0, weight=1)
-        statistics_section.grid_rowconfigure(4, weight=1)
+        statistics_section.grid_rowconfigure(7, weight=1)
         statistics_section.grid_columnconfigure(0, weight=1)
         statistics_section.grid_columnconfigure(2, weight=1)
 
@@ -114,7 +124,34 @@ class StatsPage(ctk.CTkFrame):
         monthly_steps_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion
 
-        #region [DailyExerciseVolumePerWeek]
+        #region [Daily Hydration Per Month]
+        daily_hydration_per_month_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+        daily_hydration_per_month_section.grid_rowconfigure(0, weight=1)
+        daily_hydration_per_month_section.grid_columnconfigure(0, weight=1)
+        daily_hydration_per_month_section.grid(row=5, column=1, pady=10)
+
+        monthly_hydration_chart = self.create_per_month_daily_tracker_line_chart(daily_hydration_per_month_section, "Hydration", self.monthly_hydration_dates, self.monthly_hydration_values, self.monthly_hydration_daily_goal_value)
+        monthly_hydration_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+        #endregion
+
+        #region [Daily Sleep Per Month]
+        daily_sleep_per_month_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+        daily_sleep_per_month_section.grid_rowconfigure(0, weight=1)
+        daily_sleep_per_month_section.grid_columnconfigure(0, weight=1)
+        daily_sleep_per_month_section.grid(row=6, column=1, pady=10)
+
+        monthly_sleep_chart = self.create_per_month_daily_tracker_line_chart(daily_sleep_per_month_section, "Sleep", self.monthly_sleep_dates, self.monthly_sleep_values, self.monthly_sleep_daily_goal_value)
+        monthly_sleep_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+        #endregion    
+        self.create_exercise_volume_dict()
+        #region [DailyExerciseVolumePerMonth]
+        # daily_exercise_per_month_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+        # daily_exercise_per_month_section.grid_rowconfigure(0, weight=1)
+        # daily_exercise_per_month_section.grid_columnconfigure(0, weight=1)
+        # daily_exercise_per_month_section.grid(row=7, column=1, pady=10)
+        
+        # monthly_exercise_volume_chart = 
+        # monthly_exercise_volume_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion 
 
         #region [DailyRepsTotalPerWeek] & [DailySetsTotalPerWeek]
@@ -291,3 +328,48 @@ class StatsPage(ctk.CTkFrame):
         slider.set_val(0)
 
         return monthly_plot_frame
+    
+    def create_exercise_volume_dict(self):
+        # get all dates of the current month
+        dates_of_current_month = self.all_dates_current_month()
+        
+        # initialise a dictionary with the keys being the dates of the current month
+        data_dict = {
+            i : []
+            for i in dates_of_current_month
+        }
+        
+        # retrieve all relevant exericse entries data for the current month
+        query = f"SELECT date, sets_count, reps_count, weight_value FROM exercise_entries WHERE date LIKE ?"
+        self.controller.db_cursor.execute(query, (f"__-{self.current_month}-{self.current_year}",))
+        found_entries = self.controller.db_cursor.fetchall()
+
+        # update the dictionary with weight volume data
+
+        if found_entries:
+            for entry in found_entries:
+                if entry[0] in data_dict:
+                    # calculate weight volume per entry
+                    total_volume = (entry[1] * entry[2]) * entry[3]
+                    data_dict[entry[0]].append(total_volume)
+
+        sum_volume_dict = {
+            i : 0
+            for i in dates_of_current_month
+        }
+
+        for key, val in data_dict.items():
+            # if the list isn't empty
+            if val:
+                sum_volume_dict[key] = sum(val)
+
+        return sum_volume_dict
+
+
+    # def create_per_month_daily_exercise_tracker_histogram(self, parent_frame, dates, values):
+    #     monthly_chart_frame = ctk.CTkFrame(parent_frame)
+
+    #     fig, ax = plt.subplots(figsize=(10, 8))
+    #     fig.set_tight_layout(True)
+
+        
