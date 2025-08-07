@@ -255,9 +255,9 @@ class StatsPage(ctk.CTkFrame):
     
     def create_per_week_daily_tracker_bar_chart(self, parent_frame, entry_type, dates, values, daily_goal):
         table_dict = {
-            "Hydration": 2000.0,
-            "Sleep": 108.0,
-            "Steps": 2000
+            "Hydration": (2000.0, "(Ml)"),
+            "Sleep": (108.0, "(Mins)"),
+            "Steps": (2000,"")
         }
         largest_stored_value = max(values)
         
@@ -268,8 +268,8 @@ class StatsPage(ctk.CTkFrame):
 
         ax.bar(dates, values, width=1, edgecolor="white", linewidth=0.7)
         ax.axhline(y=daily_goal, color="r", linestyle="--", label=f"Daily {entry_type} Goal")
-        ax.set_ylim(0, (largest_stored_value+table_dict[entry_type]))
-        ax.set_xlabel(entry_type, fontsize=14, labelpad=30)
+        ax.set_ylim(0, (largest_stored_value+table_dict[entry_type][0]))
+        ax.set_ylabel(f"{entry_type} {table_dict[entry_type][1]}", fontsize=14, labelpad=30)
         ax.set_xlabel("Dates (Per Week of Current Month)", fontsize=14, labelpad=30)
         ax.set_title(f"Daily {entry_type} Per Week", fontsize=20, pad=30)
         plt.xticks(rotation=45)
@@ -284,9 +284,9 @@ class StatsPage(ctk.CTkFrame):
     
     def create_per_month_daily_tracker_line_chart(self, parent_frame, entry_type, dates, values, daily_goal):
         table_dict = {
-            "Hydration": 2000.0,
-            "Sleep": 108.0,
-            "Steps": 2000
+            "Hydration": (2000.0, "(Ml)"),
+            "Sleep": (108.0, "(Mins)"),
+            "Steps": (2000,"")
         }
         largest_stored_value = max(values)
 
@@ -299,8 +299,8 @@ class StatsPage(ctk.CTkFrame):
 
         ax.plot(dates, values, marker="o")
         ax.axhline(y=daily_goal, color="r", linestyle="--", label=f"Daily {entry_type} Goal")
-        ax.set_ylim(0, (largest_stored_value+table_dict[entry_type]))
-        ax.set_ylabel(entry_type, fontsize=14, labelpad=30)
+        ax.set_ylim(0, (largest_stored_value+table_dict[entry_type][0]))
+        ax.set_ylabel(f"{entry_type} {table_dict[entry_type][1]}", fontsize=14, labelpad=30)
         ax.set_xlabel("Dates for the Current Month", fontsize=14, labelpad=30)
         ax.set_title(f"Daily {entry_type} Per Month", fontsize=20, pad=30)
         plt.xticks(rotation=45)
@@ -374,7 +374,7 @@ class StatsPage(ctk.CTkFrame):
         monthly_chart_frame = ctk.CTkFrame(parent_frame)
 
         current_month_str = datetime.now().strftime("%B")
-        largest_stored_value = max(values)
+        largest_stored_value = max(values)+2000
 
         fig, ax = plt.subplots(figsize=(10, 8))
         fig.set_tight_layout(True)
