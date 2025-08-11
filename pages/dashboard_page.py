@@ -143,24 +143,22 @@ class DashboardPage(ctk.CTkFrame):
         content.grid(row=0, column=1, sticky="nswe")
 
         content.grid_rowconfigure(0, weight=1)
-        content.grid_rowconfigure(7, weight=1)
+        content.grid_rowconfigure(6, weight=1)
 
         content.grid_columnconfigure(0, weight=1)
         content.grid_columnconfigure(2, weight=1)
 
         intro_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=100)
         profile_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=550)
-        subtitle_section = ctk.CTkFrame(content, fg_color="transparent", width=1100, height=80)
         dailies_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
         quick_stats_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=400)
         self.recent_exercises_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=3, corner_radius=0, width=1300, height=800)
 
         intro_section.grid(row=1, column=1, pady=20)
         profile_section.grid(row=2, column=1, pady=(0, 20))
-        subtitle_section.grid(row=3, column=1, pady=(0, 20))
-        dailies_section.grid(row=4, column=1, pady=(0, 20))
-        quick_stats_section.grid(row=5, column=1)
-        self.recent_exercises_section.grid(row=6, column=1, pady=20)
+        dailies_section.grid(row=3, column=1, pady=(0, 20))
+        quick_stats_section.grid(row=4, column=1)
+        self.recent_exercises_section.grid(row=5, column=1, pady=20)
 
         quick_stats_section.grid_propagate(False)
 
@@ -168,9 +166,6 @@ class DashboardPage(ctk.CTkFrame):
         profile_section.grid_rowconfigure(2, weight=1)
         profile_section.grid_columnconfigure(0, weight=1)
         profile_section.grid_columnconfigure(4, weight=1)
-
-        subtitle_section.grid_rowconfigure(0, weight=1)
-        subtitle_section.grid_columnconfigure(0, weight=1)
 
         dailies_section.grid_rowconfigure(0, weight=1)
         dailies_section.grid_rowconfigure(2, weight=1)
@@ -321,13 +316,6 @@ class DashboardPage(ctk.CTkFrame):
 
         profile_section.grid_propagate(False)
         # endregion
-
-        #region [ Subtitle Section ]
-        subtitle_display = ctk.CTkLabel(subtitle_section, text="Daily Tracking", font=("", 32))
-
-        subtitle_display.grid(row=0, column=0, padx=(10, 0), sticky="sw")
-
-        subtitle_section.grid_propagate(False)
 
         # update self.profile_achievement_badge_spots dict
         self.profile_achievement_badge_spots.update({
@@ -1162,14 +1150,6 @@ class DashboardPage(ctk.CTkFrame):
                     tag = "oddrow"
                 # populating the entries list with revised data collected from the exercise_entries database
                 self.entries.insert("", "end",iid=id, values=revised_values, tags=(tag,))
-
-    # def test(self):
-        # to get list of items
-        # lst = self.entries.get_children()
-        # for i in lst:
-        #     item_data = self.entries.item(i)
-        #     values = item_data["values"]
-        #     print(f"IID: {i} | Data: {values}")
 
     def edit_exercise_entry(self, event):
         
