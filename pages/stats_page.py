@@ -21,6 +21,10 @@ class StatsPage(ctk.CTkFrame):
         self.current_year = self.controller.current_year
         self.today = self.controller.today
 
+        self.left_slider_arrow_icon = ctk.CTkImage(light_image=Image.open("img/left_slider_arrow.png"), dark_image=Image.open("img/left_slider_arrow.png"), size=(64, 64))
+        self.right_slider_arrow_icon = ctk.CTkImage(light_image=Image.open("img/right_slider_arrow.png"), dark_image=Image.open("img/right_slider_arrow.png"), size=(64, 64))
+        self.graph_name = ctk.StringVar()
+
         steps_data_dict = self.create_data_dict("steps")
         grouped_steps_data = self.split_data_by_week(steps_data_dict)
         self.steps_current_week_data = self.get_current_week(grouped_steps_data)
@@ -74,13 +78,13 @@ class StatsPage(ctk.CTkFrame):
         #region [PageFrames]
         page_title = ctk.CTkLabel(content, text="Statistics", font=("", 24))
         page_message = ctk.CTkLabel(content, text="View your statistics here", font=("", 14))
-        statistics_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1200, height=6200)
+        statistics_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1250, height=1400)
 
         statistics_section.grid_propagate(False)
         statistics_section.grid_rowconfigure(0, weight=1)
-        statistics_section.grid_rowconfigure(8, weight=1)
+        statistics_section.grid_rowconfigure(2, weight=1)
         statistics_section.grid_columnconfigure(0, weight=1)
-        statistics_section.grid_columnconfigure(2, weight=1)
+        statistics_section.grid_columnconfigure(4, weight=1)
 
         page_title.grid(row=1, column=1, pady=(30, 0), sticky="w", padx=(0, 1000))
         page_message.grid(row=2, column=1, pady=(0, 50), sticky="w")
@@ -90,75 +94,16 @@ class StatsPage(ctk.CTkFrame):
         # ==================== [STATISTICS CONTENT] ====================
         #region [Daily Steps Per Week]
         daily_steps_per_week_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
-        daily_steps_per_week_section.grid_rowconfigure(0, weight=1)
-        daily_steps_per_week_section.grid_columnconfigure(0, weight=1)
-        daily_steps_per_week_section.grid(row=1, column=1, pady=10)
+        left_slider_arrow_display = ctk.CTkLabel(statistics_section, text="", image=self.left_slider_arrow_icon)
+        right_slider_arrow_display = ctk.CTkLabel(statistics_section, text="", image=self.right_slider_arrow_icon)
+        
+        daily_steps_per_week_section.grid(row=1, column=2, pady=10)
+        left_slider_arrow_display.grid(row=1, column=1, padx=(10, 20))
+        right_slider_arrow_display.grid(row=1, column=3, padx=(20, 10))
 
         weekly_steps_graph = self.create_per_week_daily_tracker_bar_chart(daily_steps_per_week_section, "Steps", self.steps_current_week_data[0], self.steps_current_week_data[1], self.steps_daily_goal_value)
-        weekly_steps_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
-        #endregion
-
-        #region [Daily Hydration Per Week]
-        daily_hydration_per_week_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
-        daily_hydration_per_week_section.grid_rowconfigure(0, weight=1)
-        daily_hydration_per_week_section.grid_columnconfigure(0, weight=1)
-        daily_hydration_per_week_section.grid(row=2, column=1, pady=10)
-
-        weekly_hydration_graph = self.create_per_week_daily_tracker_bar_chart(daily_hydration_per_week_section, "Hydration", self.hydration_current_week_data[0], self.hydration_current_week_data[1], self.hydration_daily_goal_value)
-        weekly_hydration_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
-        #endregion
-
-        #region [Daily Sleep Per Week]
-        daily_sleep_per_week_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
-        daily_sleep_per_week_section.grid_rowconfigure(0, weight=1)
-        daily_sleep_per_week_section.grid_columnconfigure(0, weight=1)
-        daily_sleep_per_week_section.grid(row=3, column=1, pady=10)
-
-        weekly_sleep_graph = self.create_per_week_daily_tracker_bar_chart(daily_sleep_per_week_section, "Sleep", self.sleep_current_week_data[0], self.sleep_current_week_data[1], self.sleep_daily_goal_value)
-        weekly_sleep_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
-        #endregion
-
-        #region [Daily Steps Per Month]
-        daily_steps_per_month_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
-        daily_steps_per_month_section.grid_rowconfigure(0, weight=1)
-        daily_steps_per_month_section.grid_columnconfigure(0, weight=1)
-        daily_steps_per_month_section.grid(row=4, column=1, pady=10)
-
-        monthly_steps_chart = self.create_per_month_daily_tracker_line_chart(daily_steps_per_month_section, "Steps", self.monthly_steps_dates, self.monthly_steps_values, self.monthly_steps_daily_goal_value)
-        monthly_steps_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
-        #endregion
-
-        #region [Daily Hydration Per Month]
-        daily_hydration_per_month_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
-        daily_hydration_per_month_section.grid_rowconfigure(0, weight=1)
-        daily_hydration_per_month_section.grid_columnconfigure(0, weight=1)
-        daily_hydration_per_month_section.grid(row=5, column=1, pady=10)
-
-        monthly_hydration_chart = self.create_per_month_daily_tracker_line_chart(daily_hydration_per_month_section, "Hydration", self.monthly_hydration_dates, self.monthly_hydration_values, self.monthly_hydration_daily_goal_value)
-        monthly_hydration_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
-        #endregion
-
-        #region [Daily Sleep Per Month]
-        daily_sleep_per_month_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
-        daily_sleep_per_month_section.grid_rowconfigure(0, weight=1)
-        daily_sleep_per_month_section.grid_columnconfigure(0, weight=1)
-        daily_sleep_per_month_section.grid(row=6, column=1, pady=10)
-
-        monthly_sleep_chart = self.create_per_month_daily_tracker_line_chart(daily_sleep_per_month_section, "Sleep", self.monthly_sleep_dates, self.monthly_sleep_values, self.monthly_sleep_daily_goal_value)
-        monthly_sleep_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
-        #endregion    
-
-        #region [Daily Exercise Volume Per Month]
-        daily_exercise_per_month_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
-        daily_exercise_per_month_section.grid_rowconfigure(0, weight=1)
-        daily_exercise_per_month_section.grid_columnconfigure(0, weight=1)
-        daily_exercise_per_month_section.grid(row=7, column=1, pady=10)
         
-        monthly_exercise_volume_chart = self.create_per_month_daily_exercise_weight_volume_bar_chart(daily_exercise_per_month_section, self.monthly_exercise_daily_volume_dates, self.monthly_exercise_daily_volume_values)
-        monthly_exercise_volume_chart.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
-        #endregion 
-
-        #region [DailyRepsTotalPerWeek] & [DailySetsTotalPerWeek]
+        weekly_steps_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion
 
     def all_dates_current_month(self):
@@ -392,6 +337,7 @@ class StatsPage(ctk.CTkFrame):
 
         return monthly_chart_frame
 
+    # redundant ? may use for other use case
     def create_per_month_daily_exercise_tracker_histogram(self, parent_frame, values):
         monthly_chart_frame = ctk.CTkFrame(parent_frame)
 
