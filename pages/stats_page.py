@@ -61,6 +61,59 @@ class StatsPage(ctk.CTkFrame):
 
         self.create_widgets()
 
+        # false indicates the chart is not currently the one being displayed
+        self.chart_frames = [
+            ("daily_steps_per_week", True, self.create_per_week_daily_tracker_bar_chart, {
+                "parent_frame": self.display_chart_frame,
+                "entry_type": "Steps",
+                "dates": self.steps_current_week_data[0],
+                "values": self.steps_current_week_data[1],
+                "daily_goal": self.steps_daily_goal_value  
+                }),
+            ("daily_hydration_per_week", False, self.create_per_week_daily_tracker_bar_chart, {
+                "parent_frame": self.display_chart_frame,
+                "entry_type": "Hydration",
+                "dates": self.hydration_current_week_data[0],
+                "values": self.hydration_current_week_data[1],
+                "daily_goal": self.hydration_daily_goal_value  
+                }),
+            ("daily_sleep_per_week", False, self.create_per_week_daily_tracker_bar_chart, {
+                "parent_frame": self.display_chart_frame,
+                "entry_type": "Sleep",
+                "dates": self.sleep_current_week_data[0],
+                "values": self.sleep_current_week_data[1],
+                "daily_goal": self.sleep_daily_goal_value  
+                }),
+            ("daily_steps_per_month", False, self.create_per_month_daily_tracker_line_chart, {
+                "parent_frame": self.display_chart_frame,
+                "entry_type": "Steps",
+                "dates": self.monthly_steps_dates,
+                "values": self.monthly_steps_values,
+                "daily_goal": self.monthly_steps_daily_goal_value
+            }),
+            ("daily_hydration_per_month", False, self.create_per_month_daily_tracker_line_chart, {
+                "parent_frame": self.display_chart_frame,
+                "entry_type": "Hydration",
+                "dates": self.monthly_hydration_dates,
+                "values": self.monthly_hydration_values,
+                "daily_goal": self.monthly_hydration_daily_goal_value
+            }),
+            ("daily_sleep_per_month", False, self.create_per_month_daily_tracker_line_chart, {
+                "parent_frame": self.display_chart_frame,
+                "entry_type": "Sleep",
+                "dates": self.monthly_sleep_dates,
+                "values": self.monthly_sleep_values,
+                "daily_goal": self.monthly_sleep_daily_goal_value
+            }),
+            ("daily_exercise_volume_per_month", False, self.create_per_month_daily_exercise_weight_volume_bar_chart, {
+                "parent_frame": self.display_chart_frame,
+                "dates": self.monthly_exercise_daily_volume_dates,
+                "values": self.monthly_exercise_daily_volume_values 
+            })
+        ]
+
+        self.initial_chart_displayed()
+
     def create_widgets(self):
         #region [Main Frames]
         navbar = Navbar(self, self.controller)
@@ -92,18 +145,18 @@ class StatsPage(ctk.CTkFrame):
         #endregion
 
         # ==================== [STATISTICS CONTENT] ====================
-        #region [Daily Steps Per Week]
-        daily_steps_per_week_section = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
+        #region [Chart Display]
+        self.display_chart_frame = ctk.CTkFrame(statistics_section, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=0, width=1100, height=160)
         left_slider_arrow_display = ctk.CTkLabel(statistics_section, text="", image=self.left_slider_arrow_icon)
         right_slider_arrow_display = ctk.CTkLabel(statistics_section, text="", image=self.right_slider_arrow_icon)
         
-        daily_steps_per_week_section.grid(row=1, column=2, pady=10)
+        self.display_chart_frame.grid(row=1, column=2, pady=10)
         left_slider_arrow_display.grid(row=1, column=1, padx=(10, 20))
         right_slider_arrow_display.grid(row=1, column=3, padx=(20, 10))
 
-        weekly_steps_graph = self.create_per_week_daily_tracker_bar_chart(daily_steps_per_week_section, "Steps", self.steps_current_week_data[0], self.steps_current_week_data[1], self.steps_daily_goal_value)
-        
-        weekly_steps_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+        # chart_content_display = 
+        # weekly_steps_graph = self.create_per_week_daily_tracker_bar_chart(daily_steps_per_week_section, "Steps", self.steps_current_week_data[0], self.steps_current_week_data[1], self.steps_daily_goal_value)
+        # weekly_steps_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
         #endregion
 
     def all_dates_current_month(self):
@@ -356,3 +409,25 @@ class StatsPage(ctk.CTkFrame):
         canvas.get_tk_widget().pack(fill="both", expand=True)
 
         return monthly_chart_frame
+
+    def update_chart_frame_content(self, chart_func, chart_params):
+        self.chart_display_content = chart_func(**chart_params)
+        self.chart_display_content.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+
+    def initial_chart_displayed(self):
+        # check the list to see which chart to display upon startup
+        for chart_name, is_active, chart_func, func_params in self.chart_frames:
+            if is_active:
+                self.update_chart_frame_content(chart_func, func_params)
+                # in case - shouldnt need it, so may just remove it in final copy
+                break
+        
+    def switch_chart_display(self):
+        pass
+        # check which chart is currently displayed
+
+        # update the dictionary on the new chart displayed
+
+        # generate and display the new chart
+
+
