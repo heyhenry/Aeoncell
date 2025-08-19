@@ -63,53 +63,53 @@ class StatsPage(ctk.CTkFrame):
 
         # false indicates the chart is not currently the one being displayed
         self.chart_frames = [
-            ("daily_steps_per_week", True, self.create_per_week_daily_tracker_bar_chart, {
+            ["daily_steps_per_week", True, self.create_per_week_daily_tracker_bar_chart, {
                 "parent_frame": self.display_chart_frame,
                 "entry_type": "Steps",
                 "dates": self.steps_current_week_data[0],
                 "values": self.steps_current_week_data[1],
                 "daily_goal": self.steps_daily_goal_value  
-                }),
-            ("daily_hydration_per_week", False, self.create_per_week_daily_tracker_bar_chart, {
+                }],
+            ["daily_hydration_per_week", False, self.create_per_week_daily_tracker_bar_chart, {
                 "parent_frame": self.display_chart_frame,
                 "entry_type": "Hydration",
                 "dates": self.hydration_current_week_data[0],
                 "values": self.hydration_current_week_data[1],
                 "daily_goal": self.hydration_daily_goal_value  
-                }),
-            ("daily_sleep_per_week", False, self.create_per_week_daily_tracker_bar_chart, {
+                }],
+            ["daily_sleep_per_week", False, self.create_per_week_daily_tracker_bar_chart, {
                 "parent_frame": self.display_chart_frame,
                 "entry_type": "Sleep",
                 "dates": self.sleep_current_week_data[0],
                 "values": self.sleep_current_week_data[1],
                 "daily_goal": self.sleep_daily_goal_value  
-                }),
-            ("daily_steps_per_month", False, self.create_per_month_daily_tracker_line_chart, {
+                }],
+            ["daily_steps_per_month", False, self.create_per_month_daily_tracker_line_chart, {
                 "parent_frame": self.display_chart_frame,
                 "entry_type": "Steps",
                 "dates": self.monthly_steps_dates,
                 "values": self.monthly_steps_values,
                 "daily_goal": self.monthly_steps_daily_goal_value
-            }),
-            ("daily_hydration_per_month", False, self.create_per_month_daily_tracker_line_chart, {
+            }],
+            ["daily_hydration_per_month", False, self.create_per_month_daily_tracker_line_chart, {
                 "parent_frame": self.display_chart_frame,
                 "entry_type": "Hydration",
                 "dates": self.monthly_hydration_dates,
                 "values": self.monthly_hydration_values,
                 "daily_goal": self.monthly_hydration_daily_goal_value
-            }),
-            ("daily_sleep_per_month", False, self.create_per_month_daily_tracker_line_chart, {
+            }],
+            ["daily_sleep_per_month", False, self.create_per_month_daily_tracker_line_chart, {
                 "parent_frame": self.display_chart_frame,
                 "entry_type": "Sleep",
                 "dates": self.monthly_sleep_dates,
                 "values": self.monthly_sleep_values,
                 "daily_goal": self.monthly_sleep_daily_goal_value
-            }),
-            ("daily_exercise_volume_per_month", False, self.create_per_month_daily_exercise_weight_volume_bar_chart, {
+            }],
+            ["daily_exercise_volume_per_month", False, self.create_per_month_daily_exercise_weight_volume_bar_chart, {
                 "parent_frame": self.display_chart_frame,
                 "dates": self.monthly_exercise_daily_volume_dates,
                 "values": self.monthly_exercise_daily_volume_values 
-            })
+            }]
         ]
 
         self.initial_chart_displayed()
@@ -131,7 +131,7 @@ class StatsPage(ctk.CTkFrame):
         #region [PageFrames]
         page_title = ctk.CTkLabel(content, text="Statistics", font=("", 24))
         page_message = ctk.CTkLabel(content, text="View your statistics here", font=("", 14))
-        statistics_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1250, height=1400)
+        statistics_section = ctk.CTkFrame(content, fg_color=("#F5F0FF", "#2A1A4A"), border_color=("#B19CD9", "#9370DB"), border_width=5, corner_radius=40, width=1250, height=1000)
 
         statistics_section.grid_propagate(False)
         statistics_section.grid_rowconfigure(0, weight=1)
@@ -150,13 +150,12 @@ class StatsPage(ctk.CTkFrame):
         left_slider_arrow_display = ctk.CTkLabel(statistics_section, text="", image=self.left_slider_arrow_icon)
         right_slider_arrow_display = ctk.CTkLabel(statistics_section, text="", image=self.right_slider_arrow_icon)
         
-        self.display_chart_frame.grid(row=1, column=2, pady=10)
+        self.display_chart_frame.grid(row=1, column=2)
         left_slider_arrow_display.grid(row=1, column=1, padx=(10, 20))
         right_slider_arrow_display.grid(row=1, column=3, padx=(20, 10))
 
-        # chart_content_display = 
-        # weekly_steps_graph = self.create_per_week_daily_tracker_bar_chart(daily_steps_per_week_section, "Steps", self.steps_current_week_data[0], self.steps_current_week_data[1], self.steps_daily_goal_value)
-        # weekly_steps_graph.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+        left_slider_arrow_display.bind("<Button-1>", self.switch_chart_display_backward)
+        right_slider_arrow_display.bind("<Button-1>", self.switch_chart_display_forward)
         #endregion
 
     def all_dates_current_month(self):
@@ -412,7 +411,7 @@ class StatsPage(ctk.CTkFrame):
 
     def update_chart_frame_content(self, chart_func, chart_params):
         self.chart_display_content = chart_func(**chart_params)
-        self.chart_display_content.grid(row=0, column=0, padx=10, pady=10, sticky="nswe")
+        self.chart_display_content.grid(row=0, column=0, padx=5, pady=5, sticky="nswe")
 
     def initial_chart_displayed(self):
         # check the list to see which chart to display upon startup
@@ -422,12 +421,48 @@ class StatsPage(ctk.CTkFrame):
                 # in case - shouldnt need it, so may just remove it in final copy
                 break
         
-    def switch_chart_display(self):
-        pass
-        # check which chart is currently displayed
+    def switch_chart_display_forward(self, event):
+        print("switch forward triggered!")
+        # check which chart is currently displayed and update next active chart to take place
+        for i in range(len(self.chart_frames)):
+            # if the lastest active chart was found in the last element, the update the next active chart to be the first element
+            if self.chart_frames[i][1] == True and i == len(self.chart_frames)-1:
+                self.chart_frames[i][1] = False
+                self.chart_frames[0][1] = True
+                break
+            # otherwise, update the active chart status to the next element after the current one
+            elif self.chart_frames[i][1] == True:
+                self.chart_frames[i][1] = False
+                self.chart_frames[i+1][1] = True
+                break
 
-        # update the dictionary on the new chart displayed
+        # update the chart display content
+        for chart_name, is_active, chart_func, func_params in self.chart_frames:
+            if is_active:
+                self.update_chart_frame_content(chart_func, func_params)
+                # in case - shouldnt need it, so may just remove it in final copy
+                break
 
-        # generate and display the new chart
+    def switch_chart_display_backward(self, event):
+        print("switch backward triggered!")
+        # check which chart is currently displayed and update next active chart to take place
+        for i in range(len(self.chart_frames)):
+            # if the current active chart element is the first element in list, then update the next element backward aka the last element in the list
+            if self.chart_frames[i][1] == True and i == 0:
+                self.chart_frames[i][1] = False
+                self.chart_frames[len(self.chart_frames)-1][1] = True
+                break
+            # otherwise, just update to the previous element before the current active element
+            elif self.chart_frames[i][1] == True:
+                self.chart_frames[i][1] = False
+                self.chart_frames[i-1][1] = True
+                break
+
+        # update the chart display content
+        for chart_name, is_active, chart_func, func_params in self.chart_frames:
+            if is_active:
+                self.update_chart_frame_content(chart_func, func_params)
+                # in case - shouldnt need it, so may just remove it in final copy
+                break
 
 
