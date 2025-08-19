@@ -173,3 +173,6 @@ bar(x, height) (31st July 2025): https://matplotlib.org/stable/plot_types/basic/
 matplotlib.axes.Axes.Legend (31st July 2025): https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html
 Interactive Sliders in Matplotlib (31st July 2025): https://www.delftstack.com/howto/matplotlib/sliders-in-matplotlib/
 Slider (31st July 2025): https://matplotlib.org/stable/gallery/widgets/slider_demo.html
+Create a Slideshow application in Python (18th August 2025): https://www.geeksforgeeks.org/python/create-a-sideshow-application-in-python/
+Make a Image Gallery Project using Python and Tkinter (18th August 2025): https://www.youtube.com/watch?v=olom5Ow7zbo
+Python - Unpack Dictionary (19th August 2025): https://pythonexamples.org/python-unpack-dictionary/
