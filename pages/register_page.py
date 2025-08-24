@@ -121,6 +121,8 @@ class RegisterPage(ctk.CTkFrame):
         self.controller.update_username()
         # update the username display on the login page
         self.controller.pages["LoginPage"].update_login_message()
+        # update the welcome message on the dashboard page
+        self.controller.pages["DashboardPage"].update_welcome_message()
         # update the login page's welcome_message widget
         self.controller.pages["LoginPage"].welcome_message.configure(text=f"Welcome back, {self.controller.username.get()}!")
         self.controller.show_page("LoginPage")

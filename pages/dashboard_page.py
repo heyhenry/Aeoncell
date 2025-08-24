@@ -126,7 +126,7 @@ class DashboardPage(ctk.CTkFrame):
         
         self.create_widgets()
         self.update_latest_achievements_display()
-        self.update_welcome_user()
+        self.update_welcome_message()
         self.update_monthly_goal_progression_displays()
         self.daily_section_initialisation()
         self.update_exercise_summary()
@@ -554,11 +554,7 @@ class DashboardPage(ctk.CTkFrame):
         redirect_single_entry_icon.bind("<Button-1>", lambda event: self.controller.show_page("SingleEntryPage"))
         #endregion
 
-    # Reminder to adjust after finishing all widgets... 
-    # coding ettiquette -> make sure all frames/configures are all placed in the same positioning/order throughout.
-    # remember to implement binding for the actionable icons like -> reset icon
-
-    def update_welcome_user(self):
+    def update_welcome_message(self):
         username = self.controller.username.get()
         self.welcome_message.set(f"Welcome Back, {username}")
 
@@ -1085,42 +1081,42 @@ class DashboardPage(ctk.CTkFrame):
             self.volume_total_var.set(volume_sum)
             
     def update_weather_forecast(self):
-        pass # temp during multiple startups to test other sections of the app..
-        # wmo_list = self.controller.wmo_codes
+        # pass # temp during multiple startups to test other sections of the app..
+        wmo_list = self.controller.wmo_codes
 
-        # # get user's approximate location
-        # ip_response = requests.get("https://get.geojs.io/v1/ip/geo.json")
-        # data = ip_response.json()
-        # latitude = data["latitude"]
-        # longitude = data["longitude"]
+        # get user's approximate location
+        ip_response = requests.get("https://get.geojs.io/v1/ip/geo.json")
+        data = ip_response.json()
+        latitude = data["latitude"]
+        longitude = data["longitude"]
 
-        # # try-except to ensure app still runs even if the weather request times out
-        # try:
-        #     # get weather forecast based on latitude x longitude
-        #     weather_response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,weather_code&timezone=auto")
-        #     weather_data = weather_response.json()
-        #     current_units = weather_data["current_units"]
-        #     current_values = weather_data["current"]
+        # try-except to ensure app still runs even if the weather request times out
+        try:
+            # get weather forecast based on latitude x longitude
+            weather_response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,weather_code&timezone=auto")
+            weather_data = weather_response.json()
+            current_units = weather_data["current_units"]
+            current_values = weather_data["current"]
 
-        #     # format retrieved data
-        #     location = weather_data["timezone"]
-        #     last_updated_time = f"Last Updated: {current_values["time"][11:]}"
-        #     temperature = f"{current_values["temperature_2m"]} {current_units["temperature_2m"]}"
-        #     weather_code = current_values["weather_code"]
+            # format retrieved data
+            location = weather_data["timezone"]
+            last_updated_time = f"Last Updated: {current_values["time"][11:]}"
+            temperature = f"{current_values["temperature_2m"]} {current_units["temperature_2m"]}"
+            weather_code = current_values["weather_code"]
 
-        #     # set display widgets with formatted string
-        #     self.location_var.set(location)
-        #     self.last_updated_var.set(last_updated_time)
-        #     self.temp_var.set(temperature)
+            # set display widgets with formatted string
+            self.location_var.set(location)
+            self.last_updated_var.set(last_updated_time)
+            self.temp_var.set(temperature)
             
-        #     # determine which weather icon to display based on wmo code reading
-        #     for i in range(len(wmo_list)):
-        #         if weather_code in wmo_list[i][0]:
-        #             self.weather_icon.configure(light_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), dark_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), size=(64, 64))
-        #             self.weather_type_var.set(wmo_list[i][1].capitalize())  
-        # except requests.exceptions.Timeout:
-        #     # do nothing and continue app startup
-        #     pass
+            # determine which weather icon to display based on wmo code reading
+            for i in range(len(wmo_list)):
+                if weather_code in wmo_list[i][0]:
+                    self.weather_icon.configure(light_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), dark_image=Image.open(f"img/weather/{wmo_list[i][1]}.png"), size=(64, 64))
+                    self.weather_type_var.set(wmo_list[i][1].capitalize())  
+        except requests.exceptions.Timeout:
+            # do nothing and continue app startup
+            pass
 
     def update_exercise_entries_display(self):
         # update the entries list by first resetting existing data
