@@ -286,7 +286,7 @@ class SettingsPage(ctk.CTkFrame):
         self.update_user_profile_img()
 
         # update dashboard welcome message
-        self.controller.pages["DashboardPage"].update_welcome_user()
+        self.controller.pages["DashboardPage"].update_welcome_message()
 
         # update login message
         self.controller.pages["LoginPage"].update_login_message()
